@@ -1,0 +1,25 @@
+name: llm-training-env
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+  - python=3.12
+  - huggingface_hub
+  - transformers
+  - datasets
+  - scikit-learn
+  - numpy
+  - pandas
+  - tqdm
+  - pip
+  - ipykernel
+  - jupyter
+  - matplotlib
+  - pip:
+      - torch
+      - torchvision
+      - torchaudio
+      - accelerate
+      - evaluate
+      - sentencepiece
+      - bitsandbytes
