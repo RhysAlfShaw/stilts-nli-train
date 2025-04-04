@@ -7,21 +7,22 @@ from transformers import (
     AutoTokenizer,
     Trainer,
     TrainingArguments,
-    DataCollatorForLanguageModeling
+    DataCollatorForLanguageModeling,
 )
 
-with open('access_token', 'r') as f:
+with open("access_token", "r") as f:
     access_token = f.read().strip()
 os.environ["HF_TOKEN"] = access_token
+
 # Configuration
-MODEL_NAME = 'meta-llama/Llama-3.2-1B' # Replace with your downloaded model fits on Sotiria GPU for traning.
+MODEL_NAME = "meta-llama/Llama-3.2-1B"
 OUTPUT_DIR = "./stilts-llm-finetuned"
 TRAIN_FILE = "training_data.json"
 MAX_LENGTH = 512
 BATCH_SIZE = 6
-LEARNING_RATE = 2e-5 
-NUM_EPOCHS = 40
-GRADIENT_ACCUMULATION_STEPS = 4 
+LEARNING_RATE = 2e-5
+NUM_EPOCHS = 60
+GRADIENT_ACCUMULATION_STEPS = 4
 
 # Check for GPU
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -34,10 +35,11 @@ os.makedirs(OUTPUT_DIR, exist_ok=True)
 print("Loading tokenizer and model...")
 tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
 tokenizer.pad_token = tokenizer.eos_token  # Set padding token
-model = AutoModelForCausalLM.from_pretrained(
-    MODEL_NAME,
-    device_map="auto"
-)
+
+# Important: Add this to ensure the model learns to use EOS token properly
+tokenizer.add_eos_token = True
+
+model = AutoModelForCausalLM.from_pretrained(MODEL_NAME, device_map="auto")
 
 # Load and prepare the dataset
 print("Preparing dataset...")
@@ -49,27 +51,42 @@ formatted_data = []
 for item in data:
     prompt = item["prompt"]
     response = item["response"]
-    # Create instruction format: ### Instruction: {prompt}\n### Response: {response}
-    formatted_text = f"### Instruction: {prompt}\n### Response: {response}"
+    # Create instruction format and EXPLICITLY add EOS token
+    formatted_text = (
+        f"### Instruction: {prompt}\n### Response: {response}{tokenizer.eos_token}"
+    )
     formatted_data.append({"text": formatted_text})
 
 # Create dataset
 dataset = Dataset.from_list(formatted_data)
+print("Number of examples in dataset:", len(dataset))
+
 
 # Tokenize the dataset
 def tokenize_function(examples):
-    return tokenizer(
+    tokenized = tokenizer(
         examples["text"],
         padding="max_length",
         truncation=True,
         max_length=MAX_LENGTH,
-        return_tensors="pt"
+        return_tensors="pt",
+        add_special_tokens=True,
     )
+    # Ensure we have EOS tokens where we expect them
+    for i in range(len(tokenized["input_ids"])):
+        # If the sequence isn't full, add EOS token at the end
+        if (
+            tokenized["input_ids"][i][-1] != tokenizer.eos_token_id
+            and torch.sum(tokenized["attention_mask"][i]) < MAX_LENGTH
+        ):
+            # Find the first padding position
+            pad_pos = torch.argmin(tokenized["attention_mask"][i]).item()
+            tokenized["input_ids"][i][pad_pos] = tokenizer.eos_token_id
+    return tokenized
+
 
 tokenized_dataset = dataset.map(
-    tokenize_function,
-    batched=True,
-    remove_columns=["text"]
+    tokenize_function, batched=True, remove_columns=["text"]
 )
 
 # Define training arguments
@@ -85,7 +102,7 @@ training_args = TrainingArguments(
     logging_dir=f"{OUTPUT_DIR}/logs",
     logging_steps=10,
     save_strategy="epoch",
-    save_total_limit=2,
+    save_total_limit=1,
     report_to="tensorboard",
     push_to_hub=False,
 )
@@ -93,7 +110,9 @@ training_args = TrainingArguments(
 # Create data collator
 data_collator = DataCollatorForLanguageModeling(
     tokenizer=tokenizer,
-    mlm=False  # We're doing causal language modeling, not masked
+    mlm=False,
+    # This ensures the loss isn't computed on padding tokens
+    pad_to_multiple_of=8 if tokenizer.pad_token_id is not None else None,
 )
 
 # Create trainer
@@ -101,7 +120,7 @@ trainer = Trainer(
     model=model,
     args=training_args,
     train_dataset=tokenized_dataset,
-    data_collator=data_collator
+    data_collator=data_collator,
 )
 
 # Train the model
@@ -114,27 +133,3 @@ model.save_pretrained(f"{OUTPUT_DIR}/final_model")
 tokenizer.save_pretrained(f"{OUTPUT_DIR}/final_model")
 
 print("Fine-tuning complete!")
-
-# Add inference example
-print("\nExample usage after fine-tuning:")
-print("""
-from transformers import AutoModelForCausalLM, AutoTokenizer
-
-# Load the fine-tuned model
-model_path = "./stilts-llm-finetuned/final_model"
-tokenizer = AutoTokenizer.from_pretrained(model_path)
-model = AutoModelForCausalLM.from_pretrained(model_path)
-
-# Example inference
-prompt = "### Instruction: How do I create a color-magnitude diagram from my star catalog?"
-inputs = tokenizer(prompt, return_tensors="pt")
-outputs = model.generate(
-    inputs["input_ids"],
-    max_length=512,
-    temperature=0.7,
-    top_p=0.9,
-    do_sample=True
-)
-response = tokenizer.decode(outputs[0], skip_special_tokens=True)
-print(response)
-""")
