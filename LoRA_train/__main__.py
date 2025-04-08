@@ -8,17 +8,24 @@ from transformers import (
     Trainer,
     TrainingArguments,
     DataCollatorForLanguageModeling,
+    BitsAndBytesConfig,
 )
+from peft import LoraConfig, get_peft_model, TaskType
 
 # Configuration
 MODEL_NAME = "meta-llama/Llama-3.2-1B"
-OUTPUT_DIR = "./stilts-llm-finetuned"
+OUTPUT_DIR = "./stilts-llm-finetuned-lora"
 TRAIN_FILE = "training_data.json"
 MAX_LENGTH = 512
-BATCH_SIZE = 6
-LEARNING_RATE = 2e-5
-NUM_EPOCHS = 300
+BATCH_SIZE = 24
+LEARNING_RATE = 2e-4
+NUM_EPOCHS = 200
 GRADIENT_ACCUMULATION_STEPS = 4
+
+# LoRA Configuration
+LORA_R = 8  # Rank
+LORA_ALPHA = 32  # Alpha parameter (scaling factor)
+LORA_DROPOUT = 0.1  # Dropout probability
 
 # Load access token
 with open("access_token", "r") as f:
@@ -37,7 +44,20 @@ print("Loading tokenizer and model...")
 tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
 tokenizer.pad_token = tokenizer.eos_token  # Use EOS token for padding
 
-model = AutoModelForCausalLM.from_pretrained(MODEL_NAME, device_map="auto")
+# Optional: Quantization config (uncomment if you want 4-bit quantization)
+# bnb_config = BitsAndBytesConfig(
+#     load_in_4bit=True,
+#     bnb_4bit_quant_type="nf4",
+#     bnb_4bit_compute_dtype=torch.float16,
+#     bnb_4bit_use_double_quant=False,
+# )
+
+model = AutoModelForCausalLM.from_pretrained(
+    MODEL_NAME,
+    device_map="auto",
+    # quantization_config=bnb_config,  # Uncomment if using quantization
+    torch_dtype=torch.float16,
+)
 
 # Add special tokens for instruction formatting
 special_tokens_dict = {
@@ -45,6 +65,25 @@ special_tokens_dict = {
 }
 tokenizer.add_special_tokens(special_tokens_dict)
 model.resize_token_embeddings(len(tokenizer))
+
+# Define LoRA config - targeting output layers
+lora_config = LoraConfig(
+    task_type=TaskType.CAUSAL_LM,
+    r=LORA_R,
+    lora_alpha=LORA_ALPHA,
+    lora_dropout=LORA_DROPOUT,
+    target_modules=[
+        "q_proj",  # Query projection
+        "v_proj",  # Value projection
+        "o_proj",  # Output projection
+        "lm_head",  # Language modeling head
+    ],
+    bias="none",
+)
+
+# Convert model to PEFT model with LoRA
+model = get_peft_model(model, lora_config)
+model.print_trainable_parameters()  # Print the number of trainable parameters
 
 # Load and prepare the dataset
 print("Preparing dataset...")
@@ -81,14 +120,6 @@ tokenized_dataset = dataset.map(
     tokenize_function, batched=True, remove_columns=["text"]
 )
 
-# # Debug: Check EOS tokens are properly included
-# print("\nVerifying EOS tokens in dataset:")
-# for i in range(min(2, len(tokenized_dataset))):  # Check first 2 examples
-#     print(f"\nExample {i}:")
-#     print("Input IDs:", tokenized_dataset[i]["input_ids"])
-#     print("Contains EOS:", tokenizer.eos_token_id in tokenized_dataset[i]["input_ids"])
-#     print("Decoded:", tokenizer.decode(tokenized_dataset[i]["input_ids"]))
-
 # Define training arguments
 training_args = TrainingArguments(
     output_dir=OUTPUT_DIR,
@@ -105,6 +136,7 @@ training_args = TrainingArguments(
     save_total_limit=1,
     report_to="tensorboard",
     push_to_hub=False,
+    fp16=True,  # Enable mixed precision training
 )
 
 # Create data collator
@@ -114,7 +146,6 @@ data_collator = DataCollatorForLanguageModeling(
 )
 
 # Create trainer
-
 trainer = Trainer(
     model=model,
     args=training_args,
@@ -123,18 +154,15 @@ trainer = Trainer(
 )
 
 # Train the model
-
 print("\nStarting training...")
 trainer.train()
 
 # Save the fine-tuned model
-
 print("\nSaving model...")
 model.save_pretrained(f"{OUTPUT_DIR}/final_model")
 tokenizer.save_pretrained(f"{OUTPUT_DIR}/final_model")
 
 # Save generation config to ensure proper stopping during inference
-
 generation_config = {
     "eos_token_id": tokenizer.eos_token_id,
     "pad_token_id": tokenizer.eos_token_id,
@@ -145,7 +173,7 @@ with open(f"{OUTPUT_DIR}/final_model/generation_config.json", "w") as f:
 
 print("\nFine-tuning complete!")
 
-# plot loss
+# Plot loss
 import matplotlib.pyplot as plt
 
 # Get all training logs

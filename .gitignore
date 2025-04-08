@@ -177,3 +177,4 @@ stilts-llm-finetuned/
 test.ipynb
 training_data.json
 nohup.out
+stilts-llm-finetuned-lora/
