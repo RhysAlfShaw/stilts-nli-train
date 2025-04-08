@@ -176,3 +176,4 @@ access_token
 stilts-llm-finetuned/
 test.ipynb
 training_data.json
+nohup.out
