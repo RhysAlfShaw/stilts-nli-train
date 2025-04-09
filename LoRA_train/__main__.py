@@ -10,7 +10,12 @@ from transformers import (
     DataCollatorForLanguageModeling,
     BitsAndBytesConfig,
 )
+
 from peft import LoraConfig, get_peft_model, TaskType
+
+# set per process memory fraction with pytorch
+
+torch.cuda.set_per_process_memory_fraction(0.1, 0)
 
 # Configuration
 MODEL_NAME = "meta-llama/Llama-3.2-1B"
@@ -18,11 +23,11 @@ OUTPUT_DIR = "./stilts-llm-finetuned-lora"
 TRAIN_FILE = "training_data.json"
 MAX_LENGTH = 512
 BATCH_SIZE = 24
-LEARNING_RATE = 2e-4
-NUM_EPOCHS = 200
+LEARNING_RATE = 2e-5
+NUM_EPOCHS = 1000
 GRADIENT_ACCUMULATION_STEPS = 4
 
-# LoRA Configuration
+# LoRA Configuration.
 LORA_R = 8  # Rank
 LORA_ALPHA = 32  # Alpha parameter (scaling factor)
 LORA_DROPOUT = 0.1  # Dropout probability
@@ -188,21 +193,15 @@ eval_loss = [log["eval_loss"] for log in logs if "eval_loss" in log]
 eval_steps = [log["step"] for log in logs if "eval_loss" in log]
 
 plt.figure(figsize=(10, 6))
-
-# Plot training loss (blue)
 plt.plot(steps, train_loss, label="Training Loss", color="blue")
-
-# Plot eval loss (red, if available)
 if eval_loss:
     plt.plot(
         eval_steps, eval_loss, label="Evaluation Loss", color="red", linestyle="--"
     )
-
 plt.title("Training & Evaluation Loss Curve")
 plt.xlabel("Training Steps")
 plt.ylabel("Loss")
+plt.xscale("log")
 plt.legend()
 plt.grid(True)
-
-# Save the plot
 plt.savefig(f"{OUTPUT_DIR}/loss_curve.png")

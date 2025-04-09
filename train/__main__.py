@@ -14,10 +14,10 @@ from transformers import (
 MODEL_NAME = "meta-llama/Llama-3.2-1B"
 OUTPUT_DIR = "./stilts-llm-finetuned"
 TRAIN_FILE = "training_data.json"
-MAX_LENGTH = 512
-BATCH_SIZE = 6
+# MAX_LENGTH = 512
+BATCH_SIZE = 12
 LEARNING_RATE = 2e-5
-NUM_EPOCHS = 300
+NUM_EPOCHS = 100
 GRADIENT_ACCUMULATION_STEPS = 4
 
 # Load access token
@@ -25,9 +25,19 @@ with open("access_token", "r") as f:
     access_token = f.read().strip()
 os.environ["HF_TOKEN"] = access_token
 
-# Check for GPU
+# Check for GPU.
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"Using device: {device}")
+
+# set a max usage of GPU memory
+if device.type == "cuda":
+    desired_max = 30  # in GB
+    max_menory = torch.cuda.get_device_properties(0).total_memory
+    fraction = desired_max * 1024**3 / max_menory
+
+    torch.cuda.set_per_process_memory_fraction(0.8)
+
+    print("Set GPU memory usage to 50%")
 
 # Create output directory
 os.makedirs(OUTPUT_DIR, exist_ok=True)
@@ -52,13 +62,24 @@ with open(TRAIN_FILE, "r") as f:
     data = json.load(f)
 
 # Format the data for instruction fine-tuning
+
+template = "{% for message in messages %}{{'<|start_header_id|>' + message['role'] + '<|end_header_id|>\n' + message['content'] + '<|eot_id|>' + '\n'}}{% endfor %}"
 formatted_data = []
 for item in data:
     prompt = item["prompt"]
     response = item["response"]
-    # Create instruction format (let tokenizer handle EOS)
-    formatted_text = f"### Instruction: {prompt}\n### Response: {response}"
-    formatted_data.append({"text": formatted_text})
+    chat = [
+        {
+            "role": "system",
+            "content": "You are a stilts command generator.",
+        },
+        {"role": "user", "content": item["prompt"]},
+        {"role": "assistant", "content": item["response"]},
+    ]
+    formatted = tokenizer.apply_chat_template(
+        chat, chat_template=template, tokenize=False
+    )
+    formatted_data.append({"text": formatted})
 
 # Create dataset
 dataset = Dataset.from_list(formatted_data)
@@ -69,11 +90,6 @@ print("Number of examples in dataset:", len(dataset))
 def tokenize_function(examples):
     return tokenizer(
         examples["text"],
-        padding="max_length",
-        truncation=True,
-        max_length=MAX_LENGTH,
-        return_tensors="pt",
-        add_special_tokens=True,  # Let this handle EOS automatically
     )
 
 
@@ -82,12 +98,11 @@ tokenized_dataset = dataset.map(
 )
 
 # # Debug: Check EOS tokens are properly included
-# print("\nVerifying EOS tokens in dataset:")
-# for i in range(min(2, len(tokenized_dataset))):  # Check first 2 examples
-#     print(f"\nExample {i}:")
-#     print("Input IDs:", tokenized_dataset[i]["input_ids"])
-#     print("Contains EOS:", tokenizer.eos_token_id in tokenized_dataset[i]["input_ids"])
-#     print("Decoded:", tokenizer.decode(tokenized_dataset[i]["input_ids"]))
+print("\nVerifying EOS tokens in dataset:")
+for i in range(min(2, len(tokenized_dataset))):  # Check first 2 examples
+    print(f"\nExample {i}:")
+    print("Input IDs:", tokenized_dataset[i]["input_ids"])
+    print("Decoded:", tokenizer.decode(tokenized_dataset[i]["input_ids"]))
 
 # Define training arguments
 training_args = TrainingArguments(
@@ -133,19 +148,19 @@ print("\nSaving model...")
 model.save_pretrained(f"{OUTPUT_DIR}/final_model")
 tokenizer.save_pretrained(f"{OUTPUT_DIR}/final_model")
 
-# Save generation config to ensure proper stopping during inference
+# # Save generation config to ensure proper stopping during inference
 
-generation_config = {
-    "eos_token_id": tokenizer.eos_token_id,
-    "pad_token_id": tokenizer.eos_token_id,
-    "max_new_tokens": MAX_LENGTH,
-}
-with open(f"{OUTPUT_DIR}/final_model/generation_config.json", "w") as f:
-    json.dump(generation_config, f)
+# generation_config = {
+#     "eos_token_id": tokenizer.eos_token_id,
+#     "pad_token_id": tokenizer.pad_token_id,
+#     "max_new_tokens": MAX_LENGTH,
+# }
+# with open(f"{OUTPUT_DIR}/final_model/generation_config.json", "w") as f:
+#     json.dump(generation_config, f)
 
-print("\nFine-tuning complete!")
+# print("\nFine-tuning complete!")
 
-# plot loss
+# # plot loss
 import matplotlib.pyplot as plt
 
 # Get all training logs
