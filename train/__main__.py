@@ -148,7 +148,7 @@ print("\nSaving model...")
 model.save_pretrained(f"{OUTPUT_DIR}/final_model")
 tokenizer.save_pretrained(f"{OUTPUT_DIR}/final_model")
 
-# # Save generation config to ensure proper stopping during inference
+# Save generation config to ensure proper stopping during inference
 
 # generation_config = {
 #     "eos_token_id": tokenizer.eos_token_id,
@@ -188,6 +188,7 @@ if eval_loss:
 plt.title("Training & Evaluation Loss Curve")
 plt.xlabel("Training Steps")
 plt.ylabel("Loss")
+plt.yscale("log")  # Use log scale for better visibility
 plt.legend()
 plt.grid(True)
 
