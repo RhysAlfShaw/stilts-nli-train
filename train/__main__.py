@@ -40,9 +40,11 @@ if device.type == "cuda":
     print("Set GPU memory usage to 50%")
 
 # Create output directory
+
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 # Load the tokenizer and model
+
 print("Loading tokenizer and model...")
 tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
 tokenizer.pad_token = tokenizer.eos_token  # Use EOS token for padding
@@ -50,6 +52,7 @@ tokenizer.pad_token = tokenizer.eos_token  # Use EOS token for padding
 model = AutoModelForCausalLM.from_pretrained(MODEL_NAME, device_map="auto")
 
 # Add special tokens for instruction formatting
+
 special_tokens_dict = {
     "additional_special_tokens": ["### Instruction:", "### Response:"]
 }
@@ -97,7 +100,8 @@ tokenized_dataset = dataset.map(
     tokenize_function, batched=True, remove_columns=["text"]
 )
 
-# # Debug: Check EOS tokens are properly included
+# Debug: Check EOS tokens are properly included
+
 print("\nVerifying EOS tokens in dataset:")
 for i in range(min(2, len(tokenized_dataset))):  # Check first 2 examples
     print(f"\nExample {i}:")
@@ -105,6 +109,7 @@ for i in range(min(2, len(tokenized_dataset))):  # Check first 2 examples
     print("Decoded:", tokenizer.decode(tokenized_dataset[i]["input_ids"]))
 
 # Define training arguments
+
 training_args = TrainingArguments(
     output_dir=OUTPUT_DIR,
     num_train_epochs=NUM_EPOCHS,
@@ -150,15 +155,6 @@ tokenizer.save_pretrained(f"{OUTPUT_DIR}/final_model")
 
 # Save generation config to ensure proper stopping during inference
 
-# generation_config = {
-#     "eos_token_id": tokenizer.eos_token_id,
-#     "pad_token_id": tokenizer.pad_token_id,
-#     "max_new_tokens": MAX_LENGTH,
-# }
-# with open(f"{OUTPUT_DIR}/final_model/generation_config.json", "w") as f:
-#     json.dump(generation_config, f)
-
-# print("\nFine-tuning complete!")
 
 # # plot loss
 import matplotlib.pyplot as plt
