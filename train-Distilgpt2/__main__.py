@@ -10,14 +10,14 @@ from transformers import (
     DataCollatorForLanguageModeling,
 )
 
-# Configuration
-MODEL_NAME = "meta-llama/Llama-3.2-1B"
-OUTPUT_DIR = "./stilts-llm-finetuned"
+
+MODEL_NAME = "distilbert/distilgpt2"
+OUTPUT_DIR = "./stilts-llm-finetuned-distilgpt2"
 TRAIN_FILE = "training_data.json"
-# MAX_LENGTH = 512
-BATCH_SIZE = 12
+
+BATCH_SIZE = 48
 LEARNING_RATE = 2e-5
-NUM_EPOCHS = 100
+NUM_EPOCHS = 500
 GRADIENT_ACCUMULATION_STEPS = 4
 
 # Load access token
@@ -28,28 +28,19 @@ os.environ["HF_TOKEN"] = access_token
 # Check for GPU.
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"Using device: {device}")
-
 # set a max usage of GPU memory
 if device.type == "cuda":
-    desired_max = 30  # in GB
-    max_menory = torch.cuda.get_device_properties(0).total_memory
-    fraction = desired_max * 1024**3 / max_menory
-
     torch.cuda.set_per_process_memory_fraction(0.8)
 
-    print("Set GPU memory usage to 50%")
-
 # Create output directory
-
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 # Load the tokenizer and model
-
 print("Loading tokenizer and model...")
 tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
 tokenizer.pad_token = tokenizer.eos_token  # Use EOS token for padding
 
-model = AutoModelForCausalLM.from_pretrained(MODEL_NAME, device_map="auto")
+model = AutoModelForCausalLM.from_pretrained(MODEL_NAME).to(device)
 
 # Add special tokens for instruction formatting
 
@@ -59,12 +50,11 @@ special_tokens_dict = {
 tokenizer.add_special_tokens(special_tokens_dict)
 model.resize_token_embeddings(len(tokenizer))
 
-# Load and prepare the dataset
-print("Preparing dataset...")
+# Load the training data
+print("Loading training data...")
 with open(TRAIN_FILE, "r") as f:
     data = json.load(f)
-
-# Format the data for instruction fine-tuning
+    # Convert to Dataset object
 
 template = "{% for message in messages %}{{'<|start_header_id|>' + message['role'] + '<|end_header_id|>\n' + message['content'] + '<|eot_id|>' + '\n'}}{% endfor %}"
 formatted_data = []
@@ -100,6 +90,7 @@ tokenized_dataset = dataset.map(
     tokenize_function, batched=True, remove_columns=["text"]
 )
 
+
 # Debug: Check EOS tokens are properly included
 
 print("\nVerifying EOS tokens in dataset:")
@@ -121,7 +112,7 @@ training_args = TrainingArguments(
     lr_scheduler_type="cosine",
     logging_dir=f"{OUTPUT_DIR}/logs",
     logging_steps=1,
-    save_strategy="epoch",
+    save_strategy="no",  # Save only at the end of training
     save_total_limit=1,
     report_to="tensorboard",
     push_to_hub=False,
