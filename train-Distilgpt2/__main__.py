@@ -2,6 +2,7 @@ import os
 import json
 import torch
 from datasets import Dataset
+
 from transformers import (
     AutoModelForCausalLM,
     AutoTokenizer,
@@ -11,13 +12,13 @@ from transformers import (
 )
 
 
-MODEL_NAME = "distilbert/distilgpt2"
+MODEL_NAME = "distilgpt2"  # model size - 82M
 OUTPUT_DIR = "./stilts-llm-finetuned-distilgpt2"
 TRAIN_FILE = "training_data.json"
 
 BATCH_SIZE = 48
-LEARNING_RATE = 2e-5
-NUM_EPOCHS = 500
+LEARNING_RATE = 1e-4
+NUM_EPOCHS = 1000
 GRADIENT_ACCUMULATION_STEPS = 4
 
 # Load access token
@@ -44,11 +45,11 @@ model = AutoModelForCausalLM.from_pretrained(MODEL_NAME).to(device)
 
 # Add special tokens for instruction formatting
 
-special_tokens_dict = {
-    "additional_special_tokens": ["### Instruction:", "### Response:"]
-}
-tokenizer.add_special_tokens(special_tokens_dict)
-model.resize_token_embeddings(len(tokenizer))
+# special_tokens_dict = {
+#     "additional_special_tokens": ["### Instruction:", "### Response:"]
+# }
+# tokenizer.add_special_tokens(special_tokens_dict)
+# model.resize_token_embeddings(len(tokenizer))
 
 # Load the training data
 print("Loading training data...")
@@ -56,8 +57,10 @@ with open(TRAIN_FILE, "r") as f:
     data = json.load(f)
     # Convert to Dataset object
 
-template = "{% for message in messages %}{{'<|start_header_id|>' + message['role'] + '<|end_header_id|>\n' + message['content'] + '<|eot_id|>' + '\n'}}{% endfor %}"
+template_llama = "{% for message in messages %}{{'<|start_header_id|>' + message['role'] + '<|end_header_id|>\n' + message['content'] + '<|eot_id|>' + '\n'}}{% endfor %}"
+template_distilgpt2 = "{% for message in messages %}{{'<|start_header_id|>' + message['role'] + '<|end_header_id|>\n' + message['content'] + '<|eot_id|>' + '\n'}}{% endfor %}"
 formatted_data = []
+
 for item in data:
     prompt = item["prompt"]
     response = item["response"]
@@ -70,10 +73,14 @@ for item in data:
         {"role": "assistant", "content": item["response"]},
     ]
     formatted = tokenizer.apply_chat_template(
-        chat, chat_template=template, tokenize=False
+        chat, chat_template=template_distilgpt2, tokenize=False
     )
     formatted_data.append({"text": formatted})
 
+# print example of training data
+print("\nExample of training data:")
+print("Formatted data:", formatted_data[0]["text"])
+# exit()
 # Create dataset
 dataset = Dataset.from_list(formatted_data)
 print("Number of examples in dataset:", len(dataset))
