@@ -11,11 +11,11 @@ ENV CC=gcc
 ENV CXX=g++
 
 # Copy environment file and create conda environment
-COPY environment_llama.yml .
-RUN conda env create -f environment_llama.yml
+COPY environment.yml .
+RUN conda env create -f environment.yml
 
 # Activate the conda environment in following RUN commands
-SHELL ["conda", "run", "-n", "llama", "/bin/bash", "-c"]
+SHELL ["conda", "run", "-n", "llm-training-env", "/bin/bash", "-c"]
 
 # Install llama-cpp-python (CPU build)
 RUN pip install llama-cpp-python
