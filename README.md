@@ -11,3 +11,8 @@ training open llm for stilts
 - Can the training process we made agnostic to the model of choice?
 
 - improve the training data based on the example in the Stilts documentation.
+
+
+# Notes on installation
+
+For fast cpu inference we require llama-cpp-python. This requires a C-compiler to build and install. 

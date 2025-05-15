@@ -4,13 +4,6 @@ channels:
   - conda-forge
 dependencies:
   - python=3.12
-  - huggingface_hub
-  - transformers
-  - datasets
-  - scikit-learn
-  - numpy
-  - pandas
-  - tqdm
   - pip
   - ipykernel
   - jupyter
@@ -23,3 +16,11 @@ dependencies:
       - evaluate
       - sentencepiece
       - bitsandbytes
+      - huggingface_hub
+      - transformers
+      - datasets
+      - numpy
+      - pandas
+      - tqdm
+      - scikit-learn  
+      - llama-cpp-python
