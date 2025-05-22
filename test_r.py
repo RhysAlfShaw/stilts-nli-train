@@ -58,3 +58,7 @@ for _ in range(max_new_tokens):
         print(next_token, end="", flush=True)
 
 print()
+
+# rewrite thiis is llama-cpp-python
+
+# from llama_cpp import Llama

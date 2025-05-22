@@ -4,8 +4,7 @@ channels:
 dependencies:
   - python=3.10
   - pip
-  - numpy
+  - numpy 
   - scipy
   - pip:
       - wheel
-     
