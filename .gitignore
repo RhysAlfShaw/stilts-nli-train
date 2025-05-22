@@ -180,3 +180,4 @@ nohup.out
 stilts-llm-finetuned-lora/
 stilts-llm-finetuned-distilgpt2/
 *.o
+*.gguf
