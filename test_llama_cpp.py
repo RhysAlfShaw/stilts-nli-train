@@ -1,16 +1,22 @@
 from llama_cpp import Llama
 from transformers import AutoTokenizer
 import time
+import os
 
+# Limit OpenMP threads to 2
+os.environ["OMP_NUM_THREADS"] = "2"
 # Path to your GGUF model (e.g., "models/mistral-7b-instruct-v0.1.Q4_K_M.gguf")
 MODEL_PATH = "stiltsdistil.gguf"
 
-# Load the model
+# Load the model.
+num_threads = 5  # Adjust based on your CPU
+
 llm = Llama(
     model_path=MODEL_PATH,
-    n_threads=1,  # Adjust based on your CPU
-    # n_batch=32, # Reasonable batch size
+    n_threads=num_threads,  # Adjust based on your CPU
+    n_batch=32,  # Reasonable batch size
     verbose=True,
+    n_threads_batch=num_threads,
 )
 tokenizer = AutoTokenizer.from_pretrained("stilts-llm-finetuned-distilgpt2/final_model")
 
@@ -23,7 +29,6 @@ chat = [
     {"role": "user", "content": prompt},
 ]
 
-
 # Apply chat template
 formatted = tokenizer.apply_chat_template(
     chat, chat_template=template_distilgpt, tokenize=False
@@ -35,12 +40,10 @@ print("Formatted chat:", formatted)
 t0 = time.time()
 # Generate the response
 response = ""
-for chunk in llm.create_chat_completion(
-    messages=chat, max_tokens=256, stop=["<|eot_id|>"], stream=True
+for chunk in llm.create_completion(
+    prompt=formatted, max_tokens=250, stream=True, stop=["```<|eot_id|>"]
 ):
-    delta = chunk["choices"][0]["delta"].get("content", "")
-    print(delta, end="", flush=True)
-    response += delta
+    print(chunk["choices"][0]["text"], end="", flush=True)
 print()  # for newline after streaming output
 
 t1 = time.time()
