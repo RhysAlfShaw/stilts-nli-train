@@ -4,7 +4,6 @@ import time
 import os
 
 # Limit OpenMP threads to 2
-os.environ["OMP_NUM_THREADS"] = "2"
 # Path to your GGUF model (e.g., "models/mistral-7b-instruct-v0.1.Q4_K_M.gguf")
 MODEL_PATH = "stiltsdistil.gguf"
 

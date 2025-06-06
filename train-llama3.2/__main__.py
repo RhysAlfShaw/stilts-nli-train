@@ -12,7 +12,7 @@ from transformers import (
 
 
 # Configuration
-MODEL_NAME = "meta-llama/Llama-3.2-1B"
+MODEL_NAME = "meta-llama/Llama-3.2-1B-Instruct"
 OUTPUT_DIR = "./stilts-llm-finetuned"
 TRAIN_FILE = "training_data.json"
 
@@ -55,10 +55,10 @@ model = AutoModelForCausalLM.from_pretrained(MODEL_NAME, device_map="auto")
 
 # Add special tokens for instruction formatting
 
-special_tokens_dict = {
-    "additional_special_tokens": ["### Instruction:", "### Response:"]
-}
-tokenizer.add_special_tokens(special_tokens_dict)
+# special_tokens_dict = {
+#     "additional_special_tokens": ["### Instruction:", "### Response:"]
+# }
+# tokenizer.add_special_tokens(special_tokens_dict)
 model.resize_token_embeddings(len(tokenizer))
 
 # Load and prepare the dataset

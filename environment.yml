@@ -23,4 +23,4 @@ dependencies:
       - pandas
       - tqdm
       - scikit-learn  
-      - llama-cpp-python
+      # - llama-cpp-python

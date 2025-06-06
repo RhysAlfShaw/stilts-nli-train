@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+# taken from llama.cpp
+# example: python hf_to_gguf.py --outtype auto --outdir ./gguf/ --model_dir ./models/llama-2-7b-chat-hf
+# python hf_to_gguf.py stilts-llm-finetuned/final_model --outfile llama3.2-1b-stilts.gguf
 
 from __future__ import annotations
-
 import ast
 import logging
 import argparse
