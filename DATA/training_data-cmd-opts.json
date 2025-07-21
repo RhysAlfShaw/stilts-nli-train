@@ -1,0 +1,42 @@
+[
+  {
+    "prompt": "How do I add a new column in STILTS using the cmd argument?",
+    "response": "The 'addcol' command is used to add a new column to a table. You need to provide the new column's name and an expression to calculate its values, for example: cmd='addcol new_col_name \"expression\"'"
+  },
+  {
+    "prompt": "What is the command to keep only a specific set of columns?",
+    "response": "The 'keepcols' command allows you to specify a list of columns to retain in the output table, discarding all others. The syntax is cmd='keepcols \"col1 col2 col3\"'."
+  },
+  {
+    "prompt": "Tell me about the 'select' filter.",
+    "response": "The 'select' command filters the rows of a table, keeping only those for which a given expression evaluates to true. For instance, cmd='select \"MAG_G < 18.0\"' would keep only rows with a G magnitude brighter than 18."
+  },
+  {
+    "prompt": "How can I change the metadata of a column, like its name or units?",
+    "response": "The 'colmeta' command is used to modify the metadata of a column. You can change its name, UCD, units, or description. For example: cmd='colmeta -name old_name new_name'."
+  },
+  {
+    "prompt": "What does the 'sort' command do?",
+    "response": "The 'sort' command sorts the rows of the table based on the values in one or more specified columns. By default, it sorts in ascending order. Use 'sort -down' for descending order."
+  },
+  {
+    "prompt": "How do I get rid of columns I don't need?",
+    "response": "The 'delcols' command is used to remove one or more specified columns from a table. The usage is cmd='delcols \"col_to_delete1 col_to_delete2\"'."
+  },
+  {
+    "prompt": "Explain the 'replacecol' command.",
+    "response": "The 'replacecol' command replaces the values in an existing column with new values calculated from a given expression. This is useful for data type conversions or recalculating a value in place, like cmd='replacecol flux_jy \"flux_mJy / 1000\"'."
+  },
+  {
+    "prompt": "What is the 'head' filter for?",
+    "response": "The 'head' command selects only the first N rows of a table, similar to the Unix head command. For example, cmd='head 100' would keep only the first 100 rows."
+  },
+  {
+    "prompt": "How do I add a column with a unique row number?",
+    "response": "The 'seqcol' command adds a new column containing a sequence of integers, which is useful for numbering rows. The syntax is cmd='seqcol name_of_row_number_col'."
+  },
+  {
+    "prompt": "Tell me about the 'every' filter.",
+    "response": "The 'every' command is a filter that selects rows at a regular interval. For example, cmd='every 10' will keep the 1st, 11th, 21st, etc., rows, effectively sampling 10% of the table."
+  }
+]

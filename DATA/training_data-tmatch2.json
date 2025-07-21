@@ -1,0 +1,42 @@
+[
+  {
+    "prompt": "How do I perform a simple sky match between 'input1.fits' and 'input2.fits' with a 2 arcsecond radius?",
+    "response": "stilts tmatch2 in1=input1.fits in2=input2.fits out=matched.fits matcher=sky values1='RA DEC' values2='RA DEC' params=2"
+  },
+  {
+    "prompt": "I need to match 'surveyA.fits' and 'surveyB.fits'. The coordinate columns are 'ra_2000' and 'dec_2000' in the first table and 'RA_J2000', 'DEC_J2000' in the second. Use a 0.5 arcsec tolerance.",
+    "response": "stilts tmatch2 in1=surveyA.fits in2=surveyB.fits out=output.fits matcher=sky values1='ra_2000 dec_2000' values2='RA_J2000 DEC_J2000' params=0.5"
+  },
+  {
+    "prompt": "What's the command to match 'table1.csv' and 'table2.fits' based on an exact match of the 'ID' column?",
+    "response": "stilts tmatch2 in1=table1.csv in2=table2.fits out=id_match.fits matcher=exact values1='ID' values2='ID'"
+  },
+  {
+    "prompt": "I want to do a sky match between two catalogs but keep all the rows from the first catalog, 'primary_cat.fits', even if there's no match.",
+    "response": "stilts tmatch2 in1=primary_cat.fits in2=secondary_cat.fits out=left_join.fits matcher=sky values1='RA DEC' values2='RA DEC' params=1.5 join=1not2"
+  },
+  {
+    "prompt": "How do I find only the single best match in 'input2.fits' for each source in 'input1.fits' within a 5 arcsecond radius?",
+    "response": "stilts tmatch2 in1=input1.fits in2=input2.fits out=best_matches.fits matcher=sky values1='RA DEC' values2='RA DEC' params=5 find=best"
+  },
+  {
+    "prompt": "Perform a sky match and add a column to the output table called 'separation' showing the distance between the matched objects.",
+    "response": "stilts tmatch2 in1=input1.fits in2=input2.fits out=matched_sep.fits matcher=sky values1='RA DEC' values2='RA DEC' params=1 ocmd='addcol separation Separation'"
+  },
+  {
+    "prompt": "I need to match two tables on their 'phot_g_mean_mag' column, allowing for a difference of up to 0.01.",
+    "response": "stilts tmatch2 in1=input1.fits in2=input2.fits out=mag_match.fits matcher=1d values1='phot_g_mean_mag' values2='phot_g_mean_mag' params=0.01"
+  },
+  {
+    "prompt": "Match 'a.fits' and 'b.fits' on sky position and then, in the output, only keep the ID from the first table ('ID_A') and the magnitude from the second ('MAG_B').",
+    "response": "stilts tmatch2 in1=a.fits in2=b.fits out=subset_cols.fits matcher=sky values1='RA DEC' values2='RA DEC' params=1 ocmd='keepcols \"ID_A MAG_B\"'"
+  },
+  {
+    "prompt": "How can I find all the objects in 'input1.fits' that do NOT have a match in 'input2.fits' within 3 arcseconds?",
+    "response": "stilts tmatch2 in1=input1.fits in2=input2.fits out=unmatched.fits matcher=sky values1='RA DEC' values2='RA DEC' params=3 find=best join=1not2"
+  },
+  {
+    "prompt": "I want to match two tables, but the coordinates in 'input1.fits' are in radians. How do I specify that?",
+    "response": "stilts tmatch2 in1=input1.fits icmd1='colmeta -units RA rad; colmeta -units DEC rad' in2=input2.fits out=matched.fits matcher=sky values1='RA DEC' values2='RA DEC' params=1"
+  }
+]

@@ -32,9 +32,8 @@ def create_example_fits_catalogue(filename="example.fits", num_rows=100):
     data["SIZE_MIN"] = size_min
     data["POS_ANGLE"] = pa
 
-    # Write the table to a FITS file
-    data.write(filename, format="fits", overwrite=True)
-    print(f"Created example FITS catalogue: {filename} with {num_rows} rows.")
+    # save as FITS file
+    fits.BinTableHDU(data).writeto(filename, overwrite=True)
 
 
 if __name__ == "__main__":
@@ -43,7 +42,9 @@ if __name__ == "__main__":
     os.makedirs(output_dir, exist_ok=True)
 
     # Create example FITS catalogue
-    create_example_fits_catalogue(os.path.join(output_dir, "input.fits"), num_rows=100)
+    create_example_fits_catalogue(
+        os.path.join(output_dir, "input_2.fits"), num_rows=100
+    )
 
     print("Example FITS catalogue created successfully.")
     # You can add more functions to create other catalogues as needed.

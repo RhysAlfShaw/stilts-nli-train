@@ -1,0 +1,38 @@
+[
+  {
+    "prompt": "How do I convert my file 'data.fits' into a CSV file?",
+    "response": "stilts tcopy in=data.fits out=data.csv"
+  },
+  {
+    "prompt": "I have 'my_table.csv'. What's the command to change it to 'my_table.fits'?",
+    "response": "stilts tcopy in=my_table.csv out=my_table.fits"
+  },
+  {
+    "prompt": "Can you show me how to convert 'input.fits' to the VOTable format, saving it as 'output.vot'?",
+    "response": "stilts tcopy in=input.fits out=output.vot"
+  },
+  {
+    "prompt": "I have a file named 'results.vot'. How do I convert it to a comma-separated value file named 'results.csv'?",
+    "response": "stilts tcopy in=results.vot out=results.csv"
+  },
+  {
+    "prompt": "I need to convert 'final_catalog.fits' to a plain text file named 'final_catalog.txt'.",
+    "response": "stilts tcopy in=final_catalog.fits out=final_catalog.txt ofmt=ascii"
+  },
+  {
+    "prompt": "I have a large FITS table, 'full_survey.fits'. How do I convert the whole thing to a CSV file named 'full_survey.csv'?",
+    "response": "stilts tcopy in=full_survey.fits out=full_survey.csv"
+  },
+  {
+    "prompt": "My directory 'raw_csv/' contains many CSV files. How can I convert all of them to FITS format and put them in a 'fits_output/' directory?",
+    "response": "mkdir -p fits_output; for file in raw_csv/*.csv; do stilts tcopy in=$file out=fits_output/$(basename $file .csv).fits; done"
+  },
+  {
+    "prompt": "How can I convert all the FITS files in my current folder to VOTable format, placing them in a 'votables' subdirectory?",
+    "response": "mkdir -p votables; for f in *.fits; do stilts tcopy in=$f out=votables/$(basename $f .fits).vot; done"
+  },
+  {
+    "prompt": "My directory 'ascii_data' contains many space-separated .dat files. I need to convert all of them to FITS format and put the new files in a directory called 'fits_converted'.",
+    "response": "mkdir -p fits_converted; for f in ascii_data/*.dat; do stilts tcopy in=$f ifmt=ascii out=fits_converted/$(basename $f .dat).fits; done"
+  }
+]

@@ -1,0 +1,602 @@
+[
+    {
+        "prompt": "This command uses the Gaia DR3 DataLink service\n    to attach sampled XP spectrum data to an input table containing\n    other information about Gaia DR3 sources.\n    \n    The input file dr3-sources.vot must contain the column\n    source_id giving the Gaia DR3 source ID\n    corresponding to that row.\n    The atable expression is a URL built using that\n    source_id column and a base URL that can be obtained\n    by examining the DR3 catalogue\n    documentation,\n    or by examining the DataLink service descriptor returned from a\n    source catalogue query.\n    \n    The output file sources-with-xp.fits\n    is a FITS table with the same content as the input\n    but with three added array-valued columns,\n    wavelength, flux and flux_error\n    as supplied by tables downloaded from the URL in the atable\n    parameter.\n    For each row of the output table, the lengths of those three arrays\n    will be the same, namely the row count of the table that supplied them.\n    These matched arrays can be manipulated within STILTS,\n    for instance using the\n    Arrays functions\n    or to produce plots using the\n    lines or\n    arrayquantile plot layer types.\n    \n    The icmd=progress filter is a useful convenience to see\n    how the command is progressing,\n    since the operation requires multiple downloads and so may be\n    time-consuming.",
+        "response": "stilts arrayjoin in=dr3-sources.vot\n                 atable='\"https://gea.esac.esa.int/data-server/data?RETRIEVAL_TYPE=XP_SAMPLED&RELEASE=Gaia+DR3&ID=\"+source_id'\n                 icmd=progress\n                 out=sources-with-xp.fits"
+    },
+    {
+        "prompt": "Similar to the previous example, but with a couple of variations.\n    \n    The keepall=false parameter means that only those\n    rows for which array data exists will be retained in the output table,\n    rather than including blank entries in the array columns in cases\n    for which the remote table couldn't be loaded.\n    \n    The ocmd='constcol -acceptnull' filter looks for\n    columns in the output that have the same value (or null) in every row.\n    Since Gaia DR3 sampled spectra are all sampled onto the same grid,\n    in this case the wavelength column will have the same\n    array value for every row, which is harmless but makes the output table\n    larger than required.\n    The constcol filter\n    spots this and removes the wavelength column,\n    replacing it with a parameter having the same name,\n    which can therefore be referred to using the\n    expression language\n    as param$wavelength.",
+        "response": "stilts arrayjoin in=dr3-sources.vot\n                 atable='\"https://gea.esac.esa.int/data-server/data?RETRIEVAL_TYPE=XP_SAMPLED&RELEASE=Gaia+DR3&ID=\"+source_id'\n                 icmd=progress\n                 keepall=false\n                 ocmd='constcol -acceptnull'\n                 out=sources-with-xp.fits"
+    },
+    {
+        "prompt": "Similar to the first example, but this time acquiring\n    EPOCH_PHOTOMETRY rather than XP_SAMPLED data,\n    and performing some additional\n    processing of the main and array input tables.\n    The value of the designation field is wrapped in the\n    urlEncode\n    function when preparing the URL;\n    this is necessary since that field may contain spaces which\n    are not legal URL characters.\n    Only those input rows are used for which the boolean\n    has_epoch_photometry column is True;\n    for the linked array tables the rows are limited to those with\n    the BAND column having the value \"G\";\n    and only the array columns\n    time, mag and flux\n    are retained for inclusion into the output.",
+        "response": "stilts arrayjoin in=dl_dr3.fits\n                 icmd='select has_epoch_photometry'\n                 atable='\"https://gea.esac.esa.int/data-server/data?RETRIEVAL_TYPE=EPOCH_PHOTOMETRY&ID=\"+urlEncode(designation)'\n                 afmt=votable\n                 acmd='select equals(BAND,\\\"G\\\")'\n                 acmd='keepcols \"time mag flux\"'\n                 out=with-epoch-photom.fits"
+    },
+    {
+        "prompt": "Acquires Gaia DR3 epoch photometry from a different service, ARI-Gaia.\n    In this case the epoch photometry tables have parameters\n    characterising the variability;\n    the aparams='p1 pf' parameter takes two of these and\n    adds them as scalar-valued columns in the output table.\n    Since the pf parameter gives the variability period,\n    a period-folded variability graph can then be plotted using\n    an X coordinate like arrayFunc(\"x%1\",divide(time,pf)).",
+        "response": "stilts arrayjoin in=rrlyrae.vot\n                 atable='\"https://gaia.ari.uni-heidelberg.de/timeseries/gaiadr3?sourceid=\"+source_id'\n                 acmd='keepcols \"time mag flux flux_error\"'\n                 aparams='p1 pf'\n                 icmd=progress\n                 out=rrlyrae-timeseries.vot"
+    },
+    {
+        "prompt": "Takes an ivoa.ObsCore-like table\n       and adds array-valued columns giving the content of spectrum files\n       linked from the access_url field.\n       Only those rows with a dataproduct_type\n       of \"spectrum\" are included.\n       Note all the access_urls in the selected rows must point to\n       spectrum files of a similar form (i.e. having the same columns),\n       otherwise the command will fail.",
+        "response": "stilts arrayjoin in=obscore-lotssdr2.vot\n                 atable=access_url\n                 icmd=progress\n                 icmd='select equals(dataproduct_type,\\\"spectrum\\\")'\n                 out=with-spectra.vot"
+    },
+    {
+        "prompt": "Calculates one plus two.  Writes \"3\" to standard output.",
+        "response": "stilts calc 1+2"
+    },
+    {
+        "prompt": "Works out the Modified Julian Day corresponding to Christmas 2005.\n    The output is \"53729.0\".",
+        "response": "stilts calc 'isoToMjd(\"2005-12-25T00:00:00\")'"
+    },
+    {
+        "prompt": "In this case the expression is evaluated in the context of the\n    supplied table, which means that the table's parameters can be\n    referenced in the expression.  This example just outputs the\n    value of the table parameter named \"author\".",
+        "response": "stilts calc 'param$author' table=catalogue.xml"
+    },
+    {
+        "prompt": "Matches a local catalogue dr5qso.fits against the\n    VizieR table II/246/out (the 2MASS Point Source Catalogue).\n    The search radius is 1 arcsecond, and all 2MASS sources within the\n    radius of each input source are returned.",
+        "response": "stilts cdsskymatch cdstable=II/246/out find=all\n                   in=dr5qso.fits ra=RA dec=DEC radius=1 out=qso_2mass.fits"
+    },
+    {
+        "prompt": "This finds the closest object in the SIMBAD database within 8.5 arcsec\n    for each row of an input ASCII table.\n    Uploads are done in blocks of 1,000 rows at a time, and progress\n    is displayed on the console.  When the match is complete, the\n    result is sent directly to a running instance of TOPCAT.",
+        "response": "stilts cdsskymatch cdstable=simbad find=best\n                   in=sources.txt ifmt=ascii ra=RAJ2000 dec=DEJ2000 radius=8.5\n                   blocksize=1000 icmd=progress omode=topcat"
+    },
+    {
+        "prompt": "This locates XMM-Newton point-like sources identified as being\n    of spectral type G.\n    It uses the\n    3XMM-DR4\n    XMM-Newton serendipitous source catalogue as input.\n    The icmd filter selects the objects\n    in that catalogue with well-defined point-like positions.\n    It then matches them with Skiff's MK spectral classification\n    catalogue (B/mk/mktypes in VizieR) and finally filters the\n    result to include only those sources identified as being of\n    spectral type G.  Thanks to Ada Nebot (CDS) for this example.",
+        "response": "stilts cdsskymatch in=3XMM_DR4cat_slim_v1.0.fits\n                   icmd='select \"SC_POSERR < 1 && SC_EXTENT == 0\"'\n                   cdstable=B/mk/mktypes\n                   ra=SC_RA dec=SC_DEC radius=1.5\n                   find=best suffixin=_XMM suffixremote=_MK fixcols=all\n                   ocmd='select startsWith(spType_MK,\\\"G\\\")'\n                   out=xmm_gtype.fits"
+    },
+    {
+        "prompt": "Queries the ARI-Gaia cone search service for\n    sources within 0.8 of the given sky position,\n    and writes the result to a file.",
+        "response": "stilts cone serviceurl=http://gaia.ari.uni-heidelberg.de/cone/search\n            lon=56.75 lat=24.12 radius=0.8\n            out=pleiades.fits"
+    },
+    {
+        "prompt": "This does the same basic query as the previous example,\n    but post-processes the result so that a limited amount of data\n    (source identifier, position and magnitude) for only\n    the ten brightest sources is written to the console.\n    Since most of the columns are discarded, we specify\n    verb=1 which indicates to the service that only\n    a minimal column set is required in the query result.",
+        "response": "stilts cone serviceurl=http://gaia.ari.uni-heidelberg.de/cone/search\n            lon=56.75 lat=24.12 radius=0.8\n            verb=1\n            ocmd='sorthead 10 phot_g_mean_mag'\n            ocmd='keepcols \"source_id ra dec phot_g_mean_mag\"'"
+    },
+    {
+        "prompt": "Queries the ESO Simple Spectral Access service for spectra\n    within one degree of the northern galactic pole.\n    The omode=count parameter means that it just counts\n    the rows and columns and prints the numbers to the console.\n    The -verbose flag means that (amongst other things)\n    the full URL that the command used to make the query\n    will be logged to the console.",
+        "response": "stilts -verbose\n       cone servicetype=ssa serviceurl='http://archive.eso.org/ssap'\n            lon=0 lat=90 radius=1.0 skysys=galactic\n            omode=count"
+    },
+    {
+        "prompt": "This queries the HST cone search service from Space Telescope for\n    records within .05 degrees of each Messier object contained in a \n    local VOTable messier.xml.\n    The sky positions in the input catalogue are guessed from the available\n    table metadata.\n    The result is written to a new VOTable, matches.xml.\n    Since the servicetype parameter is not given, the \n    default (cone search) service type is assumed.",
+        "response": "stilts coneskymatch serviceurl=http://archive.stsci.edu/hst/search.php \\\n                    in=messier.xml sr=0.05 out=matches.xml"
+    },
+    {
+        "prompt": "This is similar to the previous example, but \n    instead of querying an HST cone search server for catalogue objects\n    near the input table positions, it queries a 2MASS Simple Image Access\n    (SIA) server for images.  \n    It also explicitly names the columns holding the J2000 positions of\n    reach record in the input catalogue as RA and DEC.\n    The search radius parameter (sr) is not set here;\n    for SIA queries the default search radius is zero, which has the\n    special meaning of including any image which covers the requested position.\n    Setting dataformat=image/fits (which is the default) \n    requests only records describing FITS-format images to be returned;\n    setting it to an empty value might return other formats such as JPEG too.",
+        "response": "stilts coneskymatch\n       servicetype=sia \\\n       serviceurl=http://irsa.ipac.caltech.edu/cgi-bin/2MASS/IM/nph-im_sia?type=ql&ds=asky \\\n       in=messier.xml ra=RA dec=DEC \\\n       dataformat=image/fits \\\n       out=fitsimages.xml"
+    },
+    {
+        "prompt": "In this example some pre-processing of the input catalogue and\n    post-processing of the output catalogue is performed as well as the\n    multiple cone search itself.\n    \n    The input catalogue, which is the 8th TABLE element in a VOTable file,\n    contains sky positions in sexagesimal FK4 (B1950) coordinates.  \n    The icmd=addskycoords... parameter specifies a filter which\n    will add new columns in FK5 (J2000) degrees, which are what the \n    coneskymatch command requires.\n    The icmd=progress parameter specifies a filter which\n    will write progress information to the terminal so you can see how\n    the queries are progressing.\n    \n    The NOMAD service specified by the serviceurl parameter\n    used here happens to return results with the RA/DEC columns represented\n    in a rather eccentric format, namely 3-element floating point arrays \n    representing (hours,minutes,seconds)/(degrees,minutes,seconds).\n    The two ocmd=replacecol... filters replace the values of\n    these columns with the scalar equivalents in degrees.\n    Finally, the omode=topcat parameter causes the result\n    table to be loaded directly into TOPCAT (if it is available).",
+        "response": "stilts coneskymatch \\\n       serviceurl='http://www.nofs.navy.mil/cgi-bin/vo_cone.cgi?CAT=NOMAD' \\\n       in=vizier.xml#7 \\\n       icmd='addskycoords -inunit sex fk4 fk5 RAB1950 DEB1950 RAJ2000 DEJ2000' \\\n       icmd='progress'\n       ra=RAJ2000 dec=DEJ2000 sr=0.01 \\\n       ocmd='replacecol -units deg RA hmsToDegrees(RA[0],RA[1],RA[2])' \\\n       ocmd='replacecol -units deg DEC dmsToDegrees(DEC[0],DEC[1],DEC[2])' \\\n       omode=topcat"
+    },
+    {
+        "prompt": "Here the input is a plain text table with four unnamed columns, \n    giving in order the right ascension, declination,\n    positional error and name of target objects.\n    The command carries out a cone search to the named service for\n    each one.  Note in this case the search radius (sr parameter)\n    is taken from the table and so varies for each query.\n    The copycols parameter has the value \n    '$4',\n    which means that the value of the fourth column of the input table \n    will be prepended to each row of the output table for \n    which it is responsible.\n    Output is to a FITS table.",
+        "response": "stilts coneskymatch serviceurl='http://archive.stsci.edu/iue/search.php?' \\\n                    in=queries.txt ifmt=ascii \\\n                    ra='$1' dec='$2' \\\n                    sr='$3' copycols='$4' \\\n                    out=found.fits"
+    },
+    {
+        "prompt": "Perfoms validation on a VOTable file that has been downloaded\n    from a DataLink links service, and reports the results to standard\n    output.",
+        "response": "stilts datalinklint votable=links-response.vot"
+    },
+    {
+        "prompt": "Validates a links response directly from the server,\n    testing the HTTP transport requirements as well as the content.\n    Output lines are truncated to 80 characters for convenience,\n    and only the E(rror) and W(arning) lines are displayed.\n    \n    The output of this invocation might look like:\n    \nThis is the STILTS DataLink validator, 3.1-3\nE-DLCT-1 Incorrect Content-Type text/xml for DataLink service http://example....\nE-RUCD-1 Wrong UCD for column service_def; meta.code != meta.ref\nE-SMCO-1 Unknown predicate 'alternative' from core DataLink vocabulary at row 1\nE-SMCO-2 Unknown predicate 'alternative' from core DataLink vocabulary at row 2\n\nTotals: Errors: 4; Warnings: 0\n    \n    To output in JSON format instead, you could specify\n    format=json.",
+        "response": "stilts datalinklint votable=http://example.org/links?ID=2112\n                    truncate=80 report=EW"
+    },
+    {
+        "prompt": "Generates a FITS MOC file\n    from the alpha and delta columns\n    of a table interpreted as points.\n    The coords parameter must be a 2-element array\n    for shape=point, and this is constructed\n    from the table's alpha and delta columns\n    using the array function\n    of the expression language.\n    Since no order parameter is supplied,\n    the default HEALPix order is used.\n    This command does the same job as the\n    pixfoot command with parameters\n    ra=alpha dec=delta.",
+        "response": "stilts mocshape in=survey.vot coords='array(alpha,delta)' shape=point\n                mocfmt=fits out=sfoot.fits"
+    },
+    {
+        "prompt": "Generates an order 4 MOC describing the union of all the regions\n    described in the s_region column of an ObsCore table.\n    It is written to standard output in ASCII format.\n    Since the shape parameter is not specified,\n    the command will examine the column metadata for the\n    s_region column to determine the shape that it\n    specifies; for instance xtype values of\n    \"point\", \"circle\",\n    \"polygon\", \"stc-s\" or\n    \"moc\" will be understood.\n    If it can't determine from the metadata what kind of shape information\n    is held in the s_region column an error will result,\n    and you can run it with the shape parameter set\n    according to the actual shape type.",
+        "response": "stilts mocshape in=obscore.vot coords=s_region order=4 mocfmt=ascii"
+    },
+    {
+        "prompt": "Runs all checks on the named parquet file.\n    Reports will be written to standard output.",
+        "response": "stilts parqlint qat2s.parquet"
+    },
+    {
+        "prompt": "Runs checks on a parquet file expected to comply to the VOParquet\n    conventions, but only reporting Errors, not Warning or Info reports,\n    and ignoring reports about invalid ucd or\n    unit attributes in the VOTable.\n    The voparquet=true makes lack of a data-less VOTable\n    show up as an Error; if it was not specified a non-VOParquet file\n    would generate no output here.",
+        "response": "stilts parqlint in=1909180027-all.parquet report=E voparquet=true\n       ucd=false unit=false"
+    },
+    {
+        "prompt": "Runs checks on a parquet file but with the data-less VOTable\n    specified externally.\n    By doing this you can iteratively play around with the VOTable\n    annotations until you're happy with the validation output,\n    rather than having to keep generating a new VOParquet file\n    every time you want to make a test.\n    Note that the VOTable can be extracted\n    from an existing VOParquet file if required\n    using the parqlook command.",
+        "response": "stilts parqlint in=op12.parquet votable=op12.vot"
+    },
+    {
+        "prompt": "Displays all available information about the named parquet file.",
+        "response": "stilts parqlook ztf_000253_zg_c01_q1_dr6.parquet"
+    },
+    {
+        "prompt": "Writes the data-less VOTable document from the named VOParquet file\n    to standard output.\n    If the file has no such VOTable (does not follow the VOParquet convention)\n    then nothing is output.",
+        "response": "stilts parqlook items=votable qat2s.parquet"
+    },
+    {
+        "prompt": "Generates an order-8 FITS MOC file from the point positions of\n    rows in the given VOTable.  The columns representing sky position\n    are determined automatically (if possible)\n    by examining the metadata in the input table.",
+        "response": "stilts pixfoot in=survey.vot order=8 mocfmt=fits out=sfoot.fits"
+    },
+    {
+        "prompt": "Generates an order-13 FITS MOC file from positions in a table\n    held in a database.  The positions in the original table are in\n    galactic coordinates, so have to be converted to equatorial (ICRS) first.  \n    The map is formed in this case by surrounding each point by a\n    disc of 20 arcsec.\n    Note that JDBC database access will have to be set up as per\n     for this command to work.",
+        "response": "stilts pixfoot in='jdbc:mysql://localhost/astro1#SELECT * FROM first1'\n               icmd='addskycoords galactic icrs GLON GLAT ALPHA DELTA'\n               ra=ALPHA dec=DELTA radius=20./3600.\n               order=13 mocfmt=fits out=first.moc"
+    },
+    {
+        "prompt": "Samples from a HEALPix file containing WMAP data are added to an\n    input file szdata.fits, giving an output file\n    szdata_cmb.fits which is the same but with an additional\n    column TEMPERATURE.\n    The sampling is done using the default statistical mode point,\n    which just takes a point sample at the input position.\n    The HEALPix file must have its pixels ordered using galactic\n    coordinates, since that is the coordinate system available from\n    the input table.\n    \n    \n    The pixdata file used here can be found (at time of writing) at\n     (24 Mbyte).",
+        "response": "stilts pixsample in=szdata.fits pixdata=wmap_ilc_7yr_v4.fits\n                 lat=GAL_LAT lon=GAL_LON pcmd='keepcols TEMPERATURE'\n                 out=szdata_cmb.fits"
+    },
+    {
+        "prompt": "Samples data from a HEALPix table, averaging over a sampling radius\n    of 5 arcmin.  The coordinates in the input table are only available\n    as ICRS (RA,Dec) coordinates, and the arrangement of the HEALPix pixels\n    in the pixel data file uses galactic coordinates\n    (you can only determine this by looking at the FITS headers or\n    documentation of that file), so it is necessary to use the\n    insys and pixsys parameters for conversion.\n    \n    \n    The pixdata file used here can be found (at time of writing) at\n     (25 Mbyte).",
+        "response": "stilts pixsample in=messier.xml pixdata=lambda_sfd_ebv.fits\n                 stat=mean radius=5./60.\n                 insys=icrs pixsys=galactic lon=RA2000 lat=DEC2000"
+    },
+    {
+        "prompt": "This is a colour-magnitude diagram where the input table\n    has columns named RMAG and BMAG.\n    The Y axis is inverted so that the magnitude values increase\n    downwards not up.\n    The plot is displayed in a window on the screen, and may be\n    panned and zoomed with the mouse.",
+        "response": "stilts plot2plane yflip=true layer_1=mark in_1=cat.fits x_1=BMAG-RMAG y_1=BMAG"
+    },
+    {
+        "prompt": "Plots a histogram of parallaxes for Hipparcos data,\n    with a logarithmic X axis.  The axes are labelled explicitly,\n    with an empty string in the case of the Y axis.",
+        "response": "stilts plot2plane layer=histogram in=hip_main.fits x=plx xlog=true\n                  xlabel=Parallax ylabel="
+    },
+    {
+        "prompt": "Two layers are plotted, point markers representing position\n    (4 pixels radius, shaped like crosses)\n    and vectors representing velocity.\n    Both markers and vectors are coloured according to the direction\n    (arctan(vely/velx)) of the arrows,\n    so it's easy to see points moving in similar directions;\n    the \"hue\" colour map is good for this, since it's periodic,\n    so values of +Pi and -Pi have the same colour.\n    Since it's not very revealing in this case, display of the aux\n    axis colour ramp beside the plot has been turned off.\n    Since the X and Y coordinates and the colouring is common to both\n    layers, the relevant parameters can given without suffixes to avoid\n    having to repeat them.\n    Output is to a PDF file.",
+        "response": "stilts plot2plane xpix=600 ypix=500\n                  in=gavo_g2.fits x=X y=Y\n                  shading=aux aux='atan2(vely,velx)' auxmap=hue auxvisible=false\n                  layer_m=mark shape_m=cross size_m=4\n                  layer_v=xyvector xdelta_v=velx ydelta_v=vely scale_v=2\n                  out=velocities.pdf"
+    },
+    {
+        "prompt": "Plots a sine curve to the screen.  Initially the view is of one\n    period, but you can pan and zoom interactively to see any range.\n    The line is plotted in hot pink, four pixels wide, with a custom dash\n    pattern.\n    Since the function layer type has no\n    data coordinates, no input table is required.\n    The layer suffix here is the empty string; since there's only one\n    layer, it doesn't cause any problems.",
+        "response": "stilts plot2plane xmin=0 xmax=6.283 ymin=-1 ymax=1 xlabel=Time\n                  layer=function axis=horizontal xname=time fexpr='sin(time)'\n                  dash=3,2 thick=4 color=ee6aa7"
+    },
+    {
+        "prompt": "There are four layers: 1a, 1b and 1c use the same positional data\n    from the same input file, so the positional coordinates common to them\n    are given the suffix \"1\".\n    Layer \"2\" is unrelated, and has no input data, since it's just an\n    analytic function.\n    The legend is positioned to taste, and its content\n    is manipulated so that only datasets 1a and 1c are described,\n    and they are given custom names (the default would be their suffix names).",
+        "response": "stilts plot2plane ylog=true xflip=true xmin=-5.2 xmax=3.8 ymin=250 ymax=3.5e5\n           in1=6dfgs_E7.fits x1=bmag-rmag y1=vel\n           layer1a=mark color1a=cyan\n           layer1b=contour color1b=yellow smooth1b=9 scaling1b=log\n           layer1c=mark icmd1c='every 35;select star'\n                        shape1c=filled_triangle_down size1c=5 color1c=red\n                        shading1c=transparent opaque1c=3\n           layer2=function fexpr2='exp(x*2+12)' color2=black antialias2=true\n                           dash2=dash thick2=3\n           leglabel1a=Population leglabel1c=Sample legpos=.95,.95 legseq=1a,1c\n           fontsize=16 texttype=latex ylabel=\"v\\,/\\,km.s^{-1}\" xlabel=colour"
+    },
+    {
+        "prompt": "Plots the positions of all the Messier objects on the sky,\n    with text labels giving their object names.\n    This displays a sphere on the screen that you can rotate/zoom using\n    the mouse.",
+        "response": "stilts plot2sky in=messier.xml lon=RA lat=DEC\n                layer.pos=mark size.pos=4\n                layer.txt=label label.txt=Name color.txt=slategrey"
+    },
+    {
+        "prompt": "This just plots a celestial coordinate grid with no data.\n    Various options are tweaked to adjust the appearance of the grid.",
+        "response": "stilts plot2sky projection=aitoff\n                xpix=600 ypix=300\n                gridcolour=green labelcolour=black\n                fontsize=10 gridaa=true texttype=antialias\n                sex=true crowd=4"
+    },
+    {
+        "prompt": "Makes an all-sky plot using a Hammer-Aitoff projection into\n    galactic coordinates of a large dataset.\n    Density shading\n    means that the colour at each point is dependent on\n    how many points are plotted; the density colour map has been fine-tuned\n    here to get a specific visual effect.\n    The sky coordinates in the input file (alpha and delta) are equatorial,\n    but these are transformed to galactic coordinates for plotting.\n    The progress filter applied to the input table\n    displays a progress indicator on the console to see how far it's got.\n    The result is written to a PDF file.\n    \n    This command was used to plot the GUMS-10 MW dataset, a simulation\n    of the milky way stars seen by the Gaia satellite;\n    The 2.1 billion row plot took about 45 minutes.",
+        "response": "stilts plot2sky xpix=1000 ypix=500 fontsize=18 crowd=2\n                projection=aitoff viewsys=galactic\n                layer1=mark size1=0\n                shading1=density densemap1=gnuplot2 densefunc1=log\n                densesub1=0.5,.95 denseclip1=0.02,1\n                in1=gums_mw_all.fits\n                lon1=alpha lat1=delta datasys1=equatorial \n                icmd1=progress out=mw.pdf"
+    },
+    {
+        "prompt": "Just displays a unit cube wireframe in a window.\n    You can rotate it with the mouse.",
+        "response": "stilts plot2cube"
+    },
+    {
+        "prompt": "Plots markers with x,y,z positions on the screen.\n    You can rotate, zoom and pan the cube on the window this produces.\n    Density shading is used, which means you can see the lines of sight\n    along which most objects fall, though single points are still visible.\n    Density shading is usually a good choice if there is just one dataset,\n    though it can get confusing with more than one.",
+        "response": "stilts plot2cube layer.1=mark in.1=sim.fits x.1=x y.1=y z.1=z\n                 shading.1=density densemap.1=pastel"
+    },
+    {
+        "prompt": "Plots points in three dimensions with little arrows representing\n    velocity as well as position markers; layer _m draws the\n    markers and layer _v draws the arrows.\n    Points and vectors are coloured according to the HALOID data value.\n    The positional coordinates (x, y, z) and the shading options are\n    common to both layers, so they can be specified without a prefix.",
+        "response": "stilts plot2cube in=gavo_g2.fits\n                 x=X y=Y z=Z\n                 shading=aux aux=HALOID opaque=2.5 auxmap=red-blue\n                 layer_m=mark shape_m=open_circle size_m=2\n                 layer_v=xyzvector xdelta_v=velX ydelta_v=velY zdelta_v=velZ"
+    },
+    {
+        "prompt": "Plots points with RA, Dec and parallax coordinates in 3D.\n    Density shading is used, which means you can see the lines of sight\n    along which most objects fall, though single points are still visible.\n    Density shading is usually a good choice if there is just one dataset,\n    though it can get confusing with more than one.",
+        "response": "stilts plot2sphere in=hip_main.fits lon=radeg lat=dedeg r=plx\n                   layer1=mark shading1=density densemap1=cyan-magenta"
+    },
+    {
+        "prompt": "The same as the previous example but with some more configuration\n    of the axes.  The data origin is placed at the centre of the visible cube\n    (this is the position around which the cube will rotate when\n    you drag the mouse), and the size of the cube sides in data coordinates\n    is set explicitly.",
+        "response": "stilts plot2sphere in=hip_main.fits lon=radeg lat=dedeg r=plx\n                   layer1=mark shading1=density densemap1=cyan-magenta\n                   cx=0 cy=0 cz=0 scale=38 texttype=antialias gridaa=true"
+    },
+    {
+        "prompt": "Plots a grid of scatter plots for a 3-d dataset.\n    This presents three plots: X vs. Y, X vs. Z, and Y vs. Z\n    in the lower triangle of the grid.",
+        "response": "stilts plot2corner in=:attractor:100000,rampe\n                   nvar=3 x1=x x2=y x3=z\n                   layer_m=mark"
+    },
+    {
+        "prompt": "Same as the previous example, but also presents histograms\n    (one each for X, Y and Z) along the diagonal.\n    Additionally, the matrixformat=full parameter\n    means that the full grid (with redundant plots also for\n    Y vs. X, Z vs. X, and Z vs. Y) are plotted above the diagonal.",
+        "response": "stilts plot2corner in=:attractor:100000,rampe\n                   nvar=3 x1=x x2=y x3=z\n                   matrixformat=full\n                   layer_m=mark layer_h=histogram"
+    },
+    {
+        "prompt": "In this example there are two separate input datasets\n    (different selections from the same input table)\n    and four quantities to plot.\n    One of the coordinates is restricted in range using the\n    x4min parameter.\n    As well as the mark and kde layers,\n    an additional contour layer (of the whole input table)\n    is overplotted on the scatter plot grid elements.",
+        "response": "stilts plot2corner in=rrlyrae.fits\n                   icmd_A='select best_classification==\\\"RRAB\\\"'\n                   icmd_C='select best_classification==\\\"RRC\\\"'\n                   color_A=red color_C=cyan\n                   nvar=4 x1=peak_to_peak_g x2=p1 x3=r21_g x4=phi21_g x4min=3\n                   layer_A_m=mark layer_C_m=mark\n                   layer_A_k=kde layer_C_k=kde smooth_A_k=-50 smooth_C_k=-50\n                   layer_f=contour color_f=light_grey smooth_f=10 nlevel_f=6\n                   leglabel_A=RRAB leglabel_C=RRC legseq=_A_m,_C_m legpos=1,1"
+    },
+    {
+        "prompt": "Three time series are plotted on the same axes as lines in different\n    colours.  In this case we trust the markup in the VOTable input\n    to describe the format of the epoch column.",
+        "response": "stilts plot2time xpix=1000 ypix=300\n                 in=ACE_data.vot t=epoch\n                 layer.r=line y.r=Br color.r=grey\n                 layer.t=line y.t=Bt color.t=cyan \n                 layer.n=line y.n=Bn color.n=pink"
+    },
+    {
+        "prompt": "The same data is plotted as in the previous example, but in this\n    case each line is drawn in a different panel (zone), stacked vertically.\n    The default colour is used for each line.\n    Each plot is given a different title; note the title\n    parameter suffixes refer to the zone identifiers not the layer identifiers.\n    The time coordinate in this case is supplied as a decimal year column\n    which does not have sufficient metadata to identify it as such,\n    so we specify the time format explicitly as decyear.",
+        "response": "stilts plot2time xpix=1000 ypix=1000\n                 in=ACE_data.vot t=fp_year ttype=decyear\n                 layer.r=line y.r=Br zone.r=ZR\n                 layer.t=line y.t=Bt zone.t=ZT\n                 layer.n=line y.n=Bn zone.n=ZN\n                 titleZR=\"Br\" titleZT=\"Bt\" titleZN=\"Bn\""
+    },
+    {
+        "prompt": "Plots a spectrogram from a CDF file.\n    The range along the horizontal axis is specified explicitly using\n    ISO-8601 date strings, but it is labelled in Modified Julian Date.",
+        "response": "stilts plot2time tmin=2007-06-07T02:40 tmax=2007-06-07T06:20 tformat=mjd\n                 in=STEREO_STA_L1_SEPT_20070607_V05.cdf t=epoch_ns\n                 ylabel=Channel\n                 layer_3=spectrogram spectrum_3=Spec_0_NS\n                 auxmap=accent auxfunc=log"
+    },
+    {
+        "prompt": "This is a 3-zone plot; zones A and B\n    each contains a spectrogram (layers _1 and _2),\n    and zone C contains two line plots\n    (layers _3 and _4).\n    The Y axis is set to logarithmic for zone C only.\n    The colour ramps are configured with aux* parameters;\n    the stretch function is set to sqrt for all zones,\n    and the colour map is set to different values for zones A and B.",
+        "response": "stilts plot2time in=STEREO_STA_L1_SEPT_20070607_V05.cdf t=epoch_ns\n                 layer_1=spectrogram spectrum_1=spec_0_ns zone_1=A\n                 layer_2=spectrogram spectrum_2=spec_0_e  zone_2=B\n                 layer_3=line y_3='mean(spec_0_ns)' color_3=plum    zone_3=C\n                 layer_4=line y_4='mean(spec_0_e)'  color_4=skyblue zone_4=C\n                 ylogC=true\n                 auxfunc=sqrt auxmapA=viridis auxmapB=magma"
+    },
+    {
+        "prompt": "Plots a colour-magnitude diagram.\nSince no omode or out value\nhas been specified, the plot is posted directly\nto the graphics display for inspection.\nBy adding the parameter\nout=xyplot.eps\nthe plot could be written to an\nEncapsulated Postscript file instead.\n\nThe generated plot is here.",
+        "response": "stilts plot2d in=cat.xml xdata=RMAG-BMAG ydata=BMAG"
+    },
+    {
+        "prompt": "Plots a colour-magnitude diagram with multiple\nsubsets.\nThe subsets are labelled\n\"1\" and \"2\"\nwith separate sets of parameters applying to each.\nThe selections for the sets are given by the\nsubset* parameters;\nset 1 is those rows with the SGFLAG column equal to 1 and\nset 2 is those rows with the SGFLAG column equal to 2.\nThe boundaries of the plot in data coordinates\nare set explicitly rather than being determined from\nthe data (this is faster)\nand the plot size in pixels is also set explicitly\nrather than taking the default values.\nOutput is to a PNG file.\n\nThe generated plot is here.",
+        "response": "stilts plot2d in=6dfgs_mini.xml xdata=RMAG-BMAG ydata=BMAG\n              subset1=SGFLAG==1 name1=galaxy colour1=blue   shape1=open_circle\n              subset2=SGFLAG==2 name2=star   colour2=e010f0 shape2=x size2=3\n              xlo=-1 xhi=4.5 ylo=10 yhi=20 xpix=500 ypix=250\n              out=xyplot2.png"
+    },
+    {
+        "prompt": "You can do quite complicated things.\n\nThe generated plot is here.",
+        "response": "stilts plot2d in1=iras_psc.fits cmd1='addskycoords fk5 galactic RA DEC GLON GLAT'\n              xdata1=GLON ydata1=GLAT\n              auxdata1=FNU_100 auxlog=true auxflip=true size1=0 transparency1=3\n              in2=messier.xml   cmd2='addskycoords fk5 galactic RA DEC GLON GLAT'\n              xdata2=GLON ydata2=GLAT\n              txtlabel2=RADIUS>16?(\"M\"+ID):\"\" cmd2='addcol SIZE sqrt(RADIUS/2)'\n              xerror2=SIZE yerror2=SIZE\n              subset2a=true hide2a=true colour2a=black errstyle2a=ellipse\n              subset2b=true hide2b=true colour2b=black errstyle2b=filled_ellipse\n                            transparency2b=6\n              xlabel='Galactic Longitude' ylabel='Galactic Latitude' title='The Sky'\n              legend=false grid=false fontsize=12 fontstyle=bold-italic\n              xlo=0 xhi=360 ylo=-90 yhi=+90 xpix=600 ypix=300\n              out=skyplot.png"
+    },
+    {
+        "prompt": "Plots a 3-d scatter plot of red magnitude vs.\nblue magnitude vs. velocity; the velocity is plotted\non a logarithmic scale.\nSince no omode or out value\nhas been specified, the plot is posted directly\nto the graphics display for inspection.\nBy adding the parameter\nout=xyplot.eps\nthe plot could be written to an\nEncapsulated Postscript file instead.\n\nThe generated plot is here.",
+        "response": "stilts plot3d in=cat.xml xdata=RMAG ydata=BMAG zdata=VEL zlog=true"
+    },
+    {
+        "prompt": "Plots the x, y, z positions of particles from a\nfile containing the result of a simulation run.\nHere an auxiliary axis is used to colour-code the\npoints according their velocity.\nThis is done by introducing a new vel\ncolumn to the table using the\naddcol\nfilter command, so that the vel column\ncan be used as the value for the auxdata\nparameter.\nAlternatively, the given expression for the velocity\ncould have been used directly as the value of the\nauxdata parameter.\n\nAdditionally, the phi and\ntheta parameters are given\nto adjust the orientation of the cube.\n\nThe generated plot is here.",
+        "response": "stilts plot3d in=sim1.fits xdata=x ydata=y zdata=z\n              cmd='addcol vel \"sqrt(velx*velx+vely*vely+velz*velz)\"' auxdata=vel auxlog=true\n              xpix=500 ypix=400 phi=50 theta=10 out=cube.jpeg"
+    },
+    {
+        "prompt": "Plots a histogram of the R-B colour.\nThe plot is displayed directly on the screen.\n\nThe generated plot is here.",
+        "response": "stilts plothist in=cat.xml xdata=RMAG-BMAG"
+    },
+    {
+        "prompt": "Makes the same plot as the previous example,\nbut writes it to a gzipped encapsulated postscript file\ninstead of displaying it on the screen.\n\nThe generated plot is here.",
+        "response": "stilts plothist in=cat.xml xdata=RMAG-BMAG ofmt=eps-gzip out=hist.eps.gz"
+    },
+    {
+        "prompt": "Overplots histograms of three different columns\nfrom the same input table.\nThese are treated as three separate datasets which all\nhappen to use the same input file.\nThe different datasets are labelled\n\"J\",\n\"H\" and\n\"K\"\nso these suffixes appear on all the dataset-dependent\nparameters which are supplied.\nThe binwidth and X range are specified explicitly\nrather than leaving them to be chosen automatically\nby examining the data.\n\nThe generated plot is here.",
+        "response": "stilts plothist inJ=2mass_xsc.fits xdataJ=j_m_k20fe barstyleJ=tops\n                inH=2mass_xsc.fits xdataH=h_m_k20fe barstyleH=tops\n                inK=2mass_xsc.fits xdataK=k_m_k20fe barstyleK=tops\n                binwidth=0.1 xlo=12 xhi=16 xflip=true xlabel=Magnitude xpix=500\n                out=2mass.png"
+    },
+    {
+        "prompt": "Retrieves all the records in the registry whose\n    title field contain the string \"IRAS\".\n    The '%' characters function\n    as wildcards for the ADQL like operator.\n    The output is written to a local ASCII table which can be examined\n    later.",
+        "response": "stilts regquery query=\"title like '%IRAS%'\" ofmt=ascii out=iras.txt"
+    },
+    {
+        "prompt": "Searches for all resources which offer a cone search service and\n    are published by AstroGrid.\n    In this case the records are not stored, but the omode=count\n    output mode counts the rows.\n    This therefore tells you how many AstroGrid cone search services are\n    in the registry.",
+        "response": "stilts regquery query=\"capability/@standardID = 'ivo://ivoa.net/std/ConeSearch'\n                       and curation/@publisher like '%astrogrid%'\"\n                omode=count"
+    },
+    {
+        "prompt": "Queries the registry for all Simple Spectral Access services.\n       The keepcols filter takes the result and throws away\n       all the columns except for identifier and \n       accessUrl, and these are written to the terminal\n       int ASCII format.",
+        "response": "stilts regquery query=\"capability/@standardID = 'ivo://ivoa.net/std/SSA'\"\n                ocmd=\"keepcols 'identifier accessUrl'\"\n                ofmt=ascii out=-"
+    },
+    {
+        "prompt": "Starts a server on the default port until it is interrupted.\n    Most tasks are available in server mode.\n    A message will be printed on standard output indicating the base URL\n    at which it may be accessed, for instance\n    \"http://localhost:2112/stilts/\".",
+        "response": "stilts server"
+    },
+    {
+        "prompt": "Starts a server running on port 2100 with a given URL.\n    The URL at which, for instance, the plot2d task \n    can be executed will be \n    \"http://host:2100/tableserv/task/plot2d\"",
+        "response": "stilts server port=2100 basepath=tableserv"
+    },
+    {
+        "prompt": "Starts a server with a restricted list of tasks available.\n    Only the plotting tasks\n    plot2d and\n    plothist\n    will be available for execution by clients.",
+        "response": "stilts server tasks=\"plot2d plothist\""
+    },
+    {
+        "prompt": "This sends two commands to a SQL Server database; the first one\n    (SET SHOWPLAN...) sets a flag which causes the DB to return an \n    execution plan rather than the result for subsequent queries, \n    and the second makes the query itself.  \n    Since the password is not provided on the command line, a prompt \n    for it will be issued before execution.\n    The result is SQL Server's execution plan for the SELECT statement \n    expressed as a headerless comma-separated value table sent to the terminal.\n    CSV is chosen for the output format since it does not truncate wide columns.",
+        "response": "stilts -classpath lib/drivers.jtds-1.1.jar \\\n       -Djdbc.drivers=net.sourceforge.jtds.jdbc.Driver \\\n       -Djava.net.preferIPv4Stack=true \\\n       sqlclient \\\n           db='jdbc:jtds:sqlserver://amenhotep:1433/twomass' \\\n           user='guest1' \\\n           ofmt=csv-nohead \\\n           sql='SET SHOWPLAN_TEXT ON' \\\n           sql='SELECT ra,dec FROM twomass_psc WHERE ra BETWEEN 21.7 AND 21.8 \\\n                                                 AND dec BETWEEN 9.1 AND 9.12'"
+    },
+    {
+        "prompt": "This performs a series of SELECT statements on the table FIRST\n    in the local MySQL database ASTRO1 to identify database objects in the\n    region of each object represented in the VOTable messier.xml.\n    The result, a join between the Messier and FIRST tables, is output\n    as a VOTable called matches.xml.\n    In this case a password has not been supplied on the command line,\n    so if one is required it will be prompted for on the console.",
+        "response": "stilts -classpath lib/drivers/mysql-connector-java.jar \\\n       -Djdbc.drivers=com.mysql.jdbc.Driver \n       sqlskymatch in=messier.xml ra=RA dec=DEC sr=0.05 \\\n                   db='jdbc:mysql://localhost/ASTRO1' user=mbt \\\n                   dbtable=FIRST dbra=_RA2000 dbdec=_DE2000 \\\n                   out=matches.xml"
+    },
+    {
+        "prompt": "Fills in the HTMID column of a table called FIRST in the local MySQL\n    database RADIO, using HTM pixel indices based on the existing \n    right ascension and declination columns in that table.\n    The HTMID column must exist prior to executing this command.",
+        "response": "stilts -classpath lib/drivers/mysql-connector-java.jar \\\n       -Djdbc.drivers=com.mysql.jdbc.Driver \\\n       sqlupdate db='jdbc:mysql://localhost/RADIO' user=root\n       select='SELECT * from FIRST\" \\\n       assign='HTMID=htmIndex(20,POS_EQ_RA,POS_EQ_DEC)'"
+    },
+    {
+        "prompt": "Performs a default validation run against the TAP service based\n    at the given URL.",
+        "response": "stilts taplint http://dc.g-vo.org/tap"
+    },
+    {
+        "prompt": "Executes the EXAmples stage against\n    the GACS TAP service at ESAC.\n    Most of the service endpoints (tables, capabilities, availability etc)\n    are found at their default locations\n    relative to the given tapurl.\n    However, the Examples document is loaded instead\n    from the local file at the URL that has been specified by the\n    examplesurl parameter.\n    This makes is possible to test a non-deployed examples document against\n    a deployed TAP service.  It may also be used if certain capabilities\n    have been deployed at non-default locations to satisfy multiple security\n    models or for other reasons.\n    You can play similar tricks with the other *url parameters\n    like capabilitiesurl and tablesurl,\n    as listed in the documentation.\n    \n    The TME (table metadata)\n    and CAP (service capabilities)\n    stages have been executed along with EXA,\n    since taplint needs to pick up the metadata and capabilities in order\n    to be able to do some of the checks on the examples it finds.\n    If those stage names are not included in the stages\n    parameter, the output will include some messages noting that fact,\n    and the tests will be less rigorous.",
+        "response": "stilts taplint tapurl=http://gaia.esac.esa.int/tap-server/tap\n               examplesurl=file://localhost/tmp/examples.xml\n               stages='TME CAP EXA'"
+    },
+    {
+        "prompt": "A validation run is done against the named TAP service.\n    Only Error and Warning type messages are output,\n    only two validation stages are performed,\n    lines are truncated to a maximum of 80 characters,\n    and each message is repeated a maximum of 4 times.\n    An invocation like this may be suitable if you find the default\n    operation too verbose.\n    \n    The output of this invocation might look like this:\n    \n    Section TMS: Check content of tables metadata from TAP_SCHEMA\nE-TMS-CINT-1 Column principal in TAP_SCHEMA.columns has wrong type char not int\nE-TMS-CINT-2 Column std in TAP_SCHEMA.columns has wrong type char not int\nW-TMS-CLUN-1 Unused entry in TAP_SCHEMA.columns table: ivoa.obscore\n\nSection UWS: Test asynchronous UWS/TAP behaviour\nE-UWS-GMIM-1 Incorrect Content-Type text/xml != text/plain for http://exampl....\nE-UWS-GMIM-2 Incorrect Content-Type text/xml != text/plain for http://exampl....\nE-UWS-GMIM-3 Incorrect Content-Type text/xml != text/plain for http://exampl....\nE-UWS-GMIM-4 Incorrect Content-Type text/xml != text/plain for http://exampl....\nE-UWS-GMIM-x (3 more)\n\nTotals: Errors: 9; Warnings: 1",
+        "response": "stilts taplint tapurl=http://example.com/tap\n               report=EW stages='TMS UWS' truncate=80 maxrepeat=4"
+    },
+    {
+        "prompt": "Executes the given ADQL query on the service referenced by the URL\n    and writes the result to a FITS file.",
+        "response": "stilts tapquery tapurl=https://gea.esac.esa.int/tap-server/tap\n                adql='SELECT TOP 1000 source_id, ra, dec\n                      FROM gaiadr3.gaia_source\n                      ORDER BY random_index'\n                out=g.fits"
+    },
+    {
+        "prompt": "Same as the previous example, except that\n    sync=true runs the query synchronously\n    instead of asynchronously, and\n    auth=true will attempt to log in to the service\n    (prompting you for username and password) if it offers authentication.",
+        "response": "stilts tapquery tapurl=https://gea.esac.esa.int/tap-server/tap\n                adql='SELECT TOP 1000 source_id, ra, dec\n                      FROM gaiadr3.gaia_source\n                      ORDER BY random_index'\n                sync=true auth=true\n                out=g.fits"
+    },
+    {
+        "prompt": "The local table 6dfgs_E7 is filtered to contain only\n    rather blue objects, and the resulting selection is uploaded to the\n    TAP server.  A positional crossmatch with 5 arcsec tolerance \n    is then performed on the server between this uploaded table and the\n    twomass.data table held by the service.\n    The adjusted maxrec parameter ensures that the result\n    will not be artificially truncated to shorter than 20000 rows\n    (assuming the service limits permit this).\n    When the result is received, it is loaded directly into TOPCAT with\n    the name \"2mass_x_6df\".",
+        "response": "stilts tapquery\n       tapurl=http://dc.g-vo.org/tap\n       adql='SELECT *\n             FROM twomass.data AS t\n             JOIN TAP_UPLOAD.up1 AS s\n                  ON DISTANCE(t.raj2000,t.dej2000,s.ra2000,s.dec2000)<5./3600'\n       nupload=1 upload1=6dfgs_E7.fits ucmd1='select BMAG-RMAG<0'\n       maxrec=20000\n       ocmd='tablename 2mass_x_6df' omode=topcat"
+    },
+    {
+        "prompt": "Resumes waiting for the output of a query on a job with ID\n    d4ENGR which was previously started on the GAVO TAP server.\n    When it has completed the output table will be written as a\n    comma-separated value file.",
+        "response": "stilts tapresume joburl='http://dc.zah.uni-heidelberg.de/__system__/tap/run/tap/async/d4ENGR'\n                 out=result.csv ofmt=csv"
+    },
+    {
+        "prompt": "Matches a local catalogue dr5qso.fits against the\n    table named twomass.data in the GAVO TAP service.\n    The search radius is 1/3600 degrees (1 arcsecond) and all 2MASS\n    sources within the radius of each input source are returned.\n    \n    If you run the command with \"stilts -verbose ...\"\n    the text of the ADQL query submitted to the TAP service will\n    (amongst other things) be logged on the console, and you will also\n    see the number of rows uploaded and matched in each chunk.",
+        "response": "stilts tapskymatch tapurl=http://dc.g-vo.org/tap\n                   taptable=twomass.data taplon=raj2000 taplat=dej2000\n                   in=dr5qso.fits inlon=RA inlat=DEC sr=0.00027 find=all\n                   out=qso_2mass.fits"
+    },
+    {
+        "prompt": "This matches a local copy of the Hipparcos survey against\n    a remote copy of the RAVE survey with a 1-arcsecond radius.\n    The output table contains only the identifier, position and proper\n    motion columns from\n    both the input table (by using the keepcols filter)\n    and the remote table (by specifying tapcols);\n    the other columns are discarded.\n    The fixcols and suffix* parameters\n    ensure that a suffix is added to all the output column names,\n    _hip for the input (Hipparcos) columns and\n    _rave for the remote (RAVE) ones.\n    \n    Before uploading, the input table is preprocessed by selecting only\n    those rows that fall within the actual footprint of the RAVE survey,\n    by filtering with a MOC giving RAVE coverage\n    (the RAVE dr3 MOC is also available at\n    this URL).\n    This step reduces the amount of data that needs to be uploaded,\n    since only those rows in the given coverage region stand a chance of\n    having a match in the remote table.\n    Note use of the nearMoc function with the value of the\n    match radius as the fourth parameter; this includes those objects\n    which may be outside the actual MOC region but close enough that\n    a match could still result.\n    \n    The blocksize parameter determines the number of rows\n    uploaded at a time.  If you receive warnings that the output has\n    been truncated, you should decrease this number.\n    \n    Progress is displayed as the match continues.\n    The cache filter must be applied upstream of (before)\n    the progress filter itself for this to work,\n    since otherwise the match processing reads all the input rows \n    before the actual work is done, and the progress monitor completes\n    before the match actually starts.",
+        "response": "stilts tapskymatch tapurl=http://dc.g-vo.org/tap\n                   taptable=rave.dr3 taplon=raj2000 taplat=dej2000\n                   tapcols=name,raj2000,dej2000,pmra,pmde\n                   in=hip_main.fits inlon=RAdeg inlat=DEdeg\n                   icmd='keepcols \"HIP RAdeg DEdeg pmra pmde\"'\n                   sr=0.00027\n                   icmd='select nearMoc(\\\"III/265/ravedr3\\\",RAdeg,DEdeg,.00027)'\n                   icmd=cache icmd=progress\n                   blocksize=5000\n                   fixcols=all suffixin=_hip suffixremote=_rave\n                   find=best\n                   omode=topcat"
+    },
+    {
+        "prompt": "Concatenates the three named ASCII format tables to produce\n    an output table.  All three must have compatible numbers and types \n    of columns.",
+        "response": "stilts tcat ifmt=ascii in=t1.txt in=t2.txt in=t3.txt out=table.txt"
+    },
+    {
+        "prompt": "Has exactly the same effect as the previous example.",
+        "response": "stilts tcat ifmt=ascii in=\"t1.txt t2.txt t3.txt\" out=table.txt"
+    },
+    {
+        "prompt": "This will have the same effect as the previous two examples if a\n    file name \"inlist.lis\" in the current directory contains three lines,\n    \"t1.txt\", \"t2.txt\" and \"t3.txt\".",
+        "response": "stilts tcat ifmt=ascii in=@inlist.lis out=table.txt"
+    },
+    {
+        "prompt": "Concatenates the contents of all the files listed in \"infits.lis\"\n    to one large output colfits file.\n    The lazy=true is a good idea if there is a large number\n    of input files listed.",
+        "response": "stilts tcat in=@infits.lis out=gaia_source.colfits\n            lazy=true countrows=true"
+    },
+    {
+        "prompt": "Concatenates the contents of four tables (the first four extension HDUs)\n    from a multi-extension FITS file to produce a single FITS table.\n    Many Unix shells (csh, bash) will allow you to list the input files\n    using the following shorthand: \"in=r368776.fits#{1,2,3,4}\".",
+        "response": "stilts tcat in=r368776.fits#1 in=r368776#2 in=r368776.fits#3 in=r368776.fits#4\n            out=r368776_all.fits"
+    },
+    {
+        "prompt": "Concatenates all the tables in the named file together.\n    Setting multi=true means that instead of picking the first\n    table from each named in table, all tables will be selected.\n    So, if the input FITS file in this example has just four table HDUs,\n    then this example does exactly the same as the previous one,\n    but with less typing.\n    The same thing works with multi-TABLE VOTable documents, but most other\n    file formats (CSV etc) do not have the facility for storing multiple\n    tables in a single file.",
+        "response": "stilts tcat in=r368776.fits multi=true out=r368776_all.fits"
+    },
+    {
+        "prompt": "Does the same as the previous example with a couple of additions.\n    Firstly, progress through each of the input files will be reported\n    to the console.\n    Secondly, an additional column \"ID\" will be appended to the output which \n    contains 1 for all the rows from the first input table, 2 for the \n    rows from the second one and so on.",
+        "response": "stilts tcat in=r368776.fits multi=true out=r368776_all.fits\n            icmd=progress seqcol=ID"
+    },
+    {
+        "prompt": "Takes the 10 rows with highest FLUX values from each of three input\n    tables (in comma-separated value format) and joins them together to\n    produce a 30-row output table.  This is then sorted in FLUX order, \n    and the resulting table is output to the console in text format.\n    Only the columns RA, DEC and FLUX are output; any other columns \n    are discarded.  The input tables don't need to have identical forms\n    to each other, but each must have at least an RA, DEC and FLUX column.",
+        "response": "stilts tcat in='rA.csv rB.csv rC.csv' ifmt=csv \\\n            icmd='keepcols \"RA DEC FLUX\"' icmd='sorthead 10 FLUX' \\\n            ocmd='sort FLUX'"
+    },
+    {
+        "prompt": "This processes a VOTable file which may have multiple TABLEs in it,\n    but for which each of the tables is known to have columns with the\n    UCDs RECORD, POS_EQ_RA_MAIN and POS_EQ_DEC_MAIN (this is typical of\n    VOTables retrieved from CDS's VizieR service).\n    It retains only those columns from each table and writes the result\n    as a single concatenated table to a CSV file.",
+        "response": "stilts tcat in=vizier.xml multi=true\n            icmd='keepcols \"ucd$RECORD ucd$POS_EQ_RA_MAIN ucd$POS_EQ_DEC_MAIN\"'\n            uloccol=TID out=all.csv"
+    },
+    {
+        "prompt": "Concatenates two similar observation catalogues to form a combined one.\n    In this case, both input and output tables are FITS files.",
+        "response": "stilts tcatn nin=2 in1=obs1.fits in2=obs2.fits out=combined.fits"
+    },
+    {
+        "prompt": "Three catalogues with similar forms but in different data formats\n    are joined.  Instead of writing the result to an output file, \n    the resulting joined catalogue is examined to calculate\n    its statistics, which are written to standard output.",
+        "response": "stilts tcatn nin=3 omode=stats in1=obs1.txt ifmt1=ascii\n                               in2=obs2.xml ifmt2=votable\n                               in3=obs3.fit ifmt3=fits"
+    },
+    {
+        "prompt": "In this case we are trying to concatenate results from two tables\n    which are quite dissimilar to each other.  In the first place,\n    one is a VOTable (no ifmt1 parameter is required since\n    VOTables can be detected automatically), and the other is a \n    comma-separated-values file (for which the ifmt2=csv \n    parameter must be given).\n    In the second place, the column structure of the two tables may be\n    quite different.  By pre-processing the two tables using the\n    icmd1 & icmd2 parameters, we produce\n    in each case an input table which consists of three columns of\n    compatible types and meanings: an integer identifier and floating point\n    galactic longitude and latitude coordinates.\n    The second table contains such columns to start with,\n    but the first table requires an initial step to convert \n    FK5 J2000.0 coordinates to galactic ones.\n    tcatn joins the two doctored tables together, to produce\n    a table which contains only these three columns, with all the rows\n    from both input tables, and sends the result directly \n    to a new or running instance of TOPCAT.\n    An additional column named FILENAME is appended to the table\n    before sending it; this contains \"survey.vot.gz\" for all the columns\n    from the first table and \"more_data.csv\" for all the columns from\n    the second one.",
+        "response": "stilts tcatn nin=2 in1=survey.vot.gz ifmt2=csv in2=more_data.csv\n             icmd1='addskycoords fk5 galactic RA2000 DEC2000 GLON GLAT' \\\n             icmd1='keepcols \"OBJ_ID GLON GLAT\"' \\\n             icmd2='keepcols \"ident gal_long gal_lat\"' \\\n             loccol=FILENAME\n             omode=topcat"
+    },
+    {
+        "prompt": "Copies a FITS table to a VOTable.\n    Since no input format is specified, the format is automatically \n    detected (FITS is one of the formats for which this is possible).\n    Since no output format is specified, the stars.xml\n    filename is examined to make a guess at the kind of output to write:\n    the .xml ending is taken to mean a TABLEDATA-encoded\n    VOTable.",
+        "response": "stilts tcopy stars.fits stars.xml"
+    },
+    {
+        "prompt": "Does the same as the previous example, but the input and output\n    formats have been specified explicitly.",
+        "response": "stilts tcopy stars.fits stars.xml ifmt=fits ofmt=votable"
+    },
+    {
+        "prompt": "Prints the contents of a remote, compressed VOTable to the terminal in \n    a human-readable form.  The #4 at the end of the URL\n    indicates that the data from the fifth TABLE element\n    in the remote document are to be used.  The gzip compression of\n    the table is taken care of automatically.",
+        "response": "stilts tcopy ofmt=text http://remote.host/data/vizer.xml.gz#4 -"
+    },
+    {
+        "prompt": "Converts a comma-separated values file to a LaTeX table environment,\n    writing the result to standard output.",
+        "response": "stilts tcopy ifmt=csv ofmt=latex spec.csv"
+    },
+    {
+        "prompt": "Makes an SQL query on a PostgreSQL database and writes the\n    results to a FITS file.\n    The whole command is shown here, to show that the \n    classpath is augmented to include the PostgreSQL\n    driver class, and the driver class is named using the \n    jdbc.drivers system property.\n    As you can see, using SQL from Java is a bit fiddly, \n    and there are other ways to perform this\n    setup than on the command line - see \n    and tpipe's \n    omode=tosql output mode.",
+        "response": "stilts -classpath /usr/local/jars/pg73jdbc3.jar \\\n       -Djdbc.drivers=org.postgresql.Driver \\\n       tcopy in=\"jdbc:postgresql://localhost/imsim#SELECT ra, dec, Imag FROM dqc\" \\\n             ofmt=fits wfslist.cat"
+    },
+    {
+        "prompt": "Calculates a 3-dimensional colour-colour-magnitude grid from \n    three existing columns in a table.  The bin (pixel) sizes are specified.\n    The data bounds are specified explicitly for the (first two) \n    colour dimensions, but for the (third) magnitude dimension it is \n    determined from the minimum and maximum values the data in \n    that column of the table.\n    The output is a three-dimensional FITS cube containing the number\n    of points in each cell.",
+        "response": "stilts tcube in=2QZ_6QZ_pubcat.fits out=ccm.fits \\\n             cols='Bj_R U_Bj Bj' binsizes='0.05 0.05 0.5' bounds='-2:1 -3:2 :'"
+    },
+    {
+        "prompt": "Calculates a map of integrated fluxes in galactic coordinates from\n    a catalogue of IRAS point sources.  The output is a two-dimensional\n    FITS image representing the sky in galactic coordinates,\n    with each pixel containing the sum of Fnu_60 fluxes\n    from objects in that rectangle of (glat,glon> space.\n    Bounds are determined automatically from the data, and the number of\n    pixels in each dimension (400 in latitude and 200 in longitude) are\n    specified, which means that the pixel sizes don't have to be.\n    Since the input table contains sky positions in equatorial \n    coordinates rather than galactic ones, the addskycoords\n    filter is used to preprocess the data before the cube generation\n    step (see ).",
+        "response": "stilts tcube in=iras_psc.vot out=flux60_map.fits \\\n             icmd='addskycoords fk5 galactic ra dec glat glon' \\\n             cols='glat glon' nbins='400 200' \\\n             scale=Fnu_60 combine=sum"
+    },
+    {
+        "prompt": "Generates a table with a single column, named COUNTER,\n    and a thousand rows.\n    The value in the first row is 0 and in the last row is 999.\n    The table is written to standard output.",
+        "response": "stilts tloop COUNTER 0 1000"
+    },
+    {
+        "prompt": "Generates a table with one column time counting from \n    0 to 9.75 in steps of 0.25.  Output is to a CSV file.\n    The parameters here are specified in order, but could equivalently\n    be given by name:\n    \"stilts tloop var=time start=0 end=10 step=0.26\".",
+        "response": "stilts tloop time 0 10 0.25 out=times.csv"
+    },
+    {
+        "prompt": "Generates a table with a column x running from 1 to 10\n    inclusive.  The addcol filters then append two further\n    columns, giving the squares and cubes of these values respectively,\n    giving a table of 10 rows and 3 columns.\n    Finally this table is piped through a stats filter to\n    calculate the sums of the values, squares and cubes in this range.",
+        "response": "stilts tloop x start=1 end=11 ocmd='addcol x2 x*x' ocmd='addcol x3 x*x*x'\n             ocmd='stats name sum'"
+    },
+    {
+        "prompt": "Calculates a simple 1-dimensional unweighted histogram of the\n    HRV column from the input table ravedr4.fits.\n    The output is a table with columns\n    HRV, giving the central value of each bin, and\n    COUNT, giving the number of input rows with HRV\n    values in that bin;\n    additional columns HRV_lo and HRV_hi give the\n    lower and upper bounds of the bin.\n    The bin size is determined from the actual range of the HRV values\n    in the input table, combined with the requested bin count of 20;\n    however, the bin size will be chosen as some round number,\n    so the bin count (number of rows in the output table)\n    may not be exactly as requested.",
+        "response": "stilts tgridmap in=ravedr4.fits coords=HRV nbins=20"
+    },
+    {
+        "prompt": "Produces a similar histogram to the previous example,\n    but the bin dimensions, ranges and alignments are specified explicitly\n    rather than being worked out from the data.\n    There will be 9 output bins, [-450,-350), [-350,-250), ..., [350,450);\n    any values outside of these bins will be ignored.\n    The sparse=false parameter means that rows will be output\n    for all 9 bins, even if some of them are empty.\n    Note supplying bin geometry in this way allows control of bin boundaries;\n    in this case HRV=0 is in the middle of a bin not at a bin boundary.\n    This will also be faster, since no initial scan to determine\n    actual data ranges has to be performed.",
+        "response": "stilts tgridmap in=ravedr4.fits coords=HRV\n                binsizes=100 bounds=-450:450 sparse=false"
+    },
+    {
+        "prompt": "This assembles a table containing three weighted histograms on a\n    2-d colour vs. absolute-magnitude grid.\n    The output table contains columns giving\n    bp_rp and g_abs coordinate values\n    for each grid point,\n    as well as columns NUM containing source density,\n    and columns SUM_NOBS and MEAN_NOBS containing respectively\n    the sum and mean of the nobs column in each grid cell.\n    Since sparse=false the number and arrangement\n    of output rows is determined by the binsizes and bounds (57*51 rows)\n    independent of the input data, and could be compared\n    with similar runs on different input tables.\n    The icmd=addcol... parameters prepare values for accumulation\n    ahead of the actual gridding step for convenience though this isn't\n    essential, the relevant expressions could be used directly in the\n    coords and cols parameters if preferred.",
+        "response": "stilts tgridmap in=edr3-local.fits\n                icmd='addcol nobs astrometric_n_good_obs_al'\n                icmd='addcol g_abs phot_g_mean_mag+5*log10(parallax*0.01)'\n                coords='bp_rp g_abs'\n                binsizes='0.125 0.5' bounds='-1:6 -5:20'\n                cols='1;count;NUM nobs;sum;SUM_NOBS nobs;mean;MEAN_NOBS'\n                out=grid-stats.vot sparse=false"
+    },
+    {
+        "prompt": "This produces an output table with two columns:\n    the first column (defined by the keys parameter)\n    gives all the distinct values of the\n    MType column in the input table,\n    and the second column (defined by the aggcols parameter)\n    gives a count of how many rows in the input table have that MType value.\n    The output is written to a CSV file.\n    \n    Since the count aggregator pays no attention to the\n    values it is counting, the quantity before the semicolon is\n    irrelevant in this case, so for instance \"0;count\",\n    \"100;count\" or \"MType;count\"\n    would work just as well.\n    If the aggcols parameter is omitted altogether,\n    the output table will be the same but without the\n    count column,\n    i.e. it will just list all the distinct values of\n    the MType column.",
+        "response": "stilts tgroup in=B_sn.vot keys='MType' aggcols='null;count' out=type_counts.csv"
+    },
+    {
+        "prompt": "This does a similar job to the previous example,\n    but with some additional pre- and post-processing,\n    to produce a league table of discoverers of bright supernovae.\n    The icmd parameters define pre-processing filters\n    that rename one column, and select only those rows for which\n    the MaxMag column is below a certain threshold.\n    The keys parameter groups rows by the contents of the\n    Discoverer (née disc) column,\n    and the aggcols parameter counts how many sources\n    are listed for each discoverer,\n    naming the resulting column \"SNae\".\n    Finally, the ocmd filter\n    sorts the results by the count column,\n    listing only the top ten to standard output.",
+        "response": "stilts tgroup in=B_sn.vot\n              icmd='colmeta -name Discoverer disc' icmd='select MaxMag<20'\n              keys='Discoverer' aggcols='0;count;SNae'\n              ocmd='sorthead -down 10 SNae'"
+    },
+    {
+        "prompt": "In this case there are two columns listed in\n    the keys parameter,\n    which means each output row groups all the input rows with the same\n    discovery_method and status values.\n    For each such group several values are calculated and output\n    in separate columns: number of entries, mean mass,\n    standard deviation of mass, maximum radius,\n    and number of entries with a non-blank radius.",
+        "response": "stilts tgroup in=exomercat.fits\n              keys='discovery_method status'\n              aggcols='null;count mass;mean mass;stdev r;max;max_radius r;ngood;num_radii'\n              ocmd='sort \"discovery_method status\"'"
+    },
+    {
+        "prompt": "This groups the rows in an input table by calendar year,\n    and for each year calculates the number of non-blank items,\n    and the quartiles, of the values in the z column.\n    Since no quartile aggregator is provided,\n    aggregation is first done to an array of all the z values per year,\n    and quartiles are calculated using the\n    quantile function, which takes an\n    array value as well as the quantile point required.\n    Before writing the output, the bulky array column is removed.\n    \n    In this example, the aggcols parameter has been\n    given three times for the three aggregated values.\n    This is just another way to specify multiple entries, and it could\n    equally have been written in one go with a space as a delimiter, i.e.\n    \"aggcols='z;ngood;nz z;array;z_values'\".\n    \n    Note that since the grouped quantity here is numeric and evenly spaced,\n    this job could equally have been done using the\n    tgridmap command, like\n    \n    stilts tgridmap in=dr16qso.fits\n                    icmd='addcol -units yr year mjdToDecYear(mjd)'\n                    coords=year binsizes=1\n                    cols='1;count;nz z;Q1;z_q1 z;median;z_q2 z;Q3;z_q3'",
+        "response": "stilts tgroup in=dr16qso.fits\n              icmd='addcol -units yr year (int)mjdToDecYear(mjd)'\n              keys='year'\n              aggcols='z;ngood;nz'\n              aggcols='z;array;z_values'\n              ocmd='addcol z_q1 quantile(z_values,0.25)'\n              ocmd='addcol z_q2 quantile(z_values,0.50)'\n              ocmd='addcol z_q3 quantile(z_values,0.75)'\n              ocmd='delcols z_values'\n              out=zq-by-year.fits"
+    },
+    {
+        "prompt": "Takes two input FITS files and sticks them together side by side,\n    writing the result as a third FITS file.  The output will have the\n    same number of rows as each of the input catalogues, and a number\n    of columns equal to the sum of those in the two input catalogues.",
+        "response": "stilts tjoin nin=2 in1=positions.fit in2=fluxes.fits out=combined.fits"
+    },
+    {
+        "prompt": "This joins three ascii tables together.  Each column of the output\n    table is renamed by appending a string to it (\"_T1\" for the first \n    table, \"_T2\" for the second...).\n    Only those rows of the output for which the FLAG column in the first\n    input table, and hence the FLAG_T1 column in the output table,\n    have the value zero are selected.  Statistics are calculated for\n    all the columns of these selected rows, and written to the output.",
+        "response": "stilts tjoin nin=3 fixcols=all \\\n             ifmt1=ascii in1=t1.txt suffix1=_T1 \\\n             ifmt2=ascii in2=t2.txt suffix2=_T2 \\\n             ifmt3=ascii in3=t3.txt suffix3=_T3 \\\n             ocmd='select FLAG_T1==0' \\\n             omode=stats"
+    },
+    {
+        "prompt": "Copies an input catalogue \"crowded.vot\" to an output catalogue\n    \"sparse.vot\", but omitting any objects (rows) which are within 20 arcsec\n    of other objects.  The output catalogue will contain no near neighbours.",
+        "response": "stilts tmatch1 matcher=sky values=\"RA2000 DE2000\" params=20 \\\n               action=keep0 in=crowded.vot out=sparse.vot"
+    },
+    {
+        "prompt": "This is similar to the previous example, but uses the \n    skyerr matcher which determines the proximity threshold\n    on a row-by-row basis from values in the table - in this case 4 times\n    the value of the RADIUS column (this value must be in arc seconds). \n    The params=40 value does not affect the result, but it\n    gives the algorithm an idea of the rough scale of object separation.",
+        "response": "stilts tmatch1 matcher=skyerr values=\"RA2000 DE2000 RADIUS*4\" params=40 \\\n               action=keep0 in=crowded.vot out=sparse.vot"
+    },
+    {
+        "prompt": "Uses the \"3d\" matcher to identify groups of objects\n    in terms of their proximity in a 3-dimensional Cartesian space,\n    with positions given by the XPIX, YPIX and ZPIX columns in the input table.\n    The action=identify parameter means that the input table\n    is written out with the same rows, but with additional columns indicating\n    which rows are associated with each other.  One of these columns,\n    \"GroupSize\" gives the number of objects in each group.  \n    The postprocessing filter ocmd='select GroupSize>3'\n    selects only those rows which are part of groups of three objects or\n    larger; singletons and pairs are discarded before writing the output file.",
+        "response": "stilts tmatch1 matcher=3d values=\"XPIX YPIX ZPIX\" params=10 action=identify \\\n               in=state.fit ocmd='select GroupSize>3' out=groups3+.fit"
+    },
+    {
+        "prompt": "Identifies pairs of objects within 3 arcsec of each other from an\n    input catalogue.  Singles, and groups of three or more, will be \n    discarded.  The output table generated is a double-width version of\n    the input table with pairs of objects next to each other on the same row.\n    Here, the ocmd post-processing filter discards all of the\n    columns except the identifiers and sky positions for each object.\n    The output is to a text file.",
+        "response": "stilts tmatch1 matcher=sky values=\"ra dec\" params=3 action=wide2 \\\n               ocmd='keepcols \"id_1 ra_1 dec_1 id_2 ra_2 dec_2\"'\n               in=galaxy.fits out=binaries.txt ofmt=ascii"
+    },
+    {
+        "prompt": "Takes two input catalogues (VOTables), one with observations in\n    the V band and the other in the I band, and performs a match\n    to find objects within 2 arcseconds of each other.\n    The result is a new table containing only rows where a match was found.",
+        "response": "stilts tmatch2 in1=obs_v.xml in2=obs_i.xml out=obs_iv.xml \\\n               matcher=sky values1=\"ra dec\" values2=\"ra dec\" params=\"2\""
+    },
+    {
+        "prompt": "Here a comma-separated-values file is being compared with a FITS\n    catalogue representing some survey results.\n    Positions in the survey catalogue use the FK4 B1950.0 system,\n    and so a preprocessing step is inserted to create new position columns \n    in the first input table using the FK5 J2000.0 system,\n    which is what the other input table uses.\n    The survey catalogue contains a POS_ERR column which gives the positional\n    uncertainty of its entries, so the skyerr matcher is\n    used, which takes account of this; the third entry in the \n    values1 parameter is the POS_ERR column (in arcsec).\n    Since the second input table has no positional uncertainty information,\n    0 is used as the third entry in values2.\n    The params gives a rough idea of the scale of the object\n    separations, but its value does not affect the result.\n    The join type is 2not1, which means the output table\n    will only contain those entries which are in the second input table\n    but not in the first one.\n    The output table is not stored, but the number of rows it contains\n    (the number of objects represented in the CSV file but not the survey)\n    is written to the screen.",
+        "response": "stilts tmatch2 survey.fits ifmt2=csv mycat.csv \\\n               icmd1='addskycoords fk4 fk5 RA1950 DEC1950 RA2000 DEC2000' \\\n               matcher=skyerr \\\n               params=10 values1=\"RA2000 DEC2000 POS_ERR\"  values2=\"RA DEC 0\" \\\n               join=2not1 omode=count"
+    },
+    {
+        "prompt": "Two ASCII-format catalogues are matched, where rows are\n    considered to match if their X,Y positions are within 5 units of\n    each other in some Cartesian space.\n    The result of the matching operation is a table of all the matched rows,\n    containing columns named X_a, Y_a, X_b and Y_b (along with any others\n    in the input tables) - the suffix* parameters describe \n    how the input X and Y columns are to be renamed to avoid duplicate\n    column names in the output table.\n    To this result are added two new columns, \n    representing the X and Y positional\n    difference between the rows from one input table and those from the other.\n    The keepcols filter then throws all the other columns away,\n    retaining only these difference columns.\n    The final two-column table is not stored anywhere, \n    but (omode=stats) \n    statistics including mean and standard deviation \n    are calculated on its columns and displayed to the screen.\n    Having done all this, you can examine the average X and Y differences\n    between the two input tables for matched rows, and if they differ\n    significantly from zero, you can conclude that there is a systematic\n    error between the positions in the two input files.",
+        "response": "stilts tmatch2 ifmt1=ascii ifmt2=ascii in1=cat-a.txt in2=cat-b.txt \\\n               matcher=2d values1='X Y' values2='X Y' params=5 join=1and2 \\\n               suffix1=_a suffix2=_b \\\n               ocmd='addcol XDIFF X_a-X_b; addcol YDIFF Y_a-Y_b' \\\n               ocmd'keepcols \"XDIFF YDIFF\"' omode=stats"
+    },
+    {
+        "prompt": "This performs a match with a matcher that combines sky\n    and 1d match criteria.  This means that the only\n    rows which match are those which are\n    both within 3 arcsec of each other on the sky\n    and and within 0.5 blue magnitudes.\n    Note that for both the params and the \n    values1 and values2 parameters,\n    the items for the sky matcher (RA and DEC) \n    are listed first,\n    followed by those for the 1d matcher (in this case,\n    blue magnitude).",
+        "response": "stilts tmatch2 in1=mgc.fits in2=6dfgs.xml join=1and2 find=all \\\n               matcher=sky+1d params='3 0.5' \\\n               values1='ra dec bmag' values2='RA2000 DEC2000 B_MAG\" \\\n               out=pairs.fits"
+    },
+    {
+        "prompt": "Compares a text-format table \"transients.txt\" against each of \n    three other catalogues covering the same region of sky, and outputs\n    a table which contains a row for each row of \"transients.txt\" which\n    matches (is within 5 arcsec) of an object in any of the other tables.",
+        "response": "stilts tmatchn multimode=pairs nin=4 matcher=sky params=5 \\\n       in1=transients.txt ifmt1=ascii values1='alpha delta' \\\n       in2=2mass_virgo.fits values2='ra2000 dec2000' \\\n       in3=sdss_virgo.fits values3='ra dec' \\\n       in4=first_virgo.fits values4='pos_eq_ra pos_eq_dec' \\\n       out=matches.xml ofmt=votable-binary"
+    },
+    {
+        "prompt": "Similar to the previous example but with some doctoring of what the\n    output table will look like.  The fixcols=all and \n    suffixN assignments mean that all the columns from the\n    input tables will be renamed for output by adding the given suffixes.\n    The keepcols filter applied to the output table throws out\n    all the columns except the ones from the reference table (*_t)\n    and one column from each of the other table giving object identifiers.\n    This output table will probably be easier to read (though contain less\n    information) than that from the previous example).\n    Additionally, the join1=always assignment means that the output\n    table will have one row for each row of the reference table \n    (transients.txt), even if no matches are found for it.",
+        "response": "stilts tmatchn multimode=pairs nin=4 matcher=sky params=5 \\\n       in1=transients.txt ifmt1=ascii suffix1='_t' values1='alpha delta' \\\n       in2=2mass_virgo.fits suffix2='_2mass' values2='ra2000 dec2000' \\\n       in3=sdss_virgo.fits  suffix3='_sdss'  values3='ra dec' \\\n       in4=first_virgo.fits suffix4='_first' values4='pos_eq_ra pos_eq_dec' \\\n       fixcols=all join1=always \\\n       ocmd='keepcols \"*_t designation_2mass SDSSName_sdss id_field_first\"' \\\n       out=matches.xml ofmt=votable-binary"
+    },
+    {
+        "prompt": "Performs a group-mode match.  There is no reference table, so that\n    an output row will result for each object which is represented in any\n    two of the input catalogues. \n    The match takes account of per-object errors equivalent to twice the\n    recorded seeing, which is in the region of 8 arcsec.\n    Note that this may not operate as expected if the catalogues contain\n    multiple distinct objects too close (in comparison to the declared\n    separation) to each other.\n    The resulting matched table is sent directly to \n    TOPCAT \n    (if available).",
+        "response": "stilts tmatchn multimode=group nin=3 matcher=skyerr params=8 \\\n       in1=Hband.fits values1='RA DEC SEEING*2' \\\n       in2=Jband.fits values2='RA DEC SEEING*2' \\\n       in3=Kband.fits values3='RA DEC SEEING*2' \\\n       omode=topcat"
+    },
+    {
+        "prompt": "Takes the three named ASCII format tables and writes them into a\n    multi-extension FITS file, as three separate BINTABLE HDUs.\n    These tables do not need to be of the same shape or otherwise similar.",
+        "response": "stilts tmulti ifmt=ascii in=t1.txt in=t2.txt in=t3.txt\n              ofmt=fits out=tables.fits"
+    },
+    {
+        "prompt": "Does exactly the same as the previous example.",
+        "response": "stilts tmulti ifmt=ascii in=\"t1.txt t2.txt t3.txt\"\n              ofmt=fits out=tables.fits"
+    },
+    {
+        "prompt": "This will have the same effect as the previous two examples if a\n    file name \"inlist.lis\" in the current directory contains three lines,\n    \"t1.txt\", \"t2.txt\" and \"t3.txt\".",
+        "response": "stilts tmulti ifmt=ascii in=@inlist.lis\n              ofmt=fits out=tables.fits"
+    },
+    {
+        "prompt": "This takes the table extensions from a multi-extension FITS file\n    and writes them out as a multi-TABLE VOTable document.\n    The multi=true setting is required, since this means\n    that all the tables from the input file are used as input;\n    if it was set false, only the first table HDU from the input file\n    would be used.",
+        "response": "stilts tmulti in=extract.fits multi=true out=extract.vot"
+    },
+    {
+        "prompt": "Does the same as the previous example, but additionally replaces\n    with a blank value occurrences of the value \"-999\" in columns\n    whose name ends with \"MAG\" in any of the input tables before\n    copying them.",
+        "response": "stilts tmulti in=extract.fits multi=true out=extract.vot\n              icmd='badval -999 *MAG'"
+    },
+    {
+        "prompt": "Takes three input tables in different formats, and\nwrites them out as a single multi-extension FITS file.",
+        "response": "stilts tmultin nin=3 in1=t1.xml ifmt1=votable\n                     in2=t2.fit ifmt2=fits\n                     in3=t3.txt ifmt3=ascii\n                     out=tables.fits"
+    },
+    {
+        "prompt": "Writes three hundred-row tables as separate TABLE elements in\na single output VOTable document.\nEach of the output tables is a sample from the same input table,\nbut sampled differently; the first is every tenth row, the second\nevery hundredth, and the third every thousandth.",
+        "response": "stilts tmultin nin=3 in1=data.fits icmd1='every 10;   head 100'\n                     in2=data.fits icmd2='every 100;  head 100'\n                     in3=data.fits icmd3='every 1000; head 100'\n                     out=samples.xml ofmt=votable"
+    },
+    {
+        "prompt": "Writes a FITS table to standard output in human-readable form.\n    Since no mode specifier is given, omode=out is assumed,\n    and output is to standard output in text format.",
+        "response": "stilts tpipe cat.fits"
+    },
+    {
+        "prompt": "Does the same as the last example, but with one processing step:\n    only the first five rows of the table are output.  In this case,\n    the input file is compressed using gzip - this is automatically \n    detected.",
+        "response": "stilts tpipe cmd='head 5' cat.fits.gz"
+    },
+    {
+        "prompt": "Reads from a comma-separated values file, writes to a FITS file,\n    and discards all columns in the input table apart from INDEX, RA and DEC.\n    Note the quoting in the cmd argument: the outer quotes\n    are so that the argument of the cmd parameter itself\n    (keepcols \"index ra dec\")\n    is not split up by spaces (to protect it from the shell), \n    and the inner quotes are to keep the \n    colid-list argument of the \n    keepcols command together.",
+        "response": "stilts tpipe ifmt=csv xxx.csv \\\n             cmd='keepcols \"index ra dec\"' \\\n             omode=out ofmt=fits xxx.fits"
+    },
+    {
+        "prompt": "Replaces two columns by their sum and difference in a VOTable.\n    Since neither the in nor out parameters\n    have been specified, the input and output are actually byte \n    streams on standard input and standard output of the \n    tpipe command in this case.\n    The processing steps first add a column representing the sum,\n    then add a column representing the difference, then delete the \n    original columns.",
+        "response": "stilts tpipe ifmt=votable \\\n             cmd='addcol IV_SUM \"(IMAG+VMAG)\"' \\\n             cmd='addcol IV_DIFF \"(IMAG-VMAG)\"' \\\n             cmd='delcols \"IMAG VMAG\"' \\\n             omode=out ofmt=votable \\\n       < tab1.vot \\\n       > tab2.vot"
+    },
+    {
+        "prompt": "Adds columns giving galactic coordinates to a table.\n    Both input and output tables are FITS files.\n    The galactic coordinates, stored in new columns named GAL_LONG and\n    GAL_LAT, are calculated from FK5 J2000.0 coordinates\n    given in the existing columns named RA2000 and DEC2000.\n    The input (FK5) coordinates are represented as sexagesimal strings\n    (hh:mm:ss, dd:mm:ss), and the output ones are numeric degrees.",
+        "response": "stilts tpipe cmd='addskycoords -inunit sex fk5 gal \\\n                               RA2000 DEC2000 GAL_LONG GAL_LAT' \\\n             6dfgs.fits 6dfgs+gal.fits"
+    },
+    {
+        "prompt": "Displays selected columns for the 20 rows with largest values in\n    the AREA column of a FITS table.  First the columns of interest \n    are selected, then the rows are sorted into descending order by \n    the value of the AREA column, then the first 20 rows of the resulting\n    table are selected, and the result is written to standard output.\n    Since a sort is being performed here, it's not possible to do all\n    the processing a row at a time, since all the AREA values\n    must be available for comparison during the sort.\n    Two things are done here to accommodate this fact: first the\n    column selection is done before the sort, so that it's only a 3-column\n    table which needs to be available for random access,\n    reducing the temporary storage required.\n    Secondly the -disk flag is supplied, which means that\n    temporary disk files rather than memory \n    will be used for caching table data.",
+        "response": "stilts -disk tpipe 2dfgrs_ngp.fits \\\n                   cmd='keepcols \"SEQNUM AREA ECCENT\"' \\\n                   cmd='sort -down AREA' \\\n                   cmd='head 20'"
+    },
+    {
+        "prompt": "Has exactly the same effect as the previous example.\n    However, the algorithm used by the sorthead filter is\n    in most cases faster and cheaper on memory (only 20 rows ever have\n    to be stored in this case), so this is generally a better approach\n    than combining the sort and head filters.",
+        "response": "stilts tpipe 2dfgrs_ngp.fits \\\n             cmd='keepcols \"SEQNUM AREA ECCENT\"' \\\n             cmd='sorthead -down 20 AREA'"
+    },
+    {
+        "prompt": "Outputs column and table metadata about a table.\n    In this case the table is a compressed VOTable at the end of a URL.\n    Processing is performed according to the commands contained in a\n    file named \"commands.lis\" in the current directory.",
+        "response": "stilts tpipe omode=meta cmd=@commands.lis http://archive.org/data/survey.vot.Z"
+    },
+    {
+        "prompt": "Counts the number of rows within a given 5 arcmin \n    cone of sky in a FITS table.\n    The skyDistanceDegrees function is an expression which\n    calculates the distance between the position specified in a row\n    (as given by its RA and DEC columns) and a given point on the sky\n    (here, 02:28:11,-06:49:45).\n    Since skyDistanceDegrees's arguments and return value are in\n    decimal degrees, some conversions are required: the RA and DEC columns\n    are sexagesimal strings which are converted using the\n    hmsToDegrees and dmsToDegrees functions \n    respectively.  Different versions of these functions (ones which take\n    numeric arguments) are used to convert the coordinates of the fixed\n    point to degrees. \n    The result is compared to a constant expression representing 5 arcminutes\n    in degrees.\n    Any rows of the input table for which this comparison\n    is true are included in the output. \n    An alternative function, skyDistanceRadians which works\n    in radians, is also available.\n    These functions and constants used here are described in detail in\n     and\n    .",
+        "response": "stilts tpipe in=survey.fits \n             cmd='select \"skyDistanceDegrees(hmsToDegrees(RA),dmsToDegrees(DEC), \\\n                                             hmsToDegrees(2,28,11),dmsToDegrees(-6,49,45)) \\\n                          < 5./60.\"' \\\n             omode=count"
+    },
+    {
+        "prompt": "Calculate statistics on the I, J and K magnitudes of selected\n    objects from a catalogue.  Only those rows with the given OBJTYPE\n    and in the given Z range are included.  The minimum, maximum, \n    mean, standard deviation etc of the IMAG, JMAG and KMAG columns\n    will be written to standard output.",
+        "response": "stilts tpipe ifmt=ascii survey.txt \\\n             cmd='select \"OBJTYPE == 3 && Z > 0.15\"' \\\n             cmd='keepcols \"IMAG JMAG KMAG\"' \\\n             omode=stats"
+    },
+    {
+        "prompt": "Writes a FITS table to an SQL table, converting array-valued columns\n    to scalar ones.\n    To make the SQL connection work properly, the classpath is augmented\n    to include the path of the MySQL JDBC driver and the\n    jdbc.drivers system property is set to the JDBC driver\n    class name.  The output will be written as a new table named TABLEX\n    in the MySQL database named ASTRO1 on a MySQL server on the\n    local host.  The password, if required, will be prompted for,\n    as would any of the other required parameters if they had not been\n    given on the command line.\n    Any existing table in ASTRO1 with the name TABLEX is overwritten.\n    The only processing done here is by the explodeall command,\n    which takes any columns which have fixed-size array values and\n    replaces them in the output with multiple scalar columns.",
+        "response": "stilts -classpath lib/drivers/mysql-connector-java.jar \\\n       -Djdbc.drivers=com.mysql.jdbc.Driver \\\n       tpipe in=x.fits cmd=\"explodeall\" omode=tosql \\\n             protocol=mysql host=localhost db=ASTRO1 dbtable=TABLEX \\\n             write=dropcreate user=mbt"
+    },
+    {
+        "prompt": "This does exactly the same as the previous example, but achieves it\n   in a slightly different way.  In the first place, java is invoked \n   directly with the necessary flags rather than getting the \n   stilts script to do it.  Note that you cannot use java's\n   -jar flag in this case, because doing it like that\n   would not permit access to the additional classes that contain\n   the JDBC driver.\n   In the second place we use omode=out rather than \n   omode=tosql.  For this we need to supply an out\n   value which encodes the information about the SQL connection and\n   table in a special URL-like format.  As you can see, this is a bit\n   arcane, which is why the omode=tosql mode can be a help.",
+        "response": "java -classpath stilts.jar:lib/drivers/mysql-connector-java.jar\n     -Djdbc.drivers=com.mysql.jdbc.Driver \\\n     uk.ac.starlink.ttools.Stilts \\\n     tpipe in=x.fits \\\n           cmd=explodeall \\\n           omode=out \\\n           out=\"jdbc:mysql://localhost/ASTRO1?user=mbt#TABLEX\""
+    },
+    {
+        "prompt": "Calculates statistics on a selection of the rows in a catalogue,\n    and writes the result to the terminal.\n    In this example, every millionth row is sampled.",
+        "response": "stilts tpipe USNOB.FITS cmd='every 1000000' omode=stats"
+    },
+    {
+        "prompt": "Writes a table representing a density map of IRAS point sources\n    on the sky.  The output is a 2-column CSV file: the first column is\n    pixel index, and the second column is the number of rows in the\n    input table whose (RA,DEC) positions fall within that pixel.\n    The default tiling is used (currently level 5 HEALPix, which has\n    12288 pixels).",
+        "response": "stilts tskymap in=iras_psc.fits lon=RA lat=DEC out=iras_map.csv"
+    },
+    {
+        "prompt": "This does a similar job to the previous example, but explicitly\n    requests HEALPix level 6 tiling, and outputs to a FITS variant\n    that other applications such as Aladin understand as containing\n    a HEALPix map.\n    The output format is specified with ofmt=fits-healpix,\n    which writes a FITS file following the\n    HEALPix-FITS convention.\n    An additional filter\n    \"healpixmeta -csys C\"\n    is also supplied here: this indicates that the HEALPix pixels in\n    the output file are to be considered in the Celestial\n    (=equatorial) sky system.  If this is not done, Aladin assumes the\n    coordinate system to be Galactic and will align the results incorrectly\n    on the sky.",
+        "response": "stilts tskymap in=iras_psc.fits lon=RA lat=DEC tiling=hpx6\n               ocmd='healpixmeta -csys C'\n               ofmt=fits-healpix out=iras_map.fits"
+    },
+    {
+        "prompt": "Writes a table with columns giving median J-H, H-K and J-K colours,\n    but no source count column, from the sources in the file 2mpz.fits,\n    aggregated over each tile of a level 6 HEALPix grid.\n    The input table has equatorial coordinates,\n    but the addskycoords filter has been used so that the grid\n    is laid on the sky with galactic coordinates.\n    Setting complete=true guarantees that a row is written\n    to the output file for every sky pixel, including empty ones.\n    Note in this case that the output format is not specified explicitly,\n    so it will be inferred from the filename, to be \"normal\" FITS,\n    rather than healpix-fits.  The output data will still be\n    present, but external applications may not automatically\n    identify the pixel column.",
+        "response": "stilts tskymap in=2mpz.fits icmd='addskycoords fk5 galactic ra dec glon glat'\n               lon=glon lat=glat tiling=hpx6\n               cols='jCorr-hCorr hCorr-kCorr jCorr-kCorr' combine=median\n               count=false\n               complete=true\n               out=2mpzColors.fits"
+    },
+    {
+        "prompt": "Calculates a level-7 HEALPix map where each cell contains the\n    local number of observations per square arcminute, as determined\n    by summing all the phot_g_n_obs values from the\n    input table that fall into each tile and applying a suitable\n    scaling factor.  The grid coordinate system is explicitly labelled\n    as Galactic.",
+        "response": "stilts tskymap in=tgas_source.fits tiling=hpx7 lon=l lat=b count=false\n               cols=phot_g_n_obs combine=sum-per-unit perunit=arcmin2\n               ofmt=fits-healpix ocmd='healpixmeta -csys G'\n               out=obs-density.fits"
+    },
+    {
+        "prompt": "Simultaneously calculates the mean value of the bp_rp\n    column and the summed values of the phot_bp_mean_flux and\n    phot_rp_mean_flux columns for each HEALPix level 8 tile,\n    as well as the source density.",
+        "response": "stilts tskymap in=gaia_source.colfits tiling=hpx8 lon=l lat=b count=true\n               cols='bp_rp;mean phot_bp_mean_flux;sum phot_rp_mean_flux;sum'\n               out=gaia-stats.fits"
+    },
+    {
+        "prompt": "This prepares a source count map at healpix level 14\n    (3 billion pixels) from the given input table.\n    Since complete=false, only rows for non-empty pixels\n    are included in the output table.  Then, since the output mode is\n    count, these rows are just counted, discarding the\n    pixels themselves, giving the number of level-14 healpix pixels\n    touched by the sources in this input file.\n    Note this is not necessarily the most efficient way to calculate\n    coverage information.",
+        "response": "stilts tskymap in=gums_lmc.fits lon=alpha lat=delta\n               tiling=hpx14 complete=false omode=count"
+    },
+    {
+        "prompt": "Takes two input catalogues (VOTables), one with observations in\n    the V band and the other in the I band, and performs a match to find\n    objects within 2 arcseconds of each other.\n    The result is a new VOTable containing only rows where a match was found.",
+        "response": "stilts tskymatch2 in1=obs_v.xml in2=obs_i.xml out=obs_iv.xml \\\n                  ra1=OBS_RA dec1=OBS_DEC ra2=OBS_RA dec2=OBS_DEC error=2"
+    },
+    {
+        "prompt": "This is the same as the previous example but without explicit\n    specification of the sky position columns in either table.\n    It will work only if those columns are identified with appropriate\n    UCDs, for instance pos.eq.ra;meta.main and\n    pos.eq.dec:meta.main.\n    If no suitable UCDs are in place this invocation will fail with an error.",
+        "response": "stilts tskymatch2 in1=obs_v.xml in2=obs_i.xml out=obs_iv.xml \\\n                  error=2"
+    },
+    {
+        "prompt": "Object positions in the text file virgo1.txt are compared to those\n    in the FITS file mgc.fits.  The angles have been recorded in the text file\n    in radians, so they are converted to degrees here before use.\n    Use of the join=2not1 parameter causes the command to\n    identify all the objects in the first list \n    which do not have counterparts within 10 arcsec in the second list.\n    The number of such objects found is simply output to the terminal.",
+        "response": "stilts tskymatch2 in1=virgo1.txt ifmt1=ascii in2=mgc.fits \\\n                  ra1='radiansToDegrees(raRad)' dec1='radiansToDegrees(deRad)' \\\n                  ra2=MGC_ALPHA_J2000 dec2=MGC_DELTA_J2000 \\\n                  error=10 join=2not1 omode=count"
+    },
+    {
+        "prompt": "Validates the given file against whatever schemas it declares.\n    Success is indicated with a non-error exit.",
+        "response": "stilts xsdvalidate example-voresource.xml"
+    },
+    {
+        "prompt": "Validates the named file against whatever schemas it declares,\n    but uses the local file \"vor-local.xsd\" in the current\n    directory as the schema associated with the\n    \"http://www.ivoa.net/xml/VOResource/v1.0\" namespace,\n    rather than using any schema location given in the validated file.\n    It also requires that the top-level element has the given URI and\n    local name; if not, the validation will fail.\n    The verbose=true parameter provides some diagnostics\n    to standard output, including indications of which schemas were\n    used and where they were acquired from.",
+        "response": "stilts xsdvalidate\n       doc=example-voresource.xml\n       schemaloc='http://www.ivoa.net/xml/VOResource/v1.0=vor-local.xsd'\n       topel='{http://www.ivoa.net/xml/RegistryInterface/v1.0}Resource'\n       verbose=true"
+    }
+]

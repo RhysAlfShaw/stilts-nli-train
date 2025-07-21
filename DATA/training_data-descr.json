@@ -1,0 +1,42 @@
+[
+  {
+    "prompt": "What is the purpose of the STILTS tpipe command?",
+    "response": "The 'tpipe' command is used for processing a single table. It allows you to perform a pipeline of operations like adding or removing columns, filtering rows, sorting, and modifying metadata."
+  },
+  {
+    "prompt": "Can you explain what the tmatch2 command does?",
+    "response": "The 'tmatch2' command is designed to match rows between exactly two tables. It supports various matching algorithms, such as sky coordinates, exact value matches, or proximity in 1D space."
+  },
+  {
+    "prompt": "Tell me about the tmatchn command.",
+    "response": "'tmatchn' is a more general matching command that can match rows between two or more tables simultaneously based on criteria like sky position or exact column values."
+  },
+  {
+    "prompt": "What is the tcopy command used for in STILTS?",
+    "response": "'tcopy' is used to copy a table from one format to another. It can also be used to perform simple filtering or column selection during the copy process."
+  },
+  {
+    "prompt": "Describe the function of the plot2d command.",
+    "response": "'plot2d' is a powerful command for creating 2D plots, such as scatter plots or density maps, directly from table data. It offers extensive configuration options for customizing the appearance of the plot."
+  },
+  {
+    "prompt": "What does the cdsskymatch command do?",
+    "response": "The 'cdsskymatch' command performs a sky match between a local table and a table hosted by the CDS X-Match service, allowing you to cross-match your data against major astronomical surveys."
+  },
+  {
+    "prompt": "Can you explain the purpose of votlint?",
+    "response": "'votlint' is a utility for validating VOTable files. It checks whether a file conforms to the VOTable standard and reports any errors or warnings."
+  },
+  {
+    "prompt": "What is the tcube command for?",
+    "response": "The 'tcube' command is used to calculate N-dimensional histograms (data cubes) from table data, which is useful for analyzing the distribution of data across multiple parameters."
+  },
+  {
+    "prompt": "Tell me what the tjoin command does.",
+    "response": "'tjoin' is used to join two tables by appending the columns of the second table onto the first. Unlike a match, it assumes the rows correspond one-to-one in the given order."
+  },
+  {
+    "prompt": "What is the function of the tcat command?",
+    "response": "The 'tcat' command concatenates multiple tables together, appending the rows of subsequent tables to the end of the first one. It can also be used to interleave rows from multiple tables."
+  }
+]

@@ -1,0 +1,42 @@
+[
+  {
+    "prompt": "How do I match two catalogues, 'cat1.fits' and 'cat2.fits', based on their sky coordinates with a 1 arcsecond tolerance?",
+    "response": "stilts tmatchn nin=2 in1=cat1.fits in2=cat2.fits out=matched.fits matcher=sky params=1 values1='RA DEC' values2='RA DEC'"
+  },
+  {
+    "prompt": "I need to perform a sky match between 'a.fits' and 'b.fits'. The RA/Dec columns in 'a.fits' are 'RA_DEGREES' and 'DEC_DEGREES', but in 'b.fits' they are just 'RA' and 'DEC'. The match radius is 2.5 arcseconds.",
+    "response": "stilts tmatchn nin=2 in1=a.fits in2=b.fits out=output.fits matcher=sky params=2.5 values1='RA_DEGREES DEC_DEGREES' values2='RA DEC'"
+  },
+  {
+    "prompt": "What's the command to match three tables ('gdr3.fits', 'panstarrs.fits', '2mass.fits') on their sky positions within 0.8 arcsec?",
+    "response": "stilts tmatchn nin=3 in1=gdr3.fits in2=panstarrs.fits in3=2mass.fits out=matched_3way.fits matcher=sky params=0.8 values1='ra dec' values2='ra dec' values3='ra dec'"
+  },
+  {
+    "prompt": "I want to match 'table1.csv' and 'table2.csv' using an exact match on the 'source_id' column.",
+    "response": "stilts tmatchn nin=2 in1=table1.csv in2=table2.csv out=id_matched.fits matcher=exact values1='source_id' values2='source_id'"
+  },
+  {
+    "prompt": "How do I perform a 2-way sky match and only keep rows that have a match in both input tables?",
+    "response": "stilts tmatchn nin=2 in1=cat1.fits in2=cat2.fits out=inner_join.fits matcher=sky params=1 values1='RA DEC' values2='RA DEC' join=1and2"
+  },
+  {
+    "prompt": "I want to do a sky match but keep all rows from the first table, even if they don't have a match in the second.",
+    "response": "stilts tmatchn nin=2 in1=cat1.fits in2=cat2.fits out=left_outer_join.fits matcher=sky params=1 values1='RA DEC' values2='RA DEC' join=1or2"
+  },
+  {
+    "prompt": "Match 'cat_a.fits' and 'cat_b.fits' with a 1.5 arcsec radius, and then in the output, create a new column 'separation' that contains the distance between the matched objects.",
+    "response": "stilts tmatchn nin=2 in1=cat_a.fits in2=cat_b.fits out=matched_with_sep.fits matcher=sky params=1.5 values1='RA DEC' values2='RA DEC' ocmd='addcol separation Separation'"
+  },
+  {
+    "prompt": "I need to match two tables on sky position, but only keep the best match for each source in the first table.",
+    "response": "stilts tmatchn nin=2 in1=cat1.fits in2=cat2.fits out=best_match.fits matcher=sky params=3 values1='RA DEC' values2='RA DEC' find=best"
+  },
+  {
+    "prompt": "Match 'main_survey.fits' and 'follow_up.fits' on sky position. From the first table I need 'ID_1' and 'G_MAG', and from the second I need 'TARGET_ID' and 'SPECTYPE'.",
+    "response": "stilts tmatchn nin=2 in1=main_survey.fits in2=follow_up.fits out=selected_cols.fits matcher=sky params=1 values1='RA DEC' values2='RA DEC' ocmd='keepcols \"ID_1 G_MAG TARGET_ID SPECTYPE\"'"
+  },
+  {
+    "prompt": "How can I match four catalogues using their object IDs, which are in a column named 'objID' in all tables?",
+    "response": "stilts tmatchn nin=4 in1=c1.fits in2=c2.fits in3=c3.fits in4=c4.fits out=multi_id_match.fits matcher=exact values1=objID values2=objID values3=objID values4=objID"
+  }
+]

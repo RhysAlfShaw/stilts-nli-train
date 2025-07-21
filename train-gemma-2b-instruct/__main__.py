@@ -14,6 +14,16 @@ MODEL_NAME = "google/gemma-2b-it"
 OUTPUT_DIR = "/scratch/Rhys/stilts_models/gemma-2b-it-finetuned"
 PLOT_OUTPUT_DIR = "."
 TRAIN_FILE = "DATA/training_data.json"
+ADDITIONAL_TRAIN_FILES = [
+    "DATA/training_data-tmatchn.json",
+    "DATA/training_data-tpip.json",
+    "DATA/training_data-tmatch2.json",
+    "DATA/training_data-descr.json",
+    "DATA/training_data-local-file.json",
+    "DATA/training_data-cmd-opts.json",
+    "DATA/training_data-basic-file-formats.json",
+    "DATA/doc-examples-formatted.json",
+]
 EVAL_TEST_SPLIT = 0.3  # 30% for evaluation
 BATCH_SIZE = 1  # good starting point.
 LEARNING_RATE = 5e-5  # 5e-5 is a common learning rate for fine-tuning large models
@@ -35,7 +45,7 @@ print(f"Using device: {device}")
 # set a max usage of GPU memory
 if device.type == "cuda":
     # set to 80% of total memory
-    torch.cuda.set_per_process_memory_fraction(0.85)
+    torch.cuda.set_per_process_memory_fraction(0.60)
 
 
 os.makedirs(OUTPUT_DIR, exist_ok=True)
@@ -48,6 +58,14 @@ model = AutoModelForCausalLM.from_pretrained(
 print("Preparing dataset...")
 with open(TRAIN_FILE, "r") as f:
     data = json.load(f)
+
+# Load additional training data if specified
+if ADDITIONAL_TRAIN_FILES:
+    for additional_file in ADDITIONAL_TRAIN_FILES:
+        with open(additional_file, "r") as f:
+            additional_data = json.load(f)
+            data.extend(additional_data)
+
 
 formatted_data = []
 for item in data:
@@ -98,7 +116,7 @@ training_args = TrainingArguments(
     warmup_ratio=0.1,
     lr_scheduler_type="cosine",
     logging_dir=f"{OUTPUT_DIR}/logs",
-    logging_steps=1,
+    logging_steps=10,
     save_strategy="epoch",
     save_total_limit=1,
     report_to="tensorboard",

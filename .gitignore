@@ -189,4 +189,5 @@ outputs/
 plan.md 
 sun256.html 
 stilts_tasks.txt 
-sun256.txt
+sun256.txt 
+*.xml
