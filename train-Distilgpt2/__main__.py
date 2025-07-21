@@ -21,7 +21,7 @@ VALID_FILE = "testing_data.json"  # Added validation file
 
 BATCH_SIZE = 48
 LEARNING_RATE = 1e-4
-NUM_EPOCHS = 500
+NUM_EPOCHS = 400
 GRADIENT_ACCUMULATION_STEPS = 4
 
 # Load access token
@@ -291,3 +291,4 @@ else:
 
 print("\nFine-tuning complete.")
 print(f"Model and tokenizer saved in {final_model_path}")
+# Example inference

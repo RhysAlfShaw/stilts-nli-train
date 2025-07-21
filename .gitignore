@@ -181,3 +181,12 @@ stilts-llm-finetuned-lora/
 stilts-llm-finetuned-distilgpt2/
 *.o
 *.gguf
+MODELS
+Llama-3.2-1B
+llama3.2-1b-instruct
+unsloth_compiled_cache/
+outputs/
+plan.md 
+sun256.html 
+stilts_tasks.txt 
+sun256.txt

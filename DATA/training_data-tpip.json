@@ -1,0 +1,66 @@
+[
+  {
+    "prompt": "How can I add a new column named 'new_col' with a constant value of 1.23 to my table?",
+    "response": "tpipe in=input.fits out=output.fits cmd='addcol new_col \"1.23\"'"
+  },
+  {
+    "prompt": "I only want to keep the 'RA', 'DEC', and 'MAG_G' columns. How do I do that?",
+    "response": "tpipe in=input.fits out=output.fits cmd='keepcols \"RA DEC MAG_G\"'"
+  },
+  {
+    "prompt": "What is the command to rename the column 'source_id' to 'gaia_id'?",
+    "response": "tpipe in=input.fits out=output.fits cmd='colmeta -name source_id gaia_id'"
+  },
+  {
+    "prompt": "I need to update the UCD for the 'phot_g_mean_mag' column to 'phot.mag;em.opt.G'.",
+    "response": "tpipe in=input.fits out=output.fits cmd='colmeta -ucd phot_g_mean_mag phot.mag;em.opt.G'"
+  },
+  {
+    "prompt": "How do I set the units for the 'parallax' column to 'mas'?",
+    "response": "tpipe in=input.fits out=output.fits cmd='colmeta -units parallax mas'"
+  },
+  {
+    "prompt": "I want to replace the values in 'col_a' with the square of its current values.",
+    "response": "tpipe in=input.fits out=output.fits cmd='replacecol col_a \"col_a * col_a\"'"
+  },
+  {
+    "prompt": "Can you show me how to add a column named 'random_val' with random numbers between 0 and 1?",
+    "response": "tpipe in=input.fits out=output.fits cmd='randomcol random_val'"
+  },
+  {
+    "prompt": "I need to add a column that just numbers the rows sequentially, starting from 1.",
+    "response": "tpipe in=input.fits out=output.fits cmd='seqcol row_index'"
+  },
+  {
+    "prompt": "How do I convert my RA and Dec columns, named 'ra_deg' and 'dec_deg', into Cartesian (x, y, z) coordinates?",
+    "response": "tpipe in=input.fits out=output.fits cmd='skycoords -inunit deg -outunit car ra_deg dec_deg x y z'"
+  },
+  {
+    "prompt": "Filter my table to only include rows where the 'mag_error' is less than 0.1.",
+    "response": "tpipe in=input.fits out=output.fits cmd='select \"mag_error < 0.1\"'"
+  },
+  {
+    "prompt": "I need to sort my table based on the 'distance' column in ascending order.",
+    "response": "tpipe in=input.fits out=output.fits cmd='sort distance'"
+  },
+  {
+    "prompt": "Create a new column called 'g_minus_r' which is the difference between 'g_mag' and 'r_mag'.",
+    "response": "tpipe in=input.fits out=output.fits cmd='addcol g_minus_r \"g_mag - r_mag\"'"
+  },
+  {
+    "prompt": "How do I get rid of the 'flux_over_error' and 'quality_flag' columns?",
+    "response": "tpipe in=input.fits out=output.fits cmd='delcols \"flux_over_error quality_flag\"'"
+  },
+  {
+    "prompt": "I need to change the 'star_id' column from a double to an integer.",
+    "response": "tpipe in=input.fits out=output.fits cmd='replacecol star_id \"(int)star_id\"'"
+  },
+  {
+    "prompt": "I want to do a few things at once: rename 'col1' to 'alpha', add a new column 'beta' with the value of 'alpha' squared, and then keep only the 'alpha' and 'beta' columns.",
+    "response": "tpipe in=input.fits out=output.fits cmd='colmeta -name col1 alpha; addcol beta \\\"alpha*alpha\\\"; keepcols \\\"alpha beta\\\"'"
+  },
+  {
+    "prompt": "How can I update the description of the 'pm_ra' column?",
+    "response": "tpipe in=input.fits out=output.fits cmd='colmeta -desc pm_ra \"Proper motion in Right Ascension\"'"
+  }
+]
