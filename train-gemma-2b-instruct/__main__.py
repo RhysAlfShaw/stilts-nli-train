@@ -186,3 +186,12 @@ if trainer.state.log_history:
 else:
     print("No log history found to plot loss curve.")
 # Save the plot
+
+# now run the hf_to_gguf.py script to convert the model to GGUF format
+print("\nConverting model to GGUF format...")
+import subprocess
+
+# this is not working atm.?
+cmd = f"python hf_to_gguf.py --model_path {OUTPUT_DIR}/final_model --output_path {OUTPUT_DIR}/final_model.gguf"
+subprocess.run(cmd, shell=True, check=True)
+print("\nTraining complete and model saved in GGUF format.")
