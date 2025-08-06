@@ -20,7 +20,7 @@ Prompts = [
     "How can I change a fits file (testing.fits) to csv format using STILTS?",
     "I want to do sky cross-matching between catalogues DRUID.fits and pybdsf.fits using their RA and Dec columns and with a 6 arcsecond seperation.",
     "What is STILTS?",
-    "I have duplicated rows in my catalogue, can you remove these and call the new catalogue 'cleaned.fits'?",
+    "I have duplicated rows in my catalogue based on column 'RA', can you remove these and call the new catalogue 'cleaned.fits'?",
     "For my catalgue 'input.fits', I want to add a new column 'square_col' which is the square of the values in the column 'value_col'.",
     "I want to filter my catalogue 'input.fits' to only include rows where the column 'value_col' is greater than 10, and save the result to 'filtered.fits'.",
 ]

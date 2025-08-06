@@ -1,42 +1,145 @@
 [
-  {
-    "prompt": "How do I add a new column in STILTS using the cmd argument?",
-    "response": "The 'addcol' command is used to add a new column to a table. You need to provide the new column's name and an expression to calculate its values, for example: cmd='addcol new_col_name \"expression\"'"
-  },
-  {
-    "prompt": "What is the command to keep only a specific set of columns?",
-    "response": "The 'keepcols' command allows you to specify a list of columns to retain in the output table, discarding all others. The syntax is cmd='keepcols \"col1 col2 col3\"'."
-  },
-  {
-    "prompt": "Tell me about the 'select' filter.",
-    "response": "The 'select' command filters the rows of a table, keeping only those for which a given expression evaluates to true. For instance, cmd='select \"MAG_G < 18.0\"' would keep only rows with a G magnitude brighter than 18."
-  },
-  {
-    "prompt": "How can I change the metadata of a column, like its name or units?",
-    "response": "The 'colmeta' command is used to modify the metadata of a column. You can change its name, UCD, units, or description. For example: cmd='colmeta -name old_name new_name'."
-  },
-  {
-    "prompt": "What does the 'sort' command do?",
-    "response": "The 'sort' command sorts the rows of the table based on the values in one or more specified columns. By default, it sorts in ascending order. Use 'sort -down' for descending order."
-  },
-  {
-    "prompt": "How do I get rid of columns I don't need?",
-    "response": "The 'delcols' command is used to remove one or more specified columns from a table. The usage is cmd='delcols \"col_to_delete1 col_to_delete2\"'."
-  },
-  {
-    "prompt": "Explain the 'replacecol' command.",
-    "response": "The 'replacecol' command replaces the values in an existing column with new values calculated from a given expression. This is useful for data type conversions or recalculating a value in place, like cmd='replacecol flux_jy \"flux_mJy / 1000\"'."
-  },
-  {
-    "prompt": "What is the 'head' filter for?",
-    "response": "The 'head' command selects only the first N rows of a table, similar to the Unix head command. For example, cmd='head 100' would keep only the first 100 rows."
-  },
-  {
-    "prompt": "How do I add a column with a unique row number?",
-    "response": "The 'seqcol' command adds a new column containing a sequence of integers, which is useful for numbering rows. The syntax is cmd='seqcol name_of_row_number_col'."
-  },
-  {
-    "prompt": "Tell me about the 'every' filter.",
-    "response": "The 'every' command is a filter that selects rows at a regular interval. For example, cmd='every 10' will keep the 1st, 11th, 21st, etc., rows, effectively sampling 10% of the table."
-  }
+    {
+        "prompt": "How do I add a new column in STILTS using the cmd argument?",
+        "response": "The 'addcol' command is used to add a new column to a table. You need to provide the new column's name and an expression to calculate its values, for example: cmd='addcol new_col_name \"expression\"'",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: Syntax error: Unterminated quoted string\n"
+    },
+    {
+        "prompt": "What is the command to keep only a specific set of columns?",
+        "response": "The 'keepcols' command allows you to specify a list of columns to retain in the output table, discarding all others. The syntax is cmd='keepcols \"col1 col2 col3\"'.",
+        "chat.jar": "failed",
+        "error": "\nNo such task: The\n\nUsage:\n   stilts [-help] [-version] [-verbose] [-allowunused] [-prompt] [-bench]\n          [-debug] [-batch] [-memory] [-disk] [-memgui]\n          [-checkversion <vers>] [-stdout <file>] [-stderr <file>]\n          <task-name> <task-args>\n\n   stilts <task-name> help[=<param-name>|*]\n\n   Known tasks:\n      arrayjoin\n      calc\n      cdsskymatch\n      cone\n      coneskymatch\n      datalinklint\n      funcs\n      mocshape\n      parqlint\n      parqlook\n      pixfoot\n      pixsample\n      plot2d\n      plot3d\n      plothist\n      regquery\n      server\n      sqlclient\n      sqlskymatch\n      sqlupdate\n      taplint\n      tapquery\n      tapresume\n      tapskymatch\n      tcat\n      tcatn\n      tcopy\n      tcube\n      tgridmap\n      tgroup\n      tjoin\n      tloop\n      tmatch1\n      tmatch2\n      tmatchn\n      tmulti\n      tmultin\n      tpipe\n      tskymap\n      tskymatch2\n      votcopy\n      votlint\n      xsdvalidate\n      plot2plane\n      plot2sky\n      plot2cube\n      plot2sphere\n      plot2corner\n      plot2time\n\n"
+    },
+    {
+        "prompt": "Tell me about the 'select' filter.",
+        "response": "The 'select' command filters the rows of a table, keeping only those for which a given expression evaluates to true. For instance, cmd='select \"MAG_G < 18.0\"' would keep only rows with a G magnitude brighter than 18.",
+        "chat.jar": "failed",
+        "error": "\nNo such task: The\n\nUsage:\n   stilts [-help] [-version] [-verbose] [-allowunused] [-prompt] [-bench]\n          [-debug] [-batch] [-memory] [-disk] [-memgui]\n          [-checkversion <vers>] [-stdout <file>] [-stderr <file>]\n          <task-name> <task-args>\n\n   stilts <task-name> help[=<param-name>|*]\n\n   Known tasks:\n      arrayjoin\n      calc\n      cdsskymatch\n      cone\n      coneskymatch\n      datalinklint\n      funcs\n      mocshape\n      parqlint\n      parqlook\n      pixfoot\n      pixsample\n      plot2d\n      plot3d\n      plothist\n      regquery\n      server\n      sqlclient\n      sqlskymatch\n      sqlupdate\n      taplint\n      tapquery\n      tapresume\n      tapskymatch\n      tcat\n      tcatn\n      tcopy\n      tcube\n      tgridmap\n      tgroup\n      tjoin\n      tloop\n      tmatch1\n      tmatch2\n      tmatchn\n      tmulti\n      tmultin\n      tpipe\n      tskymap\n      tskymatch2\n      votcopy\n      votlint\n      xsdvalidate\n      plot2plane\n      plot2sky\n      plot2cube\n      plot2sphere\n      plot2corner\n      plot2time\n\n"
+    },
+    {
+        "prompt": "How can I change the metadata of a column, like its name or units?",
+        "response": "The 'colmeta' command is used to modify the metadata of a column. You can change its name, UCD, units, or description. For example: cmd='colmeta -name old_name new_name'.",
+        "chat.jar": "failed",
+        "error": "\nNo such task: The\n\nUsage:\n   stilts [-help] [-version] [-verbose] [-allowunused] [-prompt] [-bench]\n          [-debug] [-batch] [-memory] [-disk] [-memgui]\n          [-checkversion <vers>] [-stdout <file>] [-stderr <file>]\n          <task-name> <task-args>\n\n   stilts <task-name> help[=<param-name>|*]\n\n   Known tasks:\n      arrayjoin\n      calc\n      cdsskymatch\n      cone\n      coneskymatch\n      datalinklint\n      funcs\n      mocshape\n      parqlint\n      parqlook\n      pixfoot\n      pixsample\n      plot2d\n      plot3d\n      plothist\n      regquery\n      server\n      sqlclient\n      sqlskymatch\n      sqlupdate\n      taplint\n      tapquery\n      tapresume\n      tapskymatch\n      tcat\n      tcatn\n      tcopy\n      tcube\n      tgridmap\n      tgroup\n      tjoin\n      tloop\n      tmatch1\n      tmatch2\n      tmatchn\n      tmulti\n      tmultin\n      tpipe\n      tskymap\n      tskymatch2\n      votcopy\n      votlint\n      xsdvalidate\n      plot2plane\n      plot2sky\n      plot2cube\n      plot2sphere\n      plot2corner\n      plot2time\n\n"
+    },
+    {
+        "prompt": "What does the 'sort' command do?",
+        "response": "The 'sort' command sorts the rows of the table based on the values in one or more specified columns. By default, it sorts in ascending order. Use 'sort -down' for descending order.",
+        "chat.jar": "failed",
+        "error": "\nNo such task: The\n\nUsage:\n   stilts [-help] [-version] [-verbose] [-allowunused] [-prompt] [-bench]\n          [-debug] [-batch] [-memory] [-disk] [-memgui]\n          [-checkversion <vers>] [-stdout <file>] [-stderr <file>]\n          <task-name> <task-args>\n\n   stilts <task-name> help[=<param-name>|*]\n\n   Known tasks:\n      arrayjoin\n      calc\n      cdsskymatch\n      cone\n      coneskymatch\n      datalinklint\n      funcs\n      mocshape\n      parqlint\n      parqlook\n      pixfoot\n      pixsample\n      plot2d\n      plot3d\n      plothist\n      regquery\n      server\n      sqlclient\n      sqlskymatch\n      sqlupdate\n      taplint\n      tapquery\n      tapresume\n      tapskymatch\n      tcat\n      tcatn\n      tcopy\n      tcube\n      tgridmap\n      tgroup\n      tjoin\n      tloop\n      tmatch1\n      tmatch2\n      tmatchn\n      tmulti\n      tmultin\n      tpipe\n      tskymap\n      tskymatch2\n      votcopy\n      votlint\n      xsdvalidate\n      plot2plane\n      plot2sky\n      plot2cube\n      plot2sphere\n      plot2corner\n      plot2time\n\n"
+    },
+    {
+        "prompt": "How do I get rid of columns I don't need?",
+        "response": "The 'delcols' command is used to remove one or more specified columns from a table. The usage is cmd='delcols \"col_to_delete1 col_to_delete2\"'.",
+        "chat.jar": "failed",
+        "error": "\nNo such task: The\n\nUsage:\n   stilts [-help] [-version] [-verbose] [-allowunused] [-prompt] [-bench]\n          [-debug] [-batch] [-memory] [-disk] [-memgui]\n          [-checkversion <vers>] [-stdout <file>] [-stderr <file>]\n          <task-name> <task-args>\n\n   stilts <task-name> help[=<param-name>|*]\n\n   Known tasks:\n      arrayjoin\n      calc\n      cdsskymatch\n      cone\n      coneskymatch\n      datalinklint\n      funcs\n      mocshape\n      parqlint\n      parqlook\n      pixfoot\n      pixsample\n      plot2d\n      plot3d\n      plothist\n      regquery\n      server\n      sqlclient\n      sqlskymatch\n      sqlupdate\n      taplint\n      tapquery\n      tapresume\n      tapskymatch\n      tcat\n      tcatn\n      tcopy\n      tcube\n      tgridmap\n      tgroup\n      tjoin\n      tloop\n      tmatch1\n      tmatch2\n      tmatchn\n      tmulti\n      tmultin\n      tpipe\n      tskymap\n      tskymatch2\n      votcopy\n      votlint\n      xsdvalidate\n      plot2plane\n      plot2sky\n      plot2cube\n      plot2sphere\n      plot2corner\n      plot2time\n\n"
+    },
+    {
+        "prompt": "Explain the 'replacecol' command.",
+        "response": "The 'replacecol' command replaces the values in an existing column with new values calculated from a given expression. This is useful for data type conversions or recalculating a value in place, like cmd='replacecol flux_jy \"flux_mJy / 1000\"'.",
+        "chat.jar": "failed",
+        "error": "\nNo such task: The\n\nUsage:\n   stilts [-help] [-version] [-verbose] [-allowunused] [-prompt] [-bench]\n          [-debug] [-batch] [-memory] [-disk] [-memgui]\n          [-checkversion <vers>] [-stdout <file>] [-stderr <file>]\n          <task-name> <task-args>\n\n   stilts <task-name> help[=<param-name>|*]\n\n   Known tasks:\n      arrayjoin\n      calc\n      cdsskymatch\n      cone\n      coneskymatch\n      datalinklint\n      funcs\n      mocshape\n      parqlint\n      parqlook\n      pixfoot\n      pixsample\n      plot2d\n      plot3d\n      plothist\n      regquery\n      server\n      sqlclient\n      sqlskymatch\n      sqlupdate\n      taplint\n      tapquery\n      tapresume\n      tapskymatch\n      tcat\n      tcatn\n      tcopy\n      tcube\n      tgridmap\n      tgroup\n      tjoin\n      tloop\n      tmatch1\n      tmatch2\n      tmatchn\n      tmulti\n      tmultin\n      tpipe\n      tskymap\n      tskymatch2\n      votcopy\n      votlint\n      xsdvalidate\n      plot2plane\n      plot2sky\n      plot2cube\n      plot2sphere\n      plot2corner\n      plot2time\n\n"
+    },
+    {
+        "prompt": "What is the 'head' filter for?",
+        "response": "The 'head' command selects only the first N rows of a table, similar to the Unix head command. For example, cmd='head 100' would keep only the first 100 rows.",
+        "chat.jar": "failed",
+        "error": "\nNo such task: The\n\nUsage:\n   stilts [-help] [-version] [-verbose] [-allowunused] [-prompt] [-bench]\n          [-debug] [-batch] [-memory] [-disk] [-memgui]\n          [-checkversion <vers>] [-stdout <file>] [-stderr <file>]\n          <task-name> <task-args>\n\n   stilts <task-name> help[=<param-name>|*]\n\n   Known tasks:\n      arrayjoin\n      calc\n      cdsskymatch\n      cone\n      coneskymatch\n      datalinklint\n      funcs\n      mocshape\n      parqlint\n      parqlook\n      pixfoot\n      pixsample\n      plot2d\n      plot3d\n      plothist\n      regquery\n      server\n      sqlclient\n      sqlskymatch\n      sqlupdate\n      taplint\n      tapquery\n      tapresume\n      tapskymatch\n      tcat\n      tcatn\n      tcopy\n      tcube\n      tgridmap\n      tgroup\n      tjoin\n      tloop\n      tmatch1\n      tmatch2\n      tmatchn\n      tmulti\n      tmultin\n      tpipe\n      tskymap\n      tskymatch2\n      votcopy\n      votlint\n      xsdvalidate\n      plot2plane\n      plot2sky\n      plot2cube\n      plot2sphere\n      plot2corner\n      plot2time\n\n"
+    },
+    {
+        "prompt": "How do I add a column with a unique row number?",
+        "response": "The 'seqcol' command adds a new column containing a sequence of integers, which is useful for numbering rows. The syntax is cmd='seqcol name_of_row_number_col'.",
+        "chat.jar": "failed",
+        "error": "\nNo such task: The\n\nUsage:\n   stilts [-help] [-version] [-verbose] [-allowunused] [-prompt] [-bench]\n          [-debug] [-batch] [-memory] [-disk] [-memgui]\n          [-checkversion <vers>] [-stdout <file>] [-stderr <file>]\n          <task-name> <task-args>\n\n   stilts <task-name> help[=<param-name>|*]\n\n   Known tasks:\n      arrayjoin\n      calc\n      cdsskymatch\n      cone\n      coneskymatch\n      datalinklint\n      funcs\n      mocshape\n      parqlint\n      parqlook\n      pixfoot\n      pixsample\n      plot2d\n      plot3d\n      plothist\n      regquery\n      server\n      sqlclient\n      sqlskymatch\n      sqlupdate\n      taplint\n      tapquery\n      tapresume\n      tapskymatch\n      tcat\n      tcatn\n      tcopy\n      tcube\n      tgridmap\n      tgroup\n      tjoin\n      tloop\n      tmatch1\n      tmatch2\n      tmatchn\n      tmulti\n      tmultin\n      tpipe\n      tskymap\n      tskymatch2\n      votcopy\n      votlint\n      xsdvalidate\n      plot2plane\n      plot2sky\n      plot2cube\n      plot2sphere\n      plot2corner\n      plot2time\n\n"
+    },
+    {
+        "prompt": "Tell me about the 'every' filter.",
+        "response": "The 'every' command is a filter that selects rows at a regular interval. For example, cmd='every 10' will keep the 1st, 11th, 21st, etc., rows, effectively sampling 10% of the table.",
+        "chat.jar": "failed",
+        "error": "\nNo such task: The\n\nUsage:\n   stilts [-help] [-version] [-verbose] [-allowunused] [-prompt] [-bench]\n          [-debug] [-batch] [-memory] [-disk] [-memgui]\n          [-checkversion <vers>] [-stdout <file>] [-stderr <file>]\n          <task-name> <task-args>\n\n   stilts <task-name> help[=<param-name>|*]\n\n   Known tasks:\n      arrayjoin\n      calc\n      cdsskymatch\n      cone\n      coneskymatch\n      datalinklint\n      funcs\n      mocshape\n      parqlint\n      parqlook\n      pixfoot\n      pixsample\n      plot2d\n      plot3d\n      plothist\n      regquery\n      server\n      sqlclient\n      sqlskymatch\n      sqlupdate\n      taplint\n      tapquery\n      tapresume\n      tapskymatch\n      tcat\n      tcatn\n      tcopy\n      tcube\n      tgridmap\n      tgroup\n      tjoin\n      tloop\n      tmatch1\n      tmatch2\n      tmatchn\n      tmulti\n      tmultin\n      tpipe\n      tskymap\n      tskymatch2\n      votcopy\n      votlint\n      xsdvalidate\n      plot2plane\n      plot2sky\n      plot2cube\n      plot2sphere\n      plot2corner\n      plot2time\n\n"
+    },
+    {
+        "prompt": "How can I add a column named 'g_minus_r' which is the difference between 'g_mag' and 'r_mag'?",
+        "response": "stilts tpipe in=input.fits out=output.fits cmd='addcol g_minus_r \"g_mag - r_mag\"'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need to update the UCD for the 'phot_g_mean_mag' column to 'phot.mag;em.opt.G'.",
+        "response": "stilts tpipe in=input.fits out=output.fits cmd='colmeta -ucd phot_g_mean_mag phot.mag;em.opt.G'",
+        "chat.jar": "failed",
+        "error": "Error: Unknown processing command: em.opt.G\n\nAvailable filters:\n   addcol [-after <col-id> | -before <col-id>]\n          [-units <units>] [-ucd <ucd>] [-utype <utype>] [-xtype <xtype>]\n          [-desc <descrip>] [-shape <n>[,<n>...][,*]] [-elsize <n>]\n          <col-name> <expr>\n   addpixsample [-radius <expr-rad>] [-systems <in-sys> <pix-sys>]\n                <expr-lon> <expr-lat> <healpix-file>\n   addresolve <col-id-objname> <col-name-ra> <col-name-dec>\n   addskycoords [-epoch <expr>] [-inunit deg|rad|sex] [-outunit deg|rad|sex]\n                <insys> <outsys> <col-id1> <col-id2> <col-name1> <col-name2>\n   assert <test-expr> [<msg-expr>]\n   badval <bad-val> <colid-list>\n   cache\n   check\n   clearparams <pname> ...\n   collapsecols [-[no]keepscalars] <array-colname> <col-id0> <ncol>\n   colmeta [-name <name>] [-units <units>] [-ucd <ucd>]\n           [-utype <utype>] [-xtype <xtype>] [-desc <descrip>]\n           [-shape <n>[,<n>...][,*]] [-elsize <n>]\n           <colid-list>\n   constcol [-noparam] [-acceptnull] [-[no]parallel] [<colid-list>]\n   delcols <colid-list>\n   every [-exact|-approx] <step>\n   explodecols <colid-list>\n   explodeall [-ifndim <ndim>] [-ifshape <dims>]\n   fixcolnames \n   group [-[no]parallel] <key> [<key> ...] [<aggcol> ...]\n   head <nrows>\n   healpixmeta [-level <n>] [-implicit|-column <col-id>] [-csys C|G|E] [-nested|-ring]\n   keepcols <colid-list>\n   meta [<item> ...]\n   progress\n   random\n   randomview\n   repeat [-row|-table] <count>\n   replacecol [-name <name>] [-units <units>] [-ucd <ucd>]\n              [-utype <utype>] [-xtype <xtype>] [-desc <descrip>]\n              <col-id> <expr>\n   replaceval <old-val> <new-val> <colid-list>\n   rowrange <first> <last>|+<count>\n   select <expr>\n   seqview\n   setparam [-type byte|short|int|long|float|double|boolean|string]\n            [-desc <descrip>] [-unit <units>] [-ucd <ucd>]\n            [-utype <utype>] [-xtype <xtype>]\n            <pname> <pexpr>\n   shuffle [-seed <int>]\n   sort [-down] [-nullsfirst] [-[no]parallel] <key-list>\n   sorthead [-tail] [-down] [-nullsfirst] <nrows> <key-list>\n   stats [-[no]parallel] [-qapprox|-qexact] [<item> ...]\n   tablename <name>\n   tail <nrows>\n   transpose [-namecol <col-id>]\n   uniq [-count] [<colid-list>]\n\n"
+    },
+    {
+        "prompt": "What is the command to delete the first and third columns from my table?",
+        "response": "stilts tpipe in=input.fits out=output.fits cmd='delcols \"1 3\"'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I only want to keep the 'RA', 'DEC', and 'ID' columns in my final table.",
+        "response": "stilts tpipe in=input.fits out=output.fits cmd='keepcols \"RA DEC ID\"'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "How do I filter my table to only include rows where the 'mag_error' is less than 0.1?",
+        "response": "stilts tpipe in=input.fits out=output.fits cmd='select \"mag_error < 0.1\"'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need to sort my table based on the 'distance' column in descending order.",
+        "response": "stilts tpipe in=input.fits out=output.fits cmd='sort -down distance'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "How do I get just the first 100 rows of my table 'data.fits'?",
+        "response": "stilts tpipe in=data.fits out=output.fits cmd='head 100'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I only want to see the last 20 entries in 'catalog.fits'.",
+        "response": "stilts tpipe in=catalog.fits out=output.fits cmd='tail 20'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "How can I sample my table 'big_survey.fits' by taking every 50th row?",
+        "response": "stilts tpipe in=big_survey.fits out=output.fits cmd='every 50'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "In my table 'raw.fits', missing flux values are marked as -9999. How do I replace all instances of -9999 in the 'FLUX' column with a blank/null value?",
+        "response": "stilts tpipe in=raw.fits out=output.fits cmd='badval -9999 FLUX'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I have a 'FLAG' column with integer values. How do I replace every occurrence of the number 2 with the number 9?",
+        "response": "stilts tpipe in=data.fits out=output.fits cmd='replaceval 2 9 FLAG'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "How can I calculate basic statistics (mean, stddev, min, max) for the 'MAG_G' column in my table 'stars.fits'?",
+        "response": "stilts tpipe in=stars.fits cmd='stats MAG_G'",
+        "chat.jar": "failed",
+        "error": "Error: Unknown quantity MAG_G must be one of: \n\n       * Index: Position of column in table\n       * Name: Column name\n       * Class: Data type of objects in column\n       * Shape: Shape of array values\n       * ElSize: Size of each element in column (mostly useful for strings)\n       * Units: Unit string\n       * Description: Description of data in the column\n       * UCD: Unified Content Descriptor\n       * Utype: Type in data model\n       * Xtype: Extended data type\n       * CoosysSystem: Sky coordinate system name from COOSYS\n       * CoosysEpoch: Sky epoch from COOSYS\n       * CoosysRefposition: Reference position from COOSYS\n       * CoosysEquinox: Sky equinox from COOSYS\n       * TimesysTimeorigin: Time origin from TIMESYS\n       * TimesysTimescale: Timescale from TIMESYS\n       * TimesysRefposition: Ref position from TIMESYS\n       * STIL_HPX_LEVEL: Level of HEALPix pixels contained in the table\n            (nside=2^level)\n       * STIL_HPX_ISNEST: True for NEST indexation scheme, False for RING\n       * STIL_HPX_COLNAME: Name of the table column containing HEALPix\n            index; null value or empty string indicates implicit\n       * STIL_HPX_CSYS: 'C'=celestial/equatorial, 'G'=galactic, 'E'=ecliptic\n       * NGood: Number of non-blank cells\n       * NBad: Number of blank cells\n       * Mean: Average\n       * StDev: Population Standard deviation\n       * Variance: Population Variance\n       * SampStDev: Sample Standard Deviation\n       * SampVariance: Sample Variance\n       * MedAbsDev: Median Absolute Deviation\n       * ScMedAbsDev: Median Absolute Deviation * 1.4826\n       * Skew: Gamma 1 skewness measure\n       * Kurtosis: Gamma 2 peakedness measure\n       * Minimum: Numeric minimum\n       * Maximum: Numeric maximum\n       * Sum: Sum of values\n       * MinPos: Row index of numeric minimum\n       * MaxPos: Row index of numeric maximum\n       * Cardinality: Number of distinct values in column; values >100\n            ignored\n       * Median: Middle value in sequence\n       * Quartile1: First quartile\n       * Quartile2: Second quartile\n       * Quartile3: Third quartile\n       * ArrayNGood: Per-element non-blank counts for fixed-length array\n            columns\n       * ArraySum: Per-element sums for fixed-length array columns\n       * ArrayMean: Per-element means for fixed-length array columns\n       * ArrayStDev: Per-element population standard deviation for\n            fixed-length array columns\n       * Q.nn: Quantile for 0.nn\n\nCommand was: stats MAG_G\n\nUsage: stats [-[no]parallel] [-qapprox|-qexact] [<item> ...]\n    (Unknown quantity MAG_G must be one of: \n\n       * Index: Position of column in table\n       * Name: Column name\n       * Class: Data type of objects in column\n       * Shape: Shape of array values\n       * ElSize: Size of each element in column (mostly useful for strings)\n       * Units: Unit string\n       * Description: Description of data in the column\n       * UCD: Unified Content Descriptor\n       * Utype: Type in data model\n       * Xtype: Extended data type\n       * CoosysSystem: Sky coordinate system name from COOSYS\n       * CoosysEpoch: Sky epoch from COOSYS\n       * CoosysRefposition: Reference position from COOSYS\n       * CoosysEquinox: Sky equinox from COOSYS\n       * TimesysTimeorigin: Time origin from TIMESYS\n       * TimesysTimescale: Timescale from TIMESYS\n       * TimesysRefposition: Ref position from TIMESYS\n       * STIL_HPX_LEVEL: Level of HEALPix pixels contained in the table\n            (nside=2^level)\n       * STIL_HPX_ISNEST: True for NEST indexation scheme, False for RING\n       * STIL_HPX_COLNAME: Name of the table column containing HEALPix\n            index; null value or empty string indicates implicit\n       * STIL_HPX_CSYS: 'C'=celestial/equatorial, 'G'=galactic, 'E'=ecliptic\n       * NGood: Number of non-blank cells\n       * NBad: Number of blank cells\n       * Mean: Average\n       * StDev: Population Standard deviation\n       * Variance: Population Variance\n       * SampStDev: Sample Standard Deviation\n       * SampVariance: Sample Variance\n       * MedAbsDev: Median Absolute Deviation\n       * ScMedAbsDev: Median Absolute Deviation * 1.4826\n       * Skew: Gamma 1 skewness measure\n       * Kurtosis: Gamma 2 peakedness measure\n       * Minimum: Numeric minimum\n       * Maximum: Numeric maximum\n       * Sum: Sum of values\n       * MinPos: Row index of numeric minimum\n       * MaxPos: Row index of numeric maximum\n       * Cardinality: Number of distinct values in column; values >100\n            ignored\n       * Median: Middle value in sequence\n       * Quartile1: First quartile\n       * Quartile2: Second quartile\n       * Quartile3: Third quartile\n       * ArrayNGood: Per-element non-blank counts for fixed-length array\n            columns\n       * ArraySum: Per-element sums for fixed-length array columns\n       * ArrayMean: Per-element means for fixed-length array columns\n       * ArrayStDev: Per-element population standard deviation for\n            fixed-length array columns\n       * Q.nn: Quantile for 0.nn)\n"
+    },
+    {
+        "prompt": "My table has duplicate entries for some sources. How do I keep only the first row for each unique 'SOURCE_ID'?",
+        "response": "stilts tpipe in=duplicates.fits out=output.fits cmd='uniq SOURCE_ID'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "The column names in 'weird_names.fits' have spaces and strange characters. How can I automatically clean them up?",
+        "response": "stilts tpipe in=weird_names.fits out=output.fits cmd=fixcolnames",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "How do I change the internal name of my table in 'table1.fits' to 'BRIGHT_STARS_V2'?",
+        "response": "stilts tpipe in=table1.fits out=output.fits cmd='tablename BRIGHT_STARS_V2'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I want to perform several steps: first, keep only the 'RA' and 'DEC' columns, then add a new column called 'ID' with a sequential number, and finally keep only the first 1000 rows.",
+        "response": "stilts tpipe in=input.fits out=output.fits cmd='keepcols \\\"RA DEC\\\"; seqcol ID; head 1000'",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: 'DEC\"'\n\nCommand was: keepcols \\\"RA DEC\\\"\n\nUsage: keepcols <colid-list>\n    (Unused arguments: 'DEC\"')\n"
+    }
 ]

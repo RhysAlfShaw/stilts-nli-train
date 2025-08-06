@@ -43,16 +43,17 @@ TESTS = [
         "output": "cleaned.fits",
     },
     {
-        "prompt": "For my catalogue 'input.fits', I want to add a new column 'square_col' which is the square of the values in the column 'value_col'. Call the new catalogue 'squared_column.fits'.",
+        "prompt": "For my catalogue 'input.fits', I want to add a new column 'square_col' which is the square of the values in the column 'FLUX_G'. Call the new catalogue 'squared_column.fits'.",
         "input": [input_catalogue_1],
         "output": "squared_column.fits",
     },
     {
-        "prompt": "I want to filter my catalogue 'input.fits' to only include rows where the column 'value_col' is greater than 10, and save the result to 'filtered.fits'.",
+        "prompt": "I want to filter my catalogue 'input.fits' to only include rows where the column 'FLUX_G' is greater than 10, and save the result to 'filtered.fits'.",
         "input": [input_catalogue_1],
         "output": "filtered.fits",
     },
 ]
+
 # f"I want to do sky cross-matching between catalogues {input_catalogue_1} and {input_catalogue_2} using their RA and Dec columns and with a 6 arcsecond seperation.",
 # "What is STILTS?",
 # f"I have duplicated rows in my catalogue ({input_catalogue_1}), can you remove these and call the new catalogue 'cleaned.fits'?",
@@ -60,62 +61,60 @@ TESTS = [
 # f"I want to filter my catalogue '{input_catalogue_1}' to only include rows where the column 'value_col' is greater than 10, and save the result to 'filtered.fits'.",
 # }
 
+test_sucess = 0
 for test in TESTS:
-    print("#######")
-    print(f"Prompt: {test['prompt']}")
-    inputs = tokenizer(
-        test["prompt"],
-        return_tensors="pt",
-        padding=True,
-    ).to("cuda")
+    try:
+        print("###################################\n\n")
+        print(f"Prompt: {test['prompt']}")
+        inputs = tokenizer(
+            test["prompt"],
+            return_tensors="pt",
+            padding=True,
+        ).to("cuda")
 
-    outputs = model.generate(**inputs, max_new_tokens=100)
-    response = tokenizer.decode(outputs[0], skip_special_tokens=False)
+        outputs = model.generate(**inputs, max_new_tokens=100)
+        response = tokenizer.decode(outputs[0], skip_special_tokens=False)
 
-    # take only the text between model <text> model
+        # take only the text between model <text> model
 
-    response = (
-        response.split("<end_of_turn>")[1].strip().split("<end_of_turn>")[0].strip()
-    )
-    # remove <start_of_turn>model
-    response = response.replace("<start_of_turn>model", "").strip()
+        response = (
+            response.split("<end_of_turn>")[1].strip().split("<end_of_turn>")[0].strip()
+        )
+        # remove <start_of_turn>model
+        response = response.replace("<start_of_turn>model", "").strip()
 
-    print("Response:")
-    print(response)
-    print("#######\n")
+        print("Response:")
+        print(response)
+        print("##########################################\n")
 
-    print("#######")
+        # check if a command was generated.
+        if "stilts" not in response:
+            print("No STILTS command generated, skipping execution.")
+            test_sucess += 1
+            continue
+        print("Running STILTS with command")
 
-    # check if a command was generated.
-    if "stilts" not in response:
-        print("No STILTS command generated, skipping execution.")
-        continue
-    print("Running STILTS with command")
+        response = response.replace("stilts", "/home/rhys/stilts")
+        for input_file in test["input"]:
+            response = response.replace(input_file, f"TESTING_CATALOGS/{input_file}")
 
-    # swap 'stilts' for '/home/rhys/stilts'
-    # PATH to testing if its a valid command.
-    # path_to_chat_jar = "/home/rhys/TopStiltsAgent/chat.jar"
-    # import os
+        response = response.replace(
+            test["output"], "TESTING_CATALOGS/" + test["output"]
+        )
+        print(response)
+        subprocess.run(response, shell=True, check=True)
+        print(
+            "Finished running STILTS command, check TESTING_CATALOG for the resulting output."
+        )
 
-    # if not os.path.exists(path_to_chat_jar):
-    #     print(f"Path to STILTS jar not found: {path_to_chat_jar}")
+        test_sucess += 1
+    except subprocess.CalledProcessError as e:
+        print(f"Error running STILTS command: {e}")
+    except Exception as e:
+        print(f"An error occurred: {e}")
 
-    # response_no_stilts = response.replace("stilts", "")
-    # cmd = f"java -jar {path_to_chat_jar} {response.replace('stilts', '')}"
-    # print(f"Command to run: {cmd}")
-    # subprocess.run(
-    #     cmd,
-    #     check=True,
-    #     text=True,
-    # )
-
-    response = response.replace("stilts", "/home/rhys/stilts")
-    for input_file in test["input"]:
-        response = response.replace(input_file, f"TESTING_CATALOGS/{input_file}")
-
-    response = response.replace(test["output"], "TESTING_CATALOGS/" + test["output"])
-    print(response)
-    subprocess.run(response, shell=True, check=True)
-    print(
-        "Finished running STILTS command, check TESTING_CATALOG for the resulting output."
-    )
+print(f"Total tests passed: {test_sucess}/{len(TESTS)}")
+if test_sucess == len(TESTS):
+    print("All tests passed successfully!")
+else:
+    print("Some tests failed, please check the output for details.")

@@ -1,42 +1,163 @@
 [
-  {
-    "prompt": "How do I match two catalogues, 'cat1.fits' and 'cat2.fits', based on their sky coordinates with a 1 arcsecond tolerance?",
-    "response": "stilts tmatchn nin=2 in1=cat1.fits in2=cat2.fits out=matched.fits matcher=sky params=1 values1='RA DEC' values2='RA DEC'"
-  },
-  {
-    "prompt": "I need to perform a sky match between 'a.fits' and 'b.fits'. The RA/Dec columns in 'a.fits' are 'RA_DEGREES' and 'DEC_DEGREES', but in 'b.fits' they are just 'RA' and 'DEC'. The match radius is 2.5 arcseconds.",
-    "response": "stilts tmatchn nin=2 in1=a.fits in2=b.fits out=output.fits matcher=sky params=2.5 values1='RA_DEGREES DEC_DEGREES' values2='RA DEC'"
-  },
-  {
-    "prompt": "What's the command to match three tables ('gdr3.fits', 'panstarrs.fits', '2mass.fits') on their sky positions within 0.8 arcsec?",
-    "response": "stilts tmatchn nin=3 in1=gdr3.fits in2=panstarrs.fits in3=2mass.fits out=matched_3way.fits matcher=sky params=0.8 values1='ra dec' values2='ra dec' values3='ra dec'"
-  },
-  {
-    "prompt": "I want to match 'table1.csv' and 'table2.csv' using an exact match on the 'source_id' column.",
-    "response": "stilts tmatchn nin=2 in1=table1.csv in2=table2.csv out=id_matched.fits matcher=exact values1='source_id' values2='source_id'"
-  },
-  {
-    "prompt": "How do I perform a 2-way sky match and only keep rows that have a match in both input tables?",
-    "response": "stilts tmatchn nin=2 in1=cat1.fits in2=cat2.fits out=inner_join.fits matcher=sky params=1 values1='RA DEC' values2='RA DEC' join=1and2"
-  },
-  {
-    "prompt": "I want to do a sky match but keep all rows from the first table, even if they don't have a match in the second.",
-    "response": "stilts tmatchn nin=2 in1=cat1.fits in2=cat2.fits out=left_outer_join.fits matcher=sky params=1 values1='RA DEC' values2='RA DEC' join=1or2"
-  },
-  {
-    "prompt": "Match 'cat_a.fits' and 'cat_b.fits' with a 1.5 arcsec radius, and then in the output, create a new column 'separation' that contains the distance between the matched objects.",
-    "response": "stilts tmatchn nin=2 in1=cat_a.fits in2=cat_b.fits out=matched_with_sep.fits matcher=sky params=1.5 values1='RA DEC' values2='RA DEC' ocmd='addcol separation Separation'"
-  },
-  {
-    "prompt": "I need to match two tables on sky position, but only keep the best match for each source in the first table.",
-    "response": "stilts tmatchn nin=2 in1=cat1.fits in2=cat2.fits out=best_match.fits matcher=sky params=3 values1='RA DEC' values2='RA DEC' find=best"
-  },
-  {
-    "prompt": "Match 'main_survey.fits' and 'follow_up.fits' on sky position. From the first table I need 'ID_1' and 'G_MAG', and from the second I need 'TARGET_ID' and 'SPECTYPE'.",
-    "response": "stilts tmatchn nin=2 in1=main_survey.fits in2=follow_up.fits out=selected_cols.fits matcher=sky params=1 values1='RA DEC' values2='RA DEC' ocmd='keepcols \"ID_1 G_MAG TARGET_ID SPECTYPE\"'"
-  },
-  {
-    "prompt": "How can I match four catalogues using their object IDs, which are in a column named 'objID' in all tables?",
-    "response": "stilts tmatchn nin=4 in1=c1.fits in2=c2.fits in3=c3.fits in4=c4.fits out=multi_id_match.fits matcher=exact values1=objID values2=objID values3=objID values4=objID"
-  }
+    {
+        "prompt": "How do I match two catalogues, 'cat1.fits' and 'cat2.fits', based on their sky coordinates with a 1 arcsecond tolerance?",
+        "response": "stilts tmatchn nin=2 in1=cat1.fits in2=cat2.fits out=matched.fits matcher=sky params=1 values1='RA DEC' values2='RA DEC'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need to perform a sky match between 'a.fits' and 'b.fits'. The RA/Dec columns in 'a.fits' are 'RA_DEGREES' and 'DEC_DEGREES', but in 'b.fits' they are just 'RA' and 'DEC'. The match radius is 2.5 arcseconds.",
+        "response": "stilts tmatchn nin=2 in1=a.fits in2=b.fits out=output.fits matcher=sky params=2.5 values1='RA_DEGREES DEC_DEGREES' values2='RA DEC'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "What's the command to match three tables ('gdr3.fits', 'panstarrs.fits', '2mass.fits') on their sky positions within 0.8 arcsec?",
+        "response": "stilts tmatchn nin=3 in1=gdr3.fits in2=panstarrs.fits in3=2mass.fits out=matched_3way.fits matcher=sky params=0.8 values1='ra dec' values2='ra dec' values3='ra dec'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I want to match 'table1.csv' and 'table2.csv' using an exact match on the 'source_id' column.",
+        "response": "stilts tmatchn nin=2 in1=table1.csv in2=table2.csv out=id_matched.fits matcher=exact values1='source_id' values2='source_id'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "How do I perform a 2-way sky match and only keep rows that have a match in both input tables?",
+        "response": "stilts tmatchn nin=2 in1=cat1.fits in2=cat2.fits out=inner_join.fits matcher=sky params=1 values1='RA DEC' values2='RA DEC' join=1and2",
+        "chat.jar": "failed",
+        "error": "\nUnused arguments: join=1and2\n\nUsage: tmatchn nin=<count> ifmtN=<in-format> inN=<tableN> icmdN=<cmds>\n               ocmd=<cmds>\n               omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n               out=<out-table> ofmt=<out-format> multimode=pairs|group\n               iref=<table-index> matcher=<matcher-name> params=<match-params>\n               tuning=<tuning-params> valuesN=<expr-list>\n               joinN=default|match|nomatch|always fixcols=none|dups|all\n               suffixN=<label> progress=none|log|time|profile\n               runner=parallel|parallel<n>|parallel-all|sequential|classic|partest\n\n"
+    },
+    {
+        "prompt": "I want to do a sky match but keep all rows from the first table, even if they don't have a match in the second.",
+        "response": "stilts tmatchn nin=2 in1=cat1.fits in2=cat2.fits out=left_outer_join.fits matcher=sky params=1 values1='RA DEC' values2='RA DEC' join=1or2",
+        "chat.jar": "failed",
+        "error": "\nUnused arguments: join=1or2\n\nUsage: tmatchn nin=<count> ifmtN=<in-format> inN=<tableN> icmdN=<cmds>\n               ocmd=<cmds>\n               omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n               out=<out-table> ofmt=<out-format> multimode=pairs|group\n               iref=<table-index> matcher=<matcher-name> params=<match-params>\n               tuning=<tuning-params> valuesN=<expr-list>\n               joinN=default|match|nomatch|always fixcols=none|dups|all\n               suffixN=<label> progress=none|log|time|profile\n               runner=parallel|parallel<n>|parallel-all|sequential|classic|partest\n\n"
+    },
+    {
+        "prompt": "Match 'cat_a.fits' and 'cat_b.fits' with a 1.5 arcsec radius, and then in the output, create a new column 'separation' that contains the distance between the matched objects.",
+        "response": "stilts tmatchn nin=2 in1=cat_a.fits in2=cat_b.fits out=matched_with_sep.fits matcher=sky params=1.5 values1='RA DEC' values2='RA DEC' ocmd='addcol separation Separation'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need to match two tables on sky position, but only keep the best match for each source in the first table.",
+        "response": "stilts tmatchn nin=2 in1=cat1.fits in2=cat2.fits out=best_match.fits matcher=sky params=3 values1='RA DEC' values2='RA DEC' find=best",
+        "chat.jar": "failed",
+        "error": "\nUnused arguments: find=best\n\nUsage: tmatchn nin=<count> ifmtN=<in-format> inN=<tableN> icmdN=<cmds>\n               ocmd=<cmds>\n               omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n               out=<out-table> ofmt=<out-format> multimode=pairs|group\n               iref=<table-index> matcher=<matcher-name> params=<match-params>\n               tuning=<tuning-params> valuesN=<expr-list>\n               joinN=default|match|nomatch|always fixcols=none|dups|all\n               suffixN=<label> progress=none|log|time|profile\n               runner=parallel|parallel<n>|parallel-all|sequential|classic|partest\n\n"
+    },
+    {
+        "prompt": "Match 'main_survey.fits' and 'follow_up.fits' on sky position. From the first table I need 'ID_1' and 'G_MAG', and from the second I need 'TARGET_ID' and 'SPECTYPE'.",
+        "response": "stilts tmatchn nin=2 in1=main_survey.fits in2=follow_up.fits out=selected_cols.fits matcher=sky params=1 values1='RA DEC' values2='RA DEC' ocmd='keepcols \"ID_1 G_MAG TARGET_ID SPECTYPE\"'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "How can I match four catalogues using their object IDs, which are in a column named 'objID' in all tables?",
+        "response": "stilts tmatchn nin=4 in1=c1.fits in2=c2.fits in3=c3.fits in4=c4.fits out=multi_id_match.fits matcher=exact values1=objID values2=objID values3=objID values4=objID",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Crossmatch four astronomical catalogues. The first is 'transients.txt', which is an ASCII file, using the columns 'alpha' and 'delta'. The second is '2mass_virgo.fits' using 'ra2000' and 'dec2000'. The third is 'sdss_virgo.fits' with columns 'ra' and 'dec'. The final one is 'first_virgo.fits' using 'pos_eq_ra' and 'pos_eq_dec'. I want to find pairs, using the first table as my reference, with a matching radius of 5 arcseconds. Please save the output as a VOTable called 'matches.xml'.",
+        "response": "stilts tmatchn multimode=pairs nin=4 matcher=sky params=5 in1=transients.txt ifmt1=ascii values1='alpha delta' in2=2mass_virgo.fits values2='ra2000 dec2000' in3=sdss_virgo.fits values3='ra dec' in4=first_virgo.fits values4='pos_eq_ra pos_eq_dec' iref=1 out=matches.xml ofmt=votable",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I want to perform a group match on three FITS files: 'Hband.fits', 'Jband.fits', and 'Kband.fits'. The match should be based on sky position using the 'RA' and 'DEC' columns in each. Please account for per-object errors, which can be calculated as twice the 'SEEING' value in each table. The maximum separation for a match is 8 arcseconds. Finally, send the matched table directly to TOPCAT.",
+        "response": "stilts tmatchn multimode=group nin=3 matcher=skyerr params=8 in1=Hband.fits values1='RA DEC SEEING*2' in2=Jband.fits values2='RA DEC SEEING*2' in3=Kband.fits values3='RA DEC SEEING*2' omode=topcat",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I have three tables: 'cat_a.fits', 'cat_b.fits', and 'cat_c.fits'. I just want to know how many matching groups exist between them based on a simple 2 arcsecond sky crossmatch. The coordinate columns are 'RA' and 'DEC' in all tables.",
+        "response": "stilts tmatchn nin=3 multimode=group matcher=sky params=2 in1=cat_a.fits values1='RA DEC' in2=cat_b.fits values2='RA DEC' in3=cat_c.fits values3='RA DEC' omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need to match three CSV files: 'list1.csv', 'list2.csv', 'list3.csv'. The match should be an exact match on the 'source_id' column in each table. Output the results to a new file named 'matched_ids.fits'.",
+        "response": "stilts tmatchn nin=3 matcher=exact values1='source_id' values2='source_id' values3='source_id' in1=list1.csv ifmt1=csv in2=list2.csv ifmt2=csv in3=list3.csv ifmt3=csv out=matched_ids.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Perform a crossmatch between 'master_cat.fits' (my reference), 'survey_x.fits', and 'survey_y.fits' within a 1.5 arcsecond radius. I want to make sure every row from 'master_cat.fits' is included in the final output, even if it has no matches. Also, to avoid confusion, please rename all columns from the input tables by appending '_master', '_x', and '_y' respectively.",
+        "response": "stilts tmatchn nin=3 multimode=pairs iref=1 matcher=sky params=1.5 in1=master_cat.fits values1='RA DEC' suffix1=_master in2=survey_x.fits values2='RA_SURV DEC_SURV' suffix2=_x in3=survey_y.fits values3='RA DEC' suffix3=_y join1=always fixcols=all out=full_match.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Match my target list 'targets.csv' against two large surveys, 'survey1.fits' and 'survey2.fits'. 'targets.csv' should be the reference table. Before matching, I need to filter 'survey1.fits' to only include objects where the 'quality' column is equal to 0. Use a 2 arcsecond match radius and run the process using 8 parallel threads.",
+        "response": "stilts tmatchn nin=3 multimode=pairs iref=1 matcher=sky params=2 in1=targets.csv ifmt1=csv values1='RA_HRS*15 DEC_DEG' in2=survey1.fits values2='RA DEC' icmd2='select quality==0' in3=survey2.fits values3='RA DEC' out=filtered_matches.csv ofmt=csv runner=parallel8",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find groups of objects across three catalogues: `cat1.fits`, `cat2.fits`, and `cat3.fits`. After finding the groups with a 3\" sky match, I want to filter the resulting table. Add a new column called `GroupSize` which counts how many of the three catalogues contributed to that row. Then, select only the rows where `GroupSize` is 3, meaning we have a detection in all three catalogues. Save the final table to `triplets.fits`.",
+        "response": "stilts tmatchn nin=3 multimode=group matcher=sky params=3 in1=cat1.fits values1='RA DEC' in2=cat2.fits values2='RA DEC' in3=cat3.fits values3='RA DEC' ocmd='addcol GroupSize \"(long)!isFinite(RA_1) ? 0 : 1 + (long)!isFinite(RA_2) ? 0 : 1 + (long)!isFinite(RA_3) ? 0 : 1\"; select GroupSize==3' out=triplets.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I am matching three simulation data files: `sim_a.dat`, `sim_b.dat`, and `sim_c.dat`. I need to find matching groups in 3D cartesian space (columns 'x', 'y', 'z'). The match is anisotropic: the tolerance is 0.5 in x and y, but 2.0 in the z dimension. Output the result to standard output as a CSV file.",
+        "response": "stilts tmatchn nin=3 multimode=group matcher=anisotropic params=\"0.5 0.5 2.0\" in1=sim_a.dat values1=\"x y z\" in2=sim_b.dat values2=\"x y z\" in3=sim_c.dat values3=\"x y z\" ofmt=csv out=-",
+        "chat.jar": "failed",
+        "error": "WARNING: Class anisotropic not found\nError: Unknown matcher element: anisotropic\nUsage: tmatchn nin=<count> ifmtN=<in-format> inN=<tableN> icmdN=<cmds>\n               ocmd=<cmds>\n               omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n               out=<out-table> ofmt=<out-format> multimode=pairs|group\n               iref=<table-index> matcher=<matcher-name> params=<match-params>\n               tuning=<tuning-params> valuesN=<expr-list>\n               joinN=default|match|nomatch|always fixcols=none|dups|all\n               suffixN=<label> progress=none|log|time|profile\n               runner=parallel|parallel<n>|parallel-all|sequential|classic|partest\n\n"
+    },
+    {
+        "prompt": "I want to find objects from my reference table, 'ref.fits', that have a match in 'catA.fits' but NOT in 'catB.fits'. Use a 2 arcsecond sky match and make sure all columns from the input tables are renamed with a '_N' suffix to prevent duplicates.",
+        "response": "stilts tmatchn nin=3 multimode=pairs iref=1 matcher=sky params=2 in1=ref.fits values1='RA DEC' in2=catA.fits values2='RA DEC' in3=catB.fits values3='RA DEC' join1=match join2=match join3=nomatch fixcols=dups out=A_not_B_matches.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I have a gzipped FITS table `cat1.fits.gz` and another table that is the output of a command `get_cat2.sh`. I need to crossmatch these with a third local table `cat3.fits` in group mode with a 4 arcsec tolerance. Show progress logging as it runs.",
+        "response": "stilts tmatchn nin=3 multimode=group matcher=sky params=4 in1=cat1.fits.gz values1='RA DEC' in2='<get_cat2.sh' ifmt2=fits values2='RA DEC' in3=cat3.fits values3='RA DEC' progress=log out=piped_match.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need to match three catalogues with different coordinate systems. 'table1.fits' has galactic coordinates 'l' and 'b'. 'table2.fits' has ICRS coordinates 'ra' and 'dec'. 'table3.fits' uses FK4 B1950.0 coordinates, also named 'ra' and 'dec'. Please perform a pairs match with 'table2.fits' as the reference, using a 10 arcsecond radius. To keep things clear, rename all columns from the input tables by adding the suffixes '_g', '_i', and '_f' respectively.",
+        "response": "stilts tmatchn nin=3 multimode=pairs iref=2 matcher=sky params=10 in1=table1.fits suffix1=_g values1='skyToSky(l, b, \"galactic\", \"icrs\")' in2=table2.fits suffix2=_i values2='ra dec' in3=table3.fits suffix3=_f values3='skyToSky(ra, dec, \"fk4-b1950\", \"icrs\")' fixcols=all out=coord_match.fits",
+        "chat.jar": "failed",
+        "error": "Error: Bad value for parameter values1: Wrong number of words - wanted 2, got 6\nUsage: values1=<expr-list>\n\n"
+    },
+    {
+        "prompt": "I'm performing a group match on `c1.fits`, `c2.fits`, and `c3.fits` with a 5 arcsec tolerance. Instead of generating a full output table, can you just calculate and display the statistical summary for the 'MAG_R' column from the second table (`c2.fits`) for the matched rows?",
+        "response": "stilts tmatchn nin=3 multimode=group matcher=sky params=5 in1=c1.fits values1='RA DEC' in2=c2.fits suffix2=_c2 values2='RA DEC' in3=c3.fits values3='RA DEC' fixcols=dups omode=stats stats_col=MAG_R_c2",
+        "chat.jar": "failed",
+        "error": "\nUnused arguments: stats_col=MAG_R_c2\n\nUsage: tmatchn nin=<count> ifmtN=<in-format> inN=<tableN> icmdN=<cmds>\n               ocmd=<cmds>\n               omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n               out=<out-table> ofmt=<out-format> multimode=pairs|group\n               iref=<table-index> matcher=<matcher-name> params=<match-params>\n               tuning=<tuning-params> valuesN=<expr-list>\n               joinN=default|match|nomatch|always fixcols=none|dups|all\n               suffixN=<label> progress=none|log|time|profile\n               runner=parallel|parallel<n>|parallel-all|sequential|classic|partest\n\n"
+    },
+    {
+        "prompt": "I have a reference catalog 'ref_cat.fits' and two survey catalogs, 'survey_A.fits' and 'survey_B.fits'. I want to find all sources from the reference catalog that have a match in EITHER survey A or survey B. Use a 2 arcsec match radius and include every row from the reference catalog in the initial match.",
+        "response": "stilts tmatchn nin=3 multimode=pairs iref=1 matcher=sky params=2 in1=ref_cat.fits suffix1=_ref values1='RA DEC' in2=survey_A.fits suffix2=_A values2='RA DEC' in3=survey_B.fits suffix3=_B values3='RA DEC' join1=always fixcols=all ocmd='select !isNull(RA_A) || !isNull(RA_B)' out=any_survey_match.fits",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '||' '!isNull(RA_B)'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: select !isNull(RA_A) || !isNull(RA_B)\n\nUsage: select <expr>\n    (Unused arguments: '||' '!isNull(RA_B)'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "I am performing a very large group match between 5 catalogues that is running slowly. Can you try to tune the performance by setting the internal binsize to 0.1 degrees? Also, use all available processor cores. I don't need the output file, I'm just benchmarking, so please discard the results and show me timing information.",
+        "response": "stilts tmatchn nin=5 multimode=group matcher=sky params=1 in1=c1.fits values1='RA DEC' in2=c2.fits values2='RA DEC' in3=c3.fits values3='RA DEC' in4=c4.fits values4='RA DEC' in5=c5.fits values5='RA DEC' tuning='binsize=0.1' runner=parallel-all omode=discard progress=time",
+        "chat.jar": "failed",
+        "error": "Error: Value binsize=0.1 not suitable for HEALPix k(Integer)\n    (For input string: \"binsize=0.1\")\nUsage: tmatchn nin=<count> ifmtN=<in-format> inN=<tableN> icmdN=<cmds>\n               ocmd=<cmds>\n               omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n               out=<out-table> ofmt=<out-format> multimode=pairs|group\n               iref=<table-index> matcher=<matcher-name> params=<match-params>\n               tuning=<tuning-params> valuesN=<expr-list>\n               joinN=default|match|nomatch|always fixcols=none|dups|all\n               suffixN=<label> progress=none|log|time|profile\n               runner=parallel|parallel<n>|parallel-all|sequential|classic|partest\n\n"
+    },
+    {
+        "prompt": "Please match three CSV tables, `t1.csv`, `t2.csv`, and `t3.csv`, using an exact match on the 'ID' column. Then, write the resulting table directly into my PostgreSQL database. The connection string is 'jdbc:postgresql:mydb', the user is 'dbuser', the password is 'dbpass', and the new table in the database should be named 'matched_sources'.",
+        "response": "stilts tmatchn nin=3 matcher=exact values1=ID values2=ID values3=ID in1=t1.csv ifmt1=csv in2=t2.csv ifmt2=csv in3=t3.csv ifmt3=csv omode=tosql db='jdbc:postgresql:mydb' user=dbuser password=dbuser dbtable=matched_sources",
+        "chat.jar": "failed",
+        "error": "Error: Bad value for parameter protocol: null value not allowed\nUsage: protocol=<jdbc-protocol>\n\n"
+    },
+    {
+        "prompt": "I need to match three observation files: `obs1.fits`, `obs2.fits`, `obs3.fits`. The unique object identifier is split across two columns, 'PLATE' and 'FIBER'. Before matching, please create a new column called 'UNIQUE_ID' in each table by concatenating these two fields with a hyphen in between. Then, perform an exact group match on the new 'UNIQUE_ID' column.",
+        "response": "stilts tmatchn nin=3 multimode=group matcher=exact in1=obs1.fits icmd1='addcol UNIQUE_ID toString(PLATE)+\"-\"+toString(FIBER)' values1=UNIQUE_ID in2=obs2.fits icmd2='addcol UNIQUE_ID toString(PLATE)+\"-\"+toString(FIBER)' values2=UNIQUE_ID in3=obs3.fits icmd3='addcol UNIQUE_ID toString(PLATE)+\"-\"+toString(FIBER)' values3=UNIQUE_ID out=plate_matches.fits",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '+toString(FIBER)'\n\nCommand was: addcol UNIQUE_ID toString(PLATE)+\"-\"+toString(FIBER)\n\nUsage: addcol [-after <col-id> | -before <col-id>]\n              [-units <units>] [-ucd <ucd>] [-utype <utype>] [-xtype <xtype>]\n              [-desc <descrip>] [-shape <n>[,<n>...][,*]] [-elsize <n>]\n              <col-name> <expr>\n    (Unused arguments: '+toString(FIBER)')\n"
+    },
+    {
+        "prompt": "I'm planning a 3-way sky match between `a.fits`, `b.fits`, and `c.fits`. Before I run the full command, could you just show me what the column names and metadata of the output table would look like? Don't perform the actual match or write any rows.",
+        "response": "stilts tmatchn nin=3 matcher=sky params=1 in1=a.fits values1='RA DEC' in2=b.fits values2='RA DEC' in3=c.fits values3='RA DEC' omode=meta",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Please perform a `pairs` match with `ref.fits` as the reference against `survey1.fits` and `survey2.fits`. I want to isolate a specific set of objects: those from `ref.fits` that have a match in `survey1.fits` but do NOT have a match in `survey2.fits`. Use a 1 arcsecond radius.",
+        "response": "stilts tmatchn nin=3 multimode=pairs iref=1 matcher=sky params=1 in1=ref.fits values1='RA DEC' in2=survey1.fits values2='RA DEC' in3=survey2.fits values3='RA DEC' join1=match join2=match join3=nomatch out=match1_but_not_match2.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I want to do a 4-way group crossmatch between catalogues from different surveys. Use `wise.fits`, `sdss.fits`, `panstarrs.fits`, and `vhs.fits`. The coordinate columns are all named 'ra' and 'dec'. Use a tight 0.8 arcsecond radius. After the match, I want to add a column named `W1_MINUS_G` that is the difference between the 'w1mpro' column from WISE and the 'gmag' column from SDSS. Rename columns with a suffix based on the survey name.",
+        "response": "stilts tmatchn nin=4 multimode=group matcher=sky params=0.8 in1=wise.fits suffix1=_wise values1='ra dec' in2=sdss.fits suffix2=_sdss values2='ra dec' in3=panstarrs.fits suffix3=_ps values3='ra dec' in4=vhs.fits suffix4=_vhs values4='ra dec' fixcols=all ocmd='addcol W1_MINUS_G w1mpro_wise-gmag_sdss' out=4way_colour_match.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find all objects in `catalogue_A.fits` that have no matches in `catalogue_B.fits` OR `catalogue_C.fits` within a 3 arcsecond radius. The output table should only contain the rows from `catalogue_A.fits` that meet this criteria.",
+        "response": "stilts tmatchn nin=3 multimode=pairs iref=1 matcher=sky params=3 in1=catalogue_A.fits suffix1=_A values1='RA DEC' in2=catalogue_B.fits suffix2=_B values2='RA DEC' in3=catalogue_C.fits suffix3=_C values3='RA DEC' join1=always fixcols=all ocmd='select isNull(RA_B) && isNull(RA_C)' out=A_unmatched.fits",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '&&' 'isNull(RA_C)'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: select isNull(RA_B) && isNull(RA_C)\n\nUsage: select <expr>\n    (Unused arguments: '&&' 'isNull(RA_C)'\n(Hint: arguments containing spaces must be quoted))\n"
+    }
 ]

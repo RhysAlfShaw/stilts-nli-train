@@ -12,11 +12,14 @@ os.environ["HF_TOKEN"] = access_token
 
 
 def load_default_model():
+
     print("Loading default model and tokenizer...")
+
     tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
     model = AutoModelForCausalLM.from_pretrained(MODEL_NAME, device_map="auto")
 
     # save the model and tokenizer
+
     model.save_pretrained(OUTPUT_DIR)
     tokenizer.save_pretrained(OUTPUT_DIR)
     print("Model and tokenizer loaded and saved successfully.")

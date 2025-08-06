@@ -1,0 +1,134 @@
+[
+    {
+        "prompt": "Concatenate two CSV files, 'input1.csv' and 'input2.csv', into a single output file named 'output.csv'.",
+        "response": "stilts tcat in='input1.csv input2.csv' ifmt=csv out=output.csv ofmt=csv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I have three FITS tables: input_a.fits, input_b.fits, and input_c.fits. How do I join them together into one table called output.fits?",
+        "response": "stilts tcat in=input_a.fits in=input_b.fits in=input_c.fits out=output.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Combine all tables listed in the file 'input_list.txt' and write the result to standard output.",
+        "response": "stilts tcat in=@input_list.txt out=-",
+        "chat.jar": "failed",
+        "error": "Error: input_list.txt (No such file or directory)\n"
+    },
+    {
+        "prompt": "I have a multi-extension FITS file named 'input_multi.fits'. I want to concatenate all the tables within this single file into a new file, 'output.fits'.",
+        "response": "stilts tcat in=input_multi.fits multi=true out=output.fits",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"input_multi.fits\"\n"
+    },
+    {
+        "prompt": "Join 'input_part1.vot' and 'input_part2.vot'. Add a new column called 'SourceID' which will contain the sequence number of the input table (1 for the first file, 2 for the second).",
+        "response": "stilts tcat in='input_part1.vot input_part2.vot' ifmt=votable seqcol=SourceID out=output.vot",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Concatenate 'input/region1.csv' and 'input/region2.csv'. I need to add a column named 'OriginFile' that stores the full filename for each row.",
+        "response": "stilts tcat in='input/region1.csv input/region2.csv' ifmt=csv loccol=OriginFile out=output.csv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Take the tables 'input_tile_x1.fits' and 'input_tile_y2.fits' and join them. Create a column 'TileID' that contains just the unique part of the filename ('x1' and 'y2'). Save the result as 'output.fits'.",
+        "response": "stilts tcat in='input_tile_x1.fits input_tile_y2.fits' uloccol=TileID out=output.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From each input table ('input1.fits', 'input2.fits'), I only want to keep the columns 'RA', 'DEC', and 'PM_RA'. Concatenate these filtered tables and save to 'output.fits'.",
+        "response": "stilts tcat in='input1.fits input2.fits' icmd='keepcols \"RA DEC PM_RA\"' out=output.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "For a large number of FITS files listed in 'input_files.txt', concatenate them all into 'output.colfits'. Use lazy processing to conserve resources.",
+        "response": "stilts tcat in=@input_files.txt lazy=true out=output.colfits ofmt=colfits",
+        "chat.jar": "failed",
+        "error": "Error: input_files.txt (No such file or directory)\n"
+    },
+    {
+        "prompt": "Join 'input_a.csv' and 'input_b.csv'. Before joining, filter each table to include only rows where 'MAG_G < 20'. After joining, sort the final combined table by the 'RA' column. Output the result to a new file 'output.csv'.",
+        "response": "stilts tcat in='input_a.csv input_b.csv' ifmt=csv icmd='select \"MAG_G < 20\"' ocmd='sort RA' out=output.csv ofmt=csv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Concatenate all tables from the VOTable file 'input.xml', keeping only columns with UCDs for position ('pos.eq.ra;meta.main' and 'pos.eq.dec;meta.main'). Save the result to 'output.csv'.",
+        "response": "stilts tcat in=input.xml multi=true icmd='keepcols \"ucd$pos.eq.ra;meta.main ucd$pos.eq.dec;meta.main\"' out=output.csv",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"input.xml\"\n"
+    },
+    {
+        "prompt": "I need to combine 'input1.dat' and 'input2.dat'. Instead of creating a new file, just tell me the total row count of the combined table.",
+        "response": "stilts tcat in='input1.dat input2.dat' omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Show me the statistics (mean, stddev, etc.) for the columns of the table that would result from concatenating 'input_a.fits' and 'input_b.fits'.",
+        "response": "stilts tcat in='input_a.fits input_b.fits' omode=stats",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Using the java archive, concatenate two ascii files, 'input1.txt' and 'input2.txt', into 'output.txt'.",
+        "response": "java -jar stilts.jar tcat ifmt=ascii in=input1.txt in=input2.txt out=output.txt",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Combine all tables in the file 'input_multi.fits'. Add a sequence column named 'HDU' and also filter each input table to only include rows where 'FLAG' is 0. Write the result to 'output.csv'.",
+        "response": "stilts tcat in=input_multi.fits multi=true icmd='select \"FLAG == 0\"' seqcol=HDU out=output.csv ofmt=csv",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"input_multi.fits\"\n"
+    },
+    {
+        "prompt": "For each table in 'input_a.fits' and 'input_b.fits', I need to perform two steps before joining: first, select only rows where 'QUALITY' is 0, and second, add a new column 'SNR' calculated as 'FLUX/FLUX_ERR'. Then, concatenate them into 'output.fits'.",
+        "response": "stilts tcat in='input_a.fits input_b.fits' icmd='select \"QUALITY == 0\"; addcol SNR \"FLUX/FLUX_ERR\"' out=output.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I have two FITS files, 'data/input_2024.fits' and 'data/input_2025.fits'. I want to join them and add two new columns: 'SourceIndex' to store the table number (1 or 2) and 'SourceFile' to store the full path of the original file. The output should be a CSV file.",
+        "response": "stilts tcat in='data/input_2024.fits' in='data/input_2025.fits' seqcol=SourceIndex loccol=SourceFile out=output.csv ofmt=csv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I'm trying to pipe a gzipped CSV file to stilts using zcat. How do I concatenate the piped data from 'input.csv.gz' with a regular file 'input2.csv' and save the result as 'output.fits'?",
+        "response": "stilts tcat in='<zcat input.csv.gz' in=input2.csv ifmt=csv out=output.fits ofmt=fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From each of the three CSV files, 'input_1.csv', 'input_2.csv', and 'input_3.csv', extract the 100 rows with the highest value in the 'LUMINOSITY' column. Then combine these top rows into 'output.csv'.",
+        "response": "stilts tcat in='input_1.csv input_2.csv input_3.csv' ifmt=csv icmd='sorthead 100 LUMINOSITY' out=output.csv ofmt=csv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Concatenate the VOTables 'input_a.vot' and 'input_b.vot' and just display the metadata of the resulting combined table, such as column names and data types, to the console.",
+        "response": "stilts tcat in='input_a.vot input_b.vot' omode=meta",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I'm concatenating a huge number of FITS files listed in 'file_list.txt' into a single FITS file, 'output.fits'. How can I ensure STILTS pre-calculates the total number of rows, which is often required for the FITS format?",
+        "response": "stilts tcat in=@file_list.txt out=output.fits ofmt=fits countrows=true",
+        "chat.jar": "failed",
+        "error": "Error: file_list.txt (No such file or directory)\n"
+    },
+    {
+        "prompt": "My command `stilts tcat in=- out=output.vot` isn't working when I pipe CSV data to it. What am I missing?",
+        "response": "stilts tcat in=- ifmt=csv out=output.vot ofmt=votable",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Concatenate all tables from the multi-extension FITS file 'input_multi.fits'. Then, after concatenation, sort the entire resulting table by the 'TIMESTAMP' column. Save the final sorted table as 'output.fits'.",
+        "response": "stilts tcat in=input_multi.fits multi=true ocmd='sort TIMESTAMP' out=output.fits",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"input_multi.fits\"\n"
+    },
+    {
+        "prompt": "Convert two VOTable files, 'input1.xml' and 'input2.xml', into a single concatenated FITS binary table named 'output.fits'.",
+        "response": "stilts tcat in='input1.xml input2.xml' ifmt=votable out=output.fits ofmt=fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Join together 'input_a.fits' and 'input_b.fits' and pipe the resulting concatenated FITS table to another command on the command line.",
+        "response": "stilts tcat in='input_a.fits input_b.fits' out=- ofmt=fits",
+        "chat.jar": "executed successfully"
+    }
+]

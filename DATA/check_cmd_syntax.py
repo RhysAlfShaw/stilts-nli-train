@@ -6,6 +6,9 @@ import subprocess
 
 data_dir = "DATA/"
 docker_cmd = "docker run stilts-chat-stilts-dev-env java -jar chat.jar"
+GREEN = "\033[92m"
+RESET = "\033[0m"
+RED = "\033[91m"
 
 
 # read the JSON file and get all the responces
@@ -38,12 +41,12 @@ def check_docker_command_in_responses(data):
                 cmd, shell=True, check=True, capture_output=True, text=True
             )
 
-            print(f"Command executed successfully:\n\n {cmd}")
+            print(f"Command executed {GREEN}successfully{RESET}:\n\n {cmd}")
             # if sucessful add element to the item
             item["chat.jar"] = "executed successfully"
 
         except subprocess.CalledProcessError as e:
-            print(f"Command failed:\n\n {cmd}\nError: {e.stderr}")
+            print(f"Command {RED}failed{RESET}:\n\n {cmd}\nError: {e.stderr}")
             # if failed add element to the item
             item["chat.jar"] = "failed"
             item["error"] = e.stderr

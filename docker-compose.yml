@@ -11,7 +11,5 @@ services:
       dockerfile: dockerfile
     deploy:
       resources:
-        reservations:
-          devices:
-            - capabilities: [gpu]
-    runtime: nvidia
+        limits:
+          cpus: '5'

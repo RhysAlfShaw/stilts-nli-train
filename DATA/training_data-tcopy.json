@@ -1,0 +1,267 @@
+[
+    {
+        "prompt": "Can you convert the FITS file named 'input_catalog.fits' to a CSV file called 'output_catalog.csv'?",
+        "response": "stilts tcopy ifmt=fits ofmt=csv in=input_catalog.fits out=output_catalog.csv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need to change my table 'data.vot' into a parquet file, 'data.parquet'.",
+        "response": "stilts tcopy in=data.vot out=data.parquet ofmt=parquet",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Please take the CSV data from standard input and write it to standard output as a FITS table.",
+        "response": "stilts tcopy in=- ifmt=csv out=- ofmt=fits",
+        "chat.jar": "failed",
+        "error": "Error: Can't stream CSV format tables\n"
+    },
+    {
+        "prompt": "How can I convert 'source_table.ecsv' to 'destination_table.vot' using the stilts jar file directly?",
+        "response": "java -jar stilts.jar tcopy in=source_table.ecsv out=destination_table.vot ofmt=votable",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Download the table from the URL 'http://gavo.aip.de/example.ipac' and save it as a local FITS file named 'local_copy.fits'. The source is an IPAC table.",
+        "response": "stilts tcopy in=http://gavo.aip.de/example.ipac ifmt=ipac out=local_copy.fits ofmt=fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I have a script 'generate_data.sh' that prints a VOTable to its standard output. Pipe its output to stilts and convert it into a file called 'result.parquet'.",
+        "response": "stilts tcopy in='generate_data.sh|' ifmt=votable out=result.parquet ofmt=parquet",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Transform my data file `legacy_data.mrt` into a feather file, which should be named `modern_data.feather`.",
+        "response": "stilts tcopy ifmt=mrt ofmt=feather in=legacy_data.mrt out=modern_data.feather",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I have a file named 'table.dat' which is in PDS4 format. I want to convert it into a simple ASCII text file called 'table.txt'.",
+        "response": "stilts tcopy ifmt=pds4 ofmt=ascii in=table.dat out=table.txt",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Read the CDF file 'archive_data.cdf' and print its contents to the terminal as a CSV.",
+        "response": "stilts tcopy in=archive_data.cdf ifmt=cdf out=- ofmt=csv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Just copy the table from `input.fits` to `output.fits` without changing the format.",
+        "response": "stilts tcopy in=input.fits out=output.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Convert the `colfits` file `source.fits` to a regular FITS file `target.fits`.",
+        "response": "stilts tcopy in=source.fits ifmt=colfits out=target.fits ofmt=fits",
+        "chat.jar": "failed",
+        "error": "Error: Bad value for parameter ifmt: Unknown format colfits\n    (No table handler available for colfits)\nUsage: ifmt=<in-format>\n\n"
+    },
+    {
+        "prompt": "My input file `unusual.data` is in TST format. Please convert it to a VOTable named `standard.xml`.",
+        "response": "stilts tcopy in=unusual.data ifmt=tst out=standard.xml ofmt=votable",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Read the `gbin` file `binary_data.gbin` and write it to `output.csv`.",
+        "response": "stilts tcopy in=binary_data.gbin ifmt=gbin out=output.csv ofmt=csv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I want to convert a World Data Centre file, `wdc_data.wdc`, to a parquet file named `wdc_data.parquet`.",
+        "response": "stilts tcopy in=wdc_data.wdc ifmt=wdc out=wdc_data.parquet ofmt=parquet",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Take the HAPI data stream from 'http://example.com/hapi/data' and output it to the console in ASCII format.",
+        "response": "stilts tcopy in=http://example.com/hapi/data ifmt=hapi out=- ofmt=ascii",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Execute my program `get_gaia_data` and read its output, converting it to `gaia_results.fits`. My program produces CSV formatted output.",
+        "response": "stilts tcopy in='<get_gaia_data' ifmt=csv out=gaia_results.fits ofmt=fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Please reformat the file `catalog.fits` and write it to standard output as a VOTable.",
+        "response": "stilts tcopy in=catalog.fits out=- ofmt=votable",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "tcopy `source.parquet` to `destination.csv`",
+        "response": "stilts tcopy in=source.parquet out=destination.csv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I have a gzipped FITS file, 'catalog.fits.gz'. Can you convert it to a parquet file named 'catalog.parquet'?",
+        "response": "stilts tcopy in=catalog.fits.gz out=catalog.parquet",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Show me the contents of 'data.parquet' on my screen, formatted as a simple ASCII table.",
+        "response": "stilts tcopy in=data.parquet ofmt=ascii out=-",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "My last attempt to convert 'weird_table.dat' failed. I suspect it's an IPAC table. Please generate the command to convert it to 'fixed_table.fits', explicitly specifying the input format.",
+        "response": "stilts tcopy ifmt=ipac in=weird_table.dat out=fixed_table.fits ofmt=fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I want to pipe the output of a database query, `psql -c 'SELECT * FROM stars;'`, which returns CSV, directly into a FITS file called 'star_dump.fits'.",
+        "response": "stilts tcopy in=\"psql -c 'SELECT * FROM stars;'|\" ifmt=csv out=star_dump.fits ofmt=fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I have a file called 'observations.txt'. It's a plain text file where columns are separated by tabs. I need to convert this to a VOTable called 'observations.vot'.",
+        "response": "stilts tcopy in=observations.txt ifmt=ascii out=observations.vot ofmt=votable",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Fetch the CDF table from 'ftp://data.server.org/public/data.cdf' and display it on my terminal.",
+        "response": "stilts tcopy in=ftp://data.server.org/public/data.cdf out=- ofmt=ascii",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "The file 'no_extension_table' is in ECSV format. Please convert it to a FITS file and name the output 'output_table'.",
+        "response": "stilts tcopy in=no_extension_table ifmt=ecsv out=output_table ofmt=fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Using the stilts.jar, read a parquet stream from stdin and write it to a file named 'output.vot'.",
+        "response": "java -jar stilts.jar tcopy in=- ifmt=parquet out=output.vot ofmt=votable",
+        "chat.jar": "failed",
+        "error": "Error: Can't stream parquet\n"
+    },
+    {
+        "prompt": "Convert my data from 'source.feather' format to 'target.tst' format.",
+        "response": "stilts tcopy in=source.feather ifmt=feather out=target.tst ofmt=tst",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need to re-run my conversion of 'raw_data.fits' to 'processed_data.csv'. It's okay to overwrite the existing CSV file.",
+        "response": "stilts tcopy in=raw_data.fits out=processed_data.csv ofmt=csv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Simply convert my VOTable 'input.xml' to a CSV file.",
+        "response": "stilts tcopy in=input.xml ofmt=csv out=input.csv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Generate a stilts command to copy a table from 'a.fits' to 'b.csv'.",
+        "response": "stilts tcopy in=a.fits out=b.csv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Take the `colfits` file `source_col.fits` and write it out to standard output as a standard `fits` table.",
+        "response": "stilts tcopy in=source_col.fits ifmt=colfits out=- ofmt=fits",
+        "chat.jar": "failed",
+        "error": "Error: Bad value for parameter ifmt: Unknown format colfits\n    (No table handler available for colfits)\nUsage: ifmt=<in-format>\n\n"
+    },
+    {
+        "prompt": "I have a table in a file named `my_ipac_table`. The format is IPAC. Can you convert it to a parquet file?",
+        "response": "stilts tcopy in=my_ipac_table ifmt=ipac out=my_ipac_table.parquet",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Use the java archive to convert 'data.pds4' into 'data.csv'.",
+        "response": "java -jar stilts.jar tcopy ifmt=pds4 ofmt=csv in=data.pds4 out=data.csv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Can you describe the FITS file format?",
+        "response": "FITS (Flexible Image Transport System) is the standard data format for astronomy. A FITS file is a multi-part container capable of storing images, binary tables, and ASCII tables in separate blocks called Header Data Units (HDUs). Each HDU contains a human-readable header with metadata (like object name, exposure time, or column descriptions) followed by the data itself. Its versatility and self-describing nature have made it the cornerstone of astronomical data archiving and processing for decades.",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: Syntax error: \"(\" unexpected\n"
+    },
+    {
+        "prompt": "What is the `colfits` format and how does it relate to FITS?",
+        "response": "`colfits` (Column-Oriented FITS) is a specialized variant of the FITS binary table format. Instead of storing data row-by-row, `colfits` stores it column-by-column. This columnar layout is significantly more efficient for operations on large tables where only a small subset of columns is needed, as it allows software to read only the required columns without processing the entire table width.",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: Syntax error: \"(\" unexpected\n"
+    },
+    {
+        "prompt": "Tell me about the VOTable format.",
+        "response": "`VOTable` is an XML-based format designed for exchanging tabular data, standardized by the International Virtual Observatory Alliance (IVOA). Its primary goal is to ensure interoperability between different astronomical tools and services. A `VOTable` file contains rich metadata about the table structure, column units, data types, and coordinate systems, making it a powerful, self-describing format for web-based data archives.",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: Syntax error: \"(\" unexpected\n"
+    },
+    {
+        "prompt": "What is the Common Data Format, or CDF?",
+        "response": "`CDF` (Common Data Format) is a scientific data format developed by NASA for storing and manipulating multi-dimensional data. It is widely used in the heliophysics and space physics communities. CDF files are self-describing and are designed to handle scalar and vector measurements, such as time-series data from spacecraft instruments.",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: Syntax error: \"(\" unexpected\n"
+    },
+    {
+        "prompt": "What is a CSV file?",
+        "response": "`CSV` (Comma-Separated Values) is a simple, plain-text format for storing tabular data. Each line in the file represents a row, and commas separate the values in each column. Due to its simplicity and human-readability, CSV is a universal format for data exchange, easily imported by spreadsheets (like Excel or Google Sheets) and data analysis software. However, it lacks a standard way to store metadata like column units or data types.",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: Syntax error: \"(\" unexpected\n"
+    },
+    {
+        "prompt": "How is the ECSV format an improvement over standard CSV?",
+        "response": "`ECSV` (Enhanced Character Separated Values) is a modern variant of CSV that aims to solve its main limitation: the lack of metadata. An `ecsv` file is a standard CSV file with a YAML-formatted header block at the beginning. This header allows for the specification of column names, data types, units, descriptions, and other table-level metadata, making the file self-describing while remaining largely human-readable.",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: Syntax error: \"(\" unexpected\n"
+    },
+    {
+        "prompt": "In STILTS, what is meant by the generic 'ascii' format?",
+        "response": "`ascii` is a generic term for a plain-text table with columns aligned using whitespace (spaces or tabs). This format is often used for simple, human-readable tables. STILTS can intelligently parse many variations of this format, but its lack of a strict standard can sometimes lead to ambiguity.",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: Syntax error: \"(\" unexpected\n"
+    },
+    {
+        "prompt": "Describe the IPAC table format.",
+        "response": "`IPAC` (Infrared Processing and Analysis Center) is a standardized plain-text table format used extensively for astronomical catalogs. An IPAC table has a structured header that defines column names, data types, units, and null value representations using a specific vertical bar (`|`) and backslash (`\\`) syntax. This structure makes it more robust and machine-readable than generic ASCII tables.",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: Syntax error: \"(\" unexpected\n"
+    },
+    {
+        "prompt": "What is the PDS4 data format used by NASA?",
+        "response": "`PDS4` (Planetary Data System version 4) is the modern data standard used by NASA and other space agencies for archiving and distributing all data from planetary missions. A PDS4 dataset consists of data files (which can be binary tables, images, etc.) and detached XML label files that provide comprehensive metadata describing the structure, content, and context of the data.",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: Syntax error: \"(\" unexpected\n"
+    },
+    {
+        "prompt": "What is an MRT file?",
+        "response": "`MRT` (Machine-Readable Table) is a format used by astronomical data centers, like the Centre de Donn\u00e9es astronomiques de Strasbourg (CDS), for publishing tables associated with scientific articles. It is a plain-text format accompanied by a detailed `ReadMe` file that provides a byte-by-byte description of the table layout, columns, units, and notes.",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: Syntax error: \"(\" unexpected\n"
+    },
+    {
+        "prompt": "I need to store a very large catalog for efficient querying. What is Apache Parquet?",
+        "response": "`Parquet` (Apache Parquet) is a highly efficient, columnar storage file format originating from the big data ecosystem. By storing data in columns, Parquet achieves excellent compression and dramatically improves the performance of analytical queries, as only the required columns need to be read. It is becoming increasingly popular for handling very large astronomical catalogs.",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: Syntax error: \"(\" unexpected\n"
+    },
+    {
+        "prompt": "Is HAPI a file format? What is it?",
+        "response": "`HAPI` (Heliophysics API) is a REST web service specification for streaming time-series data, not a file format in the traditional sense. STILTS can interact with servers that implement the HAPI standard, treating the data stream as if it were a local table. This is primarily used for accessing data from heliophysics and space weather archives.",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: Syntax error: \"(\" unexpected\n"
+    },
+    {
+        "prompt": "What is the Feather file format used for?",
+        "response": "`Feather` is a fast, lightweight, binary file format for storing data frames (the data structure used by `pandas` in Python and data frames in R). It is designed for maximum speed when reading and writing data from memory to disk and is optimized for interoperability between Python and R data analysis environments.",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: Syntax error: \"(\" unexpected\n"
+    },
+    {
+        "prompt": "What is the GBIN format from the Gaia mission?",
+        "response": "`GBIN` (Gaia Binary Table Format) is a custom binary data format specifically designed for the massive data releases from the European Space Agency's (ESA) Gaia mission. It is a dense, high-performance format optimized for minimizing storage space and enabling fast sequential access to the Gaia catalog data.",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: Syntax error: \"(\" unexpected\n"
+    },
+    {
+        "prompt": "What is a TST (Tab-Separated Table) file?",
+        "response": "`TST` (Tab-Separated Table) is a simple and unambiguous variant of a plain-text table where columns are strictly separated by a single tab character. It is a specific and more reliable form of the generic `ascii` format.",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: Syntax error: \"(\" unexpected\n"
+    },
+    {
+        "prompt": "Describe the WDC data format.",
+        "response": "`WDC` (World Data Centre) is a legacy fixed-column ASCII format used for archiving and distributing geomagnetic data from observatories around the globe, as standardized by the World Data Centres for Geomagnetism.",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: Syntax error: \"(\" unexpected\n"
+    }
+]

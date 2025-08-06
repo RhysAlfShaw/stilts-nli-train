@@ -1,0 +1,65 @@
+I want you to create example prompt and reponses for finetunning a langauge model to generate stilts commands.
+
+Return the results as a list of json of the following format:
+[
+    {
+    "prompt": "prompt goes in here...",
+    "response": "response goes here..."
+    },
+    ..
+]
+
+The command I want you to generate for is tcopy. The documentation of this is as follows:
+
+The usage of tcopy is
+
+   stilts <stilts-flags> tcopy ifmt=<in-format> ofmt=<out-format>
+                               [in=]<table> [out=]<out-table>
+If you don't have the stilts script installed, write "java -jar stilts.jar" instead of "stilts" - see Section 3. The available <stilts-flags> are listed in Section 2.1. For programmatic invocation, the Task class for this command is uk.ac.starlink.ttools.task.TableCopy.
+Parameter values are assigned on the command line as explained in Section 2.3. They are as follows:
+
+
+ifmt = <in-format>       (String)
+    Specifies the format of the input table as specified by parameter in. The known formats are listed in Section 5.1.1. This flag can be used if you know what format your table is in. If it has the special value (auto) (the default), then an attempt will be made to detect the format of the table automatically. This cannot always be done correctly however, in which case the program will exit with an error explaining which formats were attempted. This parameter is ignored for scheme-specified tables.
+    [Default: (auto)]
+
+in = <table>       (StarTable)
+    The location of the input table. This may take one of the following forms:
+    A filename.
+    A URL.
+    The special value "-", meaning standard input. In this case the input format must be given explicitly using the ifmt parameter. Note that not all formats can be streamed in this way.
+    A scheme specification of the form :<scheme-name>:<scheme-args>.
+    A system command line with either a "<" character at the start, or a "|" character at the end ("<syscmd" or "syscmd|"). This executes the given pipeline and reads from its standard output. This will probably only work on unix-like systems.
+    In any case, compressed data in one of the supported compression formats (gzip, Unix compress or bzip2) will be decompressed transparently.
+    ofmt = <out-format>       (String)
+    Specifies the format in which the output table will be written (one of the ones in Section 5.1.2 - matching is case-insensitive and you can use just the first few letters). If it has the special value "(auto)" (the default), then the output filename will be examined to try to guess what sort of file is required usually by looking at the extension. If it's not obvious from the filename what output format is intended, an error will result.
+    [Default: (auto)]
+
+out = <out-table>       (TableConsumer)
+    The location of the output table. This is usually a filename to write to. If it is equal to the special value "-" (the default) the output table will be written to standard output.
+    [Default: -]
+
+
+
+Some of the tools in this package ask you to specify the format of input tables using the ifmt (or a similarly named) parameter. For some file formats (e.g. FITS, VOTable, CDF), the format can be automatically determined by looking at the file content, regardless of filename; for others (e.g. CSV files with a ".csv" extension), STILTS may be able to use the filename as a hint to guess the format (the details of these rules are given in the format-specific subsections below). Otherwise, you have to supply the format using the ifmt parameter. It is always safe to specify the format explicitly; this will be slightly more efficient than auto-determination, and may lead to more helpful error messages in the case that the table can't be read correctly.
+
+The available input formats are described in the following subsections. It is also possible to add new formats at runtime using the startable.readers system property, or by setting the format to the classname of a uk.ac.starlink.table.TableBuilder class.
+
+fits
+colfits
+votable
+cdf
+csv
+ecsv
+ascii
+ipac
+pds4
+mrt
+parquet
+hapi
+feather
+gbin
+tst
+wdc
+
+Please use these to create prompt responces the arevaried and test each of the possible configurations.

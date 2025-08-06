@@ -1,0 +1,342 @@
+[
+    {
+        "prompt": "Convert the CSV file named `input.csv` into a FITS file named `output.fits`.",
+        "response": "stilts tpipe in=input.csv ifmt=csv out=output.fits ofmt=fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I want to see the first 15 rows of the table `input.fits`. Please display them on the command line.",
+        "response": "stilts tpipe in=input.fits cmd='head 15'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From `input.fits`, create a new VOTable file `output.vot` containing only the 'RA', 'DEC', and 'ID' columns.",
+        "response": "stilts tpipe in=input.fits cmd='keepcols \"RA DEC ID\"' out=output.vot ofmt=votable",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Filter the table `input.fits` to include only objects where the 'MAG_G' column is less than 19.0. Save the result to `output.fits`.",
+        "response": "stilts tpipe in=input.fits cmd='select \"MAG_G < 19.0\"' out=output.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Read `input.fits` and add a new column named 'B_MINUS_V'. This column should be the value of the 'B_MAG' column minus the 'V_MAG' column. Save the new table to `output.fits`.",
+        "response": "stilts tpipe in=input.fits cmd='addcol B_MINUS_V \"B_MAG - V_MAG\"' out=output.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Process `input.vot` by first selecting rows where SNR is greater than 20, and then deleting the 'SNR_ERR' and 'FLAG' columns. Write the final table to `output.fits`.",
+        "response": "stilts tpipe in=input.vot cmd='select \"SNR > 20\"' cmd='delcols \"SNR_ERR FLAG\"' out=output.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Sort the table `input.csv` by the 'REDSHIFT' column in descending order. Save the sorted table as `output.fits`.",
+        "response": "stilts tpipe in=input.csv ifmt=csv cmd='sort -down REDSHIFT' out=output.fits ofmt=fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From `input.fits`, find the 25 objects with the lowest magnitude (brightest objects). The magnitude is in the 'MAG_R' column. Save these 25 rows to `output.fits`.",
+        "response": "stilts tpipe in=input.fits cmd='sorthead 25 MAG_R' out=output.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Calculate summary statistics (like mean, std dev, min, max) for all numeric columns in the file `input.fits`.",
+        "response": "stilts tpipe in=input.fits omode=stats",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Count the number of rows in `input.fits` where the `OBJ_TYPE` column is exactly 'STAR'.",
+        "response": "stilts tpipe in=input.fits cmd='select \"OBJ_TYPE == \\'STAR\\'\"' omode=count",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: Syntax error: Unterminated quoted string\n"
+    },
+    {
+        "prompt": "Show me the metadata, including table parameters and column information, for the file `input.vot`.",
+        "response": "stilts tpipe in=input.vot omode=meta",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "In `input.fits`, replace all NULL values in the 'Z_ERR' column with the value -999. Save the modified table as `output.fits`.",
+        "response": "stilts tpipe in=input.fits cmd='replaceval null \"-999\" Z_ERR' out=output.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "My table `input.fits` has J2000 FK5 coordinates in sexagesimal format in columns 'RA_SEXA' and 'DEC_SEXA'. Add new columns 'GAL_LON' and 'GAL_LAT' with the corresponding galactic coordinates in degrees.",
+        "response": "stilts tpipe in=input.fits cmd='addskycoords -inunit sex fk5 gal RA_SEXA DEC_SEXA GAL_LON GAL_LAT' out=output.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From `input.fits`, select all sources within a 15 arcminute radius of RA=150.25, Dec=2.5. The table's coordinate columns are 'RA_DEGREES' and 'DEC_DEGREES'. Count how many matching sources are found.",
+        "response": "stilts tpipe in=input.fits cmd='select \"skyDistanceDegrees(RA_DEGREES, DEC_DEGREES, 150.25, 2.5) < 15./60.\"' omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I have a file named `my_commands.txt` that contains a list of processing steps. Apply these steps to `input.fits` and save the result as `output.fits`.",
+        "response": "stilts tpipe in=input.fits cmd=@my_commands.txt out=output.fits",
+        "chat.jar": "failed",
+        "error": "Error: my_commands.txt (No such file or directory)\n"
+    },
+    {
+        "prompt": "I have a FITS table `input.fits` with an array column named 'FLUX_SPECTRUM'. I want to expand this column into multiple scalar columns and save the result as `output.csv`.",
+        "response": "stilts tpipe in=input.fits cmd=explodeall out=output.csv ofmt=csv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Rename the column 'old_id' to 'new_id' in the file `input.fits` and save it as `output.fits`.",
+        "response": "stilts tpipe in=input.fits cmd='addcol new_id old_id; delcols old_id' out=output.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "My `input.csv` file has many duplicate rows for each source. Create `output.csv` that contains only the first row for each unique value in the 'SOURCE_ID' column.",
+        "response": "stilts tpipe in=input.csv ifmt=csv cmd='uniq SOURCE_ID' out=output.csv ofmt=csv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Read a VOTable from standard input, keep only rows where the 'QUALITY_FLAG' column is 0, and write the resulting table to standard output in plain text format.",
+        "response": "stilts tpipe in=- ifmt=votable cmd='select \"QUALITY_FLAG == 0\"' out=- ofmt=text",
+        "chat.jar": "failed",
+        "error": "Error: uk.ac.starlink.table.TableFormatException\n    (Premature end of file.)\n"
+    },
+    {
+        "prompt": "Process `input.fits` using a single command string: first, select rows where 'PM_RA' is positive; second, keep only the 'ID', 'PM_RA', and 'PM_DEC' columns; and third, take only the first 50 rows of the result. Save to `output.fits`.",
+        "response": "stilts tpipe in=input.fits cmd='select \"PM_RA > 0\"; keepcols \"ID PM_RA PM_DEC\"; head 50' out=output.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Create a smaller sample of my very large table `input.fits`. The new file, `output.fits`, should contain every 500th row from the original.",
+        "response": "stilts tpipe in=input.fits cmd='every 500' out=output.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Extract rows 5001 to 6000, inclusive, from `input.vot` and save them into a new file named `output.vot`.",
+        "response": "stilts tpipe in=input.vot cmd='rowrange 5001 6000' out=output.vot",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "My input CSV file has column names with spaces, like 'Source ID' and 'Proper Motion RA'. Clean up all column names in `input.csv` to be valid identifiers and save the result as `output.fits`.",
+        "response": "stilts tpipe in=input.csv ifmt=csv cmd=fixcolnames out=output.fits ofmt=fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "In the table `input.fits`, add a description and a UCD to the 'FLUX_G' column. Set the description to 'Mean G-band flux' and the UCD to 'phot.flux;em.opt.G'. Save the modified table as `output.fits`.",
+        "response": "stilts tpipe in=input.fits cmd='colmeta -name FLUX_G -desc \"Mean G-band flux\" -ucd \"phot.flux;em.opt.G\" FLUX_G' out=output.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I want to perform a row selection on `input.fits` but I don't need the resulting table. Just run the filter to check the command's validity and discard the output.",
+        "response": "stilts tpipe in=input.fits cmd='select \"MAG_G < 15 && MAG_R > 14\"' omode=discard",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Convert a FITS file named `input.fits` to a CSV file named `output.csv`.",
+        "response": "stilts tpipe in=input.fits ifmt=fits out=output.csv ofmt=csv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I want to see the first 50 rows of my table `input.vot` and print them to the console in a human-readable format.",
+        "response": "stilts tpipe in=input.vot cmd='head 50'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From my table `input.fits`, create a new FITS file `output.fits` which only contains the 'RA', 'DEC', and 'G_MAG' columns.",
+        "response": "stilts tpipe in=input.fits cmd='keepcols \"RA DEC G_MAG\"' out=output.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I have a table `input.csv` with 'B_MAG' and 'V_MAG' columns. Can you create a new FITS file `output.fits` that includes a new column named 'B_MINUS_V', calculated as the difference between 'B_MAG' and 'V_MAG'?",
+        "response": "stilts tpipe ifmt=csv in=input.csv cmd='addcol B_MINUS_V \"B_MAG - V_MAG\"' ofmt=fits out=output.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Generate a command to select all rows from `input.fits` where the 'PARALLAX' is greater than 20 and the 'PARALLAX_ERROR' is less than 0.5. The output should be saved to `output.fits`.",
+        "response": "stilts tpipe in=input.fits cmd='select \"PARALLAX > 20 && PARALLAX_ERROR < 0.5\"' out=output.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need to perform a few operations on `input.vot`. First, select rows where 'G_MAG' is less than 15. Then, keep only the 'SOURCE_ID', 'G_MAG', and 'BP_RP' columns. Finally, sort the result by 'BP_RP' in descending order. Save the final table as `output.vot`.",
+        "response": "stilts tpipe in=input.vot cmd='select \"G_MAG < 15\"' cmd='keepcols \"SOURCE_ID G_MAG BP_RP\"' cmd='sort -down BP_RP' out=output.vot",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Can you calculate the statistics (mean, min, max, stddev) for all columns in `input.fits`?",
+        "response": "stilts tpipe in=input.fits omode=stats",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Count how many rows in the file `input.csv` have a 'STAR_PROB' value greater than or equal to 0.99.",
+        "response": "stilts tpipe ifmt=csv in=input.csv cmd='select \"STAR_PROB >= 0.99\"' omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I just want to view the metadata (column names, types, UCDs) for `input.fits` without loading any of the row data.",
+        "response": "stilts tpipe in=input.fits omode=meta",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find the 100 objects with the highest 'PROPER_MOTION' in `input.fits`. Output their 'ID' and 'PROPER_MOTION' columns to a new CSV file called `output.csv`.",
+        "response": "stilts tpipe in=input.fits cmd='keepcols \"ID PROPER_MOTION\"' cmd='sorthead -down 100 PROPER_MOTION' ofmt=csv out=output.csv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "My table `input.fits` has J2000 FK5 coordinates in decimal degrees in columns 'RA_DEG' and 'DEC_DEG'. Please add two new columns, 'GAL_LON' and 'GAL_LAT', with the corresponding Galactic coordinates. Save the result to `output.fits`.",
+        "response": "stilts tpipe in=input.fits cmd='addskycoords fk5 gal RA_DEG DEC_DEG GAL_LON GAL_LAT' out=output.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Using `input.fits`, which has coordinate columns 'RA_ICRS' and 'DEC_ICRS' in degrees, find all objects within a 15 arcminute radius of the point (RA=210.8, Dec=54.34). Write the results to `output.fits`.",
+        "response": "stilts tpipe in=input.fits cmd='select \"skyDistanceDegrees(RA_ICRS, DEC_ICRS, 210.8, 54.34) < 15.0/60.0\"' out=output.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Create a command that reads a VOTable from standard input, removes the 'TEMP_FLAG' and 'QUALITY' columns, and writes the resulting VOTable to standard output.",
+        "response": "stilts tpipe ifmt=votable in=- cmd='delcols \"TEMP_FLAG QUALITY\"' ofmt=votable out=-",
+        "chat.jar": "failed",
+        "error": "Error: uk.ac.starlink.table.TableFormatException\n    (Premature end of file.)\n"
+    },
+    {
+        "prompt": "I have a very large catalogue, `input.fits`. Create a smaller sample by taking every 1000th row and save this to `output.fits`.",
+        "response": "stilts tpipe in=input.fits cmd='every 1000' out=output.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "In my table `input.fits`, the 'FLUX' column is in counts. I need to replace it with the magnitude, which can be calculated as '25 - 2.5*log10(FLUX)'. Store the result in `output.fits`.",
+        "response": "stilts tpipe in=input.fits cmd='replacecol FLUX \"25 - 2.5*log10(FLUX)\"' out=output.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Read the CSV file `input.csv`, select only the rows where the column 'CLASSIFICATION' is exactly equal to 'QSO', and then send the resulting table directly to TOPCAT for visualization.",
+        "response": "stilts tpipe ifmt=csv in=input.csv cmd='select \"CLASSIFICATION == \\'QSO\\'\"' omode=topcat",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: Syntax error: Unterminated quoted string\n"
+    },
+    {
+        "prompt": "I need to clean my table `input.fits`. Please remove all rows where the 'MAG_G' column contains a non-finite value (NaN or infinity) or is null. Save the cleaned table to `output.fits`.",
+        "response": "stilts tpipe in=input.fits cmd='select \"isFinite(MAG_G)\"' out=output.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "In `input.csv`, I want to add a 'QUALITY_FLAG' column. This flag should be set to 1 if the 'ERROR_MAG' is greater than 0.2, and 0 otherwise. Save the new table as `output.fits`.",
+        "response": "stilts tpipe ifmt=csv in=input.csv cmd='addcol QUALITY_FLAG \"ERROR_MAG > 0.2 ? 1 : 0\"' ofmt=fits out=output.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From `input.fits`, I need to remove a number of columns. Specifically, I want to delete the 'THUMBNAIL' column and any column whose name starts with 'PSF_'. Save the result to `output.fits`.",
+        "response": "stilts tpipe in=input.fits cmd='delcols \"THUMBNAIL PSF_*\"' out=output.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need to sort a very large FITS file, `input.fits`, which does not fit in memory. Please sort it by the 'WEIGHT' column in ascending order, using disk for temporary storage. Save the sorted table to `output.fits`.",
+        "response": "stilts -disk tpipe in=input.fits cmd='sort WEIGHT' out=output.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "In my table `input.fits`, I have a flux column 'FLUX_CGS'. I want to add a new column 'FLUX_SI' by multiplying 'FLUX_CGS' by 1E-3. Please also set the units for this new column to 'W/m^2' and its UCD to 'phot.flux'. Save the result to `output.fits`.",
+        "response": "stilts tpipe in=input.fits cmd='addcol -units W/m^2 -ucd phot.flux FLUX_SI \"FLUX_CGS * 1E-3\"' out=output.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Generate a command to take the output of another program, `my_source_extractor`, and pipe it into STILTS. The input is an IPAC table. STILTS should then select only the rows where column 'SNR' is greater than 10. Write the result to the console.",
+        "response": "stilts tpipe ifmt=ipac in='my_source_extractor |' cmd='select \"SNR > 10\"'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Upload my data from `input.csv` to a PostgreSQL database named 'astronomy' on the server 'db.example.com'. The data should go into a new table called 'observations'. If the table already exists, it should be dropped and recreated.",
+        "response": "stilts tpipe ifmt=csv in=input.csv omode=tosql protocol=postgresql host=db.example.com db=astronomy dbtable=observations write=dropcreate",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "To conserve memory, I want to force a streaming read of a very large VOTable, `input.vot`, even if the tool thinks it needs random access. Please convert it to a FITS file named `output.fits` using this streaming policy.",
+        "response": "stilts tpipe in=input.vot ifmt=votable istream=true out=output.fits",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"input.vot\"\n"
+    },
+    {
+        "prompt": "I need to rename a column in `input.fits`. The column currently named 'RA_DEGREES_J2000' should be renamed to just 'RA'. Save the modified table as `output.fits`.",
+        "response": "stilts tpipe in=input.fits cmd='colmeta -name RA RA_DEGREES_J2000' out=output.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "The 'OBJ_ID' column in my `input.csv` is a number, but it should be treated as a string to preserve leading zeros. Please cast the 'OBJ_ID' column to a string and save the new table as `output.fits`.",
+        "response": "stilts tpipe ifmt=csv in=input.csv cmd='replacecol OBJ_ID \"toString(OBJ_ID)\"' out=output.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "For the table `input.fits`, select rows where `REDSHIFT > 0.1`, then calculate statistics for the `G_MAG` and `R_MAG` columns for only that subset of rows.",
+        "response": "stilts tpipe in=input.fits cmd='select \"REDSHIFT > 0.1\"' cmd='keepcols \"G_MAG R_MAG\"' omode=stats",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I have an ASCII file `input.txt` with space-separated values and no header. I want to add a header. The columns should be named 'ID', 'X', 'Y', 'MAG', 'ERR'. Save the result as a FITS file `output.fits`.",
+        "response": "stilts tpipe ifmt=ascii in=input.txt cmd='setheader ID X Y MAG ERR' out=output.fits ofmt=fits",
+        "chat.jar": "failed",
+        "error": "Error: Unknown processing command: setheader\n\nAvailable filters:\n   addcol [-after <col-id> | -before <col-id>]\n          [-units <units>] [-ucd <ucd>] [-utype <utype>] [-xtype <xtype>]\n          [-desc <descrip>] [-shape <n>[,<n>...][,*]] [-elsize <n>]\n          <col-name> <expr>\n   addpixsample [-radius <expr-rad>] [-systems <in-sys> <pix-sys>]\n                <expr-lon> <expr-lat> <healpix-file>\n   addresolve <col-id-objname> <col-name-ra> <col-name-dec>\n   addskycoords [-epoch <expr>] [-inunit deg|rad|sex] [-outunit deg|rad|sex]\n                <insys> <outsys> <col-id1> <col-id2> <col-name1> <col-name2>\n   assert <test-expr> [<msg-expr>]\n   badval <bad-val> <colid-list>\n   cache\n   check\n   clearparams <pname> ...\n   collapsecols [-[no]keepscalars] <array-colname> <col-id0> <ncol>\n   colmeta [-name <name>] [-units <units>] [-ucd <ucd>]\n           [-utype <utype>] [-xtype <xtype>] [-desc <descrip>]\n           [-shape <n>[,<n>...][,*]] [-elsize <n>]\n           <colid-list>\n   constcol [-noparam] [-acceptnull] [-[no]parallel] [<colid-list>]\n   delcols <colid-list>\n   every [-exact|-approx] <step>\n   explodecols <colid-list>\n   explodeall [-ifndim <ndim>] [-ifshape <dims>]\n   fixcolnames \n   group [-[no]parallel] <key> [<key> ...] [<aggcol> ...]\n   head <nrows>\n   healpixmeta [-level <n>] [-implicit|-column <col-id>] [-csys C|G|E] [-nested|-ring]\n   keepcols <colid-list>\n   meta [<item> ...]\n   progress\n   random\n   randomview\n   repeat [-row|-table] <count>\n   replacecol [-name <name>] [-units <units>] [-ucd <ucd>]\n              [-utype <utype>] [-xtype <xtype>] [-desc <descrip>]\n              <col-id> <expr>\n   replaceval <old-val> <new-val> <colid-list>\n   rowrange <first> <last>|+<count>\n   select <expr>\n   seqview\n   setparam [-type byte|short|int|long|float|double|boolean|string]\n            [-desc <descrip>] [-unit <units>] [-ucd <ucd>]\n            [-utype <utype>] [-xtype <xtype>]\n            <pname> <pexpr>\n   shuffle [-seed <int>]\n   sort [-down] [-nullsfirst] [-[no]parallel] <key-list>\n   sorthead [-tail] [-down] [-nullsfirst] <nrows> <key-list>\n   stats [-[no]parallel] [-qapprox|-qexact] [<item> ...]\n   tablename <name>\n   tail <nrows>\n   transpose [-namecol <col-id>]\n   uniq [-count] [<colid-list>]\n\n"
+    },
+    {
+        "prompt": "My file `input.fits` uses the value -9999 to indicate a missing measurement. Please replace all occurrences of -9999 in the 'FLUX' and 'FLUX_ERR' columns with a proper null value and save the result to `output.fits`.",
+        "response": "stilts tpipe in=input.fits cmd='replacevalue -9999 null FLUX FLUX_ERR' out=output.fits",
+        "chat.jar": "failed",
+        "error": "Error: Unknown processing command: replacevalue\n\nAvailable filters:\n   addcol [-after <col-id> | -before <col-id>]\n          [-units <units>] [-ucd <ucd>] [-utype <utype>] [-xtype <xtype>]\n          [-desc <descrip>] [-shape <n>[,<n>...][,*]] [-elsize <n>]\n          <col-name> <expr>\n   addpixsample [-radius <expr-rad>] [-systems <in-sys> <pix-sys>]\n                <expr-lon> <expr-lat> <healpix-file>\n   addresolve <col-id-objname> <col-name-ra> <col-name-dec>\n   addskycoords [-epoch <expr>] [-inunit deg|rad|sex] [-outunit deg|rad|sex]\n                <insys> <outsys> <col-id1> <col-id2> <col-name1> <col-name2>\n   assert <test-expr> [<msg-expr>]\n   badval <bad-val> <colid-list>\n   cache\n   check\n   clearparams <pname> ...\n   collapsecols [-[no]keepscalars] <array-colname> <col-id0> <ncol>\n   colmeta [-name <name>] [-units <units>] [-ucd <ucd>]\n           [-utype <utype>] [-xtype <xtype>] [-desc <descrip>]\n           [-shape <n>[,<n>...][,*]] [-elsize <n>]\n           <colid-list>\n   constcol [-noparam] [-acceptnull] [-[no]parallel] [<colid-list>]\n   delcols <colid-list>\n   every [-exact|-approx] <step>\n   explodecols <colid-list>\n   explodeall [-ifndim <ndim>] [-ifshape <dims>]\n   fixcolnames \n   group [-[no]parallel] <key> [<key> ...] [<aggcol> ...]\n   head <nrows>\n   healpixmeta [-level <n>] [-implicit|-column <col-id>] [-csys C|G|E] [-nested|-ring]\n   keepcols <colid-list>\n   meta [<item> ...]\n   progress\n   random\n   randomview\n   repeat [-row|-table] <count>\n   replacecol [-name <name>] [-units <units>] [-ucd <ucd>]\n              [-utype <utype>] [-xtype <xtype>] [-desc <descrip>]\n              <col-id> <expr>\n   replaceval <old-val> <new-val> <colid-list>\n   rowrange <first> <last>|+<count>\n   select <expr>\n   seqview\n   setparam [-type byte|short|int|long|float|double|boolean|string]\n            [-desc <descrip>] [-unit <units>] [-ucd <ucd>]\n            [-utype <utype>] [-xtype <xtype>]\n            <pname> <pexpr>\n   shuffle [-seed <int>]\n   sort [-down] [-nullsfirst] [-[no]parallel] <key-list>\n   sorthead [-tail] [-down] [-nullsfirst] <nrows> <key-list>\n   stats [-[no]parallel] [-qapprox|-qexact] [<item> ...]\n   tablename <name>\n   tail <nrows>\n   transpose [-namecol <col-id>]\n   uniq [-count] [<colid-list>]\n\n"
+    },
+    {
+        "prompt": "I have a catalog, `input.csv`, which may contain multiple observations of the same object. I want to create a clean list, `output.csv`, that contains only one entry per unique 'SOURCE_ID'. If there are duplicates, the first one found should be kept.",
+        "response": "stilts tpipe ifmt=csv in=input.csv cmd='uniq SOURCE_ID' ofmt=csv out=output.csv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need to add a column of random numbers to my table `input.vot` for simulation purposes. Please add a new column named 'RAND_WEIGHT' with values uniformly distributed between 0 and 1. Save the new table as `output.vot`.",
+        "response": "stilts tpipe in=input.vot cmd='random RAND_WEIGHT' out=output.vot",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: 'RAND_WEIGHT'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: random RAND_WEIGHT\n\nUsage: random\n    (Unused arguments: 'RAND_WEIGHT'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "I have a small table in `input.fits` where each column represents a different filter band and each row represents a different object. I need to pivot this table, transposing it so that the objects are columns and filter bands are rows. Save the transposed table to `output.fits`.",
+        "response": "stilts tpipe in=input.fits cmd='transpose' out=output.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "My input table `input.fits` has a column called 'PSF_SHAPE' which is a 2-element array (major and minor axes). I want to split this into two scalar columns named 'PSF_MAJOR' and 'PSF_MINOR'. Save the result to `output.fits`.",
+        "response": "stilts tpipe in=input.fits cmd='explodecols PSF_SHAPE (PSF_MAJOR,PSF_MINOR)' out=output.fits",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '(PSF_MAJOR,PSF_MINOR)'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: explodecols PSF_SHAPE (PSF_MAJOR,PSF_MINOR)\n\nUsage: explodecols <colid-list>\n    (Unused arguments: '(PSF_MAJOR,PSF_MINOR)'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "I am building a data validation pipeline. Before processing `input.fits`, I must ensure that all values in the 'SNR' column are positive. If any are not, the command should fail with the error message 'SNR values must be positive'. If the check passes, write the table to `output.fits`.",
+        "response": "stilts tpipe in=input.fits cmd='assert errmsg=\"SNR values must be positive\" test=\"SNR > 0\"' out=output.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need to update the metadata of the 'MAG_G' column in `input.fits`. Please set its description to 'Mean magnitude in G-band' and its UCD to 'phot.mag;em.opt.G'. Save the table with the new metadata to `output.fits`.",
+        "response": "stilts tpipe in=input.fits cmd='colmeta -desc \"Mean magnitude in G-band\" -ucd phot.mag;em.opt.G MAG_G' out=output.fits",
+        "chat.jar": "failed",
+        "error": "Error: No columns specified\n\nCommand was: colmeta -desc \"Mean magnitude in G-band\" -ucd phot.mag\n\nUsage: colmeta [-name <name>] [-units <units>] [-ucd <ucd>]\n               [-utype <utype>] [-xtype <xtype>] [-desc <descrip>]\n               [-shape <n>[,<n>...][,*]] [-elsize <n>]\n               <colid-list>\n    (No columns specified)\n"
+    },
+    {
+        "prompt": "I am running a very long conversion from a large `input.vot` file to `output.fits`. I want the command to print a progress update to my terminal every 30 seconds so I know it's still working.",
+        "response": "stilts tpipe in=input.vot cmd='progress 30' out=output.fits",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '30'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: progress 30\n\nUsage: progress\n    (Unused arguments: '30'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "First, filter `input.fits` to keep only rows where 'FLAG' is 0. Then, for the resulting table, add a new column called 'INDEX' which contains a sequential row number starting from 1. Save the result to `output.fits`.",
+        "response": "stilts tpipe in=input.fits cmd='select \"FLAG == 0\"' cmd='rowtorownum INDEX' out=output.fits",
+        "chat.jar": "failed",
+        "error": "Error: Unknown processing command: rowtorownum\n\nAvailable filters:\n   addcol [-after <col-id> | -before <col-id>]\n          [-units <units>] [-ucd <ucd>] [-utype <utype>] [-xtype <xtype>]\n          [-desc <descrip>] [-shape <n>[,<n>...][,*]] [-elsize <n>]\n          <col-name> <expr>\n   addpixsample [-radius <expr-rad>] [-systems <in-sys> <pix-sys>]\n                <expr-lon> <expr-lat> <healpix-file>\n   addresolve <col-id-objname> <col-name-ra> <col-name-dec>\n   addskycoords [-epoch <expr>] [-inunit deg|rad|sex] [-outunit deg|rad|sex]\n                <insys> <outsys> <col-id1> <col-id2> <col-name1> <col-name2>\n   assert <test-expr> [<msg-expr>]\n   badval <bad-val> <colid-list>\n   cache\n   check\n   clearparams <pname> ...\n   collapsecols [-[no]keepscalars] <array-colname> <col-id0> <ncol>\n   colmeta [-name <name>] [-units <units>] [-ucd <ucd>]\n           [-utype <utype>] [-xtype <xtype>] [-desc <descrip>]\n           [-shape <n>[,<n>...][,*]] [-elsize <n>]\n           <colid-list>\n   constcol [-noparam] [-acceptnull] [-[no]parallel] [<colid-list>]\n   delcols <colid-list>\n   every [-exact|-approx] <step>\n   explodecols <colid-list>\n   explodeall [-ifndim <ndim>] [-ifshape <dims>]\n   fixcolnames \n   group [-[no]parallel] <key> [<key> ...] [<aggcol> ...]\n   head <nrows>\n   healpixmeta [-level <n>] [-implicit|-column <col-id>] [-csys C|G|E] [-nested|-ring]\n   keepcols <colid-list>\n   meta [<item> ...]\n   progress\n   random\n   randomview\n   repeat [-row|-table] <count>\n   replacecol [-name <name>] [-units <units>] [-ucd <ucd>]\n              [-utype <utype>] [-xtype <xtype>] [-desc <descrip>]\n              <col-id> <expr>\n   replaceval <old-val> <new-val> <colid-list>\n   rowrange <first> <last>|+<count>\n   select <expr>\n   seqview\n   setparam [-type byte|short|int|long|float|double|boolean|string]\n            [-desc <descrip>] [-unit <units>] [-ucd <ucd>]\n            [-utype <utype>] [-xtype <xtype>]\n            <pname> <pexpr>\n   shuffle [-seed <int>]\n   sort [-down] [-nullsfirst] [-[no]parallel] <key-list>\n   sorthead [-tail] [-down] [-nullsfirst] <nrows> <key-list>\n   stats [-[no]parallel] [-qapprox|-qexact] [<item> ...]\n   tablename <name>\n   tail <nrows>\n   transpose [-namecol <col-id>]\n   uniq [-count] [<colid-list>]\n\n"
+    },
+    {
+        "prompt": "My table `input.csv` has separate columns 'POS_X', 'POS_Y', and 'POS_Z'. I want to combine these three columns into a single 3-element array column named 'POSITION_VECTOR'. Save the resulting table as `output.fits`.",
+        "response": "stilts tpipe ifmt=csv in=input.csv cmd='implodecols \"POS_X POS_Y POS_Z\" POSITION_VECTOR' out=output.fits",
+        "chat.jar": "failed",
+        "error": "Error: Unknown processing command: implodecols\n\nAvailable filters:\n   addcol [-after <col-id> | -before <col-id>]\n          [-units <units>] [-ucd <ucd>] [-utype <utype>] [-xtype <xtype>]\n          [-desc <descrip>] [-shape <n>[,<n>...][,*]] [-elsize <n>]\n          <col-name> <expr>\n   addpixsample [-radius <expr-rad>] [-systems <in-sys> <pix-sys>]\n                <expr-lon> <expr-lat> <healpix-file>\n   addresolve <col-id-objname> <col-name-ra> <col-name-dec>\n   addskycoords [-epoch <expr>] [-inunit deg|rad|sex] [-outunit deg|rad|sex]\n                <insys> <outsys> <col-id1> <col-id2> <col-name1> <col-name2>\n   assert <test-expr> [<msg-expr>]\n   badval <bad-val> <colid-list>\n   cache\n   check\n   clearparams <pname> ...\n   collapsecols [-[no]keepscalars] <array-colname> <col-id0> <ncol>\n   colmeta [-name <name>] [-units <units>] [-ucd <ucd>]\n           [-utype <utype>] [-xtype <xtype>] [-desc <descrip>]\n           [-shape <n>[,<n>...][,*]] [-elsize <n>]\n           <colid-list>\n   constcol [-noparam] [-acceptnull] [-[no]parallel] [<colid-list>]\n   delcols <colid-list>\n   every [-exact|-approx] <step>\n   explodecols <colid-list>\n   explodeall [-ifndim <ndim>] [-ifshape <dims>]\n   fixcolnames \n   group [-[no]parallel] <key> [<key> ...] [<aggcol> ...]\n   head <nrows>\n   healpixmeta [-level <n>] [-implicit|-column <col-id>] [-csys C|G|E] [-nested|-ring]\n   keepcols <colid-list>\n   meta [<item> ...]\n   progress\n   random\n   randomview\n   repeat [-row|-table] <count>\n   replacecol [-name <name>] [-units <units>] [-ucd <ucd>]\n              [-utype <utype>] [-xtype <xtype>] [-desc <descrip>]\n              <col-id> <expr>\n   replaceval <old-val> <new-val> <colid-list>\n   rowrange <first> <last>|+<count>\n   select <expr>\n   seqview\n   setparam [-type byte|short|int|long|float|double|boolean|string]\n            [-desc <descrip>] [-unit <units>] [-ucd <ucd>]\n            [-utype <utype>] [-xtype <xtype>]\n            <pname> <pexpr>\n   shuffle [-seed <int>]\n   sort [-down] [-nullsfirst] [-[no]parallel] <key-list>\n   sorthead [-tail] [-down] [-nullsfirst] <nrows> <key-list>\n   stats [-[no]parallel] [-qapprox|-qexact] [<item> ...]\n   tablename <name>\n   tail <nrows>\n   transpose [-namecol <col-id>]\n   uniq [-count] [<colid-list>]\n\n"
+    },
+    {
+        "prompt": "I have an object catalog `input.fits` with pixel coordinates 'X_PIXEL' and 'Y_PIXEL'. The table's header contains the WCS information for a 4096x4096 image. Generate a command to add world coordinate columns 'RA_WCS' and 'DEC_WCS' based on these pixel values.",
+        "response": "stilts tpipe in=input.fits cmd='addpixcoords 4096 4096 X_PIXEL Y_PIXEL RA_WCS DEC_WCS' out=output.fits",
+        "chat.jar": "failed",
+        "error": "Error: Unknown processing command: addpixcoords\n\nAvailable filters:\n   addcol [-after <col-id> | -before <col-id>]\n          [-units <units>] [-ucd <ucd>] [-utype <utype>] [-xtype <xtype>]\n          [-desc <descrip>] [-shape <n>[,<n>...][,*]] [-elsize <n>]\n          <col-name> <expr>\n   addpixsample [-radius <expr-rad>] [-systems <in-sys> <pix-sys>]\n                <expr-lon> <expr-lat> <healpix-file>\n   addresolve <col-id-objname> <col-name-ra> <col-name-dec>\n   addskycoords [-epoch <expr>] [-inunit deg|rad|sex] [-outunit deg|rad|sex]\n                <insys> <outsys> <col-id1> <col-id2> <col-name1> <col-name2>\n   assert <test-expr> [<msg-expr>]\n   badval <bad-val> <colid-list>\n   cache\n   check\n   clearparams <pname> ...\n   collapsecols [-[no]keepscalars] <array-colname> <col-id0> <ncol>\n   colmeta [-name <name>] [-units <units>] [-ucd <ucd>]\n           [-utype <utype>] [-xtype <xtype>] [-desc <descrip>]\n           [-shape <n>[,<n>...][,*]] [-elsize <n>]\n           <colid-list>\n   constcol [-noparam] [-acceptnull] [-[no]parallel] [<colid-list>]\n   delcols <colid-list>\n   every [-exact|-approx] <step>\n   explodecols <colid-list>\n   explodeall [-ifndim <ndim>] [-ifshape <dims>]\n   fixcolnames \n   group [-[no]parallel] <key> [<key> ...] [<aggcol> ...]\n   head <nrows>\n   healpixmeta [-level <n>] [-implicit|-column <col-id>] [-csys C|G|E] [-nested|-ring]\n   keepcols <colid-list>\n   meta [<item> ...]\n   progress\n   random\n   randomview\n   repeat [-row|-table] <count>\n   replacecol [-name <name>] [-units <units>] [-ucd <ucd>]\n              [-utype <utype>] [-xtype <xtype>] [-desc <descrip>]\n              <col-id> <expr>\n   replaceval <old-val> <new-val> <colid-list>\n   rowrange <first> <last>|+<count>\n   select <expr>\n   seqview\n   setparam [-type byte|short|int|long|float|double|boolean|string]\n            [-desc <descrip>] [-unit <units>] [-ucd <ucd>]\n            [-utype <utype>] [-xtype <xtype>]\n            <pname> <pexpr>\n   shuffle [-seed <int>]\n   sort [-down] [-nullsfirst] [-[no]parallel] <key-list>\n   sorthead [-tail] [-down] [-nullsfirst] <nrows> <key-list>\n   stats [-[no]parallel] [-qapprox|-qexact] [<item> ...]\n   tablename <name>\n   tail <nrows>\n   transpose [-namecol <col-id>]\n   uniq [-count] [<colid-list>]\n\n"
+    },
+    {
+        "prompt": "When creating `output.fits` from `input.csv`, I need to embed some metadata into the output file's header. Please add a parameter named 'HISTORY' with the string value 'Cleaned and filtered on 2025-08-06'.",
+        "response": "stilts tpipe ifmt=csv in=input.csv cmd='setparam HISTORY \"Cleaned and filtered on 2025-08-06\"' out=output.fits",
+        "chat.jar": "executed successfully"
+    }
+]
