@@ -1,0 +1,84 @@
+[
+    {
+        "prompt": "How do I concatenate three ASCII tables named input1.txt, input2.txt and input3.txt into a single output file output.txt?",
+        "response": "stilts tcat ifmt=ascii in=input1.txt in=input2.txt in=input3.txt out=output.txt",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I have a list of CSV files in input_files.txt, each line containing a filename. Concatenate them all into output.csv.",
+        "response": "stilts tcat in=@input_files.txt out=output.csv",
+        "chat.jar": "failed",
+        "error": "Error: input_files.txt (No such file or directory)\n"
+    },
+    {
+        "prompt": "Merge the first table from each of the FITS files input1.fits, input2.fits and input3.fits into output.fits, adding a column that records the sequence number of the source table.",
+        "response": "stilts tcat ifmt=fits in=input1.fits in=input2.fits in=input3.fits seqcol=SourceID out=output.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Concatenate all tables in a multi-extension FITS file named input.fits and write the result to output.fits, showing  progress while processing.",
+        "response": "stilts tcat in=input.fits multi=true icmd=progress out=output.fits",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"input.fits\"\n"
+    },
+    {
+        "prompt": "I want to concatenate input1.txt, input2.txt and input3.txt, but first keep only the columns RA, DEC and FLUX, then  keep only the top 5 rows by FLUX from each table, finally sort the combined result by FLUX.",
+        "response": "stilts tcat ifmt=ascii in='input1.txt input2.txt input3.txt' icmd='keepcols \"RA DEC FLUX\";sorthead 5 FLUX' ocmd='sort FLUX' out=output.txt",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Combine three VOTable files inputA.xml, inputB.xml, inputC.xml, extracting only the columns with UCDs RECORD, POS_EQ_RA_MAIN, POS_EQ_DEC_MAIN, and add a column that contains the unique part of each file's location, writing to output.csv.",
+        "response": "stilts tcat in='inputA.xml inputB.xml inputC.xml' icmd='keepcols \"ucd$RECORD ucd$POS_EQ_RA_MAIN  ucd$POS_EQ_DEC_MAIN\"' uloccol=Source out=output.csv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Read the input tables from standard input (stdin) in CSV format and write the concatenated result to stdout, using lazy loading.",
+        "response": "stilts tcat istream=true ifmt=csv in=- out=- lazy=true",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Concatenate input1.csv and input2.csv, but count the total number of rows before writing the output to output.txt.",
+        "response": "stilts tcat in='input1.csv input2.csv' countrows=true out=output.txt",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I want to concatenate input1.fits and input2.fits, but I need the final table to be written as a binary FITS table  and I also want a checksum of the output.",
+        "response": "stilts tcat in='input1.fits input2.fits' ofmt=fits out=output.fits omode=checksum",
+        "chat.jar": "failed",
+        "error": "Error: ofmt=fits: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Combine the three tables input1.txt, input2.txt, input3.txt, but after concatenation add a column that indicates the location of each source file (e.g., input1.txt) and another column with just the filename part.",
+        "response": "stilts tcat ifmt=ascii in='input1.txt input2.txt input3.txt' loccol=FileLoc uloccol=FileName out=output.txt",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Merge all tables from input.fits, but also apply a processing step that removes duplicate rows based on the ID column before concatenation.",
+        "response": "stilts tcat in=input.fits multi=true icmd='uniq ID' out=output.fits",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"input.fits\"\n"
+    },
+    {
+        "prompt": "Using tcat, concatenate input1.txt and input2.txt and write the output to a CSV file named output.csv, but first rename column 'flux' to 'FLUX'.",
+        "response": "stilts tcat ifmt=ascii in='input1.txt input2.txt' ocmd='rename flux FLUX' out=output.csv ofmt=csv",
+        "chat.jar": "failed",
+        "error": "Error: Unknown processing command: rename\n\nAvailable filters:\n   addcol [-after <col-id> | -before <col-id>]\n          [-units <units>] [-ucd <ucd>] [-utype <utype>] [-xtype <xtype>]\n          [-desc <descrip>] [-shape <n>[,<n>...][,*]] [-elsize <n>]\n          <col-name> <expr>\n   addpixsample [-radius <expr-rad>] [-systems <in-sys> <pix-sys>]\n                <expr-lon> <expr-lat> <healpix-file>\n   addresolve <col-id-objname> <col-name-ra> <col-name-dec>\n   addskycoords [-epoch <expr>] [-inunit deg|rad|sex] [-outunit deg|rad|sex]\n                <insys> <outsys> <col-id1> <col-id2> <col-name1> <col-name2>\n   assert <test-expr> [<msg-expr>]\n   badval <bad-val> <colid-list>\n   cache\n   check\n   clearparams <pname> ...\n   collapsecols [-[no]keepscalars] <array-colname> <col-id0> <ncol>\n   colmeta [-name <name>] [-units <units>] [-ucd <ucd>]\n           [-utype <utype>] [-xtype <xtype>] [-desc <descrip>]\n           [-shape <n>[,<n>...][,*]] [-elsize <n>]\n           <colid-list>\n   constcol [-noparam] [-acceptnull] [-[no]parallel] [<colid-list>]\n   delcols <colid-list>\n   every [-exact|-approx] <step>\n   explodecols <colid-list>\n   explodeall [-ifndim <ndim>] [-ifshape <dims>]\n   fixcolnames \n   group [-[no]parallel] <key> [<key> ...] [<aggcol> ...]\n   head <nrows>\n   healpixmeta [-level <n>] [-implicit|-column <col-id>] [-csys C|G|E] [-nested|-ring]\n   keepcols <colid-list>\n   meta [<item> ...]\n   progress\n   random\n   randomview\n   repeat [-row|-table] <count>\n   replacecol [-name <name>] [-units <units>] [-ucd <ucd>]\n              [-utype <utype>] [-xtype <xtype>] [-desc <descrip>]\n              <col-id> <expr>\n   replaceval <old-val> <new-val> <colid-list>\n   rowrange <first> <last>|+<count>\n   select <expr>\n   seqview\n   setparam [-type byte|short|int|long|float|double|boolean|string]\n            [-desc <descrip>] [-unit <units>] [-ucd <ucd>]\n            [-utype <utype>] [-xtype <xtype>]\n            <pname> <pexpr>\n   shuffle [-seed <int>]\n   sort [-down] [-nullsfirst] [-[no]parallel] <key-list>\n   sorthead [-tail] [-down] [-nullsfirst] <nrows> <key-list>\n   stats [-[no]parallel] [-qapprox|-qexact] [<item> ...]\n   tablename <name>\n   tail <nrows>\n   transpose [-namecol <col-id>]\n   uniq [-count] [<colid-list>]\n\n"
+    },
+    {
+        "prompt": "I need to concatenate input1.txt, input2.txt and input3.txt, but only the rows where the column 'status' equals 'OK', then output the result to output.txt.",
+        "response": "stilts tcat ifmt=ascii in='input1.txt input2.txt input3.txt' icmd='keepif \"status=\\\"OK\\\"\"' out=output.txt",
+        "chat.jar": "failed",
+        "error": "Error: Unknown processing command: keepif\n\nAvailable filters:\n   addcol [-after <col-id> | -before <col-id>]\n          [-units <units>] [-ucd <ucd>] [-utype <utype>] [-xtype <xtype>]\n          [-desc <descrip>] [-shape <n>[,<n>...][,*]] [-elsize <n>]\n          <col-name> <expr>\n   addpixsample [-radius <expr-rad>] [-systems <in-sys> <pix-sys>]\n                <expr-lon> <expr-lat> <healpix-file>\n   addresolve <col-id-objname> <col-name-ra> <col-name-dec>\n   addskycoords [-epoch <expr>] [-inunit deg|rad|sex] [-outunit deg|rad|sex]\n                <insys> <outsys> <col-id1> <col-id2> <col-name1> <col-name2>\n   assert <test-expr> [<msg-expr>]\n   badval <bad-val> <colid-list>\n   cache\n   check\n   clearparams <pname> ...\n   collapsecols [-[no]keepscalars] <array-colname> <col-id0> <ncol>\n   colmeta [-name <name>] [-units <units>] [-ucd <ucd>]\n           [-utype <utype>] [-xtype <xtype>] [-desc <descrip>]\n           [-shape <n>[,<n>...][,*]] [-elsize <n>]\n           <colid-list>\n   constcol [-noparam] [-acceptnull] [-[no]parallel] [<colid-list>]\n   delcols <colid-list>\n   every [-exact|-approx] <step>\n   explodecols <colid-list>\n   explodeall [-ifndim <ndim>] [-ifshape <dims>]\n   fixcolnames \n   group [-[no]parallel] <key> [<key> ...] [<aggcol> ...]\n   head <nrows>\n   healpixmeta [-level <n>] [-implicit|-column <col-id>] [-csys C|G|E] [-nested|-ring]\n   keepcols <colid-list>\n   meta [<item> ...]\n   progress\n   random\n   randomview\n   repeat [-row|-table] <count>\n   replacecol [-name <name>] [-units <units>] [-ucd <ucd>]\n              [-utype <utype>] [-xtype <xtype>] [-desc <descrip>]\n              <col-id> <expr>\n   replaceval <old-val> <new-val> <colid-list>\n   rowrange <first> <last>|+<count>\n   select <expr>\n   seqview\n   setparam [-type byte|short|int|long|float|double|boolean|string]\n            [-desc <descrip>] [-unit <units>] [-ucd <ucd>]\n            [-utype <utype>] [-xtype <xtype>]\n            <pname> <pexpr>\n   shuffle [-seed <int>]\n   sort [-down] [-nullsfirst] [-[no]parallel] <key-list>\n   sorthead [-tail] [-down] [-nullsfirst] <nrows> <key-list>\n   stats [-[no]parallel] [-qapprox|-qexact] [<item> ...]\n   tablename <name>\n   tail <nrows>\n   transpose [-namecol <col-id>]\n   uniq [-count] [<colid-list>]\n\n"
+    },
+    {
+        "prompt": "Concatenate input1.csv, input2.csv and input3.csv, adding a progress report, setting lazy loading, and write the result to output.txt.",
+        "response": "stilts tcat ifmt=csv in='input1.csv input2.csv input3.csv' icmd=progress lazy=true out=output.txt",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I have two VOTable files inputA.xml and inputB.xml. Concatenate them into output.vot, but keep only columns with UCDs POS_EQ_RA_MAIN and POS_EQ_DEC_MAIN, and compute the statistics of the resulting table.",
+        "response": "stilts tcat in='inputA.xml inputB.xml' icmd='keepcols \"ucd$POS_EQ_RA_MAIN ucd$POS_EQ_DEC_MAIN\"' omode=stats out=output.vot",
+        "chat.jar": "failed",
+        "error": "Error: out=output.vot: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    }
+]

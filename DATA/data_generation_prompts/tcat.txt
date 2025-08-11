@@ -9,7 +9,7 @@ Return the results as a list of json of the following format:
     ..
 ]
 
-The command I want you to generate examples for is the tpipe command. The documentation of this is as follows:
+The command I want you to generate examples for is the tcat command. The documentation of this is as follows:
 
 tcat: Concatenates multiple similar tables
 tcat is a tool for concatenating any number of similar tables one after the other. The tables must be of similar form to each other (same number and types of columns). Preprocessing of the tables may be done using the icmd parameter, which will operate in the same way on all the input tables. Table parameters of the output table will be taken from the first of the input tables.

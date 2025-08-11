@@ -58,5 +58,20 @@
         "response": "The 'tcat' command concatenates multiple tables together, appending the rows of subsequent tables to the end of the first one. It can also be used to interleave rows from multiple tables.",
         "chat.jar": "failed",
         "error": "\nNo such task: The\n\nUsage:\n   stilts [-help] [-version] [-verbose] [-allowunused] [-prompt] [-bench]\n          [-debug] [-batch] [-memory] [-disk] [-memgui]\n          [-checkversion <vers>] [-stdout <file>] [-stderr <file>]\n          <task-name> <task-args>\n\n   stilts <task-name> help[=<param-name>|*]\n\n   Known tasks:\n      arrayjoin\n      calc\n      cdsskymatch\n      cone\n      coneskymatch\n      datalinklint\n      funcs\n      mocshape\n      parqlint\n      parqlook\n      pixfoot\n      pixsample\n      plot2d\n      plot3d\n      plothist\n      regquery\n      server\n      sqlclient\n      sqlskymatch\n      sqlupdate\n      taplint\n      tapquery\n      tapresume\n      tapskymatch\n      tcat\n      tcatn\n      tcopy\n      tcube\n      tgridmap\n      tgroup\n      tjoin\n      tloop\n      tmatch1\n      tmatch2\n      tmatchn\n      tmulti\n      tmultin\n      tpipe\n      tskymap\n      tskymatch2\n      votcopy\n      votlint\n      xsdvalidate\n      plot2plane\n      plot2sky\n      plot2cube\n      plot2sphere\n      plot2corner\n      plot2time\n\n"
+    },
+    {
+        "prompt": "Hello!",
+        "response": "Hello, I can help you with STILTS commands. What would you like to know or do?",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt":"Hi",
+        "response": "Hi there! How can I assist you with STILTS today?",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Hi",
+        "response": "Hello, I am here to help you with STILTS commands. Please ask and command away!",
+        "chat.jar": "executed successfully"
     }
 ]

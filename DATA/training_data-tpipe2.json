@@ -1,0 +1,260 @@
+[
+    {
+        "prompt": "Convert a FITS file named `input.fits` to a CSV file named `output.csv`.",
+        "response": "stilts tpipe in=input.fits out=output.csv ofmt=csv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I have a CSV file `input.csv`. Please convert it to a FITS file `output.fits`.",
+        "response": "stilts tpipe in=input.csv ifmt=csv out=output.fits ofmt=fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Show the first 10 rows of the table in `input.vot` on the command line.",
+        "response": "stilts tpipe in=input.vot cmd='head 10'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Count the total number of rows in `input.fits`.",
+        "response": "stilts tpipe in=input.fits omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Display the metadata, like column names and data types, for the table in `input.fits`.",
+        "response": "stilts tpipe in=input.fits omode=meta",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From `input.fits`, create a new FITS file `output.fits` containing only the 'RA', 'DEC', and 'MAG_G' columns.",
+        "response": "stilts tpipe in=input.fits cmd='keepcols \"RA DEC MAG_G\"' out=output.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Remove the 'TEMP_FLAG' and 'QUALITY' columns from `input.csv` and save the result as `output.csv`.",
+        "response": "stilts tpipe in=input.csv ifmt=csv cmd='delcols \"TEMP_FLAG QUALITY\"' out=output.csv ofmt=csv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Add a new column called 'G_MINUS_R' to `input.fits`, calculated as the difference between 'MAG_G' and 'MAG_R'. Save the new table as `output.fits`.",
+        "response": "stilts tpipe in=input.fits cmd='addcol G_MINUS_R \"MAG_G - MAG_R\"' out=output.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Sort the table `input.fits` by the 'REDSHIFT' column in ascending order and save it as `output.fits`.",
+        "response": "stilts tpipe in=input.fits cmd='sort REDSHIFT' out=output.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Sort `input.vot` in descending order based on the 'LUMINOSITY' column. Output to `output.vot`.",
+        "response": "stilts tpipe in=input.vot cmd='sort -down LUMINOSITY' out=output.vot",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "In `input.fits`, select all rows where the 'SNR' column is greater than 50. Save the filtered table to `output.fits`.",
+        "response": "stilts tpipe in=input.fits cmd='select \"SNR > 50\"' out=output.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Calculate basic statistics (mean, std dev, min, max) for all numeric columns in `input.csv`.",
+        "response": "stilts tpipe in=input.csv ifmt=csv omode=stats",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From `input.fits`, select only galaxies (where 'OBJ_TYPE' is the string 'GALAXY') with a redshift 'Z' greater than 0.5. Save the result to `output.fits`.",
+        "response": "stilts tpipe in=input.fits cmd='select \"OBJ_TYPE == ''GALAXY'' && Z > 0.5\"' out=output.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I have a file `input.dat` which is a simple ASCII table. Convert it to a FITS file `output.fits`.",
+        "response": "stilts tpipe in=input.dat ifmt=ascii out=output.fits ofmt=fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Create a new column 'LOG_MASS' which is the base-10 logarithm of the 'MASS' column in `input.fits`. Output the modified table to `output.fits`.",
+        "response": "stilts tpipe in=input.fits cmd='addcol LOG_MASS \"log10(MASS)\"' out=output.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Display the last 25 rows of `input.fits` to the terminal.",
+        "response": "stilts tpipe in=input.fits cmd='tail 25'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find the 20 brightest objects in `input.fits` (those with the lowest 'MAG_APP' value) and save their 'ID', 'RA', and 'DEC' to `output.fits`.",
+        "response": "stilts tpipe in=input.fits cmd='sorthead 20 MAG_APP' cmd='keepcols \"ID RA DEC\"' out=output.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Rename the column 'RA_DEGREES' to 'RA' and 'DEC_DEGREES' to 'DEC' in `input.fits`, saving the changed file as `output.fits`.",
+        "response": "stilts tpipe in=input.fits cmd='colmeta -name RA_DEGREES RA; colmeta -name DEC_DEGREES DEC' out=output.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Take the table `input.fits`, shuffle its rows randomly, and save the result to `output.fits`.",
+        "response": "stilts tpipe in=input.fits cmd=shuffle out=output.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "My file `input.fits` has FK5 J2000 coordinates in columns 'RA_J2000' and 'DEC_J2000' (in decimal degrees). Add new columns 'GAL_LON' and 'GAL_LAT' with the corresponding Galactic coordinates.",
+        "response": "stilts tpipe in=input.fits cmd='addskycoords fk5 gal RA_J2000 DEC_J2000 GAL_LON GAL_LAT' out=output.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Replace all occurrences of -9999 in the 'FLUX' column of `input.csv` with a null value and save the result as `output.csv`.",
+        "response": "stilts tpipe in=input.csv ifmt=csv cmd='replaceval -9999 null FLUX' out=output.csv ofmt=csv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Calculate statistics for the 'MAG_G', 'MAG_R', and 'MAG_I' columns, but only for rows where 'FLAG' is 0. The input table is `input.fits`.",
+        "response": "stilts tpipe in=input.fits cmd='select \"FLAG == 0\"' cmd='keepcols \"MAG_G MAG_R MAG_I\"' omode=stats",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Read a VOTable from standard input, filter for rows where 'PROB' is greater than 0.95, and write the result as a FITS file to `output.fits`.",
+        "response": "stilts tpipe in=- ifmt=votable cmd='select \"PROB > 0.95\"' out=output.fits ofmt=fits",
+        "chat.jar": "failed",
+        "error": "Error: uk.ac.starlink.table.TableFormatException\n    (Premature end of file.)\n"
+    },
+    {
+        "prompt": "Combine the 'FLUX_G' and 'FLUX_R' columns from `input.fits` into a new column 'FLUX_SUM', then delete the original two columns and save to `output.fits`.",
+        "response": "stilts tpipe in=input.fits cmd='addcol FLUX_SUM \"FLUX_G + FLUX_R\"' cmd='delcols \"FLUX_G FLUX_R\"' out=output.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Select every 100th row from the large file `input.fits` and write them to a new file, `output.fits`.",
+        "response": "stilts tpipe in=input.fits cmd='every 100' out=output.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I have a table `input.fits` with array columns. Expand all array columns into separate scalar columns and save the result as `output.fits`.",
+        "response": "stilts tpipe in=input.fits cmd=explodeall out=output.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Sort `input.csv` first by 'GROUP_ID' in ascending order, and then by 'MEMBER_MASS' in descending order. Save the sorted table as `output.csv`.",
+        "response": "stilts tpipe in=input.csv ifmt=csv cmd='sort \"GROUP_ID; -down MEMBER_MASS\"' out=output.csv ofmt=csv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From `input.fits`, select all objects within a 10 arcminute radius of RA=150.25, Dec=2.55 degrees, and then count how many there are. Assume the 'RA' and 'DEC' columns are in degrees.",
+        "response": "stilts tpipe in=input.fits cmd='select \"skyDistanceDegrees(RA, DEC, 150.25, 2.55) < 10./60.\"' omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Change the UCD of the column 'VMAG' to 'phot.mag;em.opt.V' and its unit to 'mag' in `input.fits`. Save the modified table as `output.fits`.",
+        "response": "stilts tpipe in=input.fits cmd='colmeta -ucd VMAG phot.mag;em.opt.V' cmd='colmeta -unit VMAG mag' out=output.fits",
+        "chat.jar": "failed",
+        "error": "Error: Unknown processing command: em.opt.V\n\nAvailable filters:\n   addcol [-after <col-id> | -before <col-id>]\n          [-units <units>] [-ucd <ucd>] [-utype <utype>] [-xtype <xtype>]\n          [-desc <descrip>] [-shape <n>[,<n>...][,*]] [-elsize <n>]\n          <col-name> <expr>\n   addpixsample [-radius <expr-rad>] [-systems <in-sys> <pix-sys>]\n                <expr-lon> <expr-lat> <healpix-file>\n   addresolve <col-id-objname> <col-name-ra> <col-name-dec>\n   addskycoords [-epoch <expr>] [-inunit deg|rad|sex] [-outunit deg|rad|sex]\n                <insys> <outsys> <col-id1> <col-id2> <col-name1> <col-name2>\n   assert <test-expr> [<msg-expr>]\n   badval <bad-val> <colid-list>\n   cache\n   check\n   clearparams <pname> ...\n   collapsecols [-[no]keepscalars] <array-colname> <col-id0> <ncol>\n   colmeta [-name <name>] [-units <units>] [-ucd <ucd>]\n           [-utype <utype>] [-xtype <xtype>] [-desc <descrip>]\n           [-shape <n>[,<n>...][,*]] [-elsize <n>]\n           <colid-list>\n   constcol [-noparam] [-acceptnull] [-[no]parallel] [<colid-list>]\n   delcols <colid-list>\n   every [-exact|-approx] <step>\n   explodecols <colid-list>\n   explodeall [-ifndim <ndim>] [-ifshape <dims>]\n   fixcolnames \n   group [-[no]parallel] <key> [<key> ...] [<aggcol> ...]\n   head <nrows>\n   healpixmeta [-level <n>] [-implicit|-column <col-id>] [-csys C|G|E] [-nested|-ring]\n   keepcols <colid-list>\n   meta [<item> ...]\n   progress\n   random\n   randomview\n   repeat [-row|-table] <count>\n   replacecol [-name <name>] [-units <units>] [-ucd <ucd>]\n              [-utype <utype>] [-xtype <xtype>] [-desc <descrip>]\n              <col-id> <expr>\n   replaceval <old-val> <new-val> <colid-list>\n   rowrange <first> <last>|+<count>\n   select <expr>\n   seqview\n   setparam [-type byte|short|int|long|float|double|boolean|string]\n            [-desc <descrip>] [-unit <units>] [-ucd <ucd>]\n            [-utype <utype>] [-xtype <xtype>]\n            <pname> <pexpr>\n   shuffle [-seed <int>]\n   sort [-down] [-nullsfirst] [-[no]parallel] <key-list>\n   sorthead [-tail] [-down] [-nullsfirst] <nrows> <key-list>\n   stats [-[no]parallel] [-qapprox|-qexact] [<item> ...]\n   tablename <name>\n   tail <nrows>\n   transpose [-namecol <col-id>]\n   uniq [-count] [<colid-list>]\n\n"
+    },
+    {
+        "prompt": "Load the table `input.fits` and send it directly to TOPCAT for visualization.",
+        "response": "stilts tpipe in=input.fits omode=topcat",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Select rows from `input.fits` starting at index 1000 and ending at index 2000 (inclusive). Write the resulting sub-table to `output.fits`.",
+        "response": "stilts tpipe in=input.fits cmd='rowrange 1000 2000' out=output.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Process the table `input.fits` using the pipeline of commands defined in the file `filters.txt` and then discard the output.",
+        "response": "stilts tpipe in=input.fits cmd=@filters.txt omode=discard",
+        "chat.jar": "failed",
+        "error": "Error: filters.txt (No such file or directory)\n"
+    },
+    {
+        "prompt": "Add a constant column named 'SURVEY' with the text value 'SDSS-DR17' to every row in `input.csv`. Save the output to `output.csv`.",
+        "response": "stilts tpipe in=input.csv ifmt=csv cmd='constcol SURVEY \"SDSS-DR17\"' out=output.csv ofmt=csv",
+        "chat.jar": "failed",
+        "error": "Error: Multiple column lists\n\nCommand was: constcol SURVEY \"SDSS-DR17\"\n\nUsage: constcol [-noparam] [-acceptnull] [-[no]parallel] [<colid-list>]\n    (Multiple column lists)\n"
+    },
+    {
+        "prompt": "Clean the column names in `input.fits` by replacing any characters that are not letters, numbers, or underscores with an underscore. Save to `output.fits`.",
+        "response": "stilts tpipe in=input.fits cmd=fixcolnames out=output.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Remove any duplicate rows from `input.fits` based on the value in the 'SOURCE_ID' column, keeping only the first occurrence of each ID. Save the unique rows to `output.fits`.",
+        "response": "stilts tpipe in=input.fits cmd='uniq SOURCE_ID' out=output.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Transpose the table `input.fits` so that rows become columns and columns become rows, and show the result on the screen.",
+        "response": "stilts tpipe in=input.fits cmd=transpose",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "For `input.fits`, calculate the absolute magnitude 'M_G' using the formula 'MAG_G - DISTMOD'. Then, create a new table `output.fits` with only the 'ID', 'RA', 'DEC', and the new 'M_G' columns.",
+        "response": "stilts tpipe in=input.fits cmd='addcol M_G \"MAG_G - DISTMOD\"' cmd='keepcols \"ID RA DEC M_G\"' out=output.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "My file `input.fits` has RA and Dec as sexagesimal strings in columns 'RA_SEX' and 'DEC_SEX'. I need to create a new column called 'separation' which is the angular distance in degrees from the point 03h 32m 45s, -27d 47m 10s.",
+        "response": "stilts tpipe in=input.fits cmd='addcol separation \"skyDistanceDegrees(hmsToDegrees(RA_SEX), dmsToDegrees(DEC_SEX), hmsToDegrees(3,32,45), dmsToDegrees(-27,47,10))\"' out=output.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Display a progress report every 10 seconds while processing the large file `input.fits` and converting it to `output.csv`.",
+        "response": "stilts tpipe in=input.fits cmd='progress 10s' out=output.csv ofmt=csv",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '10s'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: progress 10s\n\nUsage: progress\n    (Unused arguments: '10s'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "Take `input.vot` and replace its 'FLUX' column with its natural logarithm. The new column should be named 'LOG_FLUX'.",
+        "response": "stilts tpipe in=input.vot cmd='replacecol FLUX \"ln(FLUX)\" LOG_FLUX' out=output.vot",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: 'LOG_FLUX'\n\nCommand was: replacecol FLUX \"ln(FLUX)\" LOG_FLUX\n\nUsage: replacecol [-name <name>] [-units <units>] [-ucd <ucd>]\n                  [-utype <utype>] [-xtype <xtype>] [-desc <descrip>]\n                  <col-id> <expr>\n    (Unused arguments: 'LOG_FLUX')\n"
+    },
+    {
+        "prompt": "Create `output.fits` by selecting a random 10% sample of the rows from `input.fits`.",
+        "response": "stilts tpipe in=input.fits cmd='random 0.1' out=output.fits",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '0.1'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: random 0.1\n\nUsage: random\n    (Unused arguments: '0.1'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "Convert `input.fits` to a text file `output.txt` using tabs as separators.",
+        "response": "stilts tpipe in=input.fits out=output.txt ofmt=tsv",
+        "chat.jar": "failed",
+        "error": "Error: No handler for output format tsv\n    (No handler for table format \"tsv\")\nUsage: tpipe ifmt=<in-format> istream=true|false cmd=<cmds>\n             omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n             out=<out-table> ofmt=<out-format>\n             [in=]<table>\n\n"
+    },
+    {
+        "prompt": "For the file `input.fits`, check that the 'ERROR' column is always a positive number. The command should stop and report an error if this is not true.",
+        "response": "stilts tpipe in=input.fits cmd='assert \"ERROR > 0\"' omode=discard",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I have 'FLUX' and 'FLUX_ERR' columns in `input.fits`. First, create a new column 'SNR' equal to 'FLUX / FLUX_ERR'. Then, filter out any rows where 'SNR' is less than 3. Save the final table as `output.fits`.",
+        "response": "stilts tpipe in=input.fits cmd='addcol SNR \"FLUX / FLUX_ERR\"' cmd='select \"SNR >= 3\"' out=output.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From `input.csv`, keep only the columns whose names end with the suffix '_MAG'. Save to `output.csv`.",
+        "response": "stilts tpipe in=input.csv ifmt=csv cmd='keepcols \"*_MAG\"' out=output.csv ofmt=csv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "In `input.fits`, I need to update the 'FLAG' column. For every row, if the 'FLUX' is less than 0, set 'FLAG' to 1, otherwise it should keep its original value. Save the result to `output.fits`.",
+        "response": "stilts tpipe in=input.fits cmd='replacecol FLAG \"FLUX < 0 ? 1 : FLAG\"' out=output.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Create a new table `output.fits` by taking the original `input.fits` and repeating its entire sequence of rows 5 times.",
+        "response": "stilts tpipe in=input.fits cmd='repeat 5' out=output.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Read a FITS table from the URL `http://example.com/data/survey.fits`, select all rows where the 'mag_auto' column is less than 20, and then count the number of resulting rows.",
+        "response": "stilts tpipe in=http://example.com/data/survey.fits cmd='select \"mag_auto < 20\"' omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I have two flux columns, `F_g` and `F_r`, in `input.fits`. I want to calculate the g-r color in magnitudes. Please add a new column 'COLOR_GR' calculated as $-2.5 \\times \\log_{10}(F_g / F_r)$. Save the result to `output.fits`.",
+        "response": "stilts tpipe in=input.fits cmd='addcol COLOR_GR \"-2.5 * log10(F_g / F_r)\"' out=output.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Perform an integrity check on the table `input.fits` and report any issues found to the console.",
+        "response": "stilts tpipe in=input.fits cmd='check'",
+        "chat.jar": "executed successfully"
+    }
+]

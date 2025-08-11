@@ -1,0 +1,6 @@
+
+B.1 arrayjoin: Adds table-per-row data as array-valued columns
+arrayjoin takes an input table and for each row adds the contents of a separate "array" table. The columns added are the columns from the array table, and the value of each cell is the value of the whole column from the array table represented as an array. The assumption is that all the array tables have the same form (the same columns, though not necessarily the same row counts).
+
+This can be useful for constructing a single table with array-valued columns containing data that is made available in multiple external files, for instance via the DataLink protocol; this is illustrated in the Examples subsection below. Note however that this command does not understand DataLink directly, and cannot itself determine the location of the external array tables; an expression giving their per-row location (filename or URL) must be supplied.
+

@@ -1,0 +1,362 @@
+[
+    {
+        "prompt": "How do I convert a table from FITS to CSV format?",
+        "response": "You can use the `tcopy` task. It's the primary STILTS command for converting a table from one format to another. You just need to specify the input file, the output file, and the desired output format (`ofmt`).\n\nExample: `stilts tcopy in=input.fits ofmt=csv out=output.csv`"
+    },
+    {
+        "prompt": "What's the best way to filter rows based on a column value?",
+        "response": "The `select` command, used within `tpipe`, is ideal for this. It lets you define a condition, and it will only keep the rows where that condition is true. The condition is written as a string expression.\n\nExample (to keep rows where magnitude is less than 19.5): `stilts tpipe in=catalog.vot cmd='select \"phot_g_mean_mag < 19.5\"' out=bright_sources.fits`"
+    },
+    {
+        "prompt": "I need to cross-match two different star catalogs. What command should I use?",
+        "response": "The `tskymatch2` command is designed for this. It performs a sky cross-match between two tables, finding pairs of objects within a specified angular distance on the sky. You must provide the RA and Dec columns for both tables and a maximum search radius.\n\nExample: `stilts tskymatch2 in1=catA.fits in2=catB.fits ra1=RA dec1=DEC ra2=RA_SRC dec2=DEC_SRC error=1.0 out=matched.fits`"
+    },
+    {
+        "prompt": "How can I add a new column that is calculated from other columns?",
+        "response": "Use the `addcol` command within `tpipe`. It allows you to create a new column and define its value using a mathematical or logical expression based on existing columns.\n\nExample (to create a 'g-r' color column): `stilts tpipe in=data.fits cmd='addcol g_minus_r \"g_mag - r_mag\"' out=data_with_color.fits`"
+    },
+    {
+        "prompt": "What does the `tpipe` command do?",
+        "response": "Think of `tpipe` as a processing pipeline for a table. It reads a table and allows you to apply a series of commands (like `select`, `sort`, `addcol`, etc.) in sequence to modify it. It's one of the most powerful and versatile STILTS tasks.\n\nExample (filtering and then sorting): `stilts tpipe in=raw.fits cmd='select \"snr > 10\"' cmd='sort -down flux' out=processed.fits`"
+    },
+    {
+        "prompt": "I want to create a simple scatter plot of two columns.",
+        "response": "For that, you'll want to use `plot2plane`. This task generates a 2D scatter plot from two columns in your table. You can customize axes, labels, and save the output to various image formats.\n\nExample: `stilts plot2plane in=my_data.csv x=temperature y=luminosity out=hr_diagram.png`"
+    },
+    {
+        "prompt": "How can I calculate basic statistics like the mean and standard deviation of a column?",
+        "response": "The `stats` command, used within `tpipe`, calculates and displays summary statistics for one or more columns. It can calculate mean, median, min, max, standard deviation, and more.\n\nExample: `stilts tpipe in=measurements.fits cmd='stats mean,stdev,median flux_column'`"
+    },
+    {
+        "prompt": "What's the difference between `tjoin` and `tcat`?",
+        "response": "`tcat` concatenates tables vertically (one after the other), so they must have compatible column structures. `tjoin` joins tables horizontally (side-by-side) based on row index, creating a wider table. Use `tcat` for combining rows, `tjoin` for combining columns.\n\nExample (`tcat`): `stilts tcat in1=part1.fits in2=part2.fits out=full_catalog.fits`"
+    },
+    {
+        "prompt": "How do I make a histogram of a single column's data?",
+        "response": "The `plothist` command is what you need. It generates a histogram from the values in a single column, which is great for visualizing the distribution of your data. You can control the binning and axis scaling.\n\nExample: `stilts plothist in=galaxy_zoo.fits x=redshift xlog=true out=redshift_dist.png`"
+    },
+    {
+        "prompt": "I need to sort my table based on the 'distance' column.",
+        "response": "You should use the `sort` command inside `tpipe`. By default, it sorts in ascending order. You can use the `-down` flag for descending order.\n\nExample (closest first): `stilts tpipe in=stars.fits cmd='sort distance' out=sorted_stars.fits`"
+    },
+    {
+        "prompt": "What is `tapquery` used for?",
+        "response": "`tapquery` allows you to directly query a remote database using the Table Access Protocol (TAP). You write a query in ADQL (Astronomical Data Query Language) and STILTS retrieves the results into a table. It's essential for accessing large surveys like Gaia.\n\nExample: `stilts tapquery adql=\"SELECT TOP 100 * FROM gaia_dr3.gaia_source\" out=gaia_sample.vot`"
+    },
+    {
+        "prompt": "How can I just look at the first 20 rows of a huge file?",
+        "response": "The `head` command within `tpipe` is perfect for this. It restricts the output to the first N rows of a table, which is very useful for previewing large files without loading the entire thing.\n\nExample: `stilts tpipe in=very_large_table.fits cmd='head 20'`"
+    },
+    {
+        "prompt": "What does the `error` parameter in `tskymatch2` mean?",
+        "response": "The `error` parameter in `tskymatch2` defines the maximum angular separation on the sky (in arcseconds) for two objects to be considered a match. It sets the radius of the search cone around each object from the first table.\n\nExample: `stilts tskymatch2 ... error=2.5 ...` means it will look for matches within a 2.5 arcsecond radius."
+    },
+    {
+        "prompt": "I have a table and I only want to keep three specific columns.",
+        "response": "You can use the `keepcols` command in `tpipe`. You provide it with a list of the column names you want to retain, and it will discard all others.\n\nExample: `stilts tpipe in=full_data.fits cmd='keepcols \"RA DEC Z\"' out=essential_data.fits`"
+    },
+    {
+        "prompt": "How do I perform a cone search on a VO service?",
+        "response": "Use the `cone` task. You provide the base URL of a cone search service, the position (RA and Dec), and the search radius (SR) in degrees. STILTS then queries the service and returns the results.\n\nExample: `stilts cone service_url=http://vizier.u-strasbg.fr/viz-bin/conesearch/I/246/out ra=83.63 dec=22.01 sr=0.1 out=cone_results.vot`"
+    },
+    {
+        "prompt": "Can I plot points on a sky map projection?",
+        "response": "Yes, the `plot2sky` command is designed for this. It takes longitude and latitude columns and plots them using one of several astronomical sky projections, like Aitoff or Mollweide.\n\nExample: `stilts plot2sky in=survey.fits lon=RA lat=DEC projection=aitoff out=sky_projection.png`"
+    },
+    {
+        "prompt": "How can I rename a column?",
+        "response": "Use the `colmeta` command in `tpipe`. It's used for changing column metadata. To rename a column, you specify the old name and provide a new one using the `-name` flag.\n\nExample: `stilts tpipe in=data.fits cmd='colmeta -name old_col_name new_col_name' out=renamed.fits`"
+    },
+    {
+        "prompt": "I need to find all pairs of objects within my *own* catalog that are close to each other.",
+        "response": "For an internal cross-match (matching a table against itself), you should use `tmatch1`. It finds all pairs of rows in a single table whose positions are within a given error radius.\n\nExample: `stilts tmatch1 in=dense_field.fits ra=RA dec=DEC error=5.0 out=close_pairs.fits`"
+    },
+    {
+        "prompt": "What's the purpose of the `meta` command?",
+        "response": "The `meta` command is used to display the metadata of a table. It shows you information about the table itself, such as the number of rows and columns, as well as details for each column, including its name, data type (class), and description (UCD).\n\nExample: `stilts meta in=my_table.fits`"
+    },
+    {
+        "prompt": "How can I join three or more tables together based on their sky coordinates?",
+        "response": "For matching multiple tables, you need `tmatchn`. It's a more general version of `tskymatch2` that can perform a sky-based cross-match on 3 or more input tables simultaneously.\n\nExample: `stilts tmatchn nin=3 in1=cat1.fits in2=cat2.fits in3=cat3.fits ... out=multi_match.fits`"
+    },
+    {
+        "prompt": "I want to create a 3D scatter plot.",
+        "response": "The `plot3d` command is what you're looking for. It takes three columns as X, Y, and Z coordinates and generates a 3D scatter plot, which you can interact with if using the interactive version or save to a file.\n\nExample: `stilts plot3d in=positions.csv x=X y=Y z=Z out=plot_3d.png`"
+    },
+    {
+        "prompt": "How do I get rid of certain columns?",
+        "response": "Use the `delcols` command inside `tpipe`. It's the opposite of `keepcols`. You provide a list of column names you want to remove from the table.\n\nExample: `stilts tpipe in=raw_data.fits cmd='delcols \"TEMP_COL QUALITY_FLAG\"' out=cleaned_data.fits`"
+    },
+    {
+        "prompt": "What does the `every` filter do?",
+        "response": "The `every` command in `tpipe` is a sampling filter. It selects every N-th row from the table. It's useful for creating a smaller, representative subsample of a very large dataset.\n\nExample (to keep 1% of the data): `stilts tpipe in=massive_table.fits cmd='every 100' out=subsample.fits`"
+    },
+    {
+        "prompt": "Can I use STILTS to query an SQL database?",
+        "response": "Yes, the `sqlclient` task allows you to connect to a JDBC-accessible database and execute an SQL query. The results of the query are returned as a STILTS table that you can then process or save.\n\nExample: `stilts sqlclient jdbc:mysql://db.host/mydb \"SELECT * FROM sources\" out=db_dump.fits`"
+    },
+    {
+        "prompt": "I have two tables and I want to just stick them together, side-by-side.",
+        "response": "The `tjoin` command does exactly that. It performs a simple horizontal join, pasting two or more tables together side-by-side based on their row number. The tables must have the same number of rows.\n\nExample: `stilts tjoin in1=tableA.fits in2=tableB.fits out=combined_cols.fits`"
+    },
+    {
+        "prompt": "How do I sort by one column, and then by another as a tie-breaker?",
+        "response": "You can do this by applying multiple `sort` commands in a single `tpipe` pipeline. The sorts are applied in reverse order, so you put the primary sort key last.\n\nExample (sort by Group, then by Flux within each group): `stilts tpipe in=data.fits cmd='sort -down Flux' cmd='sort Group' out=sorted.fits`"
+    },
+    {
+        "prompt": "What is a 'corner plot' and can STILTS make one?",
+        "response": "A corner plot shows a matrix of 2D scatter plots for all pairs of a set of variables, as well as histograms for each variable along the diagonal. It's great for visualizing correlations in high-dimensional data. STILTS can create one with `plot2corner`.\n\nExample: `stilts plot2corner in=data.fits x=mass y=radius z=temp out=corner.png`"
+    },
+    {
+        "prompt": "How do I find out what Virtual Observatory (VO) services are available?",
+        "response": "You can use the `regquery` command. It queries the VO Registry for services that match certain criteria, such as a specific capability (like `cone` or `tap`) or keywords.\n\nExample (to find all TAP services): `stilts regquery capability=tap`"
+    },
+    {
+        "prompt": "How can I add a unit to a column's metadata?",
+        "response": "Use the `colmeta` command in `tpipe` with the `-unit` flag. This allows you to specify or change the unit string associated with a column, which is important for data interoperability.\n\nExample: `stilts tpipe in=data.fits cmd='colmeta -unit arcsec separation_col' out=data_with_units.fits`"
+    },
+    {
+        "prompt": "I need to perform a cross-match with a remote Gaia catalog from my local file.",
+        "response": "The `tapskymatch` command is perfect for this. It takes your local table, uploads it to a TAP service (like the Gaia archive), and performs the sky cross-match on the server side, which is very efficient.\n\nExample: `stilts tapskymatch in=my_sources.csv ra=RA dec=DEC tap_table='gaia_dr3.gaia_source' ... out=gaia_matches.fits`"
+    },
+    {
+        "prompt": "Can STILTS create plots with logarithmic axes?",
+        "response": "Yes, most plotting tasks like `plot2plane` and `plothist` have flags to set axes to a logarithmic scale. You use the `xlog=true` and `ylog=true` parameters.\n\nExample: `stilts plot2plane in=data.fits x=frequency y=flux xlog=true ylog=true out=log_plot.png`"
+    },
+    {
+        "prompt": "How do I see the last few lines of a table?",
+        "response": "The `tail` command within `tpipe` does this. It's the opposite of `head` and shows you the last N rows of a table.\n\nExample: `stilts tpipe in=long_catalog.fits cmd='tail 50'`"
+    },
+    {
+        "prompt": "What does the `ofmt` parameter in `tcopy` do?",
+        "response": "The `ofmt` parameter specifies the Output ForMaT of the table being written. This is how you tell `tcopy` what kind of file you want to create, for instance `csv`, `fits`, `votable`, or `ascii`.\n\nExample: `stilts tcopy in=data.vot ofmt=fits-plus out=data.fits`"
+    },
+    {
+        "prompt": "How do I filter for rows that have a non-null value in a specific column?",
+        "response": "You can use the `select` command with a special expression. The `isFinite()` function or checking for `null` can be used. For numbers, checking for `!isFinite(colname)` is robust.\n\nExample (to keep rows where 'pm_ra' is not null): `stilts tpipe in=data.fits cmd='select \"pm_ra != null\"' out=filtered.fits`"
+    },
+    {
+        "prompt": "I want to create a density map instead of a scatter plot.",
+        "response": "You can do this with `plot2plane` by changing the `layer` type. Instead of the default scatter plot, you can specify `layer=hist` for a 2D histogram or `layer=kde` for a Kernel Density Estimate, both of which show density.\n\nExample: `stilts plot2plane in=sky_survey.fits x=RA y=DEC layer=hist out=density_map.png`"
+    },
+    {
+        "prompt": "What's an easy way to count the number of rows in my table?",
+        "response": "The `stats` command in `tpipe` can do this. The 'count' statistic simply reports the total number of rows in the table.\n\nExample: `stilts tpipe in=big_table.fits cmd='stats count'`"
+    },
+    {
+        "prompt": "Can I add a text description to a column?",
+        "response": "Yes, you can use `colmeta` with the `-desc` flag. This lets you add a human-readable description to a column's metadata, which can be very helpful for documenting your data.\n\nExample: `stilts tpipe in=data.fits cmd='colmeta -desc \"G-band magnitude from Gaia DR3\" G_MAG' out=documented.fits`"
+    },
+    {
+        "prompt": "How can I combine many FITS files that are all parts of the same catalog?",
+        "response": "The `tcat` command is ideal for this. It concatenates tables vertically (stacks them on top of each other). You can list multiple input files, and it will append them into a single output file.\n\nExample: `stilts tcat in='cat_part*.fits' out=full_catalog.fits`"
+    },
+    {
+        "prompt": "I have a text file that isn't comma-separated. Can STILTS read it?",
+        "response": "Yes, STILTS is very flexible. When using `tcopy` or `tpipe`, you can specify the input format with the `ifmt` parameter. For text files, you can use `ifmt=ascii` and there are many options to define the delimiter and structure.\n\nExample (for a space-separated file): `stilts tcopy in=data.txt ifmt=ascii out=data.fits`"
+    },
+    {
+        "prompt": "What is the purpose of the `sorthead` command?",
+        "response": "`sorthead` is an optimization. It's useful when you only need the top few sorted items from a very large table (e.g., the 10 brightest stars). It sorts the table but only keeps the first N rows, often using less memory than a full sort followed by a `head`.\n\nExample: `stilts tpipe in=massive.fits cmd='sorthead -down brightness 10' out=top_10.fits`"
+    },
+    {
+        "prompt": "How do I use a logical 'OR' in a `select` filter?",
+        "response": "You can use the `||` operator within the expression string for a logical OR. This allows you to select rows that meet one of several conditions.\n\nExample (select if quality flag is bad OR snr is low): `stilts tpipe in=data.fits cmd='select \"quality_flag != 0 || snr < 5\"' out=flagged.fits`"
+    },
+    {
+        "prompt": "Can STILTS make a plot with error bars?",
+        "response": "Yes, `plot2plane` supports various types of error bars. You add a new `layer` of the appropriate error bar type (e.g., `xyerror`) and specify the columns containing the error values.\n\nExample: `stilts plot2plane in=data.fits x=X y=Y layer=mark layer=xyerror xerrhi=X_err yerrhi=Y_err out=plot_with_errors.png`"
+    },
+    {
+        "prompt": "How can I create a new table from scratch, for example with a sequence of numbers?",
+        "response": "The `tloop` command can do this. It creates a new table by looping a specified number of times, evaluating an expression at each step to create new rows.\n\nExample (creates a table with a column 'i' from 1 to 100): `stilts tloop count=100 var=i out=sequence.fits`"
+    },
+    {
+        "prompt": "I need to find the unique values in a column. How?",
+        "response": "You can use the `stats` command with the `-uniq` option. This will report all the unique values found in the specified column, which is useful for understanding categorical data.\n\nExample: `stilts tpipe in=objects.fits cmd='stats -uniq object_type'`"
+    },
+    {
+        "prompt": "What does the `find=best` parameter do in a cross-match?",
+        "response": "In `tskymatch2`, adding `find=best` tells STILTS that for each object in the first table, it should only find the single best match (the closest one) in the second table, rather than all possible matches within the error radius.\n\nExample: `stilts tskymatch2 ... find=best ...`"
+    },
+    {
+        "prompt": "How do I check for the existence of a file before running a long command?",
+        "response": "While STILTS itself doesn't have a specific command for this, it's typically handled by the shell you're working in. You can use a shell command like `if [ -f file.fits ]; then stilts ...; fi` on Linux/macOS to check if the file exists first."
+    },
+    {
+        "prompt": "Can I pass a table from one STILTS command to another without writing to a file?",
+        "response": "Yes, you can use shell pipes (`|`) or the special `-` filename. One command can write its output to standard output, and the next can read from its standard input, creating a powerful processing chain.\n\nExample: `stilts tpipe in=raw.fits cmd='select \"snr>5\"' | stilts tpipe in=- cmd='sort flux' out=processed.fits`"
+    },
+    {
+        "prompt": "How do I change the data type of a column, for example from a float to an integer?",
+        "response": "You can use `addcol` to create a new column with the desired type conversion, and then `delcols` and `colmeta` to replace the old one. The conversion functions are from the Java Math library, like `(int)x`.\n\nExample: `stilts tpipe in=data.fits cmd='addcol int_id \"(int)float_id\"' ...`"
+    },
+    {
+        "prompt": "What's a simple way to append one table to another?",
+        "response": "The `tcat` command is what you need. It stands for 'table concatenate' and it appends the rows from one or more tables to the end of another, creating a single, longer table.\n\nExample: `stilts tcat in1=month1.fits in2=month2.fits out=combined_data.fits`"
+    },
+    {
+        "prompt": "I want to plot a line connecting points in order, not just a scatter plot.",
+        "response": "You can do this with `plot2plane` by adding a `layer=line`. This will draw lines connecting the data points in the order they appear in the table. Make sure your table is sorted correctly first!\n\nExample (for a light curve): `stilts plot2plane in=light_curve.fits x=time y=mag layer=line out=lc_plot.png`"
+    },
+    {
+        "prompt": "How can I add a keyword to the FITS header?",
+        "response": "You can use the `addmeta` command within `tpipe`. This allows you to add a new parameter (keyword) and its value to the table's metadata, which will be written to the FITS header.\n\nExample: `stilts tpipe in=data.fits cmd='addmeta OBSERVER \"Gemini\"' out=data_with_meta.fits`"
+    },
+    {
+        "prompt": "What does the `join=1and2` parameter mean in `tskymatch2`?",
+        "response": "The `join` parameter in `tskymatch2` controls which rows are included in the output. `join=1and2` (the default) means only rows that have a successful match between table 1 and table 2 are kept.\n\nExample: Other options include `1or2` (keeps all rows from both tables, with nulls for non-matches) and `1not2` (keeps only rows from table 1 that have no match)."
+    },
+    {
+        "prompt": "Can I run a STILTS command on all FITS files in a directory?",
+        "response": "Yes, this is usually done with a simple shell loop. You can use a `for` loop in your shell (like bash) to iterate over the files and call the STILTS command for each one.\n\nExample (in bash): `for f in *.fits; do stilts meta in=$f; done`"
+    },
+    {
+        "prompt": "How do I perform a case-insensitive search in a `select` expression?",
+        "response": "You can use string functions within the select expression. A common way is to convert the column value to lower case before comparing it.\n\nExample: `stilts tpipe in=data.fits cmd='select \"toLowerCase(object_name).contains(\\\"m31\\\")\"' out=m31_objects.fits`"
+    },
+    {
+        "prompt": "What's the difference between `plot2plane` and `plot2sky`?",
+        "response": "`plot2plane` creates a standard 2D Cartesian (X-Y) plot. `plot2sky` is specialized for astronomical coordinates, taking longitude/latitude columns and plotting them onto a spherical projection like Aitoff or Mollweide, which is essential for all-sky maps.\n\nExample (`plot2sky`): `stilts plot2sky lon=RA lat=DEC ...`"
+    },
+    {
+        "prompt": "How do I find the median value of a column?",
+        "response": "Use the `stats` command within `tpipe`, and include `median` in the list of desired statistics. It will calculate the median value, which is often more robust to outliers than the mean.\n\nExample: `stilts tpipe in=data.fits cmd='stats median flux'`"
+    },
+    {
+        "prompt": "I need to combine two tables based on a common ID column, not sky position.",
+        "response": "For this, you need a non-sky cross-match. You can use `tmatch2` with the `matcher=exact` parameter. You specify the columns in each table that contain the unique IDs to match on.\n\nExample: `stilts tmatch2 in1=table1.fits in2=table2.fits values1='ID' values2='Source_ID' matcher=exact out=id_matched.fits`"
+    },
+    {
+        "prompt": "Can I create a FITS file from a simple text file?",
+        "response": "Yes, absolutely. The `tcopy` command can do this. You need to tell it the format of the input text file using the `ifmt` parameter (`ascii` or `csv`). STILTS will automatically infer the column structure.\n\nExample: `stilts tcopy ifmt=ascii in=my_data.txt ofmt=fits out=my_data.fits`"
+    },
+    {
+        "prompt": "How do I add a column with a constant value for all rows?",
+        "response": "Use the `addcol` command, but instead of an expression involving other columns, just provide the constant value (either a number or a string in single quotes).\n\nExample: `stilts tpipe in=data.fits cmd='addcol survey_name \\'SDSS\\' ' out=data_with_survey.fits`"
+    },
+    {
+        "prompt": "What is the `omode` parameter for?",
+        "response": "The `omode` parameter specifies the output mode, which controls what happens if the output file already exists. The default is `omode=clobber`, which overwrites the file. You can set `omode=error` to prevent overwriting and cause an error instead.\n\nExample: `stilts tcopy in=in.fits out=out.fits omode=error`"
+    },
+    {
+        "prompt": "I want to select a random sample of 1000 rows from my table.",
+        "response": "You can combine the `random` command with `head`. `random` shuffles the row order, and `head` then selects the first N rows from that shuffled table, giving you a random sample.\n\nExample: `stilts tpipe in=big.fits cmd=random cmd='head 1000' out=random_sample.fits`"
+    },
+    {
+        "prompt": "How can I see all available command-line tasks in STILTS?",
+        "response": "To see a list of all the top-level tasks (like `tcopy`, `tpipe`, `tskymatch2`, etc.), you can simply run `stilts` with no arguments, or `stilts -help`."
+    },
+    {
+        "prompt": "Is there a way to make a plot where the color of the points depends on a third column?",
+        "response": "Yes, this is a common requirement for data visualization. In `plot2plane` you can use the `aux` shading mode to map values from a third column to a color map, creating a powerful visualization.\n\nExample: `stilts plot2plane in=d.fits x=X y=Y shading=aux aux=Z auxmap=viridis out=plot.png`"
+    },
+    {
+        "prompt": "How do I convert RA and Dec from degrees to radians within STILTS?",
+        "response": "You can use the `addcol` command with the built-in trigonometric functions. The function `toRadians(degrees)` is available for this exact purpose.\n\nExample: `stilts tpipe in=data.fits cmd='addcol RA_rad \"toRadians(RA_deg)\"' out=data_rad.fits`"
+    },
+    {
+        "prompt": "What is the best way to handle very large files that don't fit in memory?",
+        "response": "STILTS is designed to handle this. It processes tables in a streaming fashion, meaning it doesn't usually need to load the entire file into memory at once. For operations that do require it (like sorting), ensure you have enough disk space for temporary files. Using `tpipe` with sequential filters is very memory-efficient."
+    },
+    {
+        "prompt": "How can I get the number of rows that are in one table but not another after a match?",
+        "response": "You can use the `join` parameter in `tskymatch2` or `tmatch2`. Setting `join=1not2` will output only the rows from the first table that did *not* find a match in the second table.\n\nExample: `stilts tskymatch2 in1=cat1.fits in2=cat2.fits ... join=1not2 out=unmatched_in_cat1.fits`"
+    },
+    {
+        "prompt": "Can I execute an external script on each row of my table?",
+        "response": "Yes, using the `every` command in `tpipe` along with some shell scripting, you can process a table row-by-row. A more advanced way is using the `funcs` library to call out to external code, but this is more complex. A simple shell loop is often easiest for this.\n\nExample (conceptual): `stilts tpipe in=data.fits cmd='every 1' | while read row; do my_script.py $row; done`"
+    },
+    {
+        "prompt": "I want to plot the positions of objects, and have the size of the point be related to its magnitude.",
+        "response": "You can achieve this in `plot2plane` by using an auxiliary axis to control the size of the markers. You would map the magnitude column to the size parameter.\n\nExample (conceptual, syntax may vary): `stilts plot2plane in=data.fits x=RA y=DEC size=MAG ...`"
+    },
+    {
+        "prompt": "How do I add a column with the row number?",
+        "response": "You can use the special `INDEX` value in an `addcol` expression. `INDEX` is the 1-based row number of the current row being processed.\n\nExample: `stilts tpipe in=data.fits cmd='addcol row_num \"INDEX\"' out=data_with_index.fits`"
+    },
+    {
+        "prompt": "What's the `tloop` command for?",
+        "response": "`tloop` is a task for creating a new table from scratch by looping. It's useful for generating test data or tables based on a mathematical sequence without needing an input file.\n\nExample (create a sine wave): `stilts tloop count=100 var=i cmd='addcol sin_i \"sin(i/10.0)\"' out=sine_table.fits`"
+    },
+    {
+        "prompt": "How do I handle tables with headers that span multiple lines?",
+        "response": "STILTS is generally very good at auto-detecting table formats, including complex headers in ASCII files. If it fails, you can use the `ifmt` parameter with specific format specifiers, or pre-process the file with other command-line tools like `sed` or `awk` to clean up the header first."
+    },
+    {
+        "prompt": "Can I make STILTS output a LaTeX table?",
+        "response": "Yes, you can. Use `tcopy` and set the output format (`ofmt`) to `latex` or `latex-long`. This will produce a text file containing the table in a LaTeX `tabular` environment.\n\nExample: `stilts tcopy in=results.fits ofmt=latex out=results.tex`"
+    },
+    {
+        "prompt": "What does the `verbose` flag do?",
+        "response": "The `verbose` flag increases the amount of logging information STILTS prints to the console while it's running. This can be very useful for debugging a long or complex command, as it shows you the progress and steps being taken.\n\nExample: `stilts -verbose tpipe in=big.fits ...`"
+    },
+    {
+        "prompt": "How do I calculate the angular separation between two sets of RA/Dec columns in the *same* table?",
+        "response": "You can use `addcol` with the built-in astronomical calculation functions. The `skyDistance` function takes four arguments: ra1, dec1, ra2, dec2, all in degrees.\n\nExample: `stilts tpipe in=data.fits cmd='addcol sep_arcsec \"3600*skyDistance(RA1, DEC1, RA2, DEC2)\"' out=data_with_sep.fits`"
+    },
+    {
+        "prompt": "I want to match two tables on a numeric value that is not exact, but within a certain tolerance.",
+        "response": "You can use `tmatch2` with a numeric matcher. Instead of `matcher=exact`, you can specify `matcher=1d` for a 1-dimensional numeric match and provide an error tolerance.\n\nExample: `stilts tmatch2 in1=t1.fits in2=t2.fits values1=Wavelength values2=Wlen matcher=1d params=0.1 out=matched_wlen.fits`"
+    },
+    {
+        "prompt": "How do I plot a function line over my data points?",
+        "response": "In `plot2plane` you can add a `layer=function` to overlay a plotted mathematical function. You provide the expression for the function in the command.\n\nExample: `stilts plot2plane in=data.fits x=X y=Y layer=mark layer=function function='x*x' out=plot_with_func.png`"
+    },
+    {
+        "prompt": "Can STILTS read data directly from a URL?",
+        "response": "Yes, for many tasks, you can provide a URL directly as the input file path. STILTS will attempt to download the data and process it in a streaming fashion.\n\nExample: `stilts meta in=http://example.com/data/catalog.fits`"
+    },
+    {
+        "prompt": "How do I combine the metadata from two tables?",
+        "response": "When you join tables using commands like `tjoin` or `tmatch2`, STILTS has rules for combining the metadata. Generally, it keeps the primary metadata from the first table and appends information from the second. You can use `addmeta` or `colmeta` afterwards to fine-tune the result."
+    },
+    {
+        "prompt": "What are UCDs and how does STILTS use them?",
+        "response": "UCDs (Unified Content Descriptors) are standardized strings that describe the physical quantity in a table column (e.g., 'phot.mag;em.opt.g' for a Gaia G-band magnitude). STILTS can use them to automatically identify columns for tasks like sky matching, so you don't have to specify the RA/Dec column names if they have correct UCDs."
+    },
+    {
+        "prompt": "How do I create a table with a specific column order?",
+        "response": "The `keepcols` command in `tpipe` processes columns in the order you specify. So, you can use it to reorder the columns in your table by listing them in the desired new order.\n\nExample: `stilts tpipe in=data.fits cmd='keepcols \"ID RA DEC FLUX\"' out=reordered.fits`"
+    },
+    {
+        "prompt": "Is there a GUI for STILTS?",
+        "response": "STILTS itself is a command-line tool. However, its underlying libraries are used by the graphical program TOPCAT (Tool for OPerations on Catalogues And Tables). TOPCAT provides a full graphical user interface for nearly all of the same functionality, so it is effectively the GUI version.\n\nExample: If you find a command complex, try performing the same action in TOPCAT."
+    },
+    {
+        "prompt": "How can I find the row with the maximum value in a column?",
+        "response": "A simple way is to sort the table in descending order by that column and then use `head` to select the first row.\n\nExample: `stilts tpipe in=data.fits cmd='sort -down signal_to_noise' cmd='head 1' out=max_snr_object.fits`"
+    },
+    {
+        "prompt": "Can I write my own functions to use in STILTS expressions?",
+        "response": "Yes, this is an advanced feature. You can write custom functions in Java, compile them into a .jar file, and add them to the STILTS classpath. You can then invoke them within expressions in `addcol` or `select`, which is extremely powerful for specialized analysis."
+    },
+    {
+        "prompt": "How can I get a list of all the functions available in expressions?",
+        "response": "You can get a full list of available expression language functions and constants by running `stilts funcs`."
+    },
+    {
+        "prompt": "How do I specify a null value in an output CSV file?",
+        "response": "STILTS handles nulls automatically. When writing to CSV, a numeric column with a null value will typically be represented as an empty field (e.g., `1.23,,4.56`). The representation can sometimes be controlled by format-specific parameters."
+    },
+    {
+        "prompt": "What is the `icmd` parameter in `tpipe`?",
+        "response": "The `icmd` parameter lets you specify a filter command that is applied *before* the main processing pipeline. It's a way to pre-filter the table that is fed into subsequent `cmd` steps."
+    },
+    {
+        "prompt": "How can I handle a FITS file with multiple extensions?",
+        "response": "You can specify which extension (HDU - Header Data Unit) to read by adding `#<number>` or `#<name>` to the filename. The first data extension is usually 1.\n\nExample (to read the table in the second HDU): `stilts tcopy in=multi_ext.fits#2 out=ext2_data.vot`"
+    },
+    {
+        "prompt": "I have a file with coordinates in Galactic format. Can STILTS work with them?",
+        "response": "Yes, STILTS has powerful coordinate conversion functions. You can use `addcol` to create new columns with converted coordinates, for example using `galacticToIcrs`.\n\nExample: `stilts tpipe in=gal.fits cmd='addcol RA icrsToGalactic(l, b)[0]' cmd='addcol DEC icrsToGalactic(l, b)[1]' out=icrs.fits`"
+    },
+    {
+        "prompt": "How can I find out the version of STILTS I am using?",
+        "response": "You can find out the version by running `stilts -version`."
+    },
+    {
+        "prompt": "How do I make a plot title or axis label with spaces in it?",
+        "response": "You need to enclose the title or label in quotes to ensure the shell treats it as a single argument.\n\nExample: `stilts plot2plane ... title=\"My Plot Title\" xlabel=\"Redshift (z)\"`"
+    }
+]

@@ -1,4 +1,4 @@
-I want you to create example prompt and reponses for finetunning a langauge model to generate stilts commands.
+I want you to create 100 example prompt and reponses for finetunning a langauge model to generate stilts commands.
 
 Return the results as a list of json of the following format:
 [
