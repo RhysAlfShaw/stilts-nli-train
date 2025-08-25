@@ -16,16 +16,17 @@ import subprocess
 
 # 1. Model and Directories
 # For pre-training, we use the base model, not the instruction-tuned (-it) version.
-MODEL_NAME = "google/gemma-3-1b-pt"
-OUTPUT_DIR = "/scratch/Rhys/stilts_models/gemma-3-1b-pt-pretrained-sun256-no-quant"  # Changed output dir
+MODEL_NAME = "google/gemma-2b"
+OUTPUT_DIR = "/scratch/Rhys/stilts_models/gemma-2b-pretrained-sun256-no-quant"  # Changed output dir
 PLOT_OUTPUT_DIR = "."
 TRAIN_FILE = "DATA/sun256.txt"
 
 # 2. Training Hyperparameters
-BATCH_SIZE = 1  # Reduced batch size due to higher memory usage without quantization
-LEARNING_RATE = 5e-5
-NUM_EPOCHS = 5
+BATCH_SIZE = 2  # Reduced batch size due to higher memory usage without quantization
+LEARNING_RATE = 1e-5  # Increased learning rate for pre-training
+NUM_EPOCHS = 1
 GRADIENT_ACCUMULATION_STEPS = 8  # Increased to compensate for the smaller batch size
+# 32 bit precision for better training stability during pre-training
 DTYPE = torch.bfloat16
 BLOCK_SIZE = 1024  # Context length
 
@@ -61,6 +62,7 @@ model = AutoModelForCausalLM.from_pretrained(
     MODEL_NAME,
     torch_dtype=DTYPE,  # Set the desired precision directly
     device_map="auto",  # Automatically distribute the model across available GPUs
+    attn_implementation="eager",  # Use Flash Attention 2 if available
 )
 
 
@@ -109,12 +111,14 @@ lm_dataset = tokenized_dataset.map(
 )
 
 # Split into training and evaluation sets
-split_dataset = lm_dataset["train"].train_test_split(test_size=0.1, seed=42)
-train_dataset = split_dataset["train"]
-eval_dataset = split_dataset["test"]
+# split_dataset = lm_dataset["train"].train_test_split(test_size=0.1, seed=42)
+# train_dataset = split_dataset["train"]
+# eval_dataset = split_dataset["test"]
+train_dataset = lm_dataset["train"]
+eval_dataset = lm_dataset["train"]
+
 
 print(f"\nProcessed training dataset size: {len(train_dataset)}")
-print(f"Processed evaluation dataset size: {len(eval_dataset)}")
 
 
 # --- Trainer Setup ---
