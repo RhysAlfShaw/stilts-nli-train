@@ -10,22 +10,29 @@ from transformers import (
     DataCollatorForLanguageModeling,
 )
 
-MODEL_NAME = "google/gemma-2b-it"
-OUTPUT_DIR = "/scratch/Rhys/stilts_models/gemma-2b-it-finetuned"
+# base model.
+MODEL_NAME = (
+    "/scratch/Rhys/stilts_models/gemma-3-1b-pt-pretrained-sun256-no-quant/final_model"
+)
+OUTPUT_DIR = "/scratch/Rhys/stilts_models/google/gemma-3-1b-pt-finetuned"
 PLOT_OUTPUT_DIR = "."
 TRAIN_FILE = "DATA/training_data.json"
 ADDITIONAL_TRAIN_FILES = [
     "DATA/training_data-tmatchn.json",
-    "DATA/training_data-tpip.json",
+    "DATA/training_data-tpipe.json",
+    "DATA/training_data-tpipe2.json",
+    "DATA/training_data-tpipe3.json",
     "DATA/training_data-tmatch2.json",
     "DATA/training_data-descr.json",
-    "DATA/training_data-local-file.json",
-    "DATA/training_data-cmd-opts.json",
-    "DATA/training_data-basic-file-formats.json",
+    "DATA/training_data-descr-extr.json",
+    "DATA/training_data-explanations.json",
+    # "DATA/training_data-local-file.json",
+    # "DATA/training_data-cmd-opts.json",
+    # "DATA/training_data-basic-file-formats.json",
     "DATA/doc-examples-formatted.json",
 ]
-EVAL_TEST_SPLIT = 0.3  # 30% for evaluation
-BATCH_SIZE = 1  # good starting point.
+EVAL_TEST_SPLIT = 0.1  # 30% for evaluation
+BATCH_SIZE = 2  # good starting point.
 LEARNING_RATE = 5e-5  # 5e-5 is a common learning rate for fine-tuning large models
 NUM_EPOCHS = 5  # 3 epochs is a good starting point for fine-tuning
 GRADIENT_ACCUMULATION_STEPS = 1
@@ -66,8 +73,25 @@ if ADDITIONAL_TRAIN_FILES:
             additional_data = json.load(f)
             data.extend(additional_data)
 
+# set chat template for tokenizer as gemma
 
 formatted_data = []
+
+gemma_template = (
+    "{% if messages[0]['role'] == 'system' %}"
+    "{{ raise_exception('System messages are not supported by this template.') }}"
+    "{% endif %}"
+    "{{ bos_token }}"
+    "{% for message in messages %}"
+    "{{ '<start_of_turn>' + message['role'] + '\n' + message['content'] | trim + '<end_of_turn>' + '\n' }}"
+    "{% endfor %}"
+    "{% if add_generation_prompt %}"
+    "{{ '<start_of_turn>model\n' }}"
+    "{% endif %}"
+)
+
+tokenizer.chat_template = gemma_template
+
 for item in data:
     chat = [
         {"role": "user", "content": item["prompt"]},
