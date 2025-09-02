@@ -11,16 +11,21 @@ from transformers import (
 )
 
 # base model.
-MODEL_NAME = "google/gemma-2b-it"
-OUTPUT_DIR = "/scratch/Rhys/stilts_models/gemma-2b-it-finetuned-peft"
+MODEL_NAME = (
+    "/scratch/Rhys/stilts_models/gemma-2b-pretrained-sun256-no-quant/final_model"
+)
+# MODEL_NAME = "google/gemma-2b"
+OUTPUT_DIR = "/scratch/Rhys/stilts_models/gemma-2b-finetuned"
 PLOT_OUTPUT_DIR = "."
 TRAIN_FILE = "DATA/training_data.json"
 ADDITIONAL_TRAIN_FILES = [
-    "DATA/training_data-tmatchn.json",
     "DATA/training_data-tpipe.json",
     "DATA/training_data-tpipe2.json",
     "DATA/training_data-tpipe3.json",
+    "DATA/training_data-tpipe4.json",
     "DATA/training_data-tmatch2.json",
+    "DATA/training_data-tmatchn.json",
+    "DATA/training_data-tmatchn2.json",
     "DATA/training_data-descr.json",
     "DATA/training_data-descr-extr.json",
     "DATA/training_data-explanations.json",
@@ -28,11 +33,14 @@ ADDITIONAL_TRAIN_FILES = [
     # "DATA/training_data-cmd-opts.json",
     # "DATA/training_data-basic-file-formats.json",
     "DATA/doc-examples-formatted.json",
+    "DATA/training_data_tcat-claude.json",
+    "DATA/training_data_tcat-gpt-oss.json",
+    "DATA/training_data-tcopy.json",
 ]
 EVAL_TEST_SPLIT = 0.1  # 30% for evaluation
-BATCH_SIZE = 2  # good starting point.
+BATCH_SIZE = 1  # good starting point.
 LEARNING_RATE = 5e-5  # 5e-5 is a common learning rate for fine-tuning large models
-NUM_EPOCHS = 5  # 3 epochs is a good starting point for fine-tuning
+NUM_EPOCHS = 5  # 1 epoch is often sufficient for pre-trained models on specific tasks.
 GRADIENT_ACCUMULATION_STEPS = 1
 DTYPE = torch.bfloat16  # important to keep memory usage low for large models.
 
@@ -53,75 +61,14 @@ if device.type == "cuda":
     torch.cuda.set_per_process_memory_fraction(0.60)
 
 
-# os.makedirs(OUTPUT_DIR, exist_ok=True)
-# print("Loading tokenizer and model...")
-# tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
-# model = AutoModelForCausalLM.from_pretrained(
-#     MODEL_NAME, device_map="auto", torch_dtype=DTYPE
-# )
-
-from peft import LoraConfig, get_peft_model, TaskType
-from transformers import BitsAndBytesConfig
-
 os.makedirs(OUTPUT_DIR, exist_ok=True)
-
-print("Loading tokenizer and base model...")
+print("Loading tokenizer and model...")
 tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
-
-# --- 1. Configure 4-bit quantization (for memory efficiency) ---
-# This will load the base model in 4-bit, drastically reducing memory usage.
-# The small LoRA adapters will be trained in bfloat16.
-bnb_config = BitsAndBytesConfig(
-    load_in_4bit=True,
-    bnb_4bit_quant_type="nf4",  # Use "nf4" for 4-bit NormalFloat
-    bnb_4bit_compute_dtype=torch.bfloat16,  # Computation type
-    bnb_4bit_use_double_quant=True,  # Optional, for extra memory savings
-)
-
-# --- 2. Load the base model with the quantization config ---
 model = AutoModelForCausalLM.from_pretrained(
-    MODEL_NAME,
-    # quantization_config=bnb_config,
-    device_map="auto",  # Automatically places parts of the model on the best device (GPU/CPU)
-)
-# Ensure tokenizer has a padding token
-tokenizer.pad_token = tokenizer.eos_token
-
-# --- 3. Define the LoRA Configuration ---
-# This tells PEFT which parts of the model to adapt.
-# For Gemma, targeting the attention projection layers is standard.
-lora_config = LoraConfig(
-    r=16,  # The rank of the LoRA matrices. Higher rank = more parameters, more expressivity. (8, 16, 32, 64 are common)
-    lora_alpha=32,  # A scaling factor for the LoRA updates. A common rule of thumb is 2 * r.
-    target_modules=[
-        "q_proj",
-        "k_proj",
-        "v_proj",
-        "o_proj",
-        "gate_proj",
-        "up_proj",
-        "down_proj",
-    ],  # Key layers to adapt in Gemma
-    lora_dropout=0.05,  # Dropout for LoRA layers
-    bias="none",  # Typically set to 'none' for LoRA
-    task_type=TaskType.CAUSAL_LM,
+    MODEL_NAME, device_map="auto", torch_dtype=DTYPE, attn_implementation="eager"
 )
 
-# --- 4. Apply PEFT to the model ---
-# This wraps the base model with the LoRA adapters.
-print("\nApplying LoRA adapters to the model...")
-model = get_peft_model(model, lora_config)
-
-# --- 5. Print the trainable parameters ---
-# You'll see that you are only training a tiny fraction of the total parameters!
-model.print_trainable_parameters()
-
-# ==============================================================================
-# END OF NEW SCRIPT BLOCK
-# ==============================================================================
-
-
-# print("Preparing dataset...")
+print("Preparing dataset...")
 with open(TRAIN_FILE, "r") as f:
     data = json.load(f)
 
@@ -132,8 +79,25 @@ if ADDITIONAL_TRAIN_FILES:
             additional_data = json.load(f)
             data.extend(additional_data)
 
+# set chat template for tokenizer as gemma
 
 formatted_data = []
+
+gemma_template = (
+    "{% if messages[0]['role'] == 'system' %}"
+    "{{ raise_exception('System messages are not supported by this template.') }}"
+    "{% endif %}"
+    "{{ bos_token }}"
+    "{% for message in messages %}"
+    "{{ '<start_of_turn>' + message['role'] + '\n' + message['content'] | trim + '<end_of_turn>' + '\n' }}"
+    "{% endfor %}"
+    "{% if add_generation_prompt %}"
+    "{{ '<start_of_turn>model\n' }}"
+    "{% endif %}"
+)
+
+tokenizer.chat_template = gemma_template
+
 for item in data:
     chat = [
         {"role": "user", "content": item["prompt"]},
@@ -143,6 +107,15 @@ for item in data:
 
 # formatted_data = tokenizer.apply_chat_template(data, tokenize=False)
 dataset = Dataset.from_list(formatted_data)
+
+# check a few examples
+print("\nSample formatted data:")
+for i in range(min(2, len(formatted_data))):  # Show first 2 examples
+    print(f"\nExample {i+1}:")
+    print(
+        formatted_data[i]["text"][:500]
+        + ("..." if len(formatted_data[i]["text"]) > 500 else "")
+    )
 
 
 # Tokenize the dataset
@@ -207,17 +180,10 @@ trainer = Trainer(
 
 print("\nStarting training...")
 trainer.train()
-# Merge the LoRA layers with the base model
-merged_model = model.merge_and_unload()
 
-# Define a path for the final, merged model
-final_model_path = f"{OUTPUT_DIR}/final_merged_model"
-
-# Save the merged model and tokenizer
-merged_model.save_pretrained(final_model_path)
-tokenizer.save_pretrained(final_model_path)
-
-print(f"Final merged model saved to {final_model_path}")
+print("\nSaving model...")
+model.save_pretrained(f"{OUTPUT_DIR}/final_model")
+tokenizer.save_pretrained(f"{OUTPUT_DIR}/final_model")
 
 # # plot loss
 import matplotlib.pyplot as plt
@@ -265,6 +231,18 @@ print("\nConverting model to GGUF format...")
 import subprocess
 
 # this is not working atm.?
-cmd = f"python hf_to_gguf.py --model_path {OUTPUT_DIR}/final_model --output_path {OUTPUT_DIR}/final_model.gguf"
+cmd = f"python /home/rhys/llama.cpp/convert_hf_to_gguf.py {OUTPUT_DIR}/final_model --outfile {OUTPUT_DIR}/final_model.gguf"
 subprocess.run(cmd, shell=True, check=True)
 print("\nTraining complete and model saved in GGUF format.")
+
+# creating 8bit version using llama.cpp quantization
+print("\nQuantizing model to 8-bit GGUF format...")
+cmd_8bit = f"./home/rhys/llama.cpp/build/bin/llama-quantize {OUTPUT_DIR}/final_model.gguf {OUTPUT_DIR}/final_model-Q8_0.gguf Q8_0"
+subprocess.run(cmd_8bit, shell=True, check=True)
+print("\n8-bit quantization complete.")
+
+# create 4bit_K_M version using llama.cpp quantization
+print("\nQuantizing model to 4-bit K_M GGUF format...")
+cmd_4bit = f"./home/rhys/llama.cpp/build/bin/llama-quantize {OUTPUT_DIR}/final_model.gguf {OUTPUT_DIR}/final_model-Q4_K_M.gguf Q4_K_M"
+subprocess.run(cmd_4bit, shell=True, check=True)
+print("\n4-bit K_M quantization complete.")

@@ -1,0 +1,394 @@
+[
+    {
+        "prompt": "Convert the FITS file 'galaxy_catalog.fits' to a human-readable text file on the command line.",
+        "response": "stilts tpipe in=galaxy_catalog.fits"
+    },
+    {
+        "prompt": "I need to see the first 10 rows of 'survey_data.fits.gz'.",
+        "response": "stilts tpipe cmd='head 10' in=survey_data.fits.gz"
+    },
+    {
+        "prompt": "Convert my data from 'input_data.csv' to a FITS file named 'output_data.fits'.",
+        "response": "stilts tpipe ifmt=csv in=input_data.csv ofmt=fits out=output_data.fits"
+    },
+    {
+        "prompt": "From 'full_catalog.vot', create a new VOTable 'subset.vot' containing only the 'RA', 'DEC', and 'G_MAG' columns.",
+        "response": "stilts tpipe in=full_catalog.vot cmd='keepcols \"RA DEC G_MAG\"' out=subset.vot"
+    },
+    {
+        "prompt": "Read the table 'data_with_errors.fits' and remove the columns 'ERR_G' and 'ERR_R', saving the result to 'data_no_errors.fits'.",
+        "response": "stilts tpipe in=data_with_errors.fits cmd='delcols \"ERR_G ERR_R\"' out=data_no_errors.fits"
+    },
+    {
+        "prompt": "Filter the table 'all_sources.fits' to only include rows where the 'MAG_G' column is less than 18.0. Save it as 'bright_sources.fits'.",
+        "response": "stilts tpipe in=all_sources.fits cmd='select \"MAG_G < 18.0\"' out=bright_sources.fits"
+    },
+    {
+        "prompt": "Create a new column named 'G_MINUS_R' in 'photometry.csv' which is the difference between 'G_MAG' and 'R_MAG'. The output should be 'photometry_with_color.csv'.",
+        "response": "stilts tpipe ifmt=csv in=photometry.csv cmd='addcol G_MINUS_R \"G_MAG - R_MAG\"' ofmt=csv out=photometry_with_color.csv"
+    },
+    {
+        "prompt": "How many rows are in the table 'large_survey.fits'?",
+        "response": "stilts tpipe in=large_survey.fits omode=count"
+    },
+    {
+        "prompt": "Calculate the basic statistics (mean, min, max, stddev) for all numeric columns in 'star_properties.vot'.",
+        "response": "stilts tpipe in=star_properties.vot omode=stats"
+    },
+    {
+        "prompt": "Sort the table 'galaxy_cluster.fits' by the 'REDSHIFT' column in ascending order and save it as 'sorted_cluster.fits'.",
+        "response": "stilts tpipe in=galaxy_cluster.fits cmd='sort REDSHIFT' out=sorted_cluster.fits"
+    },
+    {
+        "prompt": "From 'raw_data.fits', select rows where 'QUALITY_FLAG' is 0 and 'SNR' is greater than 5. Output the result to a new FITS file 'clean_data.fits'.",
+        "response": "stilts tpipe in=raw_data.fits cmd='select \"QUALITY_FLAG == 0 && SNR > 5\"' out=clean_data.fits"
+    },
+    {
+        "prompt": "Add galactic coordinates to 'celestial_objects.fits'. The input coordinates are in columns 'RA2000' and 'DEC2000' and are in decimal degrees. Name the new columns 'GAL_LON' and 'GAL_LAT'.",
+        "response": "stilts tpipe in=celestial_objects.fits cmd='addskycoords fk5 gal RA2000 DEC2000 GAL_LON GAL_LAT' out=celestial_objects_gal.fits"
+    },
+    {
+        "prompt": "Find the 20 brightest objects in 'deep_sky.fits' based on the 'FLUX_V' column and display them on the terminal.",
+        "response": "stilts tpipe in=deep_sky.fits cmd='sorthead -down 20 FLUX_V'"
+    },
+    {
+        "prompt": "Can you show me the metadata (column names, types, UCDs) for the file 'archive_query.vot'?",
+        "response": "stilts tpipe in=archive_query.vot omode=meta"
+    },
+    {
+        "prompt": "I have a VOTable 'input.vot' and I want to convert it to a CSV file named 'output.csv'.",
+        "response": "stilts tpipe ifmt=votable in=input.vot ofmt=csv out=output.csv"
+    },
+    {
+        "prompt": "Select every 1000th row from 'massive_catalog.fits' and save it to 'sampled_catalog.fits'.",
+        "response": "stilts tpipe in=massive_catalog.fits cmd='every 1000' out=sampled_catalog.fits"
+    },
+    {
+        "prompt": "In the file 'measurements.csv', replace all occurrences of -999 in the 'RADIAL_VELOCITY' column with a null value and save to 'measurements_cleaned.csv'.",
+        "response": "stilts tpipe ifmt=csv in=measurements.csv cmd='replaceval -999 null RADIAL_VELOCITY' ofmt=csv out=measurements_cleaned.csv"
+    },
+    {
+        "prompt": "Create a new column 'LOG_LUMINOSITY' in 'galaxy_data.fits' as the base-10 logarithm of the 'LUMINOSITY' column.",
+        "response": "stilts tpipe in=galaxy_data.fits cmd='addcol LOG_LUMINOSITY \"log10(LUMINOSITY)\"' out=galaxy_data_logL.fits"
+    },
+    {
+        "prompt": "Sort 'source_list.fits' by 'MAG_B' in descending order (faintest first).",
+        "response": "stilts tpipe in=source_list.fits cmd='sort -down MAG_B' out=sorted_sources.fits"
+    },
+    {
+        "prompt": "Count how many objects in 'qso_candidates.fits' have a redshift ('Z') greater than 2.5.",
+        "response": "stilts tpipe in=qso_candidates.fits cmd='select \"Z > 2.5\"' omode=count"
+    },
+    {
+        "prompt": "Extract rows 501 through 600 from 'observation_log.fits' into a new file 'log_extract.fits'.",
+        "response": "stilts tpipe in=observation_log.fits cmd='rowrange 501 600' out=log_extract.fits"
+    },
+    {
+        "prompt": "I want to keep only the unique rows from 'event_list.fits' based on the 'EVENT_ID' column.",
+        "response": "stilts tpipe in=event_list.fits cmd='uniq EVENT_ID' out=unique_events.fits"
+    },
+    {
+        "prompt": "Combine two filters: first, select stars from 'star_field.fits' with `PROB_STAR > 0.9`, and then keep only the 'ID', 'RA', and 'DEC' columns. Save as 'star_coords.fits'.",
+        "response": "stilts tpipe in=star_field.fits cmd='select \"PROB_STAR > 0.9\"' cmd='keepcols \"ID RA DEC\"' out=star_coords.fits"
+    },
+    {
+        "prompt": "Add a constant column 'SURVEY_NAME' with the value 'SDSS-DR16' to the table 'my_objects.csv'.",
+        "response": "stilts tpipe ifmt=csv in=my_objects.csv cmd='constcol SURVEY_NAME \"SDSS-DR16\"' ofmt=csv out=my_objects_tagged.csv"
+    },
+    {
+        "prompt": "Take 'data_table.fits' which has array columns and expand them into scalar columns in 'data_table_exploded.fits'.",
+        "response": "stilts tpipe in=data_table.fits cmd='explodeall' out=data_table_exploded.fits"
+    },
+    {
+        "prompt": "Rename the column 'mag' to 'V_MAG' in the file 'old_format.fits'.",
+        "response": "stilts tpipe in=old_format.fits cmd='colmeta -name V_MAG mag' out=new_format.fits"
+    },
+    {
+        "prompt": "Filter 'timeseries.dat' (which is a space-separated ASCII file) to keep rows where 'TIME' is between 1000 and 2000.",
+        "response": "stilts tpipe ifmt=ascii in=timeseries.dat cmd='select \"TIME >= 1000 && TIME <= 2000\"' ofmt=ascii out=timeseries_subset.dat"
+    },
+    {
+        "prompt": "Display the last 5 rows of the table 'log.csv'.",
+        "response": "stilts tpipe ifmt=csv in=log.csv cmd='tail 5'"
+    },
+    {
+        "prompt": "Select a random 10% sample of rows from 'large_catalog.fits' and write it to 'random_sample.fits'.",
+        "response": "stilts tpipe in=large_catalog.fits cmd='random 0.1' out=random_sample.fits"
+    },
+    {
+        "prompt": "Send the table 'vizier_query.vot' directly to TOPCAT for visualization.",
+        "response": "stilts tpipe in=vizier_query.vot omode=topcat"
+    },
+    {
+        "prompt": "I have a file `data.txt` where columns are separated by tabs. Convert it to a FITS file `data.fits`.",
+        "response": "stilts tpipe ifmt=tsv in=data.txt ofmt=fits out=data.fits"
+    },
+    {
+        "prompt": "Create a new column 'IS_HIGH_Z' that is true if 'REDSHIFT' > 1.0 and false otherwise. Input is 'galaxies.fits'.",
+        "response": "stilts tpipe in=galaxies.fits cmd='addcol IS_HIGH_Z \"REDSHIFT > 1.0 ? true : false\"' out=galaxies_classified.fits"
+    },
+    {
+        "prompt": "Read 'catalog.fits' from a URL 'http://example.com/data/catalog.fits' and write it locally as 'local_copy.vot' in VOTable format.",
+        "response": "stilts tpipe in=http://example.com/data/catalog.fits ofmt=votable out=local_copy.vot"
+    },
+    {
+        "prompt": "Calculate statistics only on the 'FLUX_G' and 'FLUX_R' columns for objects with `CLASS == 'GALAXY'` in 'survey.fits'.",
+        "response": "stilts tpipe in=survey.fits cmd='select \"CLASS == \\'GALAXY\\'\"' cmd='keepcols \"FLUX_G FLUX_R\"' omode=stats"
+    },
+    {
+        "prompt": "I have a set of processing steps in a file named 'pipeline.txt'. Apply them to 'raw_obs.fits'.",
+        "response": "stilts tpipe in=raw_obs.fits cmd=@pipeline.txt out=processed_obs.fits"
+    },
+    {
+        "prompt": "Sort 'star_data.fits' first by 'SPECTRAL_TYPE' (ascending) and then by 'V_MAG' (ascending).",
+        "response": "stilts tpipe in=star_data.fits cmd='sort \"SPECTRAL_TYPE V_MAG\"' out=sorted_stars.fits"
+    },
+    {
+        "prompt": "Fix the column names in 'badly_named.fits' to be more standard (e.g., remove special characters) and save as 'good_names.fits'.",
+        "response": "stilts tpipe in=badly_named.fits cmd=fixcolnames out=good_names.fits"
+    },
+    {
+        "prompt": "Process 'huge_file.fits' but don't create any output file, just run the pipeline.",
+        "response": "stilts tpipe in=huge_file.fits cmd='select \"SNR > 10\"' omode=discard"
+    },
+    {
+        "prompt": "Select all objects from `sky_survey.fits` that are within a 10 arcminute radius of RA=180.0, Dec=30.0 degrees.",
+        "response": "stilts tpipe in=sky_survey.fits cmd='select \"skyDistanceDegrees(RA, DEC, 180.0, 30.0) < 10.0/60.0\"' out=cone_search_results.fits"
+    },
+    {
+        "prompt": "Convert the 'FLUX' column in 'phot_data.fits' from Janskys to milliJanskys by creating a new column 'FLUX_mJy'.",
+        "response": "stilts tpipe in=phot_data.fits cmd='addcol FLUX_mJy \"FLUX * 1000\"' out=phot_data_mjy.fits"
+    },
+    {
+        "prompt": "Get the last 100 rows from 'time_stream.fits' and save them to 'latest_data.fits'.",
+        "response": "stilts tpipe in=time_stream.fits cmd='tail 100' out=latest_data.fits"
+    },
+    {
+        "prompt": "Select rows from `catalog.csv` where the `OBJ_NAME` column starts with 'SN'.",
+        "response": "stilts tpipe ifmt=csv in=catalog.csv cmd='select \"startsWith(OBJ_NAME, \\'SN\\')\"' ofmt=csv out=supernovae.csv"
+    },
+    {
+        "prompt": "I have a table with RA and Dec in sexagesimal format ('RA_SEX', 'DEC_SEX'). Add new columns 'RA_DEG', 'DEC_DEG' with the decimal degree values.",
+        "response": "stilts tpipe in=sextable.fits cmd='addcol RA_DEG \"hmsToDegrees(RA_SEX)\"; addcol DEC_DEG \"dmsToDegrees(DEC_SEX)\"' out=degtable.fits"
+    },
+    {
+        "prompt": "Create a new table containing only columns 1, 3, and 5 from `input.fits`.",
+        "response": "stilts tpipe in=input.fits cmd='keepcols \"$1 $3 $5\"' out=output.fits"
+    },
+    {
+        "prompt": "From `photometry.fits`, select all objects with a g-r color between 0.5 and 1.0.",
+        "response": "stilts tpipe in=photometry.fits cmd='select \"(G_MAG - R_MAG) > 0.5 && (G_MAG - R_MAG) < 1.0\"' out=red_objects.fits"
+    },
+    {
+        "prompt": "Transpose the table `small_matrix.csv` so rows become columns and vice versa.",
+        "response": "stilts tpipe ifmt=csv in=small_matrix.csv cmd=transpose ofmt=csv out=transposed_matrix.csv"
+    },
+    {
+        "prompt": "Read a table from standard input in VOTable format, filter for `SNR > 50`, and write the result to standard output as a CSV.",
+        "response": "stilts tpipe ifmt=votable in=- cmd='select \"SNR > 50\"' ofmt=csv out=-"
+    },
+    {
+        "prompt": "Find all rows in 'data_quality.fits' where the 'MASK_FLAGS' column has the 4th bit set (value 8).",
+        "response": "stilts tpipe in=data_quality.fits cmd='select \"(MASK_FLAGS & 8) != 0\"' out=flagged_data.fits"
+    },
+    {
+        "prompt": "Change the name of the table itself to 'MyCleanedCatalog' within the file 'catalog.fits'.",
+        "response": "stilts tpipe in=catalog.fits cmd='tablename MyCleanedCatalog' out=catalog_renamed.fits"
+    },
+    {
+        "prompt": "Concatenate the 'PLATE', 'MJD', and 'FIBERID' columns into a single 'UNIQUE_ID' string column.",
+        "response": "stilts tpipe in=spec_ids.fits cmd='addcol UNIQUE_ID \"PLATE + \\'-\\' + MJD + \\'-\\' + FIBERID\"' out=spec_ids_unique.fits"
+    },
+    {
+        "prompt": "Select rows from 'candidates.fits' where the 'NOTES' column is not empty.",
+        "response": "stilts tpipe in=candidates.fits cmd='select \"NOTES != null && length(NOTES) > 0\"' out=annotated_candidates.fits"
+    },
+    {
+        "prompt": "Show me the top 10 most distant galaxies from `galaxy_sample.fits` based on the `REDSHIFT` column.",
+        "response": "stilts tpipe in=galaxy_sample.fits cmd='sorthead -down 10 REDSHIFT'"
+    },
+    {
+        "prompt": "I need to explicitly state that my input file `source.dat` is in 'votable' format and convert it to `source.fits`.",
+        "response": "stilts tpipe ifmt=votable in=source.dat ofmt=fits out=source.fits"
+    },
+    {
+        "prompt": "Create a new FITS file from `results.csv` keeping only columns that end with '_FLUX'.",
+        "response": "stilts tpipe ifmt=csv in=results.csv cmd='keepcols \"*_FLUX\"' ofmt=fits out=fluxes.fits"
+    },
+    {
+        "prompt": "Convert the 'EPOCH' column from MJD (a double) to an integer in a new column 'MJD_INT'.",
+        "response": "stilts tpipe in=epochs.fits cmd='addcol MJD_INT \"(int)EPOCH\"' out=epochs_int.fits"
+    },
+    {
+        "prompt": "Take the absolute value of the 'MEASUREMENT' column and store it in a new column 'ABS_MEASUREMENT'.",
+        "response": "stilts tpipe in=data.fits cmd='addcol ABS_MEASUREMENT \"abs(MEASUREMENT)\"' out=data_abs.fits"
+    },
+    {
+        "prompt": "Find the rows with the 5 largest values in the 'AREA' column of the table `image_segments.fits`.",
+        "response": "stilts tpipe in=image_segments.fits cmd='sorthead -down 5 AREA' out=largest_segments.fits"
+    },
+    {
+        "prompt": "Filter 'transients.fits' to get objects where 'CLASS' is either 'SN' or 'CV'.",
+        "response": "stilts tpipe in=transients.fits cmd='select \"CLASS == \\'SN\\' || CLASS == \\'CV\\'\"' out=variables.fits"
+    },
+    {
+        "prompt": "Remove the first column from the table `data.csv`.",
+        "response": "stilts tpipe ifmt=csv in=data.csv cmd='delcols 1' ofmt=csv out=data_mod.csv"
+    },
+    {
+        "prompt": "Round the values in the 'RA' column to 4 decimal places and overwrite the column.",
+        "response": "stilts tpipe in=coords.fits cmd='replacecol RA \"round(RA, 4)\"' out=coords_rounded.fits"
+    },
+    {
+        "prompt": "Calculate the signal-to-noise ratio and save it as 'SNR', then keep only sources with SNR > 10.",
+        "response": "stilts tpipe in=fluxes.fits cmd='addcol SNR \"FLUX/FLUX_ERR\"' cmd='select \"SNR > 10\"' out=high_snr.fits"
+    },
+    {
+        "prompt": "Shuffle the rows of 'training_set.fits' randomly and save the result.",
+        "response": "stilts tpipe in=training_set.fits cmd=shuffle out=training_set_shuffled.fits"
+    },
+    {
+        "prompt": "Add metadata to the 'G_MAG' column, setting its UCD to 'phot.mag;em.opt.g' and units to 'mag'.",
+        "response": "stilts tpipe in=catalog.fits cmd='colmeta -ucd phot.mag;em.opt.g -unit mag G_MAG' out=catalog_meta.fits"
+    },
+    {
+        "prompt": "Extract all columns from `wide_table.fits` whose names start with 'PSF_'.",
+        "response": "stilts tpipe in=wide_table.fits cmd='keepcols \"PSF_*\"' out=psf_columns.fits"
+    },
+    {
+        "prompt": "How many unique values are in the 'FILTER' column of `log.fits`?",
+        "response": "stilts tpipe in=log.fits cmd='keepcols FILTER' cmd='uniq FILTER' omode=count"
+    },
+    {
+        "prompt": "Convert a FITS table `input.fits` to an IPAC table file `output.tbl`.",
+        "response": "stilts tpipe in=input.fits ofmt=ipac out=output.tbl"
+    },
+    {
+        "prompt": "Select objects from 'survey.fits' where the proper motion `sqrt(PM_RA*PM_RA + PM_DEC*PM_DEC)` is greater than 100.",
+        "response": "stilts tpipe in=survey.fits cmd='select \"sqrt(PM_RA*PM_RA + PM_DEC*PM_DEC) > 100\"' out=high_pm_stars.fits"
+    },
+    {
+        "prompt": "Take the file `multi_extension.fits[2]` (the second extension) and convert it to CSV.",
+        "response": "stilts tpipe in='multi_extension.fits[2]' ofmt=csv out=extension2.csv"
+    },
+    {
+        "prompt": "Replace the contents of the 'FLAGS' column with the string 'PROCESSED' for all rows.",
+        "response": "stilts tpipe in=status.fits cmd='replacecol FLAGS \"\\'PROCESSED\\'\"' out=status_updated.fits"
+    },
+    {
+        "prompt": "List the column names of 'data.fits' and then count them.",
+        "response": "stilts tpipe in=data.fits omode=meta"
+    },
+    {
+        "prompt": "Create a VOTable where I have selected galaxies with `z > 0.1` and added a new column `DISTANCE` calculated using a simplified formula `z * 3000 / 70`.",
+        "response": "stilts tpipe in=galaxies.fits cmd='select \"z > 0.1\"' cmd='addcol DISTANCE \"z * 3000 / 70\"' ofmt=votable out=galaxies_dist.vot"
+    },
+    {
+        "prompt": "From `observations.fits`, remove rows where the `AIRMASS` column is NULL.",
+        "response": "stilts tpipe in=observations.fits cmd='select \"AIRMASS != null\"' out=observations_clean.fits"
+    },
+    {
+        "prompt": "I want to get a checksum for the table `final_data.fits` to verify its integrity.",
+        "response": "stilts tpipe in=final_data.fits omode=checksum"
+    },
+    {
+        "prompt": "Keep only columns 1 through 10 of `wide_survey.fits`.",
+        "response": "stilts tpipe in=wide_survey.fits cmd='keepcols \"1-10\"' out=narrow_survey.fits"
+    },
+    {
+        "prompt": "For the ASCII file `data.txt`, add column names 'ID', 'X', 'Y', 'FLUX' during processing and save as `data.fits`.",
+        "response": "stilts tpipe ifmt=ascii in=data.txt cmd='colmeta -name ID $1; colmeta -name X $2; colmeta -name Y $3; colmeta -name FLUX $4' out=data.fits"
+    },
+    {
+        "prompt": "Combine `RA` and `DEC` into a single string column 'COORDS' in the format 'RA,DEC'.",
+        "response": "stilts tpipe in=positions.fits cmd='addcol COORDS \"RA + \\',\\' + DEC\"' out=positions_combined.fits"
+    },
+    {
+        "prompt": "Select rows where `MAG_G` is not NaN from `photometry_raw.fits`.",
+        "response": "stilts tpipe in=photometry_raw.fits cmd='select \"!isNaN(MAG_G)\"' out=photometry_valid.fits"
+    },
+    {
+        "prompt": "Perform a calculation `(FLUX_1 / FLUX_2) - 1` and add it as a new column `FLUX_RATIO_DIFF`.",
+        "response": "stilts tpipe in=ratios.fits cmd='addcol FLUX_RATIO_DIFF \"(FLUX_1 / FLUX_2) - 1\"' out=ratios_calc.fits"
+    },
+    {
+        "prompt": "Can you check if the table `checkme.fits` is valid and report any issues?",
+        "response": "stilts tpipe in=checkme.fits cmd=check"
+    },
+    {
+        "prompt": "Create a random view of `my_data.fits` without creating a new file.",
+        "response": "stilts tpipe in=my_data.fits cmd=randomview"
+    },
+    {
+        "prompt": "From `spec_data.fits`, find objects where the 'CLASS' is 'GALAXY' and the 'SUBCLASS' is 'STARFORMING'.",
+        "response": "stilts tpipe in=spec_data.fits cmd='select \"CLASS==\\'GALAXY\\' && SUBCLASS==\\'STARFORMING\\'\"' out=sf_galaxies.fits"
+    },
+    {
+        "prompt": "Square the values in the 'ERROR' column and put them in a new column called 'VARIANCE'.",
+        "response": "stilts tpipe in=measurements.fits cmd='addcol VARIANCE \"ERROR * ERROR\"' out=measurements_var.fits"
+    },
+    {
+        "prompt": "I have an ASCII file `catalog.dat`. I need to convert it to a VOTable `catalog.xml`.",
+        "response": "stilts tpipe ifmt=ascii in=catalog.dat ofmt=votable out=catalog.xml"
+    },
+    {
+        "prompt": "Select all columns *except* 'TEMP_ID' and 'RAW_VALUE' from `staging_table.fits`.",
+        "response": "stilts tpipe in=staging_table.fits cmd='delcols \"TEMP_ID RAW_VALUE\"' out=final_table.fits"
+    },
+    {
+        "prompt": "Calculate the average of `MAG_1`, `MAG_2`, and `MAG_3` into a new column `MAG_AVG`.",
+        "response": "stilts tpipe in=multimag.fits cmd='addcol MAG_AVG \"(MAG_1 + MAG_2 + MAG_3) / 3.0\"' out=multimag_avg.fits"
+    },
+    {
+        "prompt": "Count the number of sources that are flagged as variable (`IS_VARIABLE == true`).",
+        "response": "stilts tpipe in=variables.fits cmd='select \"IS_VARIABLE\"' omode=count"
+    },
+    {
+        "prompt": "Find the 5 least luminous objects in `dwarfs.fits` based on the `LUMINOSITY` column.",
+        "response": "stilts tpipe in=dwarfs.fits cmd='sorthead 5 LUMINOSITY' out=faintest_dwarfs.fits"
+    },
+    {
+        "prompt": "Take my table `big.fits` and create a smaller version `small.fits` by sampling every 500th row.",
+        "response": "stilts tpipe in=big.fits cmd='every 500' out=small.fits"
+    },
+    {
+        "prompt": "I have sexagesimal coordinates in `RA_HMS` and `DEC_DMS`. Add ICRS galactic coordinates 'gl' and 'gb'.",
+        "response": "stilts tpipe in=coords.fits cmd='addskycoords -inunit sex fk5 gal RA_HMS DEC_DMS gl gb' out=coords_gal.fits"
+    },
+    {
+        "prompt": "Select all rows where the 'OBJID' is in a list of specific values (e.g., 101, 205, 312).",
+        "response": "stilts tpipe in=objects.fits cmd='select \"OBJID==101 || OBJID==205 || OBJID==312\"' out=selected_objects.fits"
+    },
+    {
+        "prompt": "Convert the `event_time` column, which is a UNIX timestamp (seconds), to MJD.",
+        "response": "stilts tpipe in=events.fits cmd='addcol MJD_TIME \"unixToMjd(event_time)\"' out=events_mjd.fits"
+    },
+    {
+        "prompt": "Output `my_table.fits` as a CSV, but only include columns named 'ID', 'RA', 'DEC' and any column starting with 'MAG_'.",
+        "response": "stilts tpipe in=my_table.fits cmd='keepcols \"ID RA DEC MAG_*\"' ofmt=csv out=mags.csv"
+    },
+    {
+        "prompt": "In `catalog.fits`, set the value of `MAG_ERR` to 0.1 for any row where it is currently less than 0.1.",
+        "response": "stilts tpipe in=catalog.fits cmd='replacecol MAG_ERR \"MAG_ERR < 0.1 ? 0.1 : MAG_ERR\"' out=catalog_err_floor.fits"
+    },
+    {
+        "prompt": "Read data from stdin as CSV, select rows where the third column is greater than 10, and write to stdout as FITS.",
+        "response": "stilts tpipe ifmt=csv in=- cmd='select \"$3 > 10\"' ofmt=fits out=-"
+    },
+    {
+        "prompt": "For every row, repeat it 5 times in the output table.",
+        "response": "stilts tpipe in=input.fits cmd='repeat 5' out=repeated.fits"
+    },
+    {
+        "prompt": "Provide statistics on the `REDSHIFT` column for the table `qsos.fits`, but only for the first 1000 rows.",
+        "response": "stilts tpipe in=qsos.fits cmd='head 1000' cmd='keepcols REDSHIFT' omode=stats"
+    },
+    {
+        "prompt": "I need to join two conditions: select objects from `survey.fits` where `TYPE == 'STAR'` OR `PROB_STAR > 0.9`.",
+        "response": "stilts tpipe in=survey.fits cmd='select \"TYPE == \\'STAR\\' || PROB_STAR > 0.9\"' out=confident_stars.fits"
+    },
+    {
+        "prompt": "Force a disk-based sort when sorting the very large file `massive.fits` by column `AREA` to conserve memory.",
+        "response": "stilts -disk tpipe in=massive.fits cmd='sort AREA' out=sorted_massive.fits"
+    }
+]

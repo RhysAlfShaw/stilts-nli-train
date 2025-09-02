@@ -1,18 +1,9 @@
-# stilts-ai-train
+# stilts-nli-training
 
-training open llm for stilts
+This repository contains the code used to train and evaluate the STILTS-NLI model for STILTS-NLI [https://github.com/RhysAlfShaw/stilts-nli].
 
-# going forward.
+To run this you need:
 
-- Attach trained model to topstiltsagent.
+    1. HF access token. Place this in a text file named `access_token` in this directory.
+    2. Read access to google/gemma-2b [https://huggingface.co/google/gemma-2b]. Request access to review conditions for access to this model.
 
-- can we qunatise the model and retain preformance, so we can use on lower speced device.
-
-- Can the training process we made agnostic to the model of choice?
-
-- improve the training data based on the example in the Stilts documentation.
-
-
-# Notes on installation
-
-For fast cpu inference we require llama-cpp-python. This requires a C-compiler to build and install. 

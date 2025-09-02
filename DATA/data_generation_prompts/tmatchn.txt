@@ -189,4 +189,4 @@ stilts tmatchn multimode=group nin=3 matcher=skyerr params=8 \
 Performs a group-mode match. There is no reference table, so that an output row will result for each object which is represented in any two of the input catalogues. The match takes account of per-object errors equivalent to twice the recorded seeing, which is in the region of 8 arcsec. Note that this may not operate as expected if the catalogues contain multiple distinct objects too close (in comparison to the declared separation) to each other. The resulting matched table is sent directly to TOPCAT (if available).
 
 
-Please use these to create prompt responces the arevaried and test each of the possible configurations.
+Please use these to create prompt responces the arevaried and test each of the possible configurations. Use a varity of input and output file names.
