@@ -232,4 +232,49 @@ tail
 transpose
 uniq
 
-Using these please create a varity of prompt and responces that covers the possible parameters that can be used with tpipe. Keep all the input and output files named as input.* and output.*. 
+Here are some aditional details:
+
+10.5 Operators
+The operators are pretty much the same as in the C language. The common ones are:
+
+Arithmetic
++ (add)
+- (subtract)
+* (multiply)
+/ (divide)
+% (modulus)
+Boolean
+! (not)
+&& (and)
+|| (or)
+^ (exclusive-or)
+== (numeric identity)
+!= (numeric non-identity)
+< (less than)
+> (greater than)
+<= (less than or equal)
+>= (greater than or equal)
+Bitwise
+& (and)
+| (or)
+^ (exclusive-or)
+<< (left shift)
+>> (right shift)
+>>> (logical right shift)
+Numeric Typecasts
+(byte) (numeric -> signed byte)
+(short) (numeric -> 2-byte integer)
+(int) (numeric -> 4-byte integer)
+(long) (numeric -> 8-byte integer)
+(float) (numeric -> 4-type floating point)
+(double) (numeric -> 8-byte floating point)
+Note you may find the Maths conversion functions more convenient for numeric conversions than these.
+Other
++ (string concatenation)
+[] (array dereferencing - first element is zero)
+?: (conditional switch)
+instanceof (class membership)
+
+
+Using these please create a varity of prompts and responces that covers the possible parameters that can be used with tpipe. With different but coresponding file names.
+ensure that different file types are both input and output and there is a range of column operations.

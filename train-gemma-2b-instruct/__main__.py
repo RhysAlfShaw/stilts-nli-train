@@ -19,12 +19,13 @@ OUTPUT_DIR = "/scratch/Rhys/stilts_models/gemma-2b-finetuned"
 PLOT_OUTPUT_DIR = "."
 TRAIN_FILE = "DATA/training_data.json"
 ADDITIONAL_TRAIN_FILES = [
-    "DATA/training_data-tmatchn.json",
     "DATA/training_data-tpipe.json",
     "DATA/training_data-tpipe2.json",
     "DATA/training_data-tpipe3.json",
+    "DATA/training_data-tpipe4.json",
     "DATA/training_data-tmatch2.json",
     "DATA/training_data-tmatchn.json",
+    "DATA/training_data-tmatchn2.json",
     "DATA/training_data-descr.json",
     "DATA/training_data-descr-extr.json",
     "DATA/training_data-explanations.json",
@@ -243,5 +244,5 @@ print("\n8-bit quantization complete.")
 # create 4bit_K_M version using llama.cpp quantization
 print("\nQuantizing model to 4-bit K_M GGUF format...")
 cmd_4bit = f"./home/rhys/llama.cpp/build/bin/llama-quantize {OUTPUT_DIR}/final_model.gguf {OUTPUT_DIR}/final_model-Q4_K_M.gguf Q4_K_M"
-subprocess.run(cmd_8bit, shell=True, check=True)
+subprocess.run(cmd_4bit, shell=True, check=True)
 print("\n4-bit K_M quantization complete.")
