@@ -194,3 +194,4 @@ sun256.txt
 *.png
 test
 TESTING_CATALOGS
+upload_to_hf.py
