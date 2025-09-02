@@ -192,5 +192,5 @@ stilts_tasks.txt
 sun256.txt 
 *.xml
 *.png
-test/
-TESTING_CATALOGS/
+test
+TESTING_CATALOGS
