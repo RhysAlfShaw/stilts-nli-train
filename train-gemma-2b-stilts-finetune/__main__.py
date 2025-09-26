@@ -23,21 +23,29 @@ ADDITIONAL_TRAIN_FILES = [
     "DATA/training_data-tpipe2.json",
     "DATA/training_data-tpipe3.json",
     "DATA/training_data-tpipe4.json",
+    # "DATA/training_data-tpipe5.json",# too many errors
     "DATA/training_data-tmatch2.json",
     "DATA/training_data-tmatchn.json",
     "DATA/training_data-tmatchn2.json",
     "DATA/training_data-descr.json",
     "DATA/training_data-descr-extr.json",
     "DATA/training_data-explanations.json",
-    # "DATA/training_data-local-file.json",
-    # "DATA/training_data-cmd-opts.json",
-    # "DATA/training_data-basic-file-formats.json",
     "DATA/doc-examples-formatted.json",
     "DATA/training_data_tcat-claude.json",
     "DATA/training_data_tcat-gpt-oss.json",
     "DATA/training_data-tcopy.json",
+    "DATA/training_data-tpipefunc-artith.json",
+    "DATA/training_data-tpipefunc-array.json",
+    "DATA/training_data-tpipefunc-bits.json",
+    "DATA/training_data-tpipefunc-conversion.json",
+    "DATA/training_data-tpipefunc-fluxes.json",
+    "DATA/training_data-tpipefunc-gaia.json",
+    "DATA/training_data-tpipefunc-format.json",
+    "DATA/training_data-tpipefunc-coverage.json",
+    "DATA/training_data-tpipefunc-coordsDegrees.json",
+    "DATA/training_data-tapquery.json",
 ]
-EVAL_TEST_SPLIT = 0.1  # 30% for evaluation
+EVAL_TEST_SPLIT = 0.2  # 30% for evaluation
 BATCH_SIZE = 1  # good starting point.
 LEARNING_RATE = 5e-5  # 5e-5 is a common learning rate for fine-tuning large models
 NUM_EPOCHS = 5  # 1 epoch is often sufficient for pre-trained models on specific tasks.
@@ -78,7 +86,11 @@ if ADDITIONAL_TRAIN_FILES:
         with open(additional_file, "r") as f:
             additional_data = json.load(f)
             data.extend(additional_data)
-
+# remove any data that has "chat.jar" == "failed"
+if any("chat.jar" in item for item in data):
+    print(f"Total training examples before removing chat.jar fails: {len(data)}")
+    data = [item for item in data if item.get("chat.jar") != "failed"]
+    print(f"Total training examples after removing chat.jar fails: {len(data)}")
 # set chat template for tokenizer as gemma
 
 formatted_data = []
@@ -198,6 +210,19 @@ if trainer.state.log_history:
     eval_steps = [
         log["step"] for log in logs if "eval_loss" in log
     ]  # eval_loss is logged at same step as a training log point
+    # put metric data into a df and save it
+    import pandas as pd
+
+    # save training loss
+    train_df = pd.DataFrame(
+        {"step": train_steps, "loss": train_loss}, columns=["step", "loss"]
+    )
+    train_df.to_csv(f"{PLOT_OUTPUT_DIR}/train_loss.csv", index=False)
+
+    eval_df = pd.DataFrame(
+        {"step": eval_steps, "loss": eval_loss}, columns=["step", "loss"]
+    )
+    eval_df.to_csv(f"{PLOT_OUTPUT_DIR}/eval_loss.csv", index=False)
 
     plt.figure(figsize=(12, 7))
     plt.plot(train_steps, train_loss, label="Training Loss", color="blue", alpha=0.7)
@@ -215,7 +240,7 @@ if trainer.state.log_history:
             linestyle="--",
         )
 
-    plt.title("Training & Evaluation Loss Curve")
+    # plt.title("Training & Evaluation Loss Curve")
     plt.xlabel("Training Steps")
     plt.ylabel("Loss")
     plt.yscale("log")
