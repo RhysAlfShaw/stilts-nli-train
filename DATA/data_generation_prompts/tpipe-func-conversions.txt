@@ -11,6 +11,8 @@ Return the results as a list of json of the following format:
 
 The command I want you to generate examples for is the tpipe command. The documentation of this is as follows:
 
+Focus on making sure the functions at then end are also used. DO NOT INVENT functions only use those in this documentation. Isblank for no exist do not use it.
+
 tpipe: Performs pipeline processing on a table
 
 tpipe performs all kinds of general purpose manipulations which take one table as input. It is extremely flexible, and can do the following things amongst others:
@@ -274,3 +276,204 @@ Other
 [] (array dereferencing - first element is zero)
 ?: (conditional switch)
 instanceof (class membership)
+
+
+
+10.7.4 Conversions
+Functions for converting between strings and numeric values.
+
+
+toString( fpVal )
+Turns a numeric value into a string.
+
+Parameters:
+fpVal (floating point): floating point numeric value
+Return value
+(String): a string representation of fpVal
+toString( intVal )
+Turns an integer numeric value into a string.
+
+Parameters:
+intVal (long integer): integer numeric value
+Return value
+(String): a string representation of intVal
+toString( charVal )
+Turns a single character value into a string.
+
+Parameters:
+charVal (char): character numeric value
+Return value
+(String): a string representation of charVal
+toString( byteVal )
+Turns a byte value into a string.
+
+Parameters:
+byteVal (byte): byte numeric value
+Return value
+(String): a string representation of byteVal
+toString( booleanVal )
+Turns a boolean value into a string.
+
+Parameters:
+booleanVal (boolean): boolean value (true or false)
+Return value
+(String): a string representation of booleanVal ("true" or "false")
+toString( objVal )
+Turns any object value into a string. As applied to existing string values this isn't really useful, but it means that you can apply toString to any object value without knowing its type and get a useful return from it.
+
+Parameters:
+objVal (Object): non-primitive value
+Return value
+(String): a string representation of objVal
+parseByte( str )
+Attempts to interpret a string as a byte (8-bit signed integer) value. If the input string can't be interpreted in this way, a blank value will result.
+
+Parameters:
+str (String): string containing numeric representation
+Return value
+(byte): byte value of str
+parseShort( str )
+Attempts to interpret a string as a short (16-bit signed integer) value. If the input string can't be interpreted in this way, a blank value will result.
+
+Parameters:
+str (String): string containing numeric representation
+Return value
+(short integer): byte value of str
+parseInt( str )
+Attempts to interpret a string as an int (32-bit signed integer) value. If the input string can't be interpreted in this way, a blank value will result.
+
+Parameters:
+str (String): string containing numeric representation
+Return value
+(integer): byte value of str
+parseLong( str )
+Attempts to interpret a string as a long (64-bit signed integer) value. If the input string can't be interpreted in this way, a blank value will result.
+
+Parameters:
+str (String): string containing numeric representation
+Return value
+(long integer): byte value of str
+parseFloat( str )
+Attempts to interpret a string as a float (32-bit floating point) value. If the input string can't be interpreted in this way, a blank value will result.
+
+Parameters:
+str (String): string containing numeric representation
+Return value
+(floating point): byte value of str
+parseDouble( str )
+Attempts to interpret a string as a double (64-bit signed integer) value. If the input string can't be interpreted in this way, a blank value will result.
+
+Parameters:
+str (String): string containing numeric representation
+Return value
+(floating point): byte value of str
+parseBigInteger( str )
+Attempts to interpret a string as a "BigInteger" value. This can be used for working with string representations of integers that can't be stored as an unsigned 64-bit value.
+The result is a BigInteger object, which can't be used in normal numeric expressions, but has a number of methods defined on it for comparison, arithmetic, bit manipulation etc. See the java.math.BigInteger javadocs for details.
+
+
+Parameters:
+str (String): string containing numeric representation
+Return value
+(BigInteger): BigInteger value of str
+Examples:
+parseBigInteger("-20000000000000000023").doubleValue() = -2e19
+parseBigInteger("18446744073709551616").testBit(64) = true
+parseBigDecimal( str )
+Attempts to interpret a string as a "BigDecimal" value. This can be used for working with string representations of non-integer values that require more precision or range than is possible in a 64-bit IEEE-754 double precision variable.
+The result is a BigDecimal object, which can't be used in normal numeric expressions, but has a number of methods defined on it for comparison, arithmetic, bit manipulation etc. See the java.math.BigDecimal javadocs for details.
+
+
+Parameters:
+str (String): string contining numeric representation
+Return value
+(BigDecimal): BigDecimal value of str
+Example:
+parseBigDecimal("101").compareTo(parseBigDecimal("102")) = -1
+parseInts( str )
+Attempts to interpret a string as an array of integer values. An ad-hoc algorithm is used that tries to extract a list of integers from a string; a comma- or space-separated list of integer values will work, and other formats may or may not.
+The details of this function's behaviour may change in future releases.
+
+
+Parameters:
+str (String): string containing a list of integer values
+Return value
+(array of integer): array of integer values
+Examples:
+parseInts("9 8 -23") = [9, 8, -23]
+parseInts("tiddly-pom") = []
+parseDoubles( str )
+Attempts to interpret a string as an array of floating point values. An ad-hoc algorithm is used that tries to extract a list of numeric values from a string; a comma- or space-separated list of floating point values will work, and other formats may or may not.
+This function can be used as a hacky way to extract the numeric values from an STC-S (for instance ObsCore/EPNcore s_region) string.
+
+The details of this function's behaviour may change in future releases.
+
+
+Parameters:
+str (String): string containing a list of floating point values
+Return value
+(array of floating point): array of floating point values
+Examples:
+parseDoubles("1.3, 99e1, NaN, -23") = [1.3, 990.0, NaN, -23.0]
+parseDoubles("Polygon ICRS 0.8 2.1 9.0 2.1 6.2 8.6") = [0.8, 2.1, 9.0, 2.1, 6.2, 8.6]
+parseDoubles("La la la") = []
+toByte( value )
+Attempts to convert the numeric argument to a byte (8-bit signed integer) result. If it is out of range, a blank value will result.
+
+Parameters:
+value (floating point): numeric value for conversion
+Return value
+(byte): value converted to type byte
+toShort( value )
+Attempts to convert the numeric argument to a short (16-bit signed integer) result. If it is out of range, a blank value will result.
+
+Parameters:
+value (floating point): numeric value for conversion
+Return value
+(short integer): value converted to type short
+toInteger( value )
+Attempts to convert the numeric argument to an int (32-bit signed integer) result. If it is out of range, a blank value will result.
+
+Parameters:
+value (floating point): numeric value for conversion
+Return value
+(integer): value converted to type int
+toLong( value )
+Attempts to convert the numeric argument to a long (64-bit signed integer) result. If it is out of range, a blank value will result.
+
+Parameters:
+value (floating point): numeric value for conversion
+Return value
+(long integer): value converted to type long
+toFloat( value )
+Attempts to convert the numeric argument to a float (32-bit floating point) result. If it is out of range, a blank value will result.
+
+Parameters:
+value (floating point): numeric value for conversion
+Return value
+(floating point): value converted to type float
+toDouble( value )
+Converts the numeric argument to a double (64-bit signed integer) result.
+
+Parameters:
+value (floating point): numeric value for conversion
+Return value
+(floating point): value converted to type double
+toHex( value )
+Converts the integer argument to hexadecimal form.
+
+Parameters:
+value (long integer): integer value
+Return value
+(String): hexadecimal representation of value
+Example:
+toHex(42) = "2a"
+fromHex( hexVal )
+Converts a string representing a hexadecimal number to its integer value.
+
+Parameters:
+hexVal (String): hexadecimal representation of value
+Return value
+(integer): integer value represented by hexVal
+Example:
+fromHex("2a") = 42

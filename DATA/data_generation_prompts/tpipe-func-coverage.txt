@@ -274,3 +274,90 @@ Other
 [] (array dereferencing - first element is zero)
 ?: (conditional switch)
 instanceof (class membership)
+
+FUNCTIONS you should use Only make sure there is an example of each function
+
+10.7.7 Coverage
+Functions related to coverage and footprints.
+
+One coverage standard is Multi-Order Coverage maps, described at http://www.ivoa.net/Documents/MOC/. MOC positions are always defined in ICRS equatorial coordinates.
+
+MOCs may be specified using a string argument of the functions in one of the following ways:
+
+The filename of a MOC FITS file
+The URL of a MOC FITS file
+The identifier of a VizieR table, for instance "V/139/sdss9" (SDSS DR9)
+An ASCII MOC string, for instance "1/1 2 4 2/12-14 21 23 25 8/"
+A list of all the MOCs available from VizieR can currently be found at http://alasky.u-strasbg.fr/footprints/tables/vizier/. You can search for VizieR table identifiers from the VizieR web page (http://vizier.u-strasbg.fr/); note you must use the table identifier (like "V/139/sdss9") and not the catalogue identifier (like "V/139").
+
+
+inMoc( moc, ra, dec )
+Indicates whether a given sky position falls strictly within a given MOC (Multi-Order Coverage map). If the given moc value does not represent a MOC (for instance no file exists or the file/string is not in MOC format) a warning will be issued the first time it's referenced, and the result will be false.
+
+Parameters:
+moc (String): a MOC identifier; a filename, a URL, a VizieR table name, or an ASCII MOC string
+ra (floating point): ICRS right ascension in degrees
+dec (floating point): ICRS declination in degrees
+Return value
+(boolean): true iff the given position falls within the given MOC
+nearMoc( moc, ra, dec, distanceDeg )
+Indicates whether a given sky position either falls within, or is within a certain distance of the edge of, a given MOC (Multi-Order Coverage map). If the given moc value does not represent a MOC (for instance no file exists or the file/string is not in MOC format) a warning will be issued the first time it's referenced, and the result will be false.
+
+Parameters:
+moc (String): a MOC identifier; a filename, a URL, a VizieR table name, or an ASCII MOC string
+ra (floating point): ICRS right ascension in degrees
+dec (floating point): ICRS declination in degrees
+distanceDeg (floating point): permitted distance from MOC boundary in degrees
+Return value
+(boolean): true iff the given position is within distance degrees of the given MOC
+mocSkyProportion( moc )
+Returns the proportion of the sky covered by a given MOC.
+If the given moc value does not represent a MOC (for instance no file exists or the file/string is not in MOC format) a warning will be issued the first time it's referenced, and the result will be NaN.
+
+
+Parameters:
+moc (String): a MOC identifier; a filename, a URL, a VizieR table name, or an ASCII MOC string
+Return value
+(floating point): a fractional value in the range 0..1
+mocTileCount( moc )
+Returns the number of unique tiles within a given MOC.
+If the given moc value does not represent a MOC (for instance no file exists or the file/string is not in MOC format) a warning will be issued the first time it's referenced, and the result will be 0.
+
+
+Parameters:
+moc (String): a MOC identifier; a filename, a URL, a VizieR table name, or an ASCII MOC string
+Return value
+(long integer): number of tiles in the MOC
+mocUniq( order, index )
+Converts a HEALPix order and and tile index into a UNIQ-encoded integer as used in MOC encoding. The result is index + 4**(1+order).
+If the order or index are out of bounds, behaviour is undefined.
+
+
+Parameters:
+order (integer): HEALPix order, in range 0..29
+index (long integer): tile index within the given level
+Return value
+(long integer): uniq-encoded value
+uniqToOrder( uniq )
+Extracts the HEALPix order from a UNIQ-encoded integer as used in MOC encoding.
+If the supplied value is not a legal UNIQ integer, behaviour is undefined.
+
+
+Parameters:
+uniq (long integer): uniq-encoded value
+Return value
+(integer): HEALPix order
+uniqToIndex( uniq )
+Extracts the HEALPix pixel index from a UNIQ-encoded integer as used in MOC encoding.
+If the supplied value is not a legal UNIQ integer, behaviour is undefined.
+
+
+Parameters:
+uniq (long integer): uniq-encoded value
+Return value
+(long integer): pixel index
+SPHERE_STERADIAN
+The number of steradians on the sphere, 4 PI.
+
+SPHERE_SQDEG
+The number of square degrees on the sphere, approx 41253.

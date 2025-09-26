@@ -1,0 +1,469 @@
+[
+    {
+        "prompt": "Perform a basic cone search on the Gaia DR2 catalog for a radius of 0.5 degrees around RA 120 and Dec 30.",
+        "response": "stilts cone serviceurl=http://vizier.u-strasbg.fr/viz-bin/conesearch/I/345/gaia2 lon=120 lat=30 radius=0.5",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need to query the ARI-Gaia service. The coordinates are lon=56.75, lat=24.12, with a search radius of 0.8 degrees. Save the output to a FITS file named 'pleiades.fits'.",
+        "response": "stilts cone serviceurl=http://gaia.ari.uni-heidelberg.de/cone/search lon=56.75 lat=24.12 radius=0.8 out=pleiades.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "How do I count the number of sources from the SDSS DR12 catalog within a 1-degree radius of RA 250.5, Dec 35.5?",
+        "response": "stilts cone serviceurl=http://vizier.u-strasbg.fr/viz-bin/conesearch/V/147/sdss12 lon=250.5 lat=35.5 radius=1 omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Generate a command to search for spectra (SSA) from the ESO archive within 0.2 degrees of galactic longitude 0 and latitude 90. Just count the results.",
+        "response": "stilts cone servicetype=ssa serviceurl=http://archive.eso.org/ssap lon=0 lat=90 radius=0.2 skysys=galactic omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Using java, find all objects in the 2MASS catalog within 0.05 degrees of RA 10.68, Dec 41.27 and output the results to the console as a CSV file.",
+        "response": "java -jar stilts.jar cone serviceurl=http://vizier.u-strasbg.fr/viz-bin/conesearch/II/246/out lon=10.68 lat=41.27 radius=0.05 ofmt=csv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Search the GAIA EDR3 catalog for sources within 1.5 degrees of the ecliptic pole (lon=90, lat=66.56). Use the ecliptic coordinate system.",
+        "response": "stilts cone serviceurl=http://vizier.u-strasbg.fr/viz-bin/conesearch/I/350/gedr3dis lon=90 lat=66.56 radius=1.5 skysys=ecliptic",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find sources from the Gaia DR2 catalog near RA 210, Dec -60 with a 0.3 degree radius. I only want the source_id, ra, dec, and phot_g_mean_mag columns, and I want the 20 brightest objects.",
+        "response": "stilts cone serviceurl=http://vizier.u-strasbg.fr/viz-bin/conesearch/I/345/gaia2 lon=210 lat=-60 radius=0.3 ocmd='keepcols \"source_id ra dec phot_g_mean_mag\"; sorthead 20 phot_g_mean_mag'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Perform a Simple Image Access (SIA) query on the CADC archive for a 0.5 degree radius around RA 83.63, Dec 22.01. Save the result table as 'm45_images.vot'.",
+        "response": "stilts cone servicetype=sia serviceurl=http://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/sia lon=83.63 lat=22.01 radius=0.5 out=m45_images.vot ofmt=votable",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Query the Pan-STARRS DR1 catalog for objects within 0.1 degrees of RA 330, Dec 0. Display the statistics of the resulting table.",
+        "response": "stilts cone serviceurl=http://vizier.u-strasbg.fr/viz-bin/conesearch/II/349/ps1 lon=330 lat=0 radius=0.1 omode=stats",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "How can I search for sources in the supergalactic coordinate system? Use a search radius of 5 degrees around SGL 137.37, SGB -2.0. The service URL is 'http://some.service/cone'.",
+        "response": "stilts cone serviceurl=http://some.service/cone lon=137.37 lat=-2.0 radius=5 skysys=supergalactic",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find all FITS images using an SIAv2 query from 'http://some.sia.service/query' within 1 degree of RA 180, Dec 0.",
+        "response": "stilts cone servicetype=sia2 serviceurl=http://some.sia.service/query lon=180 lat=0 radius=1 dataformat=image/fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Do a cone search at RA 15, Dec -15, radius 0.25, but disable HTTP compression.",
+        "response": "stilts cone serviceurl=http://gavo.idia.ac.za/cone/gaiadr2 lon=15 lat=-15 radius=0.25 compress=false",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I want to do a cone search on the USNO-B1.0 catalog at galactic coordinates l=120, b=10, with a radius of 0.7 degrees and get the most verbose output possible from the service.",
+        "response": "stilts cone serviceurl=http://vizier.u-strasbg.fr/viz-bin/conesearch/I/284/out lon=120 lat=10 radius=0.7 skysys=galactic verb=3",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Show me the metadata for an SSA query to the RAVE DR5 catalog for a 2-degree region around RA 80.5, Dec -70.5.",
+        "response": "stilts cone servicetype=ssa serviceurl=http://vizier.u-strasbg.fr/viz-bin/conesearch/III/272/rave5 lon=80.5 lat=-70.5 radius=2 omode=meta",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Query the FIRST survey catalog for a 0.4 degree radius around RA 187.7, Dec 2.05 using the FK4 coordinate system.",
+        "response": "stilts cone serviceurl=http://third.u-strasbg.fr/viz-bin/conesearch/VIII/92/first14 lon=187.7 lat=2.05 radius=0.4 skysys=fk4",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find all sources from the Gaia DR2 service (http://gaia.ari.uni-heidelberg.de/cone/search) within 0.1 degrees of RA 266.4, Dec -29.0. Discard the output table.",
+        "response": "stilts cone serviceurl=http://gaia.ari.uni-heidelberg.de/cone/search lon=266.4 lat=-29.0 radius=0.1 omode=discard",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Search the AKARI/FIS bright source catalogue for objects within a 3-degree radius of the South Galactic Pole. Output the result to a file called 'sgp_akari.dat' in ascii format.",
+        "response": "stilts cone serviceurl=http://vizier.u-strasbg.fr/viz-bin/conesearch/II/297/out lon=0 lat=-90 radius=3 skysys=galactic out=sgp_akari.dat ofmt=ascii",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Using java, query for images (SIA) from the MAST archive within 0.2 degrees of M31 (RA 10.68, Dec 41.27) and request only graphical formats.",
+        "response": "java -jar stilts.jar cone servicetype=sia serviceurl=https://mast.stsci.edu/api/v0/Sia.svc lon=10.68 lat=41.27 radius=0.2 dataformat=GRAPHIC",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Run a cone search on the 2MASS Point Source Catalog, RA 30, Dec -60, radius 0.5, and send the result directly to TOPCAT via SAMP.",
+        "response": "stilts cone serviceurl=http://vizier.u-strasbg.fr/viz-bin/conesearch/II/246/out lon=30 lat=-60 radius=0.5 omode=topcat",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Write a command to query for spectra (SSA) from 'http://svo2.cab.inta-csic.es/vocats/ssapes/cs.php' around RA 45, Dec 45, radius 0.1. Request the least verbose output.",
+        "response": "stilts cone servicetype=ssa serviceurl=http://svo2.cab.inta-csic.es/vocats/ssapes/cs.php lon=45 lat=45 radius=0.1 verb=1",
+        "chat.jar": "failed",
+        "error": "\nUnused arguments: verb=1\n\nUsage: cone serviceurl=<url-value> lon=<degrees> lat=<degrees>\n            radius=<degrees>\n            skysys=icrs|fk5|fk4|galactic|supergalactic|ecliptic\n            servicetype=cone|ssa|sia1|sia2|sia verb=1|2|3 compress=true|false\n            dataformat=<value> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format>\n\n"
+    },
+    {
+        "prompt": "Perform a cone search on the Gaia EDR3 catalog at RA 197.45, Dec -23.4, radius 0.02. After getting the data, add a new column named 'const_val' with a value of 100 for all rows.",
+        "response": "stilts cone serviceurl=http://vizier.u-strasbg.fr/viz-bin/conesearch/I/350/gedr3dis lon=197.45 lat=-23.4 radius=0.02 ocmd='addcol const_val \"100\"'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find spectra from the LAMOST DR5 survey around the galactic center (l=0, b=0) within a 2-degree radius. Show the table in the GUI.",
+        "response": "stilts cone servicetype=ssa serviceurl=http://vizier.u-strasbg.fr/viz-bin/conesearch/V/153/dr5 lon=0 lat=0 radius=2 skysys=galactic omode=gui",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Query the GSC2.3 catalog using a cone search at RA 123, Dec 45, radius 0.6. I want the verbose flag on to see the full query URL.",
+        "response": "stilts -verbose cone serviceurl=http://vizier.u-strasbg.fr/viz-bin/conesearch/I/305/out lon=123 lat=45 radius=0.6",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "How do I find all images (SIA) from the Hubble Legacy Archive within 0.1 degrees of RA 150.1, Dec 2.2, but only if they are in FITS format?",
+        "response": "stilts cone servicetype=sia serviceurl=http://hla.stsci.edu/cgi-bin/hlaSIAP.cgi lon=150.1 lat=2.2 radius=0.1 dataformat=image/fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find objects from the WISE catalog around the coordinates 15h 30m 20s, +30d 15' 00\". The radius is 0.5 degrees.",
+        "response": "stilts cone serviceurl=http://vizier.u-strasbg.fr/viz-bin/conesearch/II/328/allwise lon=232.5833 lat=30.25 radius=0.5",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Get the checksum of the result from a cone search on the GALEX AIS catalog for a 1-degree radius around RA 0, Dec 0.",
+        "response": "stilts cone serviceurl=http://vizier.u-strasbg.fr/viz-bin/conesearch/II/312/ais lon=0 lat=0 radius=1 omode=checksum",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Perform a cone search on the ROSAT All-Sky Survey Bright Source Catalogue (RASS-BSC) using FK5 coordinates: RA 220, Dec -50, radius 1.2 degrees.",
+        "response": "stilts cone serviceurl=http://vizier.u-strasbg.fr/viz-bin/conesearch/IX/10/rassbsc lon=220 lat=-50 radius=1.2 skysys=fk5",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need to get spectra from a service at 'http://vo.astron.nl/spectrumvobs/ssap.php'. The position is RA 100, Dec 25, radius is 0.3 degrees. I only want spectra in VOTable format.",
+        "response": "stilts cone servicetype=ssa serviceurl=http://vo.astron.nl/spectrumvobs/ssap.php lon=100 lat=25 radius=0.3 dataformat=votable",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Do a cone search and then select only the rows where the 'mag_g' column is less than 15.",
+        "response": "stilts cone serviceurl=http://gaia.ari.uni-heidelberg.de/cone/search lon=180 lat=0 radius=0.5 ocmd='select \"mag_g < 15\"'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Generate a command to find sources from the Tycho-2 catalog within 0.75 degrees of ecliptic coordinates 180, 0 and save as 'ecliptic_plane.csv'.",
+        "response": "stilts cone serviceurl=http://vizier.u-strasbg.fr/viz-bin/conesearch/I/259/tyc2 lon=180 lat=0 radius=0.75 skysys=ecliptic out=ecliptic_plane.csv ofmt=csv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find images (SIA) from the ESO archive for a 0.2-degree radius around RA 83.8, Dec -5.4. Then, just keep the columns 'RA', 'DEC', and 'URL'.",
+        "response": "stilts cone servicetype=sia serviceurl=http://archive.eso.org/siap lon=83.8 lat=-5.4 radius=0.2 ocmd='keepcols \"RA DEC URL\"'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Query the RAVE DR6 catalog using a cone search at RA 90, Dec -80 with a 1 degree radius and save the output to a SQL database.",
+        "response": "stilts cone serviceurl=http://vizier.u-strasbg.fr/viz-bin/conesearch/III/280/rave_dr6 lon=90 lat=-80 radius=1 omode=tosql dbtable=rave_results protocol=mysql db=my_astro_db",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "How to query for any kind of data (sia ALL) from NOIRLab around RA 270, Dec -30 within a 0.5 degree radius?",
+        "response": "stilts cone servicetype=sia serviceurl=https://datalab.noirlab.edu/sia/des_dr1 lon=270 lat=-30 radius=0.5 dataformat=ALL",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Write a stilts command using java to find Gaia DR2 sources within 0.1 degrees of l=45, b=20 (galactic).",
+        "response": "java -jar stilts.jar cone serviceurl=http://vizier.u-strasbg.fr/viz-bin/conesearch/I/345/gaia2 lon=45 lat=20 radius=0.1 skysys=galactic",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Search for spectra (SSA) from GAVO within 0.8 degrees of RA 129, Dec -45. Request a medium verbosity level.",
+        "response": "stilts cone servicetype=ssa serviceurl=http://dc.g-vo.org/ssap lon=129 lat=-45 radius=0.8 verb=2",
+        "chat.jar": "failed",
+        "error": "\nUnused arguments: verb=2\n\nUsage: cone serviceurl=<url-value> lon=<degrees> lat=<degrees>\n            radius=<degrees>\n            skysys=icrs|fk5|fk4|galactic|supergalactic|ecliptic\n            servicetype=cone|ssa|sia1|sia2|sia verb=1|2|3 compress=true|false\n            dataformat=<value> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format>\n\n"
+    },
+    {
+        "prompt": "Find all objects within 0.01 degrees of RA 15.5, Dec 15.5 from the SDSS DR9 catalog and then calculate statistics on the result.",
+        "response": "stilts cone serviceurl=http://vizier.u-strasbg.fr/viz-bin/conesearch/V/139/sdss9 lon=15.5 lat=15.5 radius=0.01 omode=stats",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I want to query a cone service at 'http://test.service/cone' for RA 10, Dec 10, radius 1. But I want to post-process the result using a command file located at '/home/user/filters.txt'.",
+        "response": "stilts cone serviceurl=http://test.service/cone lon=10 lat=10 radius=1 ocmd=@/home/user/filters.txt",
+        "chat.jar": "failed",
+        "error": "Error: /home/user/filters.txt (No such file or directory)\n"
+    },
+    {
+        "prompt": "Find all sources from the 2MASS catalog within 0.5 degrees of the north ecliptic pole. Output as a VOTable.",
+        "response": "stilts cone serviceurl=http://vizier.u-strasbg.fr/viz-bin/conesearch/II/246/out lon=270 lat=90 radius=0.5 skysys=ecliptic ofmt=votable",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Generate a stilts cone command for an SIA query requesting only JPEG images within 0.25 degrees of the galactic center.",
+        "response": "stilts cone servicetype=sia serviceurl=https://datalab.noirlab.edu/sia/all lon=0 lat=0 radius=0.25 skysys=galactic dataformat=image/jpeg",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Count the number of spectra available from the LAMOST DR2 survey in a 1.5 degree radius around RA 300, Dec 60.",
+        "response": "stilts cone servicetype=ssa serviceurl=http://vizier.u-strasbg.fr/viz-bin/conesearch/V/149/dr2 lon=300 lat=60 radius=1.5 omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Do a cone search, then rename the column 'RA_ICRS' to 'RA' and 'DE_ICRS' to 'DEC'.",
+        "response": "stilts cone serviceurl=http://vizier.u-strasbg.fr/viz-bin/conesearch/I/345/gaia2 lon=0 lat=0 radius=1 ocmd='colmeta -name RA_ICRS RA; colmeta -name DE_ICRS DEC'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "How would I find objects from the GSC 2.2 catalog in a 0.3 degree radius around supergalactic coordinates SGL=90, SGB=0?",
+        "response": "stilts cone serviceurl=http://vizier.u-strasbg.fr/viz-bin/conesearch/I/271/out lon=90 lat=0 radius=0.3 skysys=supergalactic",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Query for data from Chandra Source Catalog (CSC) release 2.0. Center of search is RA=180, Dec=0. Radius is 0.1 deg. Just show me the metadata.",
+        "response": "stilts cone serviceurl=http://cda.cfa.harvard.edu/csc2cone/conesearch lon=180 lat=0 radius=0.1 omode=meta",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find spectra from the RAVE DR4 catalog within 0.5 degrees of FK4 coordinates RA 150, Dec -30.",
+        "response": "stilts cone servicetype=ssa serviceurl=http://vizier.u-strasbg.fr/viz-bin/conesearch/III/269/rave_dr4 lon=150 lat=-30 radius=0.5 skysys=fk4",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Using java, get a table of images (SIA) from the SMOKA science archive at RA 200, Dec 20, radius 0.4 deg. Save the table to 'smoka_images.fits'.",
+        "response": "java -jar stilts.jar cone servicetype=sia serviceurl=https://smoka.nao.ac.jp/sia/sia lon=200 lat=20 radius=0.4 out=smoka_images.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need to perform a cone search and output the result in CGI format.",
+        "response": "stilts cone serviceurl=http://gavo.idia.ac.za/cone/gaiadr2 lon=220 lat=22 radius=0.2 omode=cgi",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Search the 2MASS Extended Source Catalog for objects near RA 185, Dec 15 with a radius of 1 degree, and then sort the results by the 'j_m' column in ascending order.",
+        "response": "stilts cone serviceurl=http://vizier.u-strasbg.fr/viz-bin/conesearch/II/233/catalog lon=185 lat=15 radius=1 ocmd='sort j_m'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find all spectra that are compliant with SSA standards from the Vo-Diva service around RA 0, Dec 0, radius 5 degrees.",
+        "response": "stilts cone servicetype=ssa serviceurl=http://vo.ari.uni-heidelberg.de/ssap lon=0 lat=0 radius=5 dataformat=compliant",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Get sources from the XMM-Newton Serendipitous Source Catalogue within 0.2 degrees of the galactic anti-center. Output the result to standard output.",
+        "response": "stilts cone serviceurl=http://vizier.u-strasbg.fr/viz-bin/conesearch/IX/50/xmm3r4 lon=180 lat=0 radius=0.2 skysys=galactic out=-",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Create a command to query for all images (SIA version 1) from the Subaru-Suprime-Cam data archive. Coordinates: RA 37, Dec -5, radius 0.6 degrees.",
+        "response": "stilts cone servicetype=sia1 serviceurl=https://ssap.nao.ac.jp/sia/scam lon=37 lat=-5 radius=0.6",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "How to query VizieR's SDSS DR7 photo objects catalog with a cone search at RA 190, Dec 25, radius 0.3, but with compression enabled (explicitly)?",
+        "response": "stilts cone serviceurl=http://vizier.u-strasbg.fr/viz-bin/conesearch/V/126/sdss7 lon=190 lat=25 radius=0.3 compress=true",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Run a cone search on the APASS DR9 catalog for RA 333, Dec 33, radius 0.9 degrees, and then only keep rows where the 'Vmag' column is not null.",
+        "response": "stilts cone serviceurl=http://vizier.u-strasbg.fr/viz-bin/conesearch/II/336/apass9 lon=333 lat=33 radius=0.9 ocmd='select \"!isblank(Vmag)\"'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find all images from the UKIDSS DR10 SIA service within 0.1 degrees of RA 240, Dec -45. Show me the stats.",
+        "response": "stilts cone servicetype=sia serviceurl=http://wsa.roe.ac.uk/wsa-siap.html lon=240 lat=-45 radius=0.1 omode=stats",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need to get the 10 faintest objects (largest magnitude) in the g-band from Gaia DR2 in a 0.2 degree radius around RA 10, Dec -80.",
+        "response": "stilts cone serviceurl=http://vizier.u-strasbg.fr/viz-bin/conesearch/I/345/gaia2 lon=10 lat=-80 radius=0.2 ocmd='sortdesc phot_g_mean_mag; head 10'",
+        "chat.jar": "failed",
+        "error": "Error: Unknown processing command: sortdesc\n\nAvailable filters:\n   addcol [-after <col-id> | -before <col-id>]\n          [-units <units>] [-ucd <ucd>] [-utype <utype>] [-xtype <xtype>]\n          [-desc <descrip>] [-shape <n>[,<n>...][,*]] [-elsize <n>]\n          <col-name> <expr>\n   addpixsample [-radius <expr-rad>] [-systems <in-sys> <pix-sys>]\n                <expr-lon> <expr-lat> <healpix-file>\n   addresolve <col-id-objname> <col-name-ra> <col-name-dec>\n   addskycoords [-epoch <expr>] [-inunit deg|rad|sex] [-outunit deg|rad|sex]\n                <insys> <outsys> <col-id1> <col-id2> <col-name1> <col-name2>\n   assert <test-expr> [<msg-expr>]\n   badval <bad-val> <colid-list>\n   cache\n   check\n   clearparams <pname> ...\n   collapsecols [-[no]keepscalars] <array-colname> <col-id0> <ncol>\n   colmeta [-name <name>] [-units <units>] [-ucd <ucd>]\n           [-utype <utype>] [-xtype <xtype>] [-desc <descrip>]\n           [-shape <n>[,<n>...][,*]] [-elsize <n>]\n           <colid-list>\n   constcol [-noparam] [-acceptnull] [-[no]parallel] [<colid-list>]\n   delcols <colid-list>\n   every [-exact|-approx] <step>\n   explodecols <colid-list>\n   explodeall [-ifndim <ndim>] [-ifshape <dims>]\n   fixcolnames \n   group [-[no]parallel] <key> [<key> ...] [<aggcol> ...]\n   head <nrows>\n   healpixmeta [-level <n>] [-implicit|-column <col-id>] [-csys C|G|E] [-nested|-ring]\n   keepcols <colid-list>\n   meta [<item> ...]\n   progress\n   random\n   randomview\n   repeat [-row|-table] <count>\n   replacecol [-name <name>] [-units <units>] [-ucd <ucd>]\n              [-utype <utype>] [-xtype <xtype>] [-desc <descrip>]\n              <col-id> <expr>\n   replaceval <old-val> <new-val> <colid-list>\n   rowrange <first> <last>|+<count>\n   select <expr>\n   seqview\n   setparam [-type byte|short|int|long|float|double|boolean|string]\n            [-desc <descrip>] [-unit <units>] [-ucd <ucd>]\n            [-utype <utype>] [-xtype <xtype>]\n            <pname> <pexpr>\n   shuffle [-seed <int>]\n   sort [-down] [-nullsfirst] [-[no]parallel] <key-list>\n   sorthead [-tail] [-down] [-nullsfirst] <nrows> <key-list>\n   stats [-[no]parallel] [-qapprox|-qexact] [<item> ...]\n   tablename <name>\n   tail <nrows>\n   transpose [-namecol <col-id>]\n   uniq [-count] [<colid-list>]\n\n"
+    },
+    {
+        "prompt": "Perform an SIAv2 query for any data format at RA 123, Dec -12, radius 0.5 deg. Use the service at 'http://vo.example.com/sia2'.",
+        "response": "stilts cone servicetype=sia2 serviceurl=http://vo.example.com/sia2 lon=123 lat=-12 radius=0.5 dataformat=ALL",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Count the number of objects in the DECaLS DR5 catalog within a 2-degree radius of the North Galactic Pole.",
+        "response": "stilts cone serviceurl=http://vizier.u-strasbg.fr/viz-bin/conesearch/II/342/ls-dr5 lon=0 lat=90 radius=2 skysys=galactic omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Search the GAIA DR1 catalog at RA 50, Dec 50, radius 0.05. After the query, replace all nulls in the 'parallax' column with zero.",
+        "response": "stilts cone serviceurl=http://vizier.u-strasbg.fr/viz-bin/conesearch/I/337/gaia lon=50 lat=50 radius=0.05 ocmd='replaceval null 0 parallax'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find objects from the PPMXL catalog within a 1.2 degree radius of FK5 J2000 coordinates RA 300, Dec -30.",
+        "response": "stilts cone serviceurl=http://vizier.u-strasbg.fr/viz-bin/conesearch/I/317/ppmxl lon=300 lat=-30 radius=1.2 skysys=fk5",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Query for spectra (SSA) around RA 111, Dec 22, radius 0.1, and save the resulting table as 'spectra.csv'.",
+        "response": "stilts cone servicetype=ssa serviceurl=http://dc.g-vo.org/ssap lon=111 lat=22 radius=0.1 out=spectra.csv ofmt=csv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Using java, find images from the HST archives at ecliptic coordinates 0, 0, with a 0.3 degree radius.",
+        "response": "java -jar stilts.jar cone servicetype=sia serviceurl=https://mast.stsci.edu/api/v0/Sia.svc lon=0 lat=0 radius=0.3 skysys=ecliptic",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "How do I do a cone search and pipe the results directly into another stilts command? For example, calculate stats on the fly.",
+        "response": "stilts cone serviceurl=http://vizier.u-strasbg.fr/viz-bin/conesearch/I/345/gaia2 lon=100 lat=0 radius=1 | stilts stats",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: stats: not found\n"
+    },
+    {
+        "prompt": "Find objects from the UCAC4 catalog around RA 10, Dec 80, radius 0.4. Request the service provide minimal information (verb=1).",
+        "response": "stilts cone serviceurl=http://vizier.u-strasbg.fr/viz-bin/conesearch/I/322A/out lon=10 lat=80 radius=0.4 verb=1",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Perform a cone search on a service, but then only keep the columns named 'ID', 'RA', and 'DEC'.",
+        "response": "stilts cone serviceurl=http://some.service/cone lon=99 lat=-9 radius=0.9 ocmd='keepcols \"ID RA DEC\"'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I want to find the checksum of the table returned by a query for spectra from the SDSS DR16 service at RA 180, Dec 0, radius 0.1.",
+        "response": "stilts cone servicetype=ssa serviceurl=http://vizier.u-strasbg.fr/viz-bin/conesearch/V/154/sdss16 lon=180 lat=0 radius=0.1 omode=checksum",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Create a command to find sources from the VVV DR2 catalog within 0.5 degrees of galactic coordinates l=350, b=0, and save the output as a FITS file.",
+        "response": "stilts cone serviceurl=http://vizier.u-strasbg.fr/viz-bin/conesearch/II/348/vvvdr2 lon=350 lat=0 radius=0.5 skysys=galactic out=vvv_results.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Search for spectra from the GAMA DR3 survey at RA 217.5, Dec -1.0, radius 0.25 deg. Then, filter to only include rows where the 'Z' column (redshift) is greater than 0.1.",
+        "response": "stilts cone servicetype=ssa serviceurl=http://vizier.u-strasbg.fr/viz-bin/conesearch/VII/278/gama_dr3 lon=217.5 lat=-1.0 radius=0.25 ocmd='select \"Z > 0.1\"'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Perform a simple image access query (SIA) at RA 12h 00m 00s, Dec -20d 00' 00'' with a 1 degree radius. Discard the results.",
+        "response": "stilts cone servicetype=sia serviceurl=http://wfa-siap.roe.ac.uk/siap-atlas/SIAP lon=180 lat=-20 radius=1 omode=discard",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Get a list of all compliant FITS spectra from the BeSS database for a 3-degree area around RA 90, Dec 30.",
+        "response": "stilts cone servicetype=ssa serviceurl=http://vizier.u-strasbg.fr/viz-bin/conesearch/III/263/bess lon=90 lat=30 radius=3 dataformat=fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Query the 2MASS catalog at RA 135, Dec -45, radius 0.8 degrees and then output the table to TOPCAT.",
+        "response": "stilts cone serviceurl=http://vizier.u-strasbg.fr/viz-bin/conesearch/II/246/out lon=135 lat=-45 radius=0.8 omode=topcat",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need to do a cone search using FK4 B1950 coordinates: RA 82.25, Dec 23.4. The radius is 0.5 degrees. The service is the NVSS catalog.",
+        "response": "stilts cone serviceurl=http://vizier.u-strasbg.fr/viz-bin/conesearch/VIII/65/nvss lon=82.25 lat=23.4 radius=0.5 skysys=fk4",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Show me the metadata for an SIAv2 query at the galactic center with a 1-degree radius.",
+        "response": "stilts cone servicetype=sia2 serviceurl=https://datalab.noirlab.edu/sia/all lon=0 lat=0 radius=1 skysys=galactic omode=meta",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find sources from the IPHAS DR2 catalog at galactic coords l=100, b=5, radius 0.1. Sort the top 50 results by the 'r_2' magnitude.",
+        "response": "stilts cone serviceurl=http://vizier.u-strasbg.fr/viz-bin/conesearch/II/321/iphas2 lon=100 lat=5 radius=0.1 skysys=galactic ocmd='sorthead 50 r_2'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Do a cone search and save the output as 'query_result.dat', letting stilts automatically determine the format.",
+        "response": "stilts cone serviceurl=http://gavo.idia.ac.za/cone/gaiadr2 lon=0 lat=0 radius=1 out=query_result.dat ofmt=(auto)",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: Syntax error: \"(\" unexpected\n"
+    },
+    {
+        "prompt": "How do I query for images (SIA) in PNG format near the Orion Nebula (RA 83.82, Dec -5.39) with a 0.5 degree radius?",
+        "response": "stilts cone servicetype=sia serviceurl=https://sky.esa.int/esasky-tap/sia lon=83.82 lat=-5.39 radius=0.5 dataformat=image/png",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Run a cone search on the WISE catalog for a 1.5 degree radius around the North Supergalactic Pole (SGL=47.37, SGB=90).",
+        "response": "stilts cone serviceurl=http://vizier.u-strasbg.fr/viz-bin/conesearch/II/328/allwise lon=47.37 lat=90 radius=1.5 skysys=supergalactic",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I want to query a catalog, and then add a new column 'dist_mod' calculated from the 'parallax' column using the formula '5*log10(1000/parallax)-5'.",
+        "response": "stilts cone serviceurl=http://vizier.u-strasbg.fr/viz-bin/conesearch/I/345/gaia2 lon=56.75 lat=24.12 radius=0.1 ocmd='addcol dist_mod \"5*log10(1000/parallax)-5\"'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Using java, query the TGSS ADR1 catalog at RA 22, Dec -22, radius 2 degrees and output the result to a CSV file named 'tgss_data.csv'.",
+        "response": "java -jar stilts.jar cone serviceurl=http://vizier.u-strasbg.fr/viz-bin/conesearch/J/A+A/598/A78/table3 lon=22 lat=-22 radius=2 out=tgss_data.csv ofmt=csv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find all spectra (SSA) from a service and then filter to keep only those with a Signal-to-Noise ratio (SNR column) greater than 10.",
+        "response": "stilts cone servicetype=ssa serviceurl=http://dc.g-vo.org/ssap lon=150 lat=15 radius=0.5 ocmd='select \"SNR > 10\"'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Perform a cone search on the GLIMPSE source catalog at galactic coordinates l=10, b=0, radius 0.2 degrees. Display the results in the GUI.",
+        "response": "stilts cone serviceurl=http://vizier.u-strasbg.fr/viz-bin/conesearch/II/293/glimpse lon=10 lat=0 radius=0.2 skysys=galactic omode=gui",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "What's the command to query the XMM-OM Serendipitous Ultraviolet Source Survey Catalogue for a 0.1 degree region around RA 12h 51m 26s, +47d 11' 43\"?",
+        "response": "stilts cone serviceurl=http://vizier.u-strasbg.fr/viz-bin/conesearch/II/358/xmmomsuss lon=192.8583 lat=47.1953 radius=0.1",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find all available data (SSA, format=all) from the CASSIS atlas at RA 100, Dec 0, radius 0.5 degrees.",
+        "response": "stilts cone servicetype=ssa serviceurl=http://cassis.sirtf.com/atlas/ssap.php lon=100 lat=0 radius=0.5 dataformat=all",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Do a cone search and output the result to a file named 'output.fits'. Use the FK5 coordinate system for RA 1, Dec 1, radius 1.",
+        "response": "stilts cone serviceurl=http://gavo.idia.ac.za/cone/gaiadr2 lon=1 lat=1 radius=1 skysys=fk5 out=output.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Count the number of sources returned by a cone search at the South Ecliptic Pole with a radius of 2.5 degrees.",
+        "response": "stilts cone serviceurl=http://vizier.u-strasbg.fr/viz-bin/conesearch/I/345/gaia2 lon=90 lat=-90 radius=2.5 skysys=ecliptic omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need to get data from a cone search at RA 20, Dec 20, radius 0.2, and then delete the 'err_maj' and 'err_min' columns before outputting.",
+        "response": "stilts cone serviceurl=http://vizier.u-strasbg.fr/viz-bin/conesearch/II/349/ps1 lon=20 lat=20 radius=0.2 ocmd='delcols \"err_maj err_min\"'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Show me the statistics for a query on the SAGE-SMC IRC Source Catalog. Search area: RA 13.2, Dec -73.1, radius 0.7 degrees.",
+        "response": "stilts cone serviceurl=http://vizier.u-strasbg.fr/viz-bin/conesearch/J/AJ/142/102/sources lon=13.2 lat=-73.1 radius=0.7 omode=stats",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Run a cone search and then randomize the order of the rows in the output table.",
+        "response": "stilts cone serviceurl=http://gaia.ari.uni-heidelberg.de/cone/search lon=180 lat=45 radius=0.3 ocmd='random'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find all images (SIA) from the VISTA Hemisphere Survey DR4 within 0.5 degrees of galactic coordinates l=270, b=0.",
+        "response": "stilts cone servicetype=sia serviceurl=http://horus.roe.ac.uk/vsa/vsa-siap.html lon=270 lat=0 radius=0.5 skysys=galactic",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "How to do a cone search and then select a random sample of 100 rows from the result?",
+        "response": "stilts cone serviceurl=http://vizier.u-strasbg.fr/viz-bin/conesearch/I/345/gaia2 lon=30 lat=30 radius=1 ocmd='every 100; random; head 100'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Query for sources using the default ICRS system at RA 42, Dec 42, radius 0.42 and save the output as a VOTable with inline data.",
+        "response": "stilts cone serviceurl=http://gavo.idia.ac.za/cone/gaiadr2 lon=42 lat=42 radius=0.42 skysys=icrs ofmt=votable-inline",
+        "chat.jar": "failed",
+        "error": "Error: No handler for output format votable-inline\n    (No handler for table format \"votable-inline\")\nUsage: cone serviceurl=<url-value> lon=<degrees> lat=<degrees>\n            radius=<degrees>\n            skysys=icrs|fk5|fk4|galactic|supergalactic|ecliptic\n            servicetype=cone|ssa|sia1|sia2|sia verb=1|2|3 compress=true|false\n            dataformat=<value> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format>\n\n"
+    },
+    {
+        "prompt": "Perform a cone search on the APOGEE-2 DR16 catalog at RA 180, Dec 30, radius 1 degree. Verbosity should be set to maximum.",
+        "response": "stilts cone serviceurl=http://vizier.u-strasbg.fr/viz-bin/conesearch/III/284/apogee2 lon=180 lat=30 radius=1 verb=3",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Combine two post-processing commands: first, select sources with G magnitude brighter than 12, then keep only the ID and position columns.",
+        "response": "stilts cone serviceurl=http://gaia.ari.uni-heidelberg.de/cone/search lon=270 lat=-20 radius=0.5 ocmd='select \"phot_g_mean_mag < 12\"; keepcols \"source_id ra dec\"'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need to query a cone search service but my machine doesn't have the 'stilts' script. How do I do it with the JAR file for RA 10, Dec 10, radius 0.1?",
+        "response": "java -jar stilts.jar cone serviceurl=http://gavo.idia.ac.za/cone/gaiadr2 lon=10 lat=10 radius=0.1",
+        "chat.jar": "executed successfully"
+    }
+]

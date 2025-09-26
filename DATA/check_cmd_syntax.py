@@ -55,10 +55,11 @@ def check_docker_command_in_responses(data):
 def main():
 
     # get a list of all files in the data directory
-    # data_files = [f for f in os.listdir(data_dir) if f.endswith(".json")]
+
     data_files = [
-        "training_data-tpipe3.json",
+        "training_data-cone.json",
     ]
+    print(data_files)
     # iterate over each file and check the commands
     for data_file in data_files:
         data_path = os.path.join(data_dir, data_file)

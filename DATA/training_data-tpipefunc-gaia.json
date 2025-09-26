@@ -1,0 +1,498 @@
+[
+    {
+        "prompt": "Display the first 10 rows of the FITS table `catalog.fits` to the console.",
+        "response": "stilts tpipe in=catalog.fits cmd='head 10'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Convert the file `input_data.csv` from CSV format to a FITS file named `output_data.fits`.",
+        "response": "stilts tpipe ifmt=csv in=input_data.csv ofmt=fits out=output_data.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the table `source_list.fits`, create a new table `selected_columns.fits` containing only the columns 'RA', 'DEC', and 'MAG_G'.",
+        "response": "stilts tpipe in=source_list.fits cmd='keepcols \"RA DEC MAG_G\"' out=selected_columns.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Read the table `data.vot`, add a new column named `G_MINUS_R` which is the value of `G_MAG` minus `R_MAG`, and save the result to `data_with_color.vot`.",
+        "response": "stilts tpipe in=data.vot cmd='addcol G_MINUS_R \"G_MAG - R_MAG\"' out=data_with_color.vot",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Filter the table `survey.fits` to only include rows where the `REDSHIFT` column is greater than 0.5.",
+        "response": "stilts tpipe in=survey.fits cmd='select \"REDSHIFT > 0.5\"' out=high_z_survey.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Calculate and display the statistics (mean, stddev, etc.) for all columns in `stats_data.fits`.",
+        "response": "stilts tpipe in=stats_data.fits omode=stats",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Count the number of rows in `large_catalog.fits.gz`.",
+        "response": "stilts tpipe in=large_catalog.fits.gz omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Sort the table `unsorted.fits` by the `AREA` column in descending order and save it as `sorted.fits`.",
+        "response": "stilts tpipe in=unsorted.fits cmd='sort -down AREA' out=sorted.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From `galaxy_data.csv`, select galaxies with `OBJ_TYPE` equal to 'GALAXY' and `MAG_I` less than 18.5, then save the result.",
+        "response": "stilts tpipe ifmt=csv in=galaxy_data.csv cmd='select \"OBJ_TYPE == \\'GALAXY\\' && MAG_I < 18.5\"' out=bright_galaxies.fits",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: Syntax error: Unterminated quoted string\n"
+    },
+    {
+        "prompt": "Show the metadata (column names, types, table parameters) for the table at the URL `http://example.com/data/survey.vot`.",
+        "response": "stilts tpipe in=http://example.com/data/survey.vot omode=meta",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From `gaia_data.fits`, find the 20 sources with the highest proper motion in RA (`pmra`) and display them.",
+        "response": "stilts tpipe in=gaia_data.fits cmd='sorthead -down 20 pmra'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "In `catalog.fits`, delete the columns `TEMP_FLAG` and `QUALITY_CODE` and write to a new file `cleaned_catalog.fits`.",
+        "response": "stilts tpipe in=catalog.fits cmd='delcols \"TEMP_FLAG QUALITY_CODE\"' out=cleaned_catalog.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Add a new column 'LOG_FLUX' to `flux_table.fits` which is the base-10 logarithm of the 'FLUX' column.",
+        "response": "stilts tpipe in=flux_table.fits cmd='addcol LOG_FLUX \"log10(FLUX)\"' out=log_flux_table.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Display the last 5 rows of `events.dat`, which is an ASCII file.",
+        "response": "stilts tpipe ifmt=ascii in=events.dat cmd='tail 5'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Take a random sample of approximately every 100th row from `massive_table.fits` and save it to `sample.fits`.",
+        "response": "stilts tpipe in=massive_table.fits cmd='every 100' out=sample.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "In `data.fits`, add galactic coordinate columns `GAL_LONG` and `GAL_LAT` calculated from the existing `RA_DEG` and `DEC_DEG` columns, which are in degrees.",
+        "response": "stilts tpipe in=data.fits cmd='addskycoords fk5 gal RA_DEG DEC_DEG GAL_LONG GAL_LAT' out=data_galactic.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From `gaia_source.fits`, create a new column `pos_xyz` containing the 3-element Cartesian position vector in parsecs, calculated from `ra`, `dec`, and `parallax`.",
+        "response": "stilts tpipe in=gaia_source.fits cmd='addcol pos_xyz \"astromXYZ(ra, dec, parallax)\"' out=gaia_xyz.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Using `gaia_source.fits`, calculate the galactic Cartesian position vector and add it as a new column `gal_xyz`.",
+        "response": "stilts tpipe in=gaia_source.fits cmd='addcol gal_xyz \"icrsToGal(astromXYZ(ra, dec, parallax))\"' out=gaia_gal_xyz.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Propagate the astrometry in `gaia_dr3.fits` to epoch 2000.0 (from the default of 2016.0) and add it as a new column `astrom_2000`.",
+        "response": "stilts tpipe in=gaia_dr3.fits cmd='addcol astrom_2000 \"epochProp(-16.0, array(ra,dec,parallax,pmra,pmdec,radial_velocity))\"' out=gaia_dr3_e2000.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Estimate the distance in parsecs for sources in `gaia_stars.fits` using the `parallax` and `parallax_error` columns with a length scale of 1350 pc. Store it in a new column called `distance_est`.",
+        "response": "stilts tpipe in=gaia_stars.fits cmd='addcol distance_est \"distanceEstimateEdsd(parallax, parallax_error, 1350)\"' out=gaia_stars_dist.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Select all objects within a 1.5 degree radius of RA=180, Dec=30 from `sky_survey.fits` and count them.",
+        "response": "stilts tpipe in=sky_survey.fits cmd='select \"skyDistanceDegrees(RA, DEC, 180, 30) < 1.5\"' omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "In the table `observations.fits`, replace all occurrences of the value -999 in the `MAG` column with NULL.",
+        "response": "stilts tpipe in=observations.fits cmd='replaceval -999 null MAG' out=observations_cleaned.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Add a constant column named `SURVEY_ID` with the string value 'SDSS-DR17' to the table `objects.fits`.",
+        "response": "stilts tpipe in=objects.fits cmd='constcol SURVEY_ID \"\\'SDSS-DR17\\'\"' out=objects_tagged.fits",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: Syntax error: Unterminated quoted string\n"
+    },
+    {
+        "prompt": "Take the table `multi_array.fits`, which contains array columns, and expand all arrays into separate scalar columns.",
+        "response": "stilts tpipe in=multi_array.fits cmd='explodeall' out=scalar.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Read a VOTable from standard input, filter for rows where `SNR` > 10, and write the result as a FITS file to standard output.",
+        "response": "stilts tpipe ifmt=votable in=input.vot cmd='select \"SNR > 10\"' ofmt=fits out=output.fits",
+        "chat.jar": "fixed",
+        "error": "Error: uk.ac.starlink.table.TableFormatException\n    (Premature end of file.)\n"
+    },
+    {
+        "prompt": "Filter `photometry.fits` to keep only objects where `FLAG` is 0 and `CLASS` is 1, then calculate statistics on the `FLUX_AUTO` column.",
+        "response": "stilts tpipe in=photometry.fits cmd='select \"FLAG == 0 && CLASS == 1\"' cmd='keepcols FLUX_AUTO' omode=stats",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Rename the column `old_name` to `new_name` in the file `table.fits`.",
+        "response": "stilts tpipe in=table.fits cmd='replacecol old_name new_name \"old_name\"' out=renamed_table.fits",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: 'old_name'\n\nCommand was: replacecol old_name new_name \"old_name\"\n\nUsage: replacecol [-name <name>] [-units <units>] [-ucd <ucd>]\n                  [-utype <utype>] [-xtype <xtype>] [-desc <descrip>]\n                  <col-id> <expr>\n    (Unused arguments: 'old_name')\n"
+    },
+    {
+        "prompt": "For the file `gaia_rvs.fits`, calculate the Cartesian velocity vector `vel_uvw` in km/s from the 6 main astrometric parameters.",
+        "response": "stilts tpipe in=gaia_rvs.fits cmd='addcol vel_uvw \"astromUVW(array(ra, dec, parallax, pmra, pmdec, radial_velocity))\"' out=gaia_uvw.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Calculate the distance modulus for stars in `distances.fits` which has a `dist_pc` column, and add it as a column named `dist_mod`.",
+        "response": "stilts tpipe in=distances.fits cmd='addcol dist_mod \"distanceToModulus(dist_pc)\"' out=distmod.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "In `data.fits`, find any rows where the `MAG_ERR` column is not a valid number (e.g., NaN or Infinity) and select only those rows.",
+        "response": "stilts tpipe in=data.fits cmd='select \"!isFinite(MAG_ERR)\"' out=bad_mag_err.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Select rows from `catalog.fits` where the `ID` string starts with 'NGC'.",
+        "response": "stilts tpipe in=catalog.fits cmd='select \"startsWith(ID, \\'NGC\\')\"' out=ngc_objects.fits",
+        "chat.jar": "fixed",
+        "error": "/bin/sh: 1: Syntax error: \")\" unexpected\n"
+    },
+    {
+        "prompt": "From `gaia_data.fits`, calculate the 5th and 95th percentile confidence intervals for the distance and add them as a 2-element array column named `dist_bounds`. Use a length scale of 2000 pc.",
+        "response": "stilts tpipe in=gaia_data.fits cmd='addcol dist_bounds \"distanceBoundsEdsd(parallax, parallax_error, 2000)\"' out=gaia_dist_bounds.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Convert the galactic cartesian position vector `gal_xyz` back to ICRS coordinates in `galactic_coords.fits`, saving as `icrs_coords.fits`.",
+        "response": "stilts tpipe in=galactic_coords.fits cmd='addcol icrs_xyz \"galToIcrs(gal_xyz)\"' out=icrs_coords.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Randomly shuffle the rows of `input.fits` and save to `shuffled.fits`.",
+        "response": "stilts tpipe in=input.fits cmd='shuffle' out=shuffled.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Update the units of the `FLUX` column to 'mJy' in `table.fits`.",
+        "response": "stilts tpipe in=table.fits cmd='colmeta -units FLUX mJy' out=table_newunits.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Sort `stars.fits` first by `COLOR` ascending, then by `MAG` descending.",
+        "response": "stilts tpipe in=stars.fits cmd='sort \"COLOR; -MAG\"' out=sorted_stars.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Add a new column `IS_BRIGHT` to `catalog.fits`. It should be true if `MAG` < 15, and false otherwise.",
+        "response": "stilts tpipe in=catalog.fits cmd='addcol IS_BRIGHT \"MAG < 15 ? true : false\"' out=catalog_classified.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Select all rows from `data.fits` where the `QUALITY` column is null.",
+        "response": "stilts tpipe in=data.fits cmd='select \"isNull(QUALITY)\"' out=null_quality.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Concatenate the `PREFIX` and `ID_NUM` columns into a new `FULL_ID` column in `ids.fits`.",
+        "response": "stilts tpipe in=ids.fits cmd='addcol FULL_ID \"PREFIX + toString(ID_NUM)\"' out=full_ids.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Read the table `data.fits` and write its contents to a MySQL database table named `MY_TABLE` in the `ASTRODB` database. Overwrite the table if it exists.",
+        "response": "stilts tpipe in=data.fits omode=tosql protocol=mysql host=localhost db=ASTRODB dbtable=MY_TABLE write=dropcreate",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From `gaia_full.fits`, select stars with parallax > 10, then add a galactic position vector `gal_xyz`, then keep only the `source_id`, `ra`, `dec` and `gal_xyz` columns.",
+        "response": "stilts tpipe in=gaia_full.fits cmd='select \"parallax > 10\"' cmd='addcol gal_xyz \"icrsToGal(astromXYZ(ra, dec, parallax))\"' cmd='keepcols \"source_id ra dec gal_xyz\"' out=nearby_stars_gal.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Select a slice of rows from index 1000 to 1100 (inclusive) from `big_table.fits`.",
+        "response": "stilts tpipe in=big_table.fits cmd='rowrange 1001 1101' out=slice.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Fix the column names in `messy_names.csv` to be more compliant (e.g., remove special characters) and save as `clean_names.fits`.",
+        "response": "stilts tpipe ifmt=csv in=messy_names.csv cmd='fixcolnames' ofmt=fits out=clean_names.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Transpose the `summary.fits` table and save it as `transposed_summary.fits`.",
+        "response": "stilts tpipe in=summary.fits cmd='transpose' out=transposed_summary.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Read processing commands from the file `my_script.txt` and apply them to `input.fits`, saving to `output.fits`.",
+        "response": "stilts tpipe in=input.fits cmd=@my_script.txt out=output.fits",
+        "chat.jar": "fixed",
+        "error": "Error: my_script.txt (No such file or directory)\n"
+    },
+    {
+        "prompt": "Perform a filter on `huge.fits` but do not write any output file, just perform the processing.",
+        "response": "stilts tpipe in=huge.fits cmd='select \"SNR > 5\"' omode=discard",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Filter `catalog.fits` and send the result directly to an open TOPCAT instance.",
+        "response": "stilts tpipe in=catalog.fits cmd='select \"MAG < 12\"' omode=topcat",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "In `data.fits`, create two new columns, `U_B` and `B_V`, representing common color indices.",
+        "response": "stilts tpipe in=data.fits cmd='addcol U_B \"U_MAG - B_MAG\"; addcol B_V \"B_MAG - V_MAG\"' out=data_colors.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Select rows from `sources.fits` where the `CLASS` column is either 'STAR' or 'QSO'.",
+        "response": "stilts tpipe in=sources.fits cmd='select \"CLASS == \\'STAR\\' || CLASS == \\'QSO\\'\"' out=star_qso.fits",
+        "chat.jar": "fixed",
+        "error": "/bin/sh: 1: Syntax error: Unterminated quoted string\n"
+    },
+    {
+        "prompt": "Calculate the magnitude of the galactic velocity for stars in `gaia_rvs.fits` and add it as a column `v_gal_mag`.",
+        "response": "stilts tpipe in=gaia_rvs.fits cmd='addcol v_gal_mag \"sqrt(sum(pow(icrsToGal(astromUVW(array(ra,dec,parallax,pmra,pmdec,radial_velocity))), 2)))\"' out=gaia_vgal.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Get the unique values from the `FILTER_ID` column in `observations.fits`.",
+        "response": "stilts tpipe in=observations.fits cmd='uniq FILTER_ID'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Add a column `ROW_INDEX` to `table.fits` that contains the 1-based row number.",
+        "response": "stilts tpipe in=table.fits cmd='addcol ROW_INDEX \"$0\"' out=table_indexed.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Filter `data.fits` for rows where the `ID` modulo 10 is 0.",
+        "response": "stilts tpipe in=data.fits cmd='select \"ID % 10 == 0\"' out=data_mod10.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Add a column `flux_mjy` by converting the `flux_jy` column (in Janskys) to millijanskys.",
+        "response": "stilts tpipe in=fluxes.fits cmd='addcol flux_mjy \"flux_jy * 1000\"' out=fluxes_mjy.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Add a new column `RATIO` and then select only rows where this new ratio is greater than 2.0.",
+        "response": "stilts tpipe in=data.fits cmd='addcol RATIO \"FLUX_A / FLUX_B\"' cmd='select \"RATIO > 2.0\"' out=high_ratio.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Change the table name parameter of `table.fits` to 'My Awesome Catalog'.",
+        "response": "stilts tpipe in=table.fits cmd='tablename \"My Awesome Catalog\"' out=table_renamed.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Calculate the median distance for stars in `gaia.fits` using the EDSD method with L=1350pc.",
+        "response": "stilts tpipe in=gaia.fits cmd='addcol dist_median \"distanceQuantilesEdsd(parallax, parallax_error, 1350, 0.5)[0]\"' out=gaia_median_dist.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Replace the `RA_HMS` column with a new column of the same name, but converted to decimal degrees.",
+        "response": "stilts tpipe in=coords.fits cmd='replacecol RA_HMS \"hmsToDegrees(RA_HMS)\"' out=coords_deg.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Count rows in `catalog.fits` where `MAG_G` is between 15 and 17.",
+        "response": "stilts tpipe in=catalog.fits cmd='select \"MAG_G >= 15 && MAG_G <= 17\"' omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Add galactic coordinate columns from RA/Dec columns named `RA_SEX` and `DEC_SEX` which are in sexagesimal format.",
+        "response": "stilts tpipe in=coords.fits cmd='addskycoords -inunit sex fk5 gal RA_SEX DEC_SEX GLON GLAT' out=coords_gal.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Sort `data.fits` by the value of `COL_A` divided by `COL_B`.",
+        "response": "stilts tpipe in=data.fits cmd='addcol _sortkey \"COL_A / COL_B\"' cmd='sort _sortkey' cmd='delcols _sortkey' out=sorted.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "In `data.fits`, replace the `FLUX` column with its value converted to an integer.",
+        "response": "stilts tpipe in=data.fits cmd='replacecol FLUX \"(int)FLUX\"' out=data_int.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From `photometry.fits`, discard all rows that have a `FLUX_ERR` value less than or equal to zero.",
+        "response": "stilts tpipe in=photometry.fits cmd='select \"FLUX_ERR > 0\"' out=photometry_clean.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Add a column converting the `angular_sep_arcsec` column from arcseconds to degrees.",
+        "response": "stilts tpipe in=measurements.fits cmd='addcol angular_sep_deg \"angular_sep_arcsec / 3600.0\"' out=measurements_deg.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Filter `sources.fits` for rows where the `NAME` column contains the string 'XMM'.",
+        "response": "stilts tpipe in=sources.fits cmd='select \"contains(NAME, \\'XMM\\')\"' out=xmm_sources.fits",
+        "chat.jar": "fixed",
+        "error": "/bin/sh: 1: Syntax error: \")\" unexpected\n"
+    },
+    {
+        "prompt": "Add multiple columns: `g_r` as `mag_g - mag_r` and `r_i` as `mag_r - mag_i`.",
+        "response": "stilts tpipe in=mags.fits cmd='addcol g_r \"mag_g - mag_r\"' cmd='addcol r_i \"mag_r - mag_i\"' out=colors.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Get statistics on the `PMRA` column for `gaia.fits`, but only for sources with `parallax` > 20.",
+        "response": "stilts tpipe in=gaia.fits cmd='select \"parallax > 20\"' cmd='keepcols pmra' omode=stats",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Convert a distance modulus from the `dmod` column to distance in parsecs and save it in a new column `dist_pc`.",
+        "response": "stilts tpipe in=distmod.fits cmd='addcol dist_pc \"modulusToDistance(dmod)\"' out=distances.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Add three new columns `gal_x`, `gal_y`, `gal_z` representing the components of the galactic position vector.",
+        "response": "stilts tpipe in=gaia.fits cmd='addcol gal_pos \"icrsToGal(astromXYZ(ra, dec, parallax))\"' cmd='addcol gal_x \"gal_pos[0]\"' cmd='addcol gal_y \"gal_pos[1]\"' cmd='addcol gal_z \"gal_pos[2]\"' cmd='delcols gal_pos' out=gaia_gal_components.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Create a random 10% view of the `large_survey.fits` table.",
+        "response": "stilts tpipe in=large_survey.fits cmd='randomview 0.1' out=survey_sample.fits",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '0.1'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: randomview 0.1\n\nUsage: randomview\n    (Unused arguments: '0.1'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "Duplicate every row in `template.fits` 5 times.",
+        "response": "stilts tpipe in=template.fits cmd='repeat 5' out=repeated.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Remove all table parameters from `table.fits`.",
+        "response": "stilts tpipe in=table.fits cmd='clearparams *' out=table_noparams.fits",
+        "chat.jar": "fixed",
+        "error": "Error: No parameter names supplied\n\nCommand was: clearparams\n\nUsage: clearparams <pname> ...\n    (No parameter names supplied)\n"
+    },
+    {
+        "prompt": "Add a column `RAND_VAL` containing a random number between 0 and 1 for each row.",
+        "response": "stilts tpipe in=data.fits cmd='addcol RAND_VAL \"random()\"' out=data_random.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Select rows from `obs.fits` where the `FILTER` column is one of 'g', 'r', or 'i'.",
+        "response": "stilts tpipe in=obs.fits cmd='select \"FILTER=='g' || FILTER=='r' || FILTER=='i'\"' out=gri_obs.fits",
+        "chat.jar": "fixed - bad use of quotes",
+        "error": "/bin/sh: 1: Syntax error: Unterminated quoted string\n"
+    },
+    {
+        "prompt": "From `gaia.fits`, select stars with parallax > 50, calculate their galactic UVW velocity components, sort by the Z-component of the velocity (W), keep only source_id and the velocity vector, and save to `nearby_kinematics.fits`.",
+        "response": "stilts tpipe in=gaia.fits cmd='select \"parallax > 50\"' cmd='addcol gal_uvw \"icrsToGal(astromUVW(array(ra,dec,parallax,pmra,pmdec,radial_velocity)))\"' cmd='sort gal_uvw[2]' cmd='keepcols \"source_id gal_uvw\"' out=nearby_kinematics.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Take the columns `FLUX_1`, `FLUX_2`, `FLUX_3` and collapse them into a single 3-element array column called `FLUXES`.",
+        "response": "stilts tpipe in=data.fits cmd='collapsecols FLUXES \"FLUX_1 FLUX_2 FLUX_3\"' out=data_array.fits",
+        "chat.jar": "failed",
+        "error": "Error: Bad collapsecols specification\n\nCommand was: collapsecols FLUXES \"FLUX_1 FLUX_2 FLUX_3\"\n\nUsage: collapsecols [-[no]keepscalars] <array-colname> <col-id0> <ncol>\n    (Bad collapsecols specification)\n"
+    },
+    {
+        "prompt": "Calculate ICRS velocity components in km/s using a pre-calculated distance column `dist_pc` and applying the Doppler correction.",
+        "response": "stilts tpipe in=gaia_dist.fits cmd='addcol uvw \"astromUVW(ra, dec, pmra, pmdec, radial_velocity, dist_pc, true)\"' out=gaia_uvw_corrected.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "In `array_data.fits`, select rows where the first element of the `FLUX_ARRAY` column is greater than 100.",
+        "response": "stilts tpipe in=array_data.fits cmd='select \"FLUX_ARRAY[0] > 100\"' out=bright_first_flux.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Add a column `mag_abs` (absolute magnitude) calculated from `mag_app` (apparent magnitude) and `parallax`.",
+        "response": "stilts tpipe in=stars.fits cmd='addcol mag_abs \"mag_app - 5 * log10(1000.0/parallax) + 5\"' out=stars_absmag.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Fail with an error if any value in the `ERROR` column is greater than 1.0.",
+        "response": "stilts tpipe in=data.fits cmd='assert \"ERROR <= 1.0\"' out=data_validated.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Display a progress bar in the terminal while processing the large file `big.fits`.",
+        "response": "stilts tpipe in=big.fits cmd='progress' out=output.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Select rows where the `NAME` column ends with '_1a'.",
+        "response": "stilts tpipe in=objects.fits cmd='select endsWith(NAME, \"_1a\")' out=objects_1a.fits",
+        "chat.jar": "fixed bad quotation",
+        "error": "/bin/sh: 1: Syntax error: \")\" unexpected\n"
+    },
+    {
+        "prompt": "Take `gaia_full_errors.fits` and propagate the full astrometric solution (including errors and correlations) backwards by 16 years to epoch 2000.0.",
+        "response": "stilts tpipe in=gaia_full_errors.fits cmd='addcol astrom22_e2000 \"epochPropErr(-16.0, array(ra,dec,parallax,pmra,pmdec,radial_velocity,ra_error,dec_error,parallax_error,pmra_error,pmdec_error,radial_velocity_error,ra_dec_corr,ra_parallax_corr,ra_pmra_corr,ra_pmdec_corr,dec_parallax_corr,dec_pmra_corr,dec_pmdec_corr,parallax_pmra_corr,parallax_pmdec_corr,pmra_pmdec_corr))\"' out=gaia_propagated_full.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Select rows where the `dec` column is between -10 and +10 degrees.",
+        "response": "stilts tpipe in=survey.fits cmd='select \"dec > -10 && dec < 10\"' out=equatorial_strip.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From `input.fits`, create an output that only contains rows where the value in `col1` is greater than `col2`.",
+        "response": "stilts tpipe in=input.fits cmd='select \"col1 > col2\"' out=output.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Calculate the average value of `col_a` for groups with the same `group_id`.",
+        "response": "stilts tpipe in=data.fits cmd='group -col group_id -aggr col_a_mean=mean(col_a)' out=grouped_data.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Convert ecliptic cartesian coordinates `ecl_xyz` to ICRS coordinates.",
+        "response": "stilts tpipe in=ecliptic.fits cmd='addcol icrs_xyz \"eclToIcrs(ecl_xyz)\"' out=icrs.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Calculate the signal-to-noise ratio in a new column `snr`, defined as `flux / flux_error`.",
+        "response": "stilts tpipe in=data.fits cmd='addcol snr \"flux / flux_error\"' out=data_snr.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Set the table parameter `AUTHOR` to 'Gemini' for the table `my_data.fits`.",
+        "response": "stilts tpipe in=my_data.fits cmd='setparam AUTHOR Gemini' out=my_data_authored.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Keep only the columns from `col1` to `col5` in `wide_table.fits`.",
+        "response": "stilts tpipe in=wide_table.fits cmd='keepcols \"col1..col5\"' out=narrow_table.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Add a new column `is_variable` which is true if `flux_max - flux_min > 0.5`.",
+        "response": "stilts tpipe in=lightcurves.fits cmd='addcol is_variable \"(flux_max - flux_min) > 0.5\"' out=variables.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "In `data.fits`, replace the string `bad` with `corrected` in the `status` column.",
+        "response": "stilts tpipe in=data.fits cmd='replaceval \"bad\" \"corrected\" status' out=data_corrected.fits",
+        "chat.jar": "fixed - bad use of quotes",
+        "error": "/bin/sh: 1: Syntax error: Unterminated quoted string\n"
+    },
+    {
+        "prompt": "From a file `multi_id.fits` with columns `ID1` and `ID2`, create a new file with a single column `ID` containing `ID1`.",
+        "response": "stilts tpipe in=multi_id.fits cmd='replacecol ID1 ID \"ID1\"' cmd='delcols ID2' out=single_id.fits",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: 'ID1'\n\nCommand was: replacecol ID1 ID \"ID1\"\n\nUsage: replacecol [-name <name>] [-units <units>] [-ucd <ucd>]\n                  [-utype <utype>] [-xtype <xtype>] [-desc <descrip>]\n                  <col-id> <expr>\n    (Unused arguments: 'ID1')\n"
+    },
+    {
+        "prompt": "Count how many sources in `gaia.fits` have a non-null `radial_velocity`.",
+        "response": "stilts tpipe in=gaia.fits cmd='select \"!isNull(radial_velocity)\"' omode=count",
+        "chat.jar": "failed",
+        "error": "isnull does not exist\n"
+    },
+    {
+        "prompt": "Select every 1000th row from `catalog.fits` and compute stats.",
+        "response": "stilts tpipe in=catalog.fits cmd='every 1000' omode=stats",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Create a new file with only the first and last 10 rows of `bigtable.fits`.",
+        "response": "stilts tpipe in=bigtable.fits cmd='meta; head 10; tail 10' out=ends.fits",
+        "chat.jar": "executed successfully"
+    }
+]

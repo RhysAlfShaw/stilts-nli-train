@@ -274,3 +274,311 @@ Other
 [] (array dereferencing - first element is zero)
 ?: (conditional switch)
 instanceof (class membership)
+
+FUNCTIONS you should use Only make sure there is an example of each function
+
+10.7.5 CoordsDegrees
+Functions for angle transformations and manipulations, with angles generally in degrees. In particular, methods for translating between degrees and HH:MM:SS.S or DDD:MM:SS.S type sexagesimal representations are provided.
+
+
+degreesToDms( deg )
+Converts an angle in degrees to a formatted degrees:minutes:seconds string. No fractional part of the seconds field is given.
+
+Parameters:
+deg (floating point): angle in degrees
+Return value
+(String): DMS-format string representing deg
+degreesToDms( deg, secFig )
+Converts an angle in degrees to a formatted degrees:minutes:seconds string with a given number of decimal places in the seconds field.
+
+Parameters:
+deg (floating point): angle in degrees
+secFig (integer): number of decimal places in the seconds field
+Return value
+(String): DMS-format string representing deg
+degreesToHms( deg )
+Converts an angle in degrees to a formatted hours:minutes:seconds string. No fractional part of the seconds field is given.
+
+Parameters:
+deg (floating point): angle in degrees
+Return value
+(String): HMS-format string representing deg
+degreesToHms( deg, secFig )
+Converts an angle in degrees to a formatted hours:minutes:seconds string with a given number of decimal places in the seconds field.
+
+Parameters:
+deg (floating point): angle in degrees
+secFig (integer): number of decimal places in the seconds field
+Return value
+(String): HMS-format string representing deg
+dmsToDegrees( dms )
+Converts a formatted degrees:minutes:seconds string to an angle in degrees. Delimiters may be colon, space, characters dm[s], or some others. Additional spaces and leading +/- are permitted. The :seconds part is optional.
+
+Parameters:
+dms (String): formatted DMS string
+Return value
+(floating point): angle in degrees specified by dms
+hmsToDegrees( hms )
+Converts a formatted hours:minutes:seconds string to an angle in degrees. Delimiters may be colon, space, characters hm[s], or some others. Additional spaces and leading +/- are permitted. The :seconds part is optional.
+
+Parameters:
+hms (String): formatted HMS string
+Return value
+(floating point): angle in degrees specified by hms
+dmsToDegrees( deg, min, sec )
+Converts degrees, minutes, seconds to an angle in degrees.
+In conversions of this type, one has to be careful to get the sign right in converting angles which are between 0 and -1 degrees. This routine uses the sign bit of the deg argument, taking care to distinguish between +0 and -0 (their internal representations are different for floating point values). It is illegal for the min or sec arguments to be negative.
+
+
+Parameters:
+deg (floating point): degrees part of angle
+min (floating point): minutes part of angle
+sec (floating point): seconds part of angle
+Return value
+(floating point): specified angle in degrees
+hmsToDegrees( hour, min, sec )
+Converts hours, minutes, seconds to an angle in degrees.
+In conversions of this type, one has to be careful to get the sign right in converting angles which are between 0 and -1 hours. This routine uses the sign bit of the hour argument, taking care to distinguish between +0 and -0 (their internal representations are different for floating point values).
+
+
+Parameters:
+hour (floating point): degrees part of angle
+min (floating point): minutes part of angle
+sec (floating point): seconds part of angle
+Return value
+(floating point): specified angle in degrees
+skyDistanceDegrees( ra1, dec1, ra2, dec2 )
+Calculates the separation (distance around a great circle) of two points on the sky in degrees.
+
+Parameters:
+ra1 (floating point): right ascension of point 1 in degrees
+dec1 (floating point): declination of point 1 in degrees
+ra2 (floating point): right ascension of point 2 in degrees
+dec2 (floating point): declination of point 2 in degrees
+Return value
+(floating point): angular distance between point 1 and point 2 in degrees
+posAngDegrees( ra1, dec1, ra2, dec2 )
+Calculates the position angle between two points on the sky in degrees. The result is in the range +/-180. If point 2 is due east of point 1, the result is +90. Zero is returned if the points are coincident.
+
+Parameters:
+ra1 (floating point): right ascension of point 1 in degrees
+dec1 (floating point): declination of point 1 in degrees
+ra2 (floating point): right ascension of point 2 in degrees
+dec2 (floating point): declination of point 2 in degrees
+Return value
+(floating point): bearing in degrees of point 2 from point 1.
+polarDistanceDegrees( ra1, dec1, radius1, ra2, dec2, radius2 )
+Calculates the distance in three dimensional space between two points specified in spherical polar coordinates.
+
+Parameters:
+ra1 (floating point): right ascension of point 1 in degrees
+dec1 (floating point): declination of point1 in degrees
+radius1 (floating point): distance from origin of point1
+ra2 (floating point): right ascension of point 2 in degrees
+dec2 (floating point): declination of point2 in degrees
+radius2 (floating point): distance from origin of point2
+Return value
+(floating point): the linear distance between point1 and point2; units are as for radius1 and radius2
+10.7.6 CoordsRadians
+Functions for angle transformations and manipulations, based on radians rather than degrees. In particular, methods for translating between radians and HH:MM:SS.S or DDD:MM:SS.S type sexagesimal representations are provided.
+
+
+radiansToDms( rad )
+Converts an angle in radians to a formatted degrees:minutes:seconds string. No fractional part of the seconds field is given.
+
+Parameters:
+rad (floating point): angle in radians
+Return value
+(String): DMS-format string representing rad
+radiansToDms( rad, secFig )
+Converts an angle in radians to a formatted degrees:minutes:seconds string with a given number of decimal places in the seconds field.
+
+Parameters:
+rad (floating point): angle in radians
+secFig (integer): number of decimal places in the seconds field
+Return value
+(String): DMS-format string representing rad
+radiansToHms( rad )
+Converts an angle in radians to a formatted hours:minutes:seconds string. No fractional part of the seconds field is given.
+
+Parameters:
+rad (floating point): angle in radians
+Return value
+(String): HMS-format string representing rad
+radiansToHms( rad, secFig )
+Converts an angle in radians to a formatted hours:minutes:seconds string with a given number of decimal places in the seconds field.
+
+Parameters:
+rad (floating point): angle in radians
+secFig (integer): number of decimal places in the seconds field
+Return value
+(String): HMS-format string representing rad
+dmsToRadians( dms )
+Converts a formatted degrees:minutes:seconds string to an angle in radians. Delimiters may be colon, space, characters dm[s], or some others. Additional spaces and leading +/- are permitted. The :seconds part is optional.
+
+Parameters:
+dms (String): formatted DMS string
+Return value
+(floating point): angle in radians specified by dms
+hmsToRadians( hms )
+Converts a formatted hours:minutes:seconds string to an angle in radians. Delimiters may be colon, space, characters hm[s], or some others. Additional spaces and leading +/- are permitted. The :seconds part is optional.
+
+Parameters:
+hms (String): formatted HMS string
+Return value
+(floating point): angle in radians specified by hms
+dmsToRadians( deg, min, sec )
+Converts degrees, minutes, seconds to an angle in radians.
+In conversions of this type, one has to be careful to get the sign right in converting angles which are between 0 and -1 degrees. This routine uses the sign bit of the deg argument, taking care to distinguish between +0 and -0 (their internal representations are different for floating point values). It is illegal for the min or sec arguments to be negative.
+
+
+Parameters:
+deg (floating point): degrees part of angle
+min (floating point): minutes part of angle
+sec (floating point): seconds part of angle
+Return value
+(floating point): specified angle in radians
+hmsToRadians( hour, min, sec )
+Converts hours, minutes, seconds to an angle in radians.
+In conversions of this type, one has to be careful to get the sign right in converting angles which are between 0 and -1 hours. This routine uses the sign bit of the hour argument, taking care to distinguish between +0 and -0 (their internal representations are different for floating point values).
+
+
+Parameters:
+hour (floating point): degrees part of angle
+min (floating point): minutes part of angle
+sec (floating point): seconds part of angle
+Return value
+(floating point): specified angle in radians
+skyDistanceRadians( ra1, dec1, ra2, dec2 )
+Calculates the separation (distance around a great circle) of two points on the sky in radians.
+
+Parameters:
+ra1 (floating point): right ascension of point 1 in radians
+dec1 (floating point): declination of point 1 in radians
+ra2 (floating point): right ascension of point 2 in radians
+dec2 (floating point): declination of point 2 in radians
+Return value
+(floating point): angular distance between point 1 and point 2 in radians
+posAngRadians( ra1, dec1, ra2, dec2 )
+Calculates the position angle between two points on the sky in radians. The result is in the range +/-pi. If point 2 is due east of point 1, the result is +pi/2. Zero is returned if the points are coincident.
+
+Parameters:
+ra1 (floating point): right ascension of point 1 in radians
+dec1 (floating point): declination of point 1 in radians
+ra2 (floating point): right ascension of point 2 in radians
+dec2 (floating point): declination of point 2 in radians
+Return value
+(floating point): bearing in radians of point 2 from point 1
+polarDistanceRadians( ra1, dec1, radius1, ra2, dec2, radius2 )
+Calculates the distance in three dimensional space between two points specified in spherical polar coordinates.
+
+Parameters:
+ra1 (floating point): right ascension of point 1 in radians
+dec1 (floating point): declination of point1 in radians
+radius1 (floating point): distance from origin of point1
+ra2 (floating point): right ascension of point 2 in radians
+dec2 (floating point): declination of point2 in radians
+radius2 (floating point): distance from origin of point2
+Return value
+(floating point): the linear distance between point1 and point2; units are as for radius1 and radius2
+hoursToRadians( hours )
+Converts hours to radians.
+
+Parameters:
+hours (floating point): angle in hours
+Return value
+(floating point): angle in radians
+degreesToRadians( deg )
+Converts degrees to radians.
+
+Parameters:
+deg (floating point): angle in degrees
+Return value
+(floating point): angle in radians
+radiansToDegrees( rad )
+Converts radians to degrees.
+
+Parameters:
+rad (floating point): angle in radians
+Return value
+(floating point): angle in degrees
+raFK4toFK5radians( raFK4, decFK4 )
+Converts a B1950.0 FK4 position to J2000.0 FK5 at an epoch of B1950.0 yielding Right Ascension. This assumes zero proper motion in the FK5 frame.
+
+Parameters:
+raFK4 (floating point): right ascension in B1950.0 FK4 system (radians)
+decFK4 (floating point): declination in B1950.0 FK4 system (radians)
+Return value
+(floating point): right ascension in J2000.0 FK5 system (radians)
+decFK4toFK5radians( raFK4, decFK4 )
+Converts a B1950.0 FK4 position to J2000.0 FK5 at an epoch of B1950.0 yielding Declination This assumes zero proper motion in the FK5 frame.
+
+Parameters:
+raFK4 (floating point): right ascension in B1950.0 FK4 system (radians)
+decFK4 (floating point): declination in B1950.0 FK4 system (radians)
+Return value
+(floating point): declination in J2000.0 FK5 system (radians)
+raFK5toFK4radians( raFK5, decFK5 )
+Converts a J2000.0 FK5 position to B1950.0 FK4 at an epoch of B1950.0 yielding Declination. This assumes zero proper motion, parallax and radial velocity in the FK5 frame.
+
+Parameters:
+raFK5 (floating point): right ascension in J2000.0 FK5 system (radians)
+decFK5 (floating point): declination in J2000.0 FK5 system (radians)
+Return value
+(floating point): right ascension in the FK4 system (radians)
+decFK5toFK4radians( raFK5, decFK5 )
+Converts a J2000.0 FK5 position to B1950.0 FK4 at an epoch of B1950.0 yielding Declination. This assumes zero proper motion, parallax and radial velocity in the FK5 frame.
+
+Parameters:
+raFK5 (floating point): right ascension in J2000.0 FK5 system (radians)
+decFK5 (floating point): declination in J2000.0 FK5 system (radians)
+Return value
+(floating point): right ascension in the FK4 system (radians)
+raFK4toFK5Radians( raFK4, decFK4, bepoch )
+Converts a B1950.0 FK4 position to J2000.0 FK5 yielding Right Ascension. This assumes zero proper motion in the FK5 frame. The bepoch parameter is the epoch at which the position in the FK4 frame was determined.
+
+Parameters:
+raFK4 (floating point): right ascension in B1950.0 FK4 system (radians)
+decFK4 (floating point): declination in B1950.0 FK4 system (radians)
+bepoch (floating point): Besselian epoch
+Return value
+(floating point): right ascension in J2000.0 FK5 system (radians)
+decFK4toFK5Radians( raFK4, decFK4, bepoch )
+Converts a B1950.0 FK4 position to J2000.0 FK5 yielding Declination. This assumes zero proper motion in the FK5 frame. The bepoch parameter is the epoch at which the position in the FK4 frame was determined.
+
+Parameters:
+raFK4 (floating point): right ascension in B1950.0 FK4 system (radians)
+decFK4 (floating point): declination in B1950.0 FK4 system (radians)
+bepoch (floating point): Besselian epoch
+Return value
+(floating point): declination in J2000.0 FK5 system (radians)
+raFK5toFK4Radians( raFK5, decFK5, bepoch )
+Converts a J2000.0 FK5 position to B1950.0 FK4 yielding Declination. This assumes zero proper motion, parallax and radial velocity in the FK5 frame.
+
+Parameters:
+raFK5 (floating point): right ascension in J2000.0 FK5 system (radians)
+decFK5 (floating point): declination in J2000.0 FK5 system (radians)
+bepoch (floating point): Besselian epoch
+Return value
+(floating point): right ascension in the FK4 system (radians)
+decFK5toFK4Radians( raFK5, decFK5, bepoch )
+Converts a J2000.0 FK5 position to B1950.0 FK4 yielding Declination. This assumes zero proper motion, parallax and radial velocity in the FK5 frame.
+
+Parameters:
+raFK5 (floating point): right ascension in J2000.0 FK5 system (radians)
+decFK5 (floating point): declination in J2000.0 FK5 system (radians)
+bepoch (floating point): Besselian epoch
+Return value
+(floating point): right ascension in the FK4 system (radians)
+DEGREE_RADIANS
+The size of one degree in radians.
+
+HOUR_RADIANS
+The size of one hour of right ascension in radians.
+
+ARC_MINUTE_RADIANS
+The size of one arcminute in radians.
+
+ARC_SECOND_RADIANS
+The size of one arcsecond in radians.
+

@@ -274,3 +274,55 @@ Other
 [] (array dereferencing - first element is zero)
 ?: (conditional switch)
 instanceof (class membership)
+
+
+10.7.10 Formats
+Functions for formatting numeric values.
+
+
+formatDecimal( value, dp )
+Turns a floating point value into a string with a given number of decimal places using standard settings.
+
+Parameters:
+value (floating point): value to format
+dp (integer): number of decimal places (digits after the decmal point)
+Return value
+(String): formatted string
+Examples:
+formatDecimal(PI,0) = "3."
+formatDecimal(0,10) = ".0000000000"
+formatDecimal(E*10,3) = "27.183"
+formatDecimalLocal( value, dp )
+Turns a floating point value into a string using current locale settings. For instance if language is set to French, decimal points will be represented as a comma "," instead of a full stop ".". Otherwise behaves the same as the corresponding formatDecimal function.
+
+Parameters:
+value (floating point): value to format
+dp (integer): number of decimal places (digits after the decmal point)
+Return value
+(String): formatted string
+Examples:
+formatDecimal(PI,0) = "3,"
+formatDecimal(0,10) = ",0000000000"
+formatDecimal(E*10,3) = "27,183"
+formatDecimal( value, format )
+Turns a floating point value into a formatted string using standard settings. The format string is as defined by Java's java.text.DecimalFormat class.
+
+Parameters:
+value (floating point): value to format
+format (String): format specifier
+Return value
+(String): formatted string
+Examples:
+formatDecimal(99, "#.000") = "99.000"
+formatDecimal(PI, "+0.##;-0.##") = "+3.14"
+formatDecimalLocal( value, format )
+Turns a floating point value into a formatted string using current locale settings. For instance if language is set to French, decimal points will be represented as a comma "," instead of a full stop ".". Otherwise behaves the same as the corresponding formatDecimal function.
+
+Parameters:
+value (floating point): value to format
+format (String): format specifier
+Return value
+(String): formatted string
+Examples:
+formatDecimal(99, "#.000") = "99,000"
+formatDecimal(PI, "+0.##;-0.##") = "+3,14"

@@ -1,63 +1,43 @@
 [
     {
         "prompt": "What is the purpose of the STILTS tpipe command?",
-        "response": "The 'tpipe' command is used for processing a single table. It allows you to perform a pipeline of operations like adding or removing columns, filtering rows, sorting, and modifying metadata.",
-        "chat.jar": "failed",
-        "error": "\nNo such task: The\n\nUsage:\n   stilts [-help] [-version] [-verbose] [-allowunused] [-prompt] [-bench]\n          [-debug] [-batch] [-memory] [-disk] [-memgui]\n          [-checkversion <vers>] [-stdout <file>] [-stderr <file>]\n          <task-name> <task-args>\n\n   stilts <task-name> help[=<param-name>|*]\n\n   Known tasks:\n      arrayjoin\n      calc\n      cdsskymatch\n      cone\n      coneskymatch\n      datalinklint\n      funcs\n      mocshape\n      parqlint\n      parqlook\n      pixfoot\n      pixsample\n      plot2d\n      plot3d\n      plothist\n      regquery\n      server\n      sqlclient\n      sqlskymatch\n      sqlupdate\n      taplint\n      tapquery\n      tapresume\n      tapskymatch\n      tcat\n      tcatn\n      tcopy\n      tcube\n      tgridmap\n      tgroup\n      tjoin\n      tloop\n      tmatch1\n      tmatch2\n      tmatchn\n      tmulti\n      tmultin\n      tpipe\n      tskymap\n      tskymatch2\n      votcopy\n      votlint\n      xsdvalidate\n      plot2plane\n      plot2sky\n      plot2cube\n      plot2sphere\n      plot2corner\n      plot2time\n\n"
+        "response": "The 'tpipe' command is used for processing a single table. It allows you to perform a pipeline of operations like adding or removing columns, filtering rows, sorting, and modifying metadata."
     },
     {
         "prompt": "Can you explain what the tmatch2 command does?",
-        "response": "The 'tmatch2' command is designed to match rows between exactly two tables. It supports various matching algorithms, such as sky coordinates, exact value matches, or proximity in 1D space.",
-        "chat.jar": "failed",
-        "error": "\nNo such task: The\n\nUsage:\n   stilts [-help] [-version] [-verbose] [-allowunused] [-prompt] [-bench]\n          [-debug] [-batch] [-memory] [-disk] [-memgui]\n          [-checkversion <vers>] [-stdout <file>] [-stderr <file>]\n          <task-name> <task-args>\n\n   stilts <task-name> help[=<param-name>|*]\n\n   Known tasks:\n      arrayjoin\n      calc\n      cdsskymatch\n      cone\n      coneskymatch\n      datalinklint\n      funcs\n      mocshape\n      parqlint\n      parqlook\n      pixfoot\n      pixsample\n      plot2d\n      plot3d\n      plothist\n      regquery\n      server\n      sqlclient\n      sqlskymatch\n      sqlupdate\n      taplint\n      tapquery\n      tapresume\n      tapskymatch\n      tcat\n      tcatn\n      tcopy\n      tcube\n      tgridmap\n      tgroup\n      tjoin\n      tloop\n      tmatch1\n      tmatch2\n      tmatchn\n      tmulti\n      tmultin\n      tpipe\n      tskymap\n      tskymatch2\n      votcopy\n      votlint\n      xsdvalidate\n      plot2plane\n      plot2sky\n      plot2cube\n      plot2sphere\n      plot2corner\n      plot2time\n\n"
+        "response": "The 'tmatch2' command is designed to match rows between exactly two tables. It supports various matching algorithms, such as sky coordinates, exact value matches, or proximity in 1D space."
     },
     {
         "prompt": "Tell me about the tmatchn command.",
-        "response": "'tmatchn' is a more general matching command that can match rows between two or more tables simultaneously based on criteria like sky position or exact column values.",
-        "chat.jar": "failed",
-        "error": "Error: Bad value for parameter nin: null value not allowed\nUsage: nin=<count>\n\n"
+        "response": "'tmatchn' is a more general matching command that can match rows between two or more tables simultaneously based on criteria like sky position or exact column values."
     },
     {
         "prompt": "What is the tcopy command used for in STILTS?",
-        "response": "'tcopy' is used to copy a table from one format to another. It can also be used to perform simple filtering or column selection during the copy process.",
-        "chat.jar": "failed",
-        "error": "Error: Can't guess output format for used\n    (No handler specified for writing table.\nKnown formats: jdbc, fits, colfits, votable, fits-healpix, ECSV, parquet, text, ascii, CSV, IPAC, HTML, LaTeX, TST, feather, mirage)\nUsage: tcopy ifmt=<in-format> ofmt=<out-format>\n             [in=]<table> [out=]<out-table>\n\n"
+        "response": "'tcopy' is used to copy a table from one format to another. It can also be used to perform simple filtering or column selection during the copy process."
     },
     {
         "prompt": "Describe the function of the plot2d command.",
-        "response": "'plot2d' is a powerful command for creating 2D plots, such as scatter plots or density maps, directly from table data. It offers extensive configuration options for customizing the appearance of the plot.",
-        "chat.jar": "failed",
-        "error": "java.lang.NullPointerException\n\tat uk.ac.starlink.ttools.plottask.PlotStateFactory.getSuffixes(PlotStateFactory.java:960)\n\tat uk.ac.starlink.ttools.plottask.PlotStateFactory.configurePlotState(PlotStateFactory.java:270)\n\tat uk.ac.starlink.ttools.plottask.PlotStateFactory.getPlotState(PlotStateFactory.java:236)\n\tat uk.ac.starlink.ttools.plottask.PlotTask.createExecutable(PlotTask.java:156)\n\tat uk.ac.starlink.ttools.task.LineInvoker.invoke(LineInvoker.java:285)\n\tat CommandValidator.checkInvocation(CommandValidator.java:46)\n\tat CommandValidator.main(CommandValidator.java:66)\n"
+        "response": "'plot2d' is a powerful command for creating 2D plots, such as scatter plots or density maps, directly from table data. It offers extensive configuration options for customizing the appearance of the plot."
     },
     {
         "prompt": "What does the cdsskymatch command do?",
-        "response": "The 'cdsskymatch' command performs a sky match between a local table and a table hosted by the CDS X-Match service, allowing you to cross-match your data against major astronomical surveys.",
-        "chat.jar": "failed",
-        "error": "\nNo such task: The\n\nUsage:\n   stilts [-help] [-version] [-verbose] [-allowunused] [-prompt] [-bench]\n          [-debug] [-batch] [-memory] [-disk] [-memgui]\n          [-checkversion <vers>] [-stdout <file>] [-stderr <file>]\n          <task-name> <task-args>\n\n   stilts <task-name> help[=<param-name>|*]\n\n   Known tasks:\n      arrayjoin\n      calc\n      cdsskymatch\n      cone\n      coneskymatch\n      datalinklint\n      funcs\n      mocshape\n      parqlint\n      parqlook\n      pixfoot\n      pixsample\n      plot2d\n      plot3d\n      plothist\n      regquery\n      server\n      sqlclient\n      sqlskymatch\n      sqlupdate\n      taplint\n      tapquery\n      tapresume\n      tapskymatch\n      tcat\n      tcatn\n      tcopy\n      tcube\n      tgridmap\n      tgroup\n      tjoin\n      tloop\n      tmatch1\n      tmatch2\n      tmatchn\n      tmulti\n      tmultin\n      tpipe\n      tskymap\n      tskymatch2\n      votcopy\n      votlint\n      xsdvalidate\n      plot2plane\n      plot2sky\n      plot2cube\n      plot2sphere\n      plot2corner\n      plot2time\n\n"
+        "response": "The 'cdsskymatch' command performs a sky match between a local table and a table hosted by the CDS X-Match service, allowing you to cross-match your data against major astronomical surveys."
     },
     {
         "prompt": "Can you explain the purpose of votlint?",
-        "response": "'votlint' is a utility for validating VOTable files. It checks whether a file conforms to the VOTable standard and reports any errors or warnings.",
-        "chat.jar": "failed",
-        "error": "Error: Bad value for parameter votable: Value is is not a file, URL or \"-\"\nUsage: votable=<location>\n\n"
+        "response": "'votlint' is a utility for validating VOTable files. It checks whether a file conforms to the VOTable standard and reports any errors or warnings."
     },
     {
         "prompt": "What is the tcube command for?",
-        "response": "The 'tcube' command is used to calculate N-dimensional histograms (data cubes) from table data, which is useful for analyzing the distribution of data across multiple parameters.",
-        "chat.jar": "failed",
-        "error": "/bin/sh: 1: Syntax error: \"(\" unexpected\n"
+        "response": "The 'tcube' command is used to calculate N-dimensional histograms (data cubes) from table data, which is useful for analyzing the distribution of data across multiple parameters."
     },
     {
         "prompt": "Tell me what the tjoin command does.",
-        "response": "'tjoin' is used to join two tables by appending the columns of the second table onto the first. Unlike a match, it assumes the rows correspond one-to-one in the given order.",
-        "chat.jar": "failed",
-        "error": "Error: Bad value for parameter nin: null value not allowed\nUsage: nin=<count>\n\n"
+        "response": "'tjoin' is used to join two tables by appending the columns of the second table onto the first. Unlike a match, it assumes the rows correspond one-to-one in the given order."
     },
     {
         "prompt": "What is the function of the tcat command?",
-        "response": "The 'tcat' command concatenates multiple tables together, appending the rows of subsequent tables to the end of the first one. It can also be used to interleave rows from multiple tables.",
-        "chat.jar": "failed",
-        "error": "\nNo such task: The\n\nUsage:\n   stilts [-help] [-version] [-verbose] [-allowunused] [-prompt] [-bench]\n          [-debug] [-batch] [-memory] [-disk] [-memgui]\n          [-checkversion <vers>] [-stdout <file>] [-stderr <file>]\n          <task-name> <task-args>\n\n   stilts <task-name> help[=<param-name>|*]\n\n   Known tasks:\n      arrayjoin\n      calc\n      cdsskymatch\n      cone\n      coneskymatch\n      datalinklint\n      funcs\n      mocshape\n      parqlint\n      parqlook\n      pixfoot\n      pixsample\n      plot2d\n      plot3d\n      plothist\n      regquery\n      server\n      sqlclient\n      sqlskymatch\n      sqlupdate\n      taplint\n      tapquery\n      tapresume\n      tapskymatch\n      tcat\n      tcatn\n      tcopy\n      tcube\n      tgridmap\n      tgroup\n      tjoin\n      tloop\n      tmatch1\n      tmatch2\n      tmatchn\n      tmulti\n      tmultin\n      tpipe\n      tskymap\n      tskymatch2\n      votcopy\n      votlint\n      xsdvalidate\n      plot2plane\n      plot2sky\n      plot2cube\n      plot2sphere\n      plot2corner\n      plot2time\n\n"
+        "response": "The 'tcat' command concatenates multiple tables together, appending the rows of subsequent tables to the end of the first one. It can also be used to interleave rows from multiple tables."
     },
     {
         "prompt": "Hello!",
@@ -66,12 +46,10 @@
     },
     {
         "prompt":"Hi",
-        "response": "Hi there! How can I assist you with STILTS today?",
-        "chat.jar": "executed successfully"
+        "response": "Hi there! How can I assist you with STILTS today?"
     },
     {
         "prompt": "Hi",
-        "response": "Hello, I am here to help you with STILTS commands. Please ask and command away!",
-        "chat.jar": "executed successfully"
+        "response": "Hello, I am here to help you with STILTS commands. Please ask and command away!"
     }
 ]

@@ -1,0 +1,520 @@
+[
+    {
+        "prompt": "Just show me the contents of `my_data.fits` on the command line.",
+        "response": "stilts tpipe in=my_data.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Convert the file `stars.csv` to a FITS file named `stars.fits`.",
+        "response": "stilts tpipe in=stars.csv ifmt=csv out=stars.fits ofmt=fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I have a VOTable called `input.vot`. Can you convert it to a CSV file called `output.csv`?",
+        "response": "stilts tpipe in=input.vot ifmt=votable out=output.csv ofmt=csv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I'm piping FITS formatted data into the command. I want the output in a human-readable text format on standard output.",
+        "response": "stilts tpipe ifmt=fits in=- out=- ofmt=text",
+        "chat.jar": "failed",
+        "error": "Error: FITS ended before header\n"
+    },
+    {
+        "prompt": "Read the gzipped FITS file `catalog.fits.gz` and write it to a new uncompressed FITS file `catalog.fits`.",
+        "response": "stilts tpipe in=catalog.fits.gz out=catalog.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Display the table `data.dat`, which is a plain ASCII file.",
+        "response": "stilts tpipe in=data.dat ifmt=ascii",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Convert my table `results.fits` to a tab-separated values file, `results.tsv`.",
+        "response": "stilts tpipe in=results.fits out=results.tsv ofmt=tsv",
+        "chat.jar": "failed",
+        "error": "Error: No handler for output format tsv\n    (No handler for table format \"tsv\")\nUsage: tpipe ifmt=<in-format> istream=true|false cmd=<cmds>\n             omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n             out=<out-table> ofmt=<out-format>\n             [in=]<table>\n\n"
+    },
+    {
+        "prompt": "Show me just the first 10 rows of the `large_catalog.fits` table.",
+        "response": "stilts tpipe in=large_catalog.fits cmd='head 10'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the file `events.csv`, select all rows where the 'ENERGY' column is greater than 500.",
+        "response": "stilts tpipe in=events.csv ifmt=csv cmd='select \"ENERGY > 500\"'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need to filter `galaxy_data.vot`. Keep only the rows where the 'TYPE' column is exactly 'Spiral'.",
+        "response": "stilts tpipe in=galaxy_data.vot cmd='select \"TYPE == \\'Spiral\\'\"'",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: Syntax error: Unterminated quoted string\n"
+    },
+    {
+        "prompt": "Count how many objects in `survey.fits` have a redshift 'Z' greater than 0.5.",
+        "response": "stilts tpipe in=survey.fits cmd='select \"Z > 0.5\"' omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Show me the last 20 entries in the `log.txt` file, which is in ascii format.",
+        "response": "stilts tpipe in=log.txt ifmt=ascii cmd='tail 20'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From `full_sky_survey.fits`, I need objects where magnitude 'MAG_G' is less than 18 AND 'CLASS' is equal to 1.",
+        "response": "stilts tpipe in=full_sky_survey.fits cmd='select \"MAG_G < 18 && CLASS == 1\"'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Select every 100th row from `massive_table.fits` and save the result to `sample.fits`.",
+        "response": "stilts tpipe in=massive_table.fits cmd='every 100' out=sample.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Extract rows 101 through 200 from `data.fits` into a new file named `subset.fits`.",
+        "response": "stilts tpipe in=data.fits cmd='rowrange 101 200' out=subset.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find all stars in `catalog.fits` within a 1 degree radius of RA=180, Dec=30.",
+        "response": "stilts tpipe in=catalog.fits cmd='select \"skyDistanceDegrees(RA, DEC, 180, 30) < 1\"'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From `data.fits`, I only want to keep the 'ID', 'RA', and 'DEC' columns.",
+        "response": "stilts tpipe in=data.fits cmd='keepcols \"ID RA DEC\"'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Remove the columns named 'TEMP' and 'PRESSURE' from `results.csv` and save the output as `results_clean.csv`.",
+        "response": "stilts tpipe in=results.csv ifmt=csv cmd='delcols \"TEMP PRESSURE\"' out=results_clean.csv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Add a new column called 'G_MINUS_R' to `photometry.fits`. This column should be the difference between the 'G' and 'R' magnitude columns.",
+        "response": "stilts tpipe in=photometry.fits cmd='addcol G_MINUS_R \"G - R\"' out=photometry_color.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "In `catalog.fits`, I want to replace the `FLUX` column with its value converted to magnitudes using the formula -2.5 * log10(FLUX).",
+        "response": "stilts tpipe in=catalog.fits cmd='replacecol FLUX \"-2.5 * log10(FLUX)\"' out=catalog_mags.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Create a new FITS file from `input.fits`, but add a new column named 'SNR' with a constant value of 100 for all rows.",
+        "response": "stilts tpipe in=input.fits cmd='constcol SNR 100' out=output.fits",
+        "chat.jar": "failed",
+        "error": "Error: Multiple column lists\n\nCommand was: constcol SNR 100\n\nUsage: constcol [-noparam] [-acceptnull] [-[no]parallel] [<colid-list>]\n    (Multiple column lists)\n"
+    },
+    {
+        "prompt": "I have columns 'RA_HMS' and 'DEC_DMS' in sexagesimal format. Add new columns 'RA_DEG' and 'DEC_DEG' with the values converted to decimal degrees.",
+        "response": "stilts tpipe in=data.fits cmd='addcol RA_DEG \"hmsToDegrees(RA_HMS)\"' cmd='addcol DEC_DEG \"dmsToDegrees(DEC_DMS)\"' out=data_deg.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Change the name of the column 'col1' to 'ObjectID' in the file `table.vot`.",
+        "response": "stilts tpipe in=table.vot cmd='colmeta -name col1 ObjectID' out=table_renamed.vot",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Delete the first three columns from `messy_data.csv`.",
+        "response": "stilts tpipe in=messy_data.csv ifmt=csv cmd='delcols \"1 2 3\"'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Add galactic coordinate columns `GAL_L` and `GAL_B` to `sky_data.fits`. The input coordinates are `RA_2000` and `DEC_2000` in the FK5 system.",
+        "response": "stilts tpipe in=sky_data.fits cmd='addskycoords fk5 gal RA_2000 DEC_2000 GAL_L GAL_B' out=sky_data_gal.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Replace all null values in the `MAG` column of `phot.fits` with the placeholder value -999.",
+        "response": "stilts tpipe in=phot.fits cmd='replaceval -999 null MAG' out=phot_nonull.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I have an array column 'FLUX_ARRAY' in `spectra.fits`. Can you expand it into separate scalar columns like FLUX_ARRAY_1, FLUX_ARRAY_2, etc?",
+        "response": "stilts tpipe in=spectra.fits cmd='explodeall' out=spectra_exploded.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Sort the table `sources.fits` based on the 'FLUX' column in ascending order.",
+        "response": "stilts tpipe in=sources.fits cmd='sort FLUX' out=sources_sorted.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I want to sort `galaxies.vot` by the 'DISTANCE' column, from largest to smallest.",
+        "response": "stilts tpipe in=galaxies.vot cmd='sort -down DISTANCE' out=galaxies_sorted.vot",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find the 10 brightest objects in `catalog.fits`. Brightest means the smallest value in the 'MAG' column.",
+        "response": "stilts tpipe in=catalog.fits cmd='sorthead 10 MAG'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Sort `observations.csv` first by 'TARGET_ID' (ascending) and then by 'OBS_DATE' (descending).",
+        "response": "stilts tpipe in=observations.csv ifmt=csv cmd='sort \"TARGET_ID -down OBS_DATE\"' out=observations_sorted.csv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Calculate summary statistics for all columns in the table `stats_data.fits`.",
+        "response": "stilts tpipe in=stats_data.fits omode=stats",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "How many rows are in the file `big_table.fits`?",
+        "response": "stilts tpipe in=big_table.fits omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Show me the metadata, like column names and data types, for `catalog.vot`.",
+        "response": "stilts tpipe in=catalog.vot omode=meta",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Take `my_data.fits` and send it directly to an open TOPCAT instance.",
+        "response": "stilts tpipe in=my_data.fits omode=topcat",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I want to calculate statistics, but only for the 'MAG_R' and 'MAG_I' columns of `photometry.fits`.",
+        "response": "stilts tpipe in=photometry.fits cmd='keepcols \"MAG_R MAG_I\"' omode=stats",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I want to filter `data.csv` but I don't need to save the output, just discard it.",
+        "response": "stilts tpipe in=data.csv ifmt=csv cmd='select \"FLAG==0\"' omode=discard",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Load `table.fits` into a MySQL database named 'MYDB' into a table named 'SOURCES'. Overwrite the table if it already exists.",
+        "response": "stilts tpipe in=table.fits omode=tosql protocol=mysql db=MYDB dbtable=SOURCES write=dropcreate",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Send the table `data.fits` to a listening SAMP application.",
+        "response": "stilts tpipe in=data.fits omode=samp",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From `survey.fits`, select objects with 'REDSHIFT' > 0.1, add a new column 'LOG_MASS' as log10(MASS), keep only 'ID', 'REDSHIFT', and 'LOG_MASS', sort by 'LOG_MASS' descending, and save to `high_z_mass.fits`.",
+        "response": "stilts tpipe in=survey.fits cmd='select \"REDSHIFT > 0.1\"' cmd='addcol LOG_MASS \"log10(MASS)\"' cmd='keepcols \"ID REDSHIFT LOG_MASS\"' cmd='sort -down LOG_MASS' out=high_z_mass.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Take `catalog.csv`, remove the first column, select rows where 'SNR' is above 5, and then show me statistics for the remaining data.",
+        "response": "stilts tpipe in=catalog.csv ifmt=csv cmd='delcols 1' cmd='select \"SNR > 5\"' omode=stats",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I have a file of processing steps in `my_script.txt`. Apply this script to `data_in.vot` and write the result to `data_out.fits`.",
+        "response": "stilts tpipe in=data_in.vot cmd=@my_script.txt out=data_out.fits",
+        "chat.jar": "failed",
+        "error": "Error: my_script.txt (No such file or directory)\n"
+    },
+    {
+        "prompt": "Find the 20 objects in `photometry.fits` with the reddest `G-R` color. The columns are named `G_MAG` and `R_MAG`. Display only the `ID` and the calculated color value.",
+        "response": "stilts tpipe in=photometry.fits cmd='addcol G_MINUS_R \"G_MAG - R_MAG\"' cmd='sorthead -down 20 G_MINUS_R' cmd='keepcols \"ID G_MINUS_R\"'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From `raw_data.fits`, replace any `FLUX` value less than 0 with a null value, then filter out all rows where `FLUX` is null, and count the remaining rows.",
+        "response": "stilts tpipe in=raw_data.fits cmd='replacecol FLUX \"FLUX < 0 ? null : FLUX\"' cmd='select \"!isNull(FLUX)\"' omode=count",
+        "chat.jar": "failed",
+        "error": "Error: Function isNull not recognized\n"
+    },
+    {
+        "prompt": "Convert the integer column `MASK_BITS` into a binary string representation in a new column called `MASK_BINARY`.",
+        "response": "stilts tpipe in=data.fits cmd='addcol MASK_BINARY \"toBinary(MASK_BITS)\"' out=data_binary.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I have a 'FLAGS' column in `obs.fits`. I want to select only the rows where both bit 0 AND bit 4 are set.",
+        "response": "stilts tpipe in=obs.fits cmd='select \"(FLAGS & 1) != 0 && (FLAGS & 16) != 0\"' out=obs_filtered.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Calculate the absolute value of the 'VELOCITY' column and store it in a new column called 'SPEED'.",
+        "response": "stilts tpipe in=particles.fits cmd='addcol SPEED \"abs(VELOCITY)\"' out=particles_speed.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Create a new column 'CLASS_NAME'. If 'CLASS_ID' is 1, it's 'Star'; if 2, it's 'Galaxy'; otherwise it's 'Other'.",
+        "response": "stilts tpipe in=catalog.fits cmd='addcol CLASS_NAME \"CLASS_ID == 1 ? \\'Star\\' : (CLASS_ID == 2 ? \\'Galaxy\\' : \\'Other\\')\"' out=catalog_named.fits",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: Syntax error: \"(\" unexpected\n"
+    },
+    {
+        "prompt": "Find all sources within a 10 arcminute radius of the coordinates 14:30:15.1, +22:01:05 in `survey.fits`. The table columns are `RA_SEX`, `DEC_SEX`.",
+        "response": "stilts tpipe in=survey.fits cmd='select \"skyDistanceDegrees(hmsToDegrees(RA_SEX), dmsToDegrees(DEC_SEX), hmsToDegrees(14,30,15.1), dmsToDegrees(22,01,05)) < 10./60.\"' out=cone_search.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Round the values in the 'ESTIMATE' column to two decimal places.",
+        "response": "stilts tpipe in=results.fits cmd='replacecol ESTIMATE \"round(ESTIMATE * 100) / 100.0\"' out=results_rounded.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Concatenate the string columns `FIRST_NAME` and `LAST_NAME` with a space in between, into a new column called `FULL_NAME`.",
+        "response": "stilts tpipe in=users.csv ifmt=csv cmd='addcol FULL_NAME \"FIRST_NAME + \\' \\' + LAST_NAME\"' out=users_full.csv",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: Syntax error: Unterminated quoted string\n"
+    },
+    {
+        "prompt": "I have X, Y, Z cartesian coordinates. Add a column 'RADIUS' which is the spherical radius, calculated as sqrt(X^2 + Y^2 + Z^2).",
+        "response": "stilts tpipe in=coords.fits cmd='addcol RADIUS \"sqrt(X*X + Y*Y + Z*Z)\"' out=coords_radius.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Select rows where the 'NAME' column starts with the prefix 'SN'.",
+        "response": "stilts tpipe in=transients.fits cmd='select \"startsWith(NAME, \\'SN\\')\"' out=supernovae.fits",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: Syntax error: \")\" unexpected\n"
+    },
+    {
+        "prompt": "Convert a Unix timestamp in column `TIME_S` (seconds since epoch) to an ISO-8601 date string in a new column `ISO_DATE`.",
+        "response": "stilts tpipe in=events.fits cmd='addcol ISO_DATE \"unixToIso(TIME_S)\"' out=events_dated.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Check if all values in the `SNR` column are positive. The command should exit with an error if any value is not positive.",
+        "response": "stilts tpipe in=data.fits cmd='assert \\'SNR > 0\\'' omode=discard",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: Syntax error: Unterminated quoted string\n"
+    },
+    {
+        "prompt": "Rename the input table to 'MyCatalog' within its own metadata and save it.",
+        "response": "stilts tpipe in=data.fits cmd='tablename MyCatalog' out=data_renamed_table.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Transpose the `summary.fits` table, turning rows into columns and columns into rows.",
+        "response": "stilts tpipe in=summary.fits cmd='transpose'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I want to randomize the order of rows in `my_table.fits`.",
+        "response": "stilts tpipe in=my_table.fits cmd='shuffle' out=my_table_shuffled.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Get a list of the unique values from the 'GroupID' column.",
+        "response": "stilts tpipe in=data.fits cmd='keepcols GroupID' cmd='uniq'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Show a progress bar every 10000 rows while processing the large file `large_file.fits`.",
+        "response": "stilts tpipe in=large_file.fits cmd='progress 10000' omode=discard",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '10000'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: progress 10000\n\nUsage: progress\n    (Unused arguments: '10000'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "Repeat each row in `template.csv` exactly 5 times in the output file.",
+        "response": "stilts tpipe in=template.csv ifmt=csv cmd='repeat 5' out=template_repeated.csv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Count the number of unique values in the `OBSERVER` column of `logs.fits`.",
+        "response": "stilts tpipe in=logs.fits cmd='keepcols OBSERVER' cmd='uniq' omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Cache the input table `remote_data.vot` from a URL before processing it to avoid downloading it multiple times for different steps.",
+        "response": "stilts tpipe in=http://example.com/remote_data.vot cmd='cache' cmd='select \"SNR > 10\"' out=local_copy.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "For the table `stars.fits`, select all stars with `B_V` color between 0.5 and 1.0, and a proper motion `PM` greater than 50.",
+        "response": "stilts tpipe in=stars.fits cmd='select \"(B_V > 0.5 && B_V < 1.0) && PM > 50\"' out=selected_stars.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Replace the column `RA_RAD`, which is in radians, with its value converted to degrees.",
+        "response": "stilts tpipe in=data.fits cmd='replacecol RA_RAD \"toDegrees(RA_RAD)\"' out=data_deg.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Clear all parameters (header keywords) from the table's metadata.",
+        "response": "stilts tpipe in=table_with_params.fits cmd='clearparams' out=table_no_params.fits",
+        "chat.jar": "failed",
+        "error": "Error: No parameter names supplied\n\nCommand was: clearparams\n\nUsage: clearparams <pname> ...\n    (No parameter names supplied)\n"
+    },
+    {
+        "prompt": "Take a VOTable from standard input, select the first 100 rows, and write it to standard output as a CSV file.",
+        "response": "stilts tpipe in=- ifmt=votable cmd='head 100' out=- ofmt=csv",
+        "chat.jar": "failed",
+        "error": "Error: uk.ac.starlink.table.TableFormatException\n    (Premature end of file.)\n"
+    },
+    {
+        "prompt": "Calculate statistics on `survey.fits` for objects where `OBJ_TYPE` is 'GALAXY' and `REDSHIFT` is not a null value.",
+        "response": "stilts tpipe in=survey.fits cmd='select \"OBJ_TYPE == \\'GALAXY\\' && !isNull(REDSHIFT)\"' omode=stats",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: Syntax error: word unexpected (expecting \")\")\n"
+    },
+    {
+        "prompt": "I have a CSV file `data.csv`. Keep only the columns named 'time', 'value1', and 'value2', then convert it to FITS format as `data.fits`.",
+        "response": "stilts tpipe in=data.csv ifmt=csv cmd='keepcols \"time value1 value2\"' out=data.fits ofmt=fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Display the metadata of a table located at the URL `http://vizier.u-strasbg.fr/viz-bin/VizieR-3?-source=J/A+A/544/A81`.",
+        "response": "stilts tpipe in='http://vizier.u-strasbg.fr/viz-bin/VizieR-3?-source=J/A+A/544/A81' omode=meta",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find the 100 dimmest galaxies from `galaxy_survey.fits`, where dimmest means the largest magnitude value in `MAG_R`. This is a very large file so be efficient.",
+        "response": "stilts -disk tpipe in=galaxy_survey.fits cmd='sorthead -down 100 MAG_R'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Add a boolean column `IS_VARIABLE` which is true if `FLUX_MAX - FLUX_MIN` is greater than 3 times `FLUX_ERR`, and false otherwise.",
+        "response": "stilts tpipe in=lightcurves.fits cmd='addcol IS_VARIABLE \"(FLUX_MAX - FLUX_MIN) > (3 * FLUX_ERR)\"' out=variables.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "For all rows in `data.fits`, if the `FLAG` column has bit 2 set (value 4), set the `MAG` column to NULL.",
+        "response": "stilts tpipe in=data.fits cmd='replacecol MAG \"hasBit(FLAG, 2) ? null : MAG\"' out=data_flagged.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Count the number of objects in `catalog.fits` that are NOT stars (where class is not equal to 1).",
+        "response": "stilts tpipe in=catalog.fits cmd='select \"class != 1\"' omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Combine the `FLUX_U`, `FLUX_G`, and `FLUX_R` columns into a single 3-element array column named `FLUXES`.",
+        "response": "stilts tpipe in=photometry.fits cmd='addcol FLUXES \"new double[] {FLUX_U, FLUX_G, FLUX_R}\"' out=photometry_array.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From `data.fits`, keep only the rows for which the `ID` string matches the regular expression '^NGC'.",
+        "response": "stilts tpipe in=data.fits cmd='select \"matches(ID, \\'^NGC.*\\')\"' out=ngc_objects.fits",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: Syntax error: \")\" unexpected\n"
+    },
+    {
+        "prompt": "From `input.fits`, add a column `DEC_ZONE` which is the integer part of the `DEC` column.",
+        "response": "stilts tpipe in=input.fits cmd='addcol DEC_ZONE \"(int) DEC\"' out=output.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I have a table `events.fits` with a 'TIME' column in MJD. Convert it to a Unix timestamp (seconds since 1970-01-01) in a new column 'UNIX_TIME'.",
+        "response": "stilts tpipe in=events.fits cmd='addcol UNIX_TIME \"mjdToUnix(TIME)\"' out=events_unix.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "In `catalog.fits`, I have `MAG_G` and `ERR_MAG_G`. Create a new column `SNR_G` calculated as `1.0857 / ERR_MAG_G`, but only for rows where `ERR_MAG_G` is positive, otherwise it should be null.",
+        "response": "stilts tpipe in=catalog.fits cmd='addcol SNR_G \"ERR_MAG_G > 0 ? 1.0857 / ERR_MAG_G : null\"' out=catalog_snr.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Read `data.csv`, but treat it as a stream to potentially save memory. Select rows where 'value' is greater than 100 and save as `filtered.fits`.",
+        "response": "stilts tpipe in=data.csv ifmt=csv istream=true cmd='select \"value > 100\"' out=filtered.fits",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"data.csv\"\n"
+    },
+    {
+        "prompt": "Take `input.fits`, remove columns 5 through 10 inclusive, and then display the metadata of the resulting table.",
+        "response": "stilts tpipe in=input.fits cmd='delcols \"5 6 7 8 9 10\"' omode=meta",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Filter the table `objects.csv` to include only items where the 'NOTES' column is not empty or null.",
+        "response": "stilts tpipe in=objects.csv ifmt=csv cmd='select \"NOTES != null && length(NOTES) > 0\"'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Give me all rows from `sources.fits` where `FLUX_G` is greater than `FLUX_R` and save it to `blue_sources.fits`.",
+        "response": "stilts tpipe in=sources.fits cmd='select \"FLUX_G > FLUX_R\"' out=blue_sources.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Count the rows in `observations.fits` where the `QUALITY_FLAG` has the 4th bit set (bit index 3).",
+        "response": "stilts tpipe in=observations.fits cmd='select \"hasBit(QUALITY_FLAG, 3)\"' omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Select all objects from `targets.vot` where the name is either 'M31' or 'M33'.",
+        "response": "stilts tpipe in=targets.vot cmd='select \"NAME == \\'M31\\' || NAME == \\'M33\\'\"'",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: Syntax error: Unterminated quoted string\n"
+    },
+    {
+        "prompt": "Filter `photometry.fits` for rows where the error on MAG_B, which is named `ERR_MAG_B`, is less than 0.05.",
+        "response": "stilts tpipe in=photometry.fits cmd='select \"ERR_MAG_B < 0.05\"'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need to fix the column names in `weird_names.fits` because they contain invalid characters. Use the TSQL style for fixing.",
+        "response": "stilts tpipe in=weird_names.fits cmd='fixcolnames -style TSQL' out=fixed_names.fits",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '-style' 'TSQL'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: fixcolnames -style TSQL\n\nUsage: fixcolnames \n    (Unused arguments: '-style' 'TSQL'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "The UCD for the 'RA' column in `mycat.vot` is wrong. Set it to 'pos.eq.ra;meta.main'.",
+        "response": "stilts tpipe in=mycat.vot cmd='colmeta -ucd RA \\'pos.eq.ra;meta.main\\'' out=mycat_fixed.vot",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: Syntax error: Unterminated quoted string\n"
+    },
+    {
+        "prompt": "Sort the table based on the sum of columns `FLUX_A` and `FLUX_B` without keeping the temporary sum column in the output.",
+        "response": "stilts tpipe in=data.fits cmd='addcol TOTAL_FLUX \"FLUX_A + FLUX_B\"' cmd='sort TOTAL_FLUX' cmd='delcols TOTAL_FLUX' out=data_sorted.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Display the metadata for just the first 10 rows of the very large table `big_table.fits`.",
+        "response": "stilts tpipe in=big_table.fits cmd='head 10' omode=meta",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From `data.fits`, select rows where `FLAG` is zero. Then, add a new column `MAG` from `FLUX` using `25 - 2.5*log10(FLUX)`. Finally, show the statistics for only this new `MAG` column.",
+        "response": "stilts tpipe in=data.fits cmd='select \"FLAG == 0\"' cmd='addcol MAG \"25 - 2.5*log10(FLUX)\"' cmd='keepcols MAG' omode=stats",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Replace the value in column `MAG_ERR` with NULL if the corresponding `MAG_ERR_FLAG` column is not equal to zero.",
+        "response": "stilts tpipe in=data.fits cmd='replacecol MAG_ERR \"MAG_ERR_FLAG == 0 ? MAG_ERR : null\"' out=data_clean_err.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Select sources from `deep_field.fits` where `MAG_I` is less than 25, then add galactic coordinates, and finally save only the ID and the new galactic coordinates to `deep_field_gal.fits`.",
+        "response": "stilts tpipe in=deep_field.fits cmd='select \"MAG_I < 25\"' cmd='addskycoords fk5 gal RA DEC GAL_L GAL_B' cmd='keepcols \"ID GAL_L GAL_B\"' out=deep_field_gal.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From `data.fits`, create two new columns: 'FLUX_CGS' which is `FLUX_JY` multiplied by 1e-23, and 'LOG_FLUX_CGS' which is the base-10 log of the new flux.",
+        "response": "stilts tpipe in=data.fits cmd='addcol FLUX_CGS \"FLUX_JY * 1e-23\"' cmd='addcol LOG_FLUX_CGS \"log10(FLUX_CGS)\"' out=data_cgs.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I want to process a file with steps defined in `process.txt`. But first, I need to select only rows where 'QUALITY' is 'A'. After the script runs, I want to keep only the first 1000 rows.",
+        "response": "stilts tpipe in=raw.fits cmd='select \"QUALITY == \\'A\\'\"' cmd='@process.txt' cmd='head 1000' out=processed.fits",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: Syntax error: Unterminated quoted string\n"
+    },
+    {
+        "prompt": "From a table with a 'DATE' column in 'yyyy-MM-dd' format, filter for rows where the year is 2024.",
+        "response": "stilts tpipe in=data.fits cmd='select \"startsWith(DATE, \\'2024\\')\"' out=data_2024.fits",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: Syntax error: \")\" unexpected\n"
+    },
+    {
+        "prompt": "Take a FITS table from standard input, sort it by the 'timestamp' column, and write it to standard output as a VOTable.",
+        "response": "stilts tpipe in=- ifmt=fits cmd='sort timestamp' out=- ofmt=votable",
+        "chat.jar": "failed",
+        "error": "Error: FITS ended before header\n"
+    },
+    {
+        "prompt": "Compute the mean of the 'signal' column for every group of rows with the same 'chip_id'.",
+        "response": "stilts tpipe in=data.fits cmd='group chip_id' cmd='stats mean(signal)'",
+        "chat.jar": "failed",
+        "error": "Error: Unknown quantity mean(signal) must be one of: \n\n       * Index: Position of column in table\n       * Name: Column name\n       * Class: Data type of objects in column\n       * Shape: Shape of array values\n       * ElSize: Size of each element in column (mostly useful for strings)\n       * Units: Unit string\n       * Description: Description of data in the column\n       * UCD: Unified Content Descriptor\n       * Utype: Type in data model\n       * Xtype: Extended data type\n       * CoosysSystem: Sky coordinate system name from COOSYS\n       * CoosysEpoch: Sky epoch from COOSYS\n       * CoosysRefposition: Reference position from COOSYS\n       * CoosysEquinox: Sky equinox from COOSYS\n       * TimesysTimeorigin: Time origin from TIMESYS\n       * TimesysTimescale: Timescale from TIMESYS\n       * TimesysRefposition: Ref position from TIMESYS\n       * STIL_HPX_LEVEL: Level of HEALPix pixels contained in the table\n            (nside=2^level)\n       * STIL_HPX_ISNEST: True for NEST indexation scheme, False for RING\n       * STIL_HPX_COLNAME: Name of the table column containing HEALPix\n            index; null value or empty string indicates implicit\n       * STIL_HPX_CSYS: 'C'=celestial/equatorial, 'G'=galactic, 'E'=ecliptic\n       * NGood: Number of non-blank cells\n       * NBad: Number of blank cells\n       * Mean: Average\n       * StDev: Population Standard deviation\n       * Variance: Population Variance\n       * SampStDev: Sample Standard Deviation\n       * SampVariance: Sample Variance\n       * MedAbsDev: Median Absolute Deviation\n       * ScMedAbsDev: Median Absolute Deviation * 1.4826\n       * Skew: Gamma 1 skewness measure\n       * Kurtosis: Gamma 2 peakedness measure\n       * Minimum: Numeric minimum\n       * Maximum: Numeric maximum\n       * Sum: Sum of values\n       * MinPos: Row index of numeric minimum\n       * MaxPos: Row index of numeric maximum\n       * Cardinality: Number of distinct values in column; values >100\n            ignored\n       * Median: Middle value in sequence\n       * Quartile1: First quartile\n       * Quartile2: Second quartile\n       * Quartile3: Third quartile\n       * ArrayNGood: Per-element non-blank counts for fixed-length array\n            columns\n       * ArraySum: Per-element sums for fixed-length array columns\n       * ArrayMean: Per-element means for fixed-length array columns\n       * ArrayStDev: Per-element population standard deviation for\n            fixed-length array columns\n       * Q.nn: Quantile for 0.nn\n\nCommand was: stats mean(signal)\n\nUsage: stats [-[no]parallel] [-qapprox|-qexact] [<item> ...]\n    (Unknown quantity mean(signal) must be one of: \n\n       * Index: Position of column in table\n       * Name: Column name\n       * Class: Data type of objects in column\n       * Shape: Shape of array values\n       * ElSize: Size of each element in column (mostly useful for strings)\n       * Units: Unit string\n       * Description: Description of data in the column\n       * UCD: Unified Content Descriptor\n       * Utype: Type in data model\n       * Xtype: Extended data type\n       * CoosysSystem: Sky coordinate system name from COOSYS\n       * CoosysEpoch: Sky epoch from COOSYS\n       * CoosysRefposition: Reference position from COOSYS\n       * CoosysEquinox: Sky equinox from COOSYS\n       * TimesysTimeorigin: Time origin from TIMESYS\n       * TimesysTimescale: Timescale from TIMESYS\n       * TimesysRefposition: Ref position from TIMESYS\n       * STIL_HPX_LEVEL: Level of HEALPix pixels contained in the table\n            (nside=2^level)\n       * STIL_HPX_ISNEST: True for NEST indexation scheme, False for RING\n       * STIL_HPX_COLNAME: Name of the table column containing HEALPix\n            index; null value or empty string indicates implicit\n       * STIL_HPX_CSYS: 'C'=celestial/equatorial, 'G'=galactic, 'E'=ecliptic\n       * NGood: Number of non-blank cells\n       * NBad: Number of blank cells\n       * Mean: Average\n       * StDev: Population Standard deviation\n       * Variance: Population Variance\n       * SampStDev: Sample Standard Deviation\n       * SampVariance: Sample Variance\n       * MedAbsDev: Median Absolute Deviation\n       * ScMedAbsDev: Median Absolute Deviation * 1.4826\n       * Skew: Gamma 1 skewness measure\n       * Kurtosis: Gamma 2 peakedness measure\n       * Minimum: Numeric minimum\n       * Maximum: Numeric maximum\n       * Sum: Sum of values\n       * MinPos: Row index of numeric minimum\n       * MaxPos: Row index of numeric maximum\n       * Cardinality: Number of distinct values in column; values >100\n            ignored\n       * Median: Middle value in sequence\n       * Quartile1: First quartile\n       * Quartile2: Second quartile\n       * Quartile3: Third quartile\n       * ArrayNGood: Per-element non-blank counts for fixed-length array\n            columns\n       * ArraySum: Per-element sums for fixed-length array columns\n       * ArrayMean: Per-element means for fixed-length array columns\n       * ArrayStDev: Per-element population standard deviation for\n            fixed-length array columns\n       * Q.nn: Quantile for 0.nn)\n"
+    },
+    {
+        "prompt": "Add a column `RANDOM_VAL` with a random number between 0 and 1 for each row.",
+        "response": "stilts tpipe in=data.fits cmd='addcol RANDOM_VAL \"random()\"' out=data_random.fits",
+        "chat.jar": "executed successfully"
+    }
+]

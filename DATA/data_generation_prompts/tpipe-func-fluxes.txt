@@ -274,3 +274,105 @@ Other
 [] (array dereferencing - first element is zero)
 ?: (conditional switch)
 instanceof (class membership)
+
+FUNCTIONS you should use Only make sure there is an example of each function
+
+10.7.9 Fluxes
+Functions for conversion between flux and magnitude values. Functions are provided for conversion between flux in Janskys and AB magnitudes.
+
+Some constants for approximate conversions between different magnitude scales are also provided:
+
+Constants JOHNSON_AB_*, for Johnson <-> AB magnitude conversions, from Frei and Gunn, Astronomical Journal 108, 1476 (1994), Table 2 (1994AJ....108.1476F).
+Constants VEGA_AB_*, for Vega <-> AB magnitude conversions, from Blanton et al., Astronomical Journal 129, 2562 (2005), Eqs. (5) (2005AJ....129.2562B).
+
+abToJansky( magAB )
+Converts AB magnitude to flux in Jansky.
+F/Jy=10(23-(AB+48.6)/2.5)
+
+
+Parameters:
+magAB (floating point): AB magnitude value
+Return value
+(floating point): equivalent flux in Jansky
+janskyToAb( fluxJansky )
+Converts flux in Jansky to AB magnitude.
+AB=2.5*(23-log10(F/Jy))-48.6
+
+
+Parameters:
+fluxJansky (floating point): flux in Jansky
+Return value
+(floating point): equivalent AB magnitude
+luminosityToFlux( lumin, dist )
+Converts luminosity to flux given a luminosity distance.
+F=lumin/(4 x Pi x dist2)
+
+
+Parameters:
+lumin (floating point): luminosity
+dist (floating point): luminosity distance
+Return value
+(floating point): equivalent flux
+fluxToLuminosity( flux, dist )
+Converts flux to luminosity given a luminosity distance.
+lumin=(4 x Pi x dist2) F
+
+
+Parameters:
+flux (floating point): flux
+dist (floating point): luminosity distance
+Return value
+(floating point): equivalent luminosity
+JOHNSON_AB_V
+Approximate offset between Johnson and AB magnitudes in V band. VJ~=VAB+JOHNSON_AB_V.
+
+JOHNSON_AB_B
+Approximate offset between Johnson and AB magnitudes in B band. BJ~=BAB+JOHNSON_AB_B.
+
+JOHNSON_AB_Bj
+Approximate offset between Johnson and AB magnitudes in Bj band. BjJ~=BjAB+JOHNSON_AB_Bj.
+
+JOHNSON_AB_R
+Approximate offset between Johnson and AB magnitudes in R band. RJ~=RAB+JOHNSON_AB_R.
+
+JOHNSON_AB_I
+Approximate offset between Johnson and AB magnitudes in I band. IJ~=IAB+JOHNSON_AB_I.
+
+JOHNSON_AB_g
+Approximate offset between Johnson and AB magnitudes in g band. gJ~=gAB+JOHNSON_AB_g.
+
+JOHNSON_AB_r
+Approximate offset between Johnson and AB magnitudes in r band. rJ~=rAB+JOHNSON_AB_r.
+
+JOHNSON_AB_i
+Approximate offset between Johnson and AB magnitudes in i band. iJ~=iAB+JOHNSON_AB_i.
+
+JOHNSON_AB_Rc
+Approximate offset between Johnson and AB magnitudes in Rc band. RcJ~=RcAB+JOHNSON_AB_Rc.
+
+JOHNSON_AB_Ic
+Approximate offset between Johnson and AB magnitudes in Ic band. IcJ~=IcAB+JOHNSON_AB_Ic.
+
+JOHNSON_AB_uPrime
+Offset between Johnson and AB magnitudes in u' band (zero). u'J=u'AB+JOHNSON_AB_uPrime=u'AB.
+
+JOHNSON_AB_gPrime
+Offset between Johnson and AB magnitudes in g' band (zero). g'J=g'AB+JOHNSON_AB_gPrime=g'AB.
+
+JOHNSON_AB_rPrime
+Offset between Johnson and AB magnitudes in r' band (zero). r'J=r'AB+JOHNSON_AB_rPrime=r'AB.
+
+JOHNSON_AB_iPrime
+Offset between Johnson and AB magnitudes in i' band (zero). i'J=i'AB+JOHNSON_AB_iPrime=i'AB.
+
+JOHNSON_AB_zPrime
+Offset between Johnson and AB magnitudes in z' band (zero). z'J=z'AB+JOHNSON_AB_zPrime=z'AB.
+
+VEGA_AB_J
+Approximate offset between Vega (as in 2MASS) and AB magnitudes in J band. JVega~=JAB+VEGA_AB_J.
+
+VEGA_AB_H
+Approximate offset between Vega (as in 2MASS) and AB magnitudes in H band. HVega~=HAB+VEGA_AB_H.
+
+VEGA_AB_K
+Approximate offset between Vega (as in 2MASS) and AB magnitudes in K band. KVega~=KAB+VEGA_AB_K.

@@ -1,0 +1,450 @@
+[
+    {
+        "prompt": "I need to format the 'MAG_G' column in 'stars.fits' to always show exactly 2 decimal places in a new column called 'MAG_G_FMT'.",
+        "response": "stilts tpipe in=stars.fits cmd='addcol MAG_G_FMT \"formatDecimal(MAG_G, 2)\"' out=stars_formatted.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Create a string version of the 'REDSHIFT' column, formatted to 4 decimal places. Call the new column 'Z_STR'.",
+        "response": "stilts tpipe in=galaxies.fits cmd='addcol Z_STR \"formatDecimal(REDSHIFT, 4)\"' out=galaxies_formatted.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "My 'SNR' column has too many digits. Can you create a new column 'SNR_display' that shows the value rounded to one decimal place?",
+        "response": "stilts tpipe in=detections.fits cmd='addcol SNR_display \"formatDecimal(SNR, 1)\"' out=detections_clean.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Please format the 'PARALLAX' column in 'gaia.fits' to show 5 digits after the decimal point in a new column 'PLX_FMT'.",
+        "response": "stilts tpipe in=gaia.fits cmd='addcol PLX_FMT \"formatDecimal(PARALLAX, 5)\"' out=gaia_formatted.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I'm creating a report. I need the 'FLUX_ERROR' column values as strings, formatted with 6 decimal places.",
+        "response": "stilts tpipe in=photometry.fits cmd='addcol FLUX_ERROR_STR \"formatDecimal(FLUX_ERROR, 6)\"' out=report.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Round the 'PROPER_MOTION' column to an integer value (zero decimal places) and store it in a new column 'PM_INT'.",
+        "response": "stilts tpipe in=stars.fits cmd='addcol PM_INT \"formatDecimal(PROPER_MOTION, 0)\"' out=stars_pm_int.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Calculate the G-R color and format the result to 3 decimal places in a single step. Call the new column 'G_MINUS_R_FMT'.",
+        "response": "stilts tpipe in=photometry.fits cmd='addcol G_MINUS_R_FMT \"formatDecimal(MAG_G - MAG_R, 3)\"' out=photometry_color.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Format the 'AXIAL_RATIO' column to 3 decimal places for better readability.",
+        "response": "stilts tpipe in=morphology.fits cmd='addcol AXIAL_RATIO_FMT \"formatDecimal(AXIAL_RATIO, 3)\"' out=morphology_fmt.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Take the 'TEMP_K' column, divide by 1000, and format the result to 2 decimal places in a new column 'TEMP_kK'.",
+        "response": "stilts tpipe in=sensor_data.fits cmd='addcol TEMP_kK \"formatDecimal(TEMP_K / 1000.0, 2)\"' out=sensor_data_fmt.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I want a new column 'SEPARATION_STR' which shows the 'ARCSEC_SEP' value formatted to two decimal places.",
+        "response": "stilts tpipe in=pairs.fits cmd='addcol SEPARATION_STR \"formatDecimal(ARCSEC_SEP, 2)\"' out=pairs_fmt.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Please format the 'AMPLITUDE' column to exactly 8 decimal places.",
+        "response": "stilts tpipe in=timeseries.fits cmd='addcol AMPLITUDE_FMT \"formatDecimal(AMPLITUDE, 8)\"' out=timeseries_fmt.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Create a 'LOG_FLUX_FMT' column by taking the log10 of 'FLUX' and formatting it to 4 decimal places.",
+        "response": "stilts tpipe in=fluxes.fits cmd='addcol LOG_FLUX_FMT \"formatDecimal(log10(FLUX), 4)\"' out=fluxes_logfmt.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "My 'WEIGHT' column needs to be displayed with just 1 decimal place. Can you create a 'WEIGHT_FMT' column?",
+        "response": "stilts tpipe in=weights.fits cmd='addcol WEIGHT_FMT \"formatDecimal(WEIGHT, 1)\"' out=weights_fmt.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Format the 'PERIOD_DAYS' column to 7 decimal places for high precision display.",
+        "response": "stilts tpipe in=variables.fits cmd='addcol PERIOD_DAYS_FMT \"formatDecimal(PERIOD_DAYS, 7)\"' out=variables_fmt.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need to replace the 'VALUE' column with a string version of itself, rounded to 4 decimal places.",
+        "response": "stilts tpipe in=results.fits cmd='replacecol VALUE \"formatDecimal(VALUE, 4)\"' out=results_str.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Convert 'RA_DEG' from decimal degrees to an HH:MM:SS.s string in a new column 'RA_HMS'.",
+        "response": "stilts tpipe in=coords.fits cmd='addcol RA_HMS \"formatHMS(RA_DEG)\"' out=coords_hms.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Convert 'DEC_DEG' from decimal degrees to a +/-DD:MM:SS.s string in a new column 'DEC_DMS'.",
+        "response": "stilts tpipe in=coords.fits cmd='addcol DEC_DMS \"formatDMS(DEC_DEG)\"' out=coords_dms.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need to create a catalog with formatted RA and Dec columns. Please convert 'RA' and 'Dec' columns to 'RA_HMS' and 'DEC_DMS' strings.",
+        "response": "stilts tpipe in=catalog.fits cmd='addcol RA_HMS \"formatHMS(RA)\"' cmd='addcol DEC_DMS \"formatDMS(Dec)\"' out=catalog_fmt.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Format the 'RA_PM_CORR' column into a sexagesimal hour-angle string.",
+        "response": "stilts tpipe in=corrected.fits cmd='addcol RA_PM_CORR_HMS \"formatHMS(RA_PM_CORR)\"' out=corrected_hms.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Create a new table containing only 'OBJ_ID', and the formatted coordinates 'RA_HMS' and 'DEC_DMS' derived from 'RA_J2000' and 'DEC_J2000'.",
+        "response": "stilts tpipe in=master.fits cmd='addcol RA_HMS \"formatHMS(RA_J2000)\"' cmd='addcol DEC_DMS \"formatDMS(DEC_J2000)\"' cmd='keepcols \"OBJ_ID RA_HMS DEC_DMS\"' out=display_catalog.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I have 'TARGET_RA' and 'TARGET_DEC' columns. Format them as sexagesimal strings for a finding chart.",
+        "response": "stilts tpipe in=targets.fits cmd='addcol RA_STR \"formatHMS(TARGET_RA)\"' cmd='addcol DEC_STR \"formatDMS(TARGET_DEC)\"' out=targets_chart.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "How can I create a single column 'COORDS_SEX' with the format 'HH:MM:SS.s +DD:MM:SS.s' from 'RA_DEG' and 'DEC_DEG'?",
+        "response": "stilts tpipe in=coords.fits cmd='addcol COORDS_SEX \"formatHMS(RA_DEG) + \\\" \\\" + formatDMS(DEC_DEG)\"' out=coords_pair.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Format the 'GAL_LON' column into an HMS-like string.",
+        "response": "stilts tpipe in=galactic.fits cmd='addcol GLON_HMS \"formatHMS(GAL_LON)\"' out=galactic_hms.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Please format the Right Ascension in 'RA_ICRS' to a string, but without any fractional seconds.",
+        "response": "stilts tpipe in=icrs.fits cmd='addcol RA_HMS \"join(split(formatHMS(RA_ICRS), \\\".\\\")[0], \\\"\\\")\"' out=icrs_nohms.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need to format the declination 'DEC_ICRS', but I want to ensure there are always two digits in the degrees part, like '+05:'.",
+        "response": "stilts tpipe in=icrs.fits cmd='addcol DEC_DMS \"formatDMS(DEC_ICRS)\"' out=icrs_dms.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Create a source designation string like 'J' followed by the HMS RA and DMS Dec, without separators. The columns are 'RA' and 'DEC'.",
+        "response": "stilts tpipe in=sources.fits cmd='addcol DESIGNATION \"\\\"J\\\" + replace(formatHMS(RA), \\\".|:\\\", \\\"\\\") + replace(formatDMS(DEC), \\\".|:\\\", \\\"\\\")\"' out=sources_designated.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Convert the 'MJD_OBS' column to a standard ISO 8601 date-time string in a new 'TIMESTAMP' column.",
+        "response": "stilts tpipe in=observations.fits cmd='addcol TIMESTAMP \"formatISO8601(MJD_OBS)\"' out=observations_timestamped.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "My file 'events.fits' has an 'EVENT_MJD' column. Can you add a human-readable 'EVENT_DATE' column?",
+        "response": "stilts tpipe in=events.fits cmd='addcol EVENT_DATE \"formatISO8601(EVENT_MJD)\"' out=events_dated.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I want to create a label for plots containing the object ID and the observation date formatted as YYYY-MM-DD.",
+        "response": "stilts tpipe in=data.fits cmd='addcol PLOT_LABEL \"ID + \\\"_\\\" + substring(formatISO8601(OBS_MJD), 0, 10)\"' out=data_labels.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Format the 'FLUX' column into scientific notation with 3 significant figures. Call the new column 'FLUX_SCI'.",
+        "response": "stilts tpipe in=fluxes.fits cmd='addcol FLUX_SCI \"formatDecimal(FLUX, \\\"0.00E0\\\")\"' out=fluxes_sci.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need to format an integer 'OBJ_ID' to be a 5-digit number padded with leading zeros, e.g., 123 becomes '00123'.",
+        "response": "stilts tpipe in=catalog.fits cmd='addcol OBJ_ID_FMT \"formatDecimal(OBJ_ID, \\\"00000\\\")\"' out=catalog_padded.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Create a string for 'RADIAL_VELOCITY' that always explicitly shows a plus or minus sign.",
+        "response": "stilts tpipe in=velocities.fits cmd='addcol RV_STR \"formatDecimal(RADIAL_VELOCITY, \\\"+#.0;-#.0\\\")\"' out=velocities_signed.fits",
+        "chat.jar": "fixed",
+        "error": "Error: Badly formed line: addcol RV_STR \"formatDecimal(RADIAL_VELOCITY, \\\"+#.0\nUsage: tpipe ifmt=<in-format> istream=true|false cmd=<cmds>\n             omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n             out=<out-table> ofmt=<out-format>\n             [in=]<table>\n\n"
+    },
+    {
+        "prompt": "Format a 'COMPLETENESS' column, which is a ratio from 0 to 1, as a percentage string with one decimal place, like '95.5%'.",
+        "response": "stilts tpipe in=stats.fits cmd='addcol COMPLETENESS_PCT \"formatDecimal(COMPLETENESS * 100, \\\"#.0'%'\\\")\"' out=stats_pct.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Create a fixed-width string column for 'MAG_R' with the format 'xx.xxx', padding with leading spaces if necessary. For example 7.1 becomes ' 7.100'.",
+        "response": "stilts tpipe in=photometry.fits cmd='addcol MAG_R_FIXED \"formatDecimal(MAG_R, \\\"##.000\\\")\"' out=photometry_fixed.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Express the 'ERROR_FLUX' column in exponential notation with two digits after the decimal point.",
+        "response": "stilts tpipe in=errors.fits cmd='addcol ERR_FLUX_EXP \"formatDecimal(ERROR_FLUX, \\\"0.00E00\\\")\"' out=errors_exp.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I want to format the 'GAIN' column with at least 3 integer digits, padding with zeros, and 2 decimal digits.",
+        "response": "stilts tpipe in=ccd.fits cmd='addcol GAIN_FMT \"formatDecimal(GAIN, \\\"000.00\\\")\"' out=ccd_fmt.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "How can I format a dollar value in the 'PRICE' column to include commas as thousands separators?",
+        "response": "stilts tpipe in=sales.fits cmd='addcol PRICE_FMT \"formatDecimal(PRICE, \\\"#,###.00\\\")\"' out=sales_fmt.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Format the 'Z_ERR' column to show 3 significant digits using scientific notation.",
+        "response": "stilts tpipe in=galaxies.fits cmd='addcol Z_ERR_FMT \"formatDecimal(Z_ERR, \\\"0.00E0\\\")\"' out=galaxies_zerr_fmt.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Create a 'SCORE_PERCENT' column by multiplying 'SCORE' by 100 and formatting it as an integer percentage string.",
+        "response": "stilts tpipe in=results.fits cmd='addcol SCORE_PERCENT \"formatDecimal(SCORE * 100, \\\"#0'%'\\\")\"' out=results_pct.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Please format the 'OFFSET' column so it always shows a sign and has 2 decimal places.",
+        "response": "stilts tpipe in=offsets.fits cmd='addcol OFFSET_FMT \"formatDecimal(OFFSET, \\\"+0.00;-0.00\\\")\"' out=offsets_fmt.fits",
+        "chat.jar": "fixed",
+        "error": "Error: Badly formed line: addcol OFFSET_FMT \"formatDecimal(OFFSET, \\\"+0.00\nUsage: tpipe ifmt=<in-format> istream=true|false cmd=<cmds>\n             omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n             out=<out-table> ofmt=<out-format>\n             [in=]<table>\n\n"
+    },
+    {
+        "prompt": "I need to generate a label from a 'COUNT' column, but I want it to be a 6-digit zero-padded string.",
+        "response": "stilts tpipe in=data.fits cmd='addcol COUNT_LABEL \"formatDecimal(COUNT, \\\"000000\\\")\"' out=data_labels.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "For a report for my French colleagues, please format the 'VALUE' column using a comma as the decimal separator and two decimal places.",
+        "response": "stilts tpipe in=report.fits cmd='addcol VALUE_LOCAL \"formatDecimalLocal(VALUE, 2)\"' out=report_local.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "How do I format the 'PRICE' column using locale-specific thousands separators and decimal points?",
+        "response": "stilts tpipe in=data.csv cmd='addcol PRICE_LOCAL \"formatDecimalLocal(PRICE, \\\"#,###.00\\\")\"' out=data_local.csv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I'm in Germany and need to create a CSV for a local system. Format the 'MEASUREMENT' column to use a comma decimal separator and 4 decimal places.",
+        "response": "stilts tpipe in=measurements.fits cmd='addcol MEASUREMENT_DE \"formatDecimalLocal(MEASUREMENT, 4)\"' out=measurements_de.csv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Format the 'WEIGHT' column using the current locale's conventions for number formatting, with 3 decimal places.",
+        "response": "stilts tpipe in=inventory.fits cmd='addcol WEIGHT_FMT \"formatDecimalLocal(WEIGHT, 3)\"' out=inventory_fmt.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Create a report where all numeric values are formatted for a European audience (using commas for decimals). Format 'COL1' to 2 places and 'COL2' to 4.",
+        "response": "stilts tpipe in=europe_data.fits cmd='addcol COL1_LOC \"formatDecimalLocal(COL1, 2)\"' cmd='addcol COL2_LOC \"formatDecimalLocal(COL2, 4)\"' out=europe_report.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Take 'RA_DEG' and 'DEC_DEG', convert them to HMS/DMS strings, and then delete the original decimal columns.",
+        "response": "stilts tpipe in=coords.fits cmd='addcol RA_HMS \"formatHMS(RA_DEG)\"' cmd='addcol DEC_DMS \"formatDMS(DEC_DEG)\"' cmd='delcols \"RA_DEG DEC_DEG\"' out=coords_sex_only.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Select stars with MAG_G < 15, then create a new column 'BRIGHTNESS_FMT' which is the flux formatted to 2 decimal places.",
+        "response": "stilts tpipe in=stars.fits cmd='select \"MAG_G < 15\"' cmd='addcol BRIGHTNESS_FMT \"formatDecimal(FLUX_G, 2)\"' out=bright_stars_fmt.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Sort the table by 'REDSHIFT' descending, take the top 100, and for these, format the 'REDSHIFT' value into a 'Z_FMT' column with 4 decimal places.",
+        "response": "stilts tpipe in=quasars.fits cmd='sorthead -down 100 REDSHIFT' cmd='addcol Z_FMT \"formatDecimal(REDSHIFT, 4)\"' out=top_quasars_fmt.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need a formatted ID string 'CAT_ID' like 'SDSS-XXXX.XXXX' where the X's are the 'OBJ_ID' formatted with 4 integer and 4 decimal places.",
+        "response": "stilts tpipe in=sdss.fits cmd='addcol CAT_ID \"\\\"SDSS-\\\" + formatDecimal(OBJ_ID, \\\"0000.0000\\\")\"' out=sdss_catid.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Convert the 'OBS_MJD' to an ISO date, keep only the YYYY-MM-DD part, and name the column 'OBS_DATE'.",
+        "response": "stilts tpipe in=log.fits cmd='addcol OBS_DATE \"substring(formatISO8601(OBS_MJD), 0, 10)\"' out=log_dated.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Format the 'MAG' column to 2 decimal places, and then show statistics on the resulting table.",
+        "response": "stilts tpipe in=phot.fits cmd='addcol MAG_FMT \"formatDecimal(MAG, 2)\"' omode=stats",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Create a new column 'RA_HMS_2DP' which is the RA formatted to HH:MM:SS but with the seconds part rounded to two decimal places.",
+        "response": "stilts tpipe in=coords.fits cmd='addcol RA_HMS_2DP \"formatHMS(RA)\"' out=coords_fmt.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "For all stars, create a 'LABEL' column: 'ID_xxxx, mag=yy.yy', where xxxx is the 'ID' and yy.yy is the 'V_MAG' formatted to two decimals.",
+        "response": "stilts tpipe in=stars.fits cmd='addcol LABEL \"\\\"ID_\\\" + ID + \\\", mag=\\\" + formatDecimal(V_MAG, 2)\"' out=star_labels.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Please show the metadata of my table after adding a new column 'DEC_DMS' formatted from 'DEC_DEG'.",
+        "response": "stilts tpipe in=data.fits cmd='addcol DEC_DMS \"formatDMS(DEC_DEG)\"' omode=meta",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Filter for rows where 'FLAG' is 0, then format the 'VALUE' column into scientific notation with 2 significant figures.",
+        "response": "stilts tpipe in=raw.fits cmd='select \"FLAG==0\"' cmd='addcol VALUE_SCI \"formatDecimal(VALUE, \\\"0.0E0\\\")\"' out=clean_sci.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I want to replace the 'RA_DEG' column with its HMS string representation.",
+        "response": "stilts tpipe in=coords.fits cmd='replacecol RA_DEG \"formatHMS(RA_DEG)\"' out=coords_hms_replace.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Replace the 'DEC_DEG' column with its DMS string representation.",
+        "response": "stilts tpipe in=coords.fits cmd='replacecol DEC_DEG \"formatDMS(DEC_DEG)\"' out=coords_dms_replace.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Format the 'SIZE' column to 1 decimal place and send the result to TOPCAT.",
+        "response": "stilts tpipe in=sizes.fits cmd='addcol SIZE_FMT \"formatDecimal(SIZE, 1)\"' omode=topcat",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Count the rows after creating a formatted coordinate string 'COORDS' from 'RA' and 'DEC'.",
+        "response": "stilts tpipe in=mycat.fits cmd='addcol COORDS \"formatHMS(RA)+formatDMS(DEC)\"' omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Format the 'FLUX_G' and 'FLUX_R' columns to 3 decimal places each, naming them 'FLUX_G_FMT' and 'FLUX_R_FMT'.",
+        "response": "stilts tpipe in=phot.fits cmd='addcol FLUX_G_FMT \"formatDecimal(FLUX_G, 3)\"' cmd='addcol FLUX_R_FMT \"formatDecimal(FLUX_R, 3)\"' out=phot_fmt.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Round all three magnitude columns, 'MAG_U', 'MAG_G', 'MAG_R', to two decimal places, replacing the original columns.",
+        "response": "stilts tpipe in=mags.fits cmd='replacecol MAG_U \"formatDecimal(MAG_U, 2)\"' cmd='replacecol MAG_G \"formatDecimal(MAG_G, 2)\"' cmd='replacecol MAG_R \"formatDecimal(MAG_R, 2)\"' out=mags_rounded.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I have epoch data in MJD. Please add a column 'EPOCH_ISO' with the formatted date and time.",
+        "response": "stilts tpipe in=epochs.fits cmd='addcol EPOCH_ISO \"formatISO8601(MJD_EPOCH)\"' out=epochs_iso.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From 'data.fits', create a column 'ID_PADDED' by formatting the numeric 'ID' column to an 8-digit string with leading zeros.",
+        "response": "stilts tpipe in=data.fits cmd='addcol ID_PADDED \"formatDecimal(ID, \\\"00000000\\\")\"' out=data_padded.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need to display a 'velocity' column with a thousands separator for readability.",
+        "response": "stilts tpipe in=velocities.fits cmd='addcol VELOCITY_FMT \"formatDecimal(velocity, \\\"#,###\\\")\"' out=velocities_fmt.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Format the 'temperature' column to always show one decimal place, even if it's zero, and also show the sign.",
+        "response": "stilts tpipe in=temps.fits cmd='addcol TEMP_FMT \"formatDecimal(temperature, \\\"+0.0;-0.0\\\")\"' out=temps_fmt.fits",
+        "chat.jar": "fixed",
+        "error": "Error: Badly formed line: addcol TEMP_FMT \"formatDecimal(temperature, \\\"+0.0\nUsage: tpipe ifmt=<in-format> istream=true|false cmd=<cmds>\n             omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n             out=<out-table> ofmt=<out-format>\n             [in=]<table>\n\n"
+    },
+    {
+        "prompt": "Generate a 'FILENAME' column for each row based on its ID, like 'IMG_00123.fits'. The ID column is numeric.",
+        "response": "stilts tpipe in=index.fits cmd='addcol FILENAME \"\\\"IMG_\\\" + formatDecimal(ID, \\\"00000\\\" ) + \\\".fits\\\"\"' out=index_filenames.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Take the 'LAST_MODIFIED_MJD' column and add a 'LAST_MODIFIED_ISO' column with the ISO 8601 representation.",
+        "response": "stilts tpipe in=files.fits cmd='addcol LAST_MODIFIED_ISO \"formatISO8601(LAST_MODIFIED_MJD)\"' out=files_iso.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Create a display-ready table by formatting RA to HMS, Dec to DMS, and Magnitude to 2 decimal places.",
+        "response": "stilts tpipe in=catalog.fits cmd='addcol RA_STR \"formatHMS(RA)\"' cmd='addcol DEC_STR \"formatDMS(DEC)\"' cmd='addcol MAG_STR \"formatDecimal(MAG, 2)\"' cmd='keepcols \"RA_STR DEC_STR MAG_STR\"' out=display.txt",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Format my 'RA_AVG' and 'DEC_AVG' columns as sexagesimal strings.",
+        "response": "stilts tpipe in=averages.fits cmd='addcol RA_AVG_HMS \"formatHMS(RA_AVG)\"' cmd='addcol DEC_AVG_DMS \"formatDMS(DEC_AVG)\"' out=averages_fmt.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need to format the 'eccentricity' value to 5 decimal places and replace the original column.",
+        "response": "stilts tpipe in=orbits.fits cmd='replacecol eccentricity \"formatDecimal(eccentricity, 5)\"' out=orbits_fmt.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Add a column 'SEMI_MAJOR_FMT' showing the 'SEMI_MAJOR_AXIS' in scientific notation with 4 significant figures.",
+        "response": "stilts tpipe in=orbits.fits cmd='addcol SEMI_MAJOR_FMT \"formatDecimal(SEMI_MAJOR_AXIS, \\\"0.000E0\\\")\"' out=orbits_sci.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Convert the 'DISCOVERY_DATE_MJD' column to an ISO date string.",
+        "response": "stilts tpipe in=discoveries.fits cmd='addcol DISCOVERY_DATE \"formatISO8601(DISCOVERY_DATE_MJD)\"' out=discoveries_dated.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Please format the 'chi2' column to 3 decimal places.",
+        "response": "stilts tpipe in=fits.fits cmd='addcol chi2_fmt \"formatDecimal(chi2, 3)\"' out=fits_fmt.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need to create a formatted string column 'POSITION' from 'X_PIXEL' and 'Y_PIXEL', both rounded to 2 decimal places, like '(xxxx.xx, yyyy.yy)'.",
+        "response": "stilts tpipe in=positions.fits cmd='addcol POSITION \"\\\"(\\\" + formatDecimal(X_PIXEL, 2) + \\\", \\\" + formatDecimal(Y_PIXEL, 2) + \\\")\\\"\"' out=positions_fmt.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "For my publication, format the 'REDSHIFT' to 3 decimals and its error 'REDSHIFT_ERR' to 4 decimals.",
+        "response": "stilts tpipe in=data.fits cmd='addcol Z_PUB \"formatDecimal(REDSHIFT, 3)\"' cmd='addcol Z_ERR_PUB \"formatDecimal(REDSHIFT_ERR, 4)\"' out=data_pub.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Create a 'COORD_GAL' string column from 'GLON' and 'GLAT' formatted to 4 decimal places each.",
+        "response": "stilts tpipe in=galactic.fits cmd='addcol COORD_GAL \"formatDecimal(GLON, 4) + \\\",\\\" + formatDecimal(GLAT, 4)\"' out=galactic_fmt.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Format the 'DURATION_SEC' column to an integer and add ' seconds' to the end in a new 'DURATION_STR' column.",
+        "response": "stilts tpipe in=events.fits cmd='addcol DURATION_STR \"formatDecimal(DURATION_SEC, 0) + \\\" seconds\\\"\"' out=events_str.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I have an index file where the index is a number. I want to create a column 'INDEX_FMT' that formats this number as a 10-digit zero-padded string.",
+        "response": "stilts tpipe in=index.fits cmd='addcol INDEX_FMT \"formatDecimal(INDEX, \\\"0000000000\\\")\"' out=index_fmt.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Format the 'PROBABILITY' column as a percentage with 2 decimal places using the '%' sign.",
+        "response": "stilts tpipe in=predictions.fits cmd='addcol PROB_PCT \"formatDecimal(PROBABILITY * 100, \\\"0.00'%'\\\")\"' out=predictions_pct.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Convert 'RA_EPOCH' and 'DEC_EPOCH' to sexagesimal strings.",
+        "response": "stilts tpipe in=epochs.fits cmd='addcol RA_EPOCH_HMS \"formatHMS(RA_EPOCH)\"' cmd='addcol DEC_EPOCH_DMS \"formatDMS(DEC_EPOCH)\"' out=epochs_hms.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Format the 'SYS_TEMP' column to show a sign and one decimal place.",
+        "response": "stilts tpipe in=logs.fits cmd='addcol SYS_TEMP_FMT \"formatDecimal(SYS_TEMP, \\\"+0.0\\\")\"' out=logs_fmt.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need a 'MONEY' column formatted with a leading dollar sign and comma separators.",
+        "response": "stilts tpipe in=finance.fits cmd='addcol MONEY \"formatDecimal(AMOUNT, \\\"'$'#,###.00\\\")\"' out=finance_fmt.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Create an object name like 'OBJ_RA_DEC' where RA and DEC are formatted to 4 decimal places.",
+        "response": "stilts tpipe in=objects.fits cmd='addcol NAME \"\\\"OBJ_\\\" + formatDecimal(RA, 4) + \\\"_\\\" + formatDecimal(DEC, 4)\"' out=objects_named.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Take the 'START_MJD' and 'END_MJD' columns and add ISO formatted columns 'START_ISO' and 'END_ISO'.",
+        "response": "stilts tpipe in=timerange.fits cmd='addcol START_ISO \"formatISO8601(START_MJD)\"' cmd='addcol END_ISO \"formatISO8601(END_MJD)\"' out=timerange_iso.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Select rows with 'CONFIDENCE' > 0.9, then format the 'VALUE' column to 5 decimal places.",
+        "response": "stilts tpipe in=results.fits cmd='select \"CONFIDENCE > 0.9\"' cmd='addcol VALUE_FMT \"formatDecimal(VALUE, 5)\"' out=high_conf_results.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Format 'PM_RA' and 'PM_DEC' columns to 3 decimal places and also show their signs explicitly.",
+        "response": "stilts tpipe in=pm.fits cmd='addcol PM_RA_FMT \"formatDecimal(PM_RA, \\\"+0.000\\\")\"' cmd='addcol PM_DEC_FMT \"formatDecimal(PM_DEC, \\\"+0.000\\\")\"' out=pm_fmt.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Generate a 'CITATION_KEY' from 'AUTHOR_ID' and 'YEAR', like 'AUTH001-2025'. The author ID needs to be zero-padded to 4 digits.",
+        "response": "stilts tpipe in=citations.fits cmd='addcol CITATION_KEY \"\\\"AUTH\\\" + formatDecimal(AUTHOR_ID, \\\"0000\\\") + \\\"-\\\" + YEAR\"' out=citations_keyed.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I want to see the declination formatted as a string but without the colons, just degrees, minutes, seconds.",
+        "response": "stilts tpipe in=coords.fits cmd='addcol DEC_DMS_FLAT \"replace(formatDMS(DEC_DEG), \\\".|:\\\", \\\"\\\")\"' out=coords_flat.fits",
+        "chat.jar": "executed successfully"
+    }
+]

@@ -1,0 +1,467 @@
+[
+    {
+        "prompt": "Perform a simple sky match between my local file 'my_sources.fits' and the 2MASS catalog from the GAVO TAP service. Use a search radius of 1 arcsecond.",
+        "response": "stilts tapskymatch tapurl=http://dc.g-vo.org/tap taptable=twomass.data taplon=raj2000 taplat=dej2000 in=my_sources.fits inlon=RA inlat=DEC sr=0.000277 out=2mass_matches.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Query the Gaia DR3 TAP service for the first 100 sources, retrieving only their source_id, ra, and dec. Save the output to a CSV file named 'gaia_sample.csv'.",
+        "response": "stilts tapquery tapurl=https://gea.esac.esa.int/tap-server/tap adql='SELECT TOP 100 source_id, ra, dec FROM gaiadr3.gaia_source' out=gaia_sample.csv ofmt=csv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I have a running TAP job with the URL 'http://dc.zah.uni-heidelberg.de/__system__/tap/run/tap/async/xyz123'. Can you fetch the results and send them directly to TOPCAT?",
+        "response": "stilts tapresume joburl='http://dc.zah.uni-heidelberg.de/__system__/tap/run/tap/async/xyz123' omode=topcat",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Crossmatch 'input_cat.vot' against the SDSS DR12 photoObj table on the GAVO TAP service. I need only the best match for each of my sources within a 2 arcsecond radius. My coordinate columns are RA_deg and DEC_deg.",
+        "response": "stilts tapskymatch tapurl=http://dc.g-vo.org/tap taptable=sdssdr12.photoobj taplon=ra taplat=dec in=input_cat.vot inlon=RA_deg inlat=DEC_deg sr=0.000555 find=best out=sdss_best_matches.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Upload my table 'targets.csv' and crossmatch it against the Gaia DR2 source table. My table has columns 'ra' and 'dec'. Give the uploaded table the name 'mytargets'.",
+        "response": "stilts tapquery tapurl=https://gea.esac.esa.int/tap-server/tap nupload=1 upload1=targets.csv upname1=mytargets adql='SELECT * FROM gaiadr2.gaia_source AS g JOIN TAP_UPLOAD.mytargets AS t ON 1=CONTAINS(POINT(''ICRS'', g.ra, g.dec), CIRCLE(''ICRS'', t.ra, t.dec, 0.000277))' out=gaia_x_targets.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find all matches between 'local_qso.fits' and 'gaiadr3.qso_candidates' within 0.5 arcseconds. The remote coordinate columns are 'ra' and 'dec'. My local columns are 'RA_2000' and 'DEC_2000'. Only retrieve the 'source_id' and 'phot_g_mean_mag' columns from the remote table.",
+        "response": "stilts tapskymatch tapurl=https://gea.esac.esa.int/tap-server/tap taptable=gaiadr3.qso_candidates taplon=ra taplat=dec tapcols=source_id,phot_g_mean_mag in=local_qso.fits inlon=RA_2000 inlat=DEC_2000 sr=0.000138 find=all out=qso_gaia_matches.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Query the VizieR TAP service for all entries in the GLIMPSE source catalog ('II/293/glimpse') that have a flux in channel 1 greater than 100. Write the output to standard output in VOTable format.",
+        "response": "stilts tapquery tapurl=http://tapvizier.u-strasbg.fr/TAPVizieR/tap adql=\"SELECT * FROM \\\"II/293/glimpse\\\" WHERE F1 > 100\" out=- ofmt=votable",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Match my 'asteroids.dat' file (which is a text file, format ascii) against the AllWISE catalog at the GAVO service. The coordinates are 'RA_hms' and 'DEC_dms' in my file. For each input row, I want a new row in the output, containing the best match if one exists within 5 arcseconds, or blank otherwise.",
+        "response": "stilts tapskymatch tapurl=http://dc.g-vo.org/tap ifmt=ascii taptable=allwise.source taplon=ra taplat=dec in=asteroids.dat inlon=RA_hms inlat=DEC_dms sr=0.00138 find=each out=asteroids_x_allwise.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I have an existing job '.../async/job456'. Resume it, but don't delete the job from the server when you are done. Just count the number of result rows.",
+        "response": "stilts tapresume joburl='http://dc.g-vo.org/tap/async/job456' delete=never omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Upload 'hot_stars.fits', filter it to only include stars with Teff > 20000, and then join it with the 'rave.dr5' table based on a 2 arcsecond positional crossmatch. Name the upload 'hotstars'.",
+        "response": "stilts tapquery tapurl=http://dc.g-vo.org/tap nupload=1 upload1=hot_stars.fits ucmd1='select Teff>20000' upname1=hotstars adql='SELECT * FROM rave.dr5 AS r JOIN TAP_UPLOAD.hotstars AS h ON 1=CONTAINS(POINT(''ICRS'', r.raj2000, r.dej2000), CIRCLE(''ICRS'', h.RA, h.DEC, 0.000555))' omode=topcat",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Perform a positional crossmatch between `my_cat.fits` and `twomass.data`. There might be duplicate column names. Please rename all columns from both tables, adding '_my' to my columns and '_2mass' to the remote ones.",
+        "response": "stilts tapskymatch tapurl=http://dc.g-vo.org/tap taptable=twomass.data taplon=raj2000 taplat=dej2000 in=my_cat.fits inlon=RA inlat=DEC sr=0.0004 fixcols=all suffixin=_my suffixremote=_2mass out=matched_renamed.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Submit a query to the ESA TAP service to find all Gaia DR3 sources with a parallax over 50. Run this asynchronously, set the execution duration limit to 1 hour (3600 seconds), and ask for the job to be destroyed on 2025-12-31.",
+        "response": "stilts tapquery tapurl=https://gea.esac.esa.int/tap-server/tap sync=false executionduration=3600 destruction=2025-12-31T00:00:00Z adql='SELECT source_id, ra, dec, parallax FROM gaiadr3.gaia_source WHERE parallax > 50' out=high_parallax_stars.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Match `input.fits` against the GAVO RAVE DR5 catalog. For each input row, just give me the distance to the nearest RAVE source within 3 arcseconds. I don't need any other data about the RAVE source.",
+        "response": "stilts tapskymatch tapurl=http://dc.g-vo.org/tap taptable=rave.dr5 taplon=raj2000 taplat=dej2000 in=input.fits inlon=RAdeg inlat=DEdeg sr=0.000833 find=each-dist out=rave_distances.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I'm matching a very large table, `big_survey.fits`, against 2MASS. Please process my input table in chunks of 2000 rows at a time.",
+        "response": "stilts tapskymatch tapurl=http://dc.g-vo.org/tap taptable=twomass.data taplon=raj2000 taplat=dej2000 in=big_survey.fits inlon=RA inlat=DEC sr=0.000277 blocksize=2000 out=big_survey_x_2mass.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Fetch all columns for the first 10 objects in the 'panstarrs.dr1' table from the GAVO TAP service. Run the query synchronously and force authentication.",
+        "response": "stilts tapquery tapurl=http://dc.g-vo.org/tap sync=true auth=true adql='SELECT TOP 10 * FROM panstarrs.dr1' omode=topcat",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Resume the job at `.../async/job789` and calculate basic statistics on the resulting table.",
+        "response": "stilts tapresume joburl='http://dc.g-vo.org/tap/async/job789' omode=stats",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From my input table 'sources.fits', select only the columns 'ID', 'RA', and 'DEC', and then crossmatch that against the AllWISE catalog with a 1.5 arcsec radius.",
+        "response": "stilts tapskymatch tapurl=http://dc.g-vo.org/tap taptable=allwise.source taplon=ra taplat=dec in=sources.fits icmd='keepcols \"ID RA DEC\"' inlon=RA inlat=DEC sr=0.000416 out=allwise_matches.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Upload `sources_to_check.csv`, giving it the upload name 'checklist', and join it with the 'gaiadr3.vari_summary' table where the source_id matches. The column in my file is 'gaia_source_id'.",
+        "response": "stilts tapquery tapurl=https://gea.esac.esa.int/tap-server/tap nupload=1 upload1=sources_to_check.csv upname1=checklist adql='SELECT v.* FROM gaiadr3.vari_summary AS v JOIN TAP_UPLOAD.checklist AS c ON v.source_id = c.gaia_source_id' out=variable_data.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Crossmatch my local catalog with the Gaia EDR3 catalog. Before matching, filter my catalog to only include sources where the 'quality_flag' column is 0. Use a 1 arcsecond radius.",
+        "response": "stilts tapskymatch tapurl=https://gea.esac.esa.int/tap-server/tap taptable=gaiaedr3.gaia_source taplon=ra taplat=dec in=my_catalog.fits icmd='select quality_flag==0' inlon=ra inlat=dec sr=0.000277 out=clean_matches.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Run a TAP query to get a random sample of 10000 objects from 2MASS, but set the service's maximum record limit to 20000 to be safe.",
+        "response": "stilts tapquery tapurl=http://dc.g-vo.org/tap maxrec=20000 adql='SELECT TOP 10000 j_m, h_m, k_m FROM twomass.data ORDER BY RAND()' out=2mass_random.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Match `catalogue.fits` with `sdssdr12.photoobj`. The output might contain a huge number of rows. Limit the total number of matched rows returned to 100000.",
+        "response": "stilts tapskymatch tapurl=http://dc.g-vo.org/tap taptable=sdssdr12.photoobj taplon=ra taplat=dec in=catalogue.fits inlon=RA inlat=DEC sr=0.000555 maxrec=100000 out=sdss_matches_limited.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need to query the Hipparcos catalog ('I/239/hip_main') from VizieR. I have a list of HIP identifiers in `hip_ids.txt`. Upload this list and retrieve the corresponding entries.",
+        "response": "stilts tapquery tapurl=http://tapvizier.u-strasbg.fr/TAPVizieR/tap nupload=1 upload1=hip_ids.txt upname1=myids adql='SELECT * FROM \"I/239/hip_main\" AS h JOIN TAP_UPLOAD.myids AS m ON h.HIP = m.HIP' out=hip_targets.vot",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Resume the job at `.../async/jobABC`, and before outputting, sort the results by the 'phot_g_mean_mag' column.",
+        "response": "stilts tapresume joburl='https://gea.esac.esa.int/tap-server/tap/async/jobABC' ocmd='sort phot_g_mean_mag' out=sorted_results.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Perform a crossmatch, but the TAP service is old and I need to explicitly use the TAP 1.0 protocol.",
+        "response": "stilts tapskymatch tapurl=http://old.tap.service/tap interface=tap1.0 taptable=old_cat taplon=ra taplat=dec in=my_sources.fits inlon=RA inlat=DEC sr=0.001 out=old_service_match.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Query the GAVO service for data from the RAVE DR4 table for stars with a metallicity FeH between -0.1 and 0.1.",
+        "response": "stilts tapquery tapurl=http://dc.g-vo.org/tap adql='SELECT RaveID, Teff, logg, FeH FROM rave.dr4 WHERE FeH BETWEEN -0.1 AND 0.1' out=rave_solar_feh.csv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "For the `tapskymatch` command, what if my input latitude and longitude columns are not in degrees but in an expression like 'RA_HOURS * 15'?",
+        "response": "stilts tapskymatch tapurl=http://dc.g-vo.org/tap taptable=twomass.data taplon=raj2000 taplat=dej2000 in=my_sources.fits inlon='RA_HOURS * 15' inlat=DEC sr=0.000277 out=2mass_matches_expr.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Upload my table `regions.csv` which contains ra, dec, and radius columns. For each row, find all Gaia DR3 sources within that row's specified radius.",
+        "response": "stilts tapquery tapurl=https://gea.esac.esa.int/tap-server/tap nupload=1 upload1=regions.csv upname1=myregions adql='SELECT r.ra, r.dec, g.source_id, g.phot_g_mean_mag FROM gaiadr3.gaia_source AS g JOIN TAP_UPLOAD.myregions AS r ON 1=CONTAINS(POINT(''ICRS'', g.ra, g.dec), CIRCLE(''ICRS'', r.ra, r.dec, r.radius))' out=cone_search_results.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Match `mycat.fits` against the Gaia DR3 table, find the best match, and then add a new column to the output table called 'Separation' which is the distance in arcseconds.",
+        "response": "stilts tapskymatch tapurl=https://gea.esac.esa.int/tap-server/tap taptable=gaiadr3.gaia_source taplon=ra taplat=dec in=mycat.fits inlon=RA_ICRS inlat=DE_ICRS sr=0.000277 find=best out=gaia_matches.fits ocmd='addcol Separation \"skyDistance(RA_ICRS, DE_ICRS, ra, dec) * 3600\"'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Submit an asynchronous query to find bright quasars in Gaia DR3. Don't show progress updates in the console. When it's done, save to `bright_qso.fits`.",
+        "response": "stilts tapquery tapurl=https://gea.esac.esa.int/tap-server/tap sync=false progress=false adql='SELECT source_id, ra, dec, phot_g_mean_mag FROM gaiadr3.qso_candidates WHERE phot_g_mean_mag < 15' out=bright_qso.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Resume the job at URL '.../jobDEF' and just get the table metadata.",
+        "response": "stilts tapresume joburl='http://dc.g-vo.org/tap/async/jobDEF' omode=meta",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need to do a crossmatch but my input file is very large. Can I stream it? The format is FITS.",
+        "response": "stilts tapskymatch istream=true ifmt=fits in=very_large_file.fits tapurl=http://dc.g-vo.org/tap taptable=twomass.data taplon=raj2000 taplat=dej2000 sr=0.000277 out=streamed_match.fits",
+        "chat.jar": "failed",
+        "error": "Error: Bad value for parameter inlon: null value not allowed\nUsage: inlon=<expr/deg>\n\n"
+    },
+    {
+        "prompt": "Upload two tables, `sources1.fits` and `sources2.fits`, and find all 2MASS objects that are close to an object from EITHER list. Use a 3 arcsecond radius.",
+        "response": "stilts tapquery tapurl=http://dc.g-vo.org/tap nupload=2 upload1=sources1.fits upname1=list1 upload2=sources2.fits upname2=list2 adql='SELECT t.* FROM twomass.data AS t WHERE 1=CONTAINS(POINT(''ICRS'', t.raj2000, t.dej2000), (SELECT F_REGION(CIRCLE(''ICRS'', ra, dec, 0.000833)) FROM TAP_UPLOAD.list1)) OR 1=CONTAINS(POINT(''ICRS'', t.raj2000, t.dej2000), (SELECT F_REGION(CIRCLE(''ICRS'', ra, dec, 0.000833)) FROM TAP_UPLOAD.list2))' out=combined_matches.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Crossmatch my data against the GALEX GR7 catalog ('II/335/galex_ais') at VizieR. My RA/DEC columns are 'ALPHA_J2000' and 'DELTA_J2000'. Search radius is 4 arcseconds. Send results to TOPCAT.",
+        "response": "stilts tapskymatch tapurl=http://tapvizier.u-strasbg.fr/TAPVizieR/tap taptable='\"II/335/galex_ais\"' taplon=RA_ICRS taplat=DE_ICRS in=my_data.fits inlon=ALPHA_J2000 inlat=DELTA_J2000 sr=0.0011 find=all omode=topcat",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Get the checksum of a remote query result without saving the table. The query should select the first 1000 2MASS objects.",
+        "response": "stilts tapquery tapurl=http://dc.g-vo.org/tap adql='SELECT TOP 1000 * FROM twomass.data' omode=checksum",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I made a query and got job URL '.../async/jobGHI'. Resume it, and keep only the columns 'source_id', 'ra', 'dec', and 'pmra'.",
+        "response": "stilts tapresume joburl='https://gea.esac.esa.int/tap-server/tap/async/jobGHI' ocmd='keepcols \"source_id ra dec pmra\"' out=results_filtered.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "For a `tapskymatch`, I need to set a hard limit on the number of rows returned PER CHUNK by the server to 10000, because the service is timing out on dense fields.",
+        "response": "stilts tapskymatch blockmaxrec=10000 tapurl=http://dc.g-vo.org/tap taptable=twomass.data taplon=raj2000 taplat=dej2000 in=dense_field.fits inlon=RA inlat=DEC sr=0.000277 out=dense_match.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I want to query a TAP service, but I don't want the result. I just want to submit the query and exit. I will resume it later. The query is 'SELECT * FROM large_table'. Don't delete the job.",
+        "response": "stilts tapquery tapurl=http://some.tap.service/tap adql='SELECT * FROM large_table' omode=discard delete=never",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I have a CSV file `target_list.csv` with a header. I need to upload it and join with the PanSTARRS DR1 catalog. The upload format needs to be specified as CSV.",
+        "response": "stilts tapquery tapurl=http://dc.g-vo.org/tap nupload=1 ufmt1=csv upload1=target_list.csv upname1=mycsv adql='SELECT * FROM panstarrs.dr1 AS p JOIN TAP_UPLOAD.mycsv AS m ON 1=CONTAINS(POINT(''ICRS'', p.ra, p.dec), CIRCLE(''ICRS'', m.ra, m.dec, 0.000277))' out=panstarrs_matches.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find the best match between `my_sources.fits` and the UKIDSS Large Area Survey (LAS) DR11 at the WFAU TAP service. Radius 1.2 arcsec.",
+        "response": "stilts tapskymatch tapurl=http://wfaunodes.roe.ac.uk/tap-wfau/tap taptable=ukidsslas_dr11.source taplon=ra taplat=dec in=my_sources.fits inlon=RA inlat=DEC sr=0.000333 find=best out=ukidss_matches.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Resume job '.../async/jobJKL' and save it as a FITS-plus file.",
+        "response": "stilts tapresume joburl='http://dc.g-vo.org/tap/async/jobJKL' out=result.fits ofmt=fits-plus",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Query the Chandra Source Catalog 2.0 via the CADC TAP service for all sources within a 10 arcminute radius of RA=180, Dec=0.",
+        "response": "stilts tapquery tapurl=https://www.canfar.net/cadc/tap adql='SELECT * FROM csc2.master_source WHERE 1=CONTAINS(POINT(''ICRS'', ra, dec), CIRCLE(''ICRS'', 180, 0, 0.1666))' out=chandra_sources.vot",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Match my local table with a remote one, but don't bother renaming columns that don't have duplicate names.",
+        "response": "stilts tapskymatch fixcols=dups tapurl=http://dc.g-vo.org/tap taptable=twomass.data taplon=raj2000 taplat=dej2000 in=my_sources.fits inlon=RA inlat=DEC sr=0.000277 out=2mass_matches_dups.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Run a query to find all Gaia DR3 stars with a proper motion in RA greater than 500 mas/yr. Use the TAP 1.1 protocol explicitly.",
+        "response": "stilts tapquery tapurl=https://gea.esac.esa.int/tap-server/tap interface=tap1.1 adql='SELECT source_id, pmra FROM gaiadr3.gaia_source WHERE pmra > 500' omode=topcat",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Resume a job and immediately delete it from the server, discarding the result table.",
+        "response": "stilts tapresume joburl='http://dc.g-vo.org/tap/async/jobMNO' delete=now omode=discard",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "My input file for a crossmatch has RA and DEC in radians. I need to convert them to degrees before matching.",
+        "response": "stilts tapskymatch tapurl=http://dc.g-vo.org/tap taptable=twomass.data taplon=raj2000 taplat=dej2000 in=sources_radians.fits inlon='RA_rad * 180/PI' inlat='DEC_rad * 180/PI' sr=0.000277 out=matches_from_radians.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Upload my table `stars.fits` and find all other stars in the Gaia DR3 catalog that have a similar proper motion (within 5 mas/yr in both RA and Dec) and are within 1 degree.",
+        "response": "stilts tapquery tapurl=https://gea.esac.esa.int/tap-server/tap nupload=1 upload1=stars.fits upname1=mystars adql='SELECT m.source_id AS input_id, g.source_id AS match_id FROM gaiadr3.gaia_source AS g JOIN TAP_UPLOAD.mystars AS m ON 1=CONTAINS(POINT(''ICRS'', g.ra, g.dec), CIRCLE(''ICRS'', m.ra, m.dec, 1.0)) WHERE ABS(g.pmra - m.pmra) < 5 AND ABS(g.pmdec - m.pmdec) < 5' out=pm_matches.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Crossmatch my FITS table with the SDSS DR9 catalog at the Heidelberg TAP service. Find all pairs within 2 arcseconds. The remote position columns are `ra` and `dec`.",
+        "response": "stilts tapskymatch tapurl=http://dc.zah.uni-heidelberg.de/tap taptable=sdssdr9.photoobjall taplon=ra taplat=dec in=my_table.fits inlon=ra_deg inlat=dec_deg sr=0.000555 find=all out=sdss9_matches.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Query the Gaia TAP service for variable stars of type 'RRAB' and with a G-band magnitude brighter than 18.",
+        "response": "stilts tapquery tapurl=https://gea.esac.esa.int/tap-server/tap adql='SELECT s.source_id, s.ra, s.dec, v.best_classification, s.phot_g_mean_mag FROM gaiadr3.gaia_source AS s JOIN gaiadr3.vari_summary as v ON s.source_id = v.source_id WHERE v.best_classification = ''RRAB'' AND s.phot_g_mean_mag < 18' out=rrl_stars.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need to resume job '.../async/jobPQR'. After retrieving the results, add a new column named 'const' with a fixed value of 3.14.",
+        "response": "stilts tapresume joburl='http://dc.g-vo.org/tap/async/jobPQR' ocmd='addcol const 3.14' out=results_with_const.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Crossmatch my table, but for the remote search radius, instead of a fixed value, use a value from a column in my table called 'search_rad_deg'.",
+        "response": "stilts tapskymatch tapurl=http://dc.g-vo.org/tap taptable=twomass.data taplon=raj2000 taplat=dej2000 in=variable_radius.fits inlon=RA inlat=DEC sr=search_rad_deg out=variable_radius_match.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Submit a query and specify that the uploaded VOTable should use BINARY2 serialization format.",
+        "response": "stilts tapquery tapurl=http://dc.g-vo.org/tap upvotformat=BINARY2 nupload=1 upload1=targets.fits upname1=up adql='SELECT * FROM TAP_UPLOAD.up' omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Crossmatch my catalogue with the GAMA DR4 'TilingCat' table at the GAVO service. The coordinates are RA, Dec for my table and ra, dec for the remote table. Use a radius of 1 arcsec.",
+        "response": "stilts tapskymatch tapurl=http://dc.g-vo.org/tap taptable=gama.dr4tilingcat taplon=ra taplat=dec in=mycat.fits inlon=RA inlat=Dec sr=0.000277 out=gama_matches.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Query the Planck catalog of compact sources (PCCS2) from the ESA TAP service. Select only sources with a detection in the 857 GHz band.",
+        "response": "stilts tapquery tapurl=https://pla.esac.esa.int/tap/ adql='SELECT * FROM PCCS2 WHERE DET857 = ''T''' out=planck_sources.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Resume the job at `.../jobSTU`, but only if it's finished. If it's still running, exit immediately without waiting.",
+        "response": "stilts tapresume joburl='http://dc.g-vo.org/tap/async/jobSTU' poll=0 out=results.fits",
+        "chat.jar": "failed",
+        "error": "Error: Bad value for parameter poll: 0 < minimum value 50\nUsage: poll=<millisec>\n\n"
+    },
+    {
+        "prompt": "Match a local table with a remote one, and disable HTTP compression for the response.",
+        "response": "stilts tapskymatch compress=false tapurl=http://dc.g-vo.org/tap taptable=twomass.data taplon=raj2000 taplat=dej2000 in=my_sources.fits inlon=RA inlat=DEC sr=0.000277 out=2mass_matches_nocomp.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Upload my table and run a query. I want to check the ADQL syntax for errors before submitting it to the server.",
+        "response": "stilts tapquery parse=true tapurl=https://gea.esac.esa.int/tap-server/tap nupload=1 upload1=targets.csv upname1=mytargets adql='SELECT * FROM gaiadr2.gaia_source AS g JOIN TAP_UPLOAD.mytargets AS t ON 1=CONTAINS(POINT(''ICRS'', g.ra, g.dec), CIRCLE(''ICRS'', t.ra, t.dec, 0.000277))' out=gaia_x_targets.fits",
+        "chat.jar": "failed",
+        "error": "Error: ADQL Parse error:  Encountered \"ICRS\". Was expecting one of: \"NULL\" \"\\'\" \"NULL\" \"NULL\" \"\\'\" \"\\'\" \"NULL\" \n    ( Encountered \"ICRS\". Was expecting one of: \"NULL\" \"\\'\" \"NULL\" \"NULL\" \"\\'\" \"\\'\" \"NULL\" )\n"
+    },
+    {
+        "prompt": "Get all sources from the Gaia DR3 table that are within the Large Magellanic Cloud (approximated as a 5-degree radius circle around RA=80.89, Dec=-69.75).",
+        "response": "stilts tapquery tapurl=https://gea.esac.esa.int/tap-server/tap adql='SELECT source_id, ra, dec FROM gaiadr3.gaia_source WHERE 1=CONTAINS(POINT(''ICRS'', ra, dec), CIRCLE(''ICRS'', 80.89, -69.75, 5.0))' out=lmc_stars.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Match my table with the remote Gaia table. Before doing so, add a new column to my local table called 'orig_row' which is just the row index.",
+        "response": "stilts tapskymatch tapurl=https://gea.esac.esa.int/tap-server/tap taptable=gaiaedr3.gaia_source taplon=ra taplat=dec in=my_cat.fits icmd='addcol orig_row $0+1' inlon=ra inlat=dec sr=0.000277 out=matches_with_index.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Resume job `.../async/jobVWX`. I don't want any output file, I just want to make sure it's finished and deleted from the server.",
+        "response": "stilts tapresume joburl='http://dc.g-vo.org/tap/async/jobVWX' omode=discard delete=finished",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Crossmatch `input.fits` with the VISTA Hemisphere Survey (VHS) DR5 at the ESO TAP service. Search radius 1 arcsecond. Find the best match.",
+        "response": "stilts tapskymatch tapurl=http://archive.eso.org/tap_cat taptable=vhsdr5.vhsSource taplon=ra taplat=dec in=input.fits inlon=ra_deg inlat=dec_deg sr=0.000277 find=best out=vhs_matches.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Query the GAVO TAP service for all tables that have 'rave' in their name.",
+        "response": "stilts tapquery tapurl=http://dc.g-vo.org/tap adql=\"SELECT table_name, description FROM tap_schema.tables WHERE table_name LIKE '%rave%'\" omode=topcat",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Match 'my_targets.fits' against the remote table 'some_cat.main'. The remote service is slow, so I want to run the match synchronously in small chunks of 1000.",
+        "response": "stilts tapskymatch sync=true blocksize=1000 tapurl=http://slow.service/tap taptable=some_cat.main taplon=ra taplat=dec in=my_targets.fits inlon=ra inlat=dec sr=0.001 out=slow_match.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I have a job '.../async/jobYZ'. Retrieve its results and format it for a CGI script output.",
+        "response": "stilts tapresume joburl='http://dc.g-vo.org/tap/async/jobYZ' omode=cgi",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Upload `sources.fits`. Before uploading, filter out any rows that have a null value in the 'Jmag' column. Then join with 2MASS.",
+        "response": "stilts tapquery tapurl=http://dc.g-vo.org/tap nupload=1 upload1=sources.fits ucmd1='select !isblank(Jmag)' upname1=clean_sources adql='SELECT * FROM twomass.data AS t JOIN TAP_UPLOAD.clean_sources AS s ON 1=CONTAINS(POINT(''ICRS'', t.raj2000, t.dej2000), CIRCLE(''ICRS'', s.RA, s.DEC, 0.000277))' out=matches.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Match my local catalog against the Catalina Surveys DR1 at the VizieR TAP service. My coordinates are `RA_J2000` and `DE_J2000`. Radius is 3 arcsec.",
+        "response": "stilts tapskymatch tapurl=http://tapvizier.u-strasbg.fr/TAPVizieR/tap taptable='\"II/357/crts_dr1\"' taplon=RA_ICRS taplat=DE_ICRS in=my_cat.fits inlon=RA_J2000 inlat=DE_J2000 sr=0.000833 out=catalina_matches.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Query the TAP service for all Gaia DR3 sources with a negative parallax, and just count how many there are.",
+        "response": "stilts tapquery tapurl=https://gea.esac.esa.int/tap-server/tap adql='SELECT count(*) FROM gaiadr3.gaia_source WHERE parallax < 0' omode=out",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Resume job `.../job1234` and save the output as a TST file.",
+        "response": "stilts tapresume joburl='http://dc.g-vo.org/tap/async/job1234' out=result.tst ofmt=tst",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Match `input.fits` with the GALEX catalog. Rename the input table columns with suffix `_in` and remote columns with `_galex`.",
+        "response": "stilts tapskymatch tapurl=http://dc.g-vo.org/tap taptable=galex.gr7 taplon=ra taplat=dec in=input.fits inlon=RA inlat=DEC sr=0.001 fixcols=all suffixin=_in suffixremote=_galex out=galex_match_renamed.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Upload `my_sources.fits` and find all objects in the GAVO 'panstarrs.dr1' table within 1 arcsecond of any of my sources. After getting the results, sort them by the `objid` column.",
+        "response": "stilts tapquery tapurl=http://dc.g-vo.org/tap nupload=1 upload1=my_sources.fits upname1=up adql='SELECT p.* FROM panstarrs.dr1 AS p, TAP_UPLOAD.up AS u WHERE 1=CONTAINS(POINT(''ICRS'', p.ra, p.dec), CIRCLE(''ICRS'', u.ra, u.dec, 0.000277))' ocmd='sort objid' out=ps1_matches.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find all pairs between `local.fits` and the remote table `skymapper.dr2`. The search radius is in my local table, in a column called `radius_arcsec`. Convert it to degrees for the `sr` parameter.",
+        "response": "stilts tapskymatch tapurl=http://dc.g-vo.org/tap taptable=skymapper.dr2 taplon=ra_icrs taplat=dec_icrs in=local.fits inlon=ra inlat=dec sr='radius_arcsec/3600' out=skymapper_matches.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Resume job `.../job5678`, but don't poll the server frequently. Check for completion only every 30 seconds.",
+        "response": "stilts tapresume joburl='http://dc.g-vo.org/tap/async/job5678' poll=30000 out=result.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Crossmatch `targets.fits` with the WISE catalog ('allwise.source') from GAVO. I only want the `designation`, `w1mpro` and `w2mpro` columns from WISE.",
+        "response": "stilts tapskymatch tapurl=http://dc.g-vo.org/tap taptable=allwise.source taplon=ra taplat=dec tapcols=designation,w1mpro,w2mpro in=targets.fits inlon=RA inlat=DEC sr=0.000555 out=wise_mags.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I want to run a complex query involving a spatial join, but I want to use the capabilities document of the service to determine the correct endpoints.",
+        "response": "stilts tapquery interface=cap tapurl=https://gea.esac.esa.int/tap-server/tap adql='SELECT ...' out=results.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Match a very large catalog against Gaia. Use a block size of 10000 and run it synchronously. Expect it to take a while.",
+        "response": "stilts tapskymatch sync=true blocksize=10000 tapurl=https://gea.esac.esa.int/tap-server/tap taptable=gaiadr3.gaia_source taplon=ra taplat=dec in=huge_cat.fits inlon=RA inlat=DEC sr=0.000277 out=huge_match.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I started a query. Here is the job URL. Get the result and save it, but make sure the job is deleted from the server afterwards, regardless of whether it succeeded or failed.",
+        "response": "stilts tapresume joburl='http://dc.g-vo.org/tap/async/job9012' delete=always out=final_result.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Get me a list of all tables available at the CADC TAP service.",
+        "response": "stilts tapquery tapurl=https://www.canfar.net/cadc/tap adql='SELECT * FROM tap_schema.tables' omode=topcat",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Perform a crossmatch. The input table columns `ra_h`, `ra_m`, `ra_s`, `dec_d`, `dec_m`, `dec_s` need to be converted to decimal degrees for `inlon` and `inlat`.",
+        "response": "stilts tapskymatch tapurl=http://dc.g-vo.org/tap taptable=twomass.data taplon=raj2000 taplat=dej2000 in=dms_coords.fits inlon='(ra_h + ra_m/60.0 + ra_s/3600.0) * 15.0' inlat='dec_d < 0 ? dec_d - dec_m/60.0 - dec_s/3600.0 : dec_d + dec_m/60.0 + dec_s/3600.0' sr=0.000277 out=dms_matches.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Query the Gaia TAP service for sources that have a measured radial velocity.",
+        "response": "stilts tapquery tapurl=https://gea.esac.esa.int/tap-server/tap adql='SELECT source_id, ra, dec, radial_velocity FROM gaiadr3.gaia_source WHERE radial_velocity IS NOT NULL' out=rv_stars.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Resume job `.../job3456` and load it into TOPCAT with the table name 'My TAP Results'.",
+        "response": "stilts tapresume joburl='http://dc.g-vo.org/tap/async/job3456' ocmd='tablename \"My TAP Results\"' omode=topcat",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Crossmatch my `sources.fits` with the UKIDSS Galactic Plane Survey (GPS) DR10 at WFAU, using a 2 arcsecond radius.",
+        "response": "stilts tapskymatch tapurl=http://wfaunodes.roe.ac.uk/tap-wfau/tap taptable=ukidssgps_dr10.source taplon=ra taplat=dec in=sources.fits inlon=RA inlat=DEC sr=0.000555 out=ukidss_gps_matches.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Upload my table `objects.csv`. Select only rows where `type` is 'GALAXY', and then crossmatch these against the 2MASS extended source catalog (`twomass.xsc`).",
+        "response": "stilts tapquery tapurl=http://dc.g-vo.org/tap nupload=1 upload1=objects.csv ucmd1=\"select toInteger(type) == 3\" upname1=galaxies adql='SELECT * FROM twomass.xsc AS x JOIN TAP_UPLOAD.galaxies AS g ON 1=CONTAINS(POINT(''ICRS'', x.raj2000, x.dej2000), CIRCLE(''ICRS'', g.ra, g.dec, 0.00277))' out=galaxy_matches.fits",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '==' '3'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: select toInteger(type) == 3\n\nUsage: select <expr>\n    (Unused arguments: '==' '3'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "Match my catalog with SDSS DR12. The columns `ra` and `dec` exist in both. Ensure the output columns are automatically renamed to avoid clashes, using the default suffixes.",
+        "response": "stilts tapskymatch fixcols=dups tapurl=http://dc.g-vo.org/tap taptable=sdssdr12.photoobj taplon=ra taplat=dec in=my_catalog_with_ra_dec.fits inlon=ra inlat=dec sr=0.000555 out=sdss_matches_renamed.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Run a query to find all Gaia DR3 sources in a small box: RA between 10 and 10.1 degrees, and DEC between 5 and 5.1 degrees.",
+        "response": "stilts tapquery tapurl=https://gea.esac.esa.int/tap-server/tap adql='SELECT source_id, ra, dec FROM gaiadr3.gaia_source WHERE ra BETWEEN 10 AND 10.1 AND dec BETWEEN 5 AND 5.1' out=box_search.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I have job URL `.../job7890`. Please fetch the result and discard it, but tell me the final status of the job (e.g., COMPLETED, ERROR).",
+        "response": "stilts -verbose tapresume joburl='http://dc.g-vo.org/tap/async/job7890' omode=discard",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Match my local table with the LAMOST DR7 M-giant catalog ('V/163/lrs_star') on VizieR. Search radius is 2.5 arcseconds.",
+        "response": "stilts tapskymatch tapurl=http://tapvizier.u-strasbg.fr/TAPVizieR/tap taptable='\"V/163/lrs_star\"' taplon=RAJ2000 taplat=DEJ2000 in=my_sources.fits inlon=ra inlat=dec sr=0.000694 out=lamost_matches.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Upload `targets.fits`, and find counterparts in the Gaia DR3 table that are within 1 arcsec and have a similar G-band magnitude (within 0.1 mags).",
+        "response": "stilts tapquery tapurl=https://gea.esac.esa.int/tap-server/tap nupload=1 upload1=targets.fits upname1=up adql='SELECT u.id, g.source_id, g.phot_g_mean_mag FROM gaiadr3.gaia_source AS g JOIN TAP_UPLOAD.up AS u ON 1=CONTAINS(POINT(''ICRS'', g.ra, g.dec), CIRCLE(''ICRS'', u.ra, u.dec, 0.000277)) WHERE ABS(g.phot_g_mean_mag - u.g_mag) < 0.1' out=mag_matches.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Crossmatch my table against the APASS DR9 catalog ('II/336/apass9') at VizieR. Return only the best match for each of my sources.",
+        "response": "stilts tapskymatch tapurl=http://tapvizier.u-strasbg.fr/TAPVizieR/tap taptable='\"II/336/apass9\"' taplon=RAJ2000 taplat=DEJ2000 in=my_cat.fits inlon=ra inlat=dec sr=0.000833 find=best out=apass_matches.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Query the ESO archive TAP service for all tables related to the VISTA survey.",
+        "response": "stilts tapquery tapurl=http://archive.eso.org/tap_cat adql=\"SELECT table_name FROM tap_schema.tables WHERE table_name LIKE 'vhs%' OR table_name LIKE 'viking%' OR table_name LIKE 'vvv%'\" out=-",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Resume job `.../jobABCD`. Once retrieved, filter the table to only keep rows where the 'Separation' column is less than 0.5.",
+        "response": "stilts tapresume joburl='http://dc.g-vo.org/tap/async/jobABCD' ocmd='select Separation < 0.5' out=close_matches.fits",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '<' '0.5'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: select Separation < 0.5\n\nUsage: select <expr>\n    (Unused arguments: '<' '0.5'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "Match my local catalog `clusters.fits` against the remote table `gaiadr3.gaia_source` to find cluster members. The search radius for each cluster is defined in the `radius_deg` column of my local file. Find all matches.",
+        "response": "stilts tapskymatch tapurl=https://gea.esac.esa.int/tap-server/tap taptable=gaiadr3.gaia_source taplon=ra taplat=dec in=clusters.fits inlon=RA_cluster inlat=DEC_cluster sr=radius_deg find=all out=cluster_members.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Submit an ADQL query to the NOIRLab Astro Data Archive. Retrieve the first 10 rows from the 'ls_dr9.photo_z' table.",
+        "response": "stilts tapquery tapurl=https://datalab.noirlab.edu/tap adql='SELECT TOP 10 * FROM ls_dr9.photo_z' omode=topcat",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Match a local catalog against the FIRST survey catalog ('VIII/92/first14') on VizieR with a 5 arcsecond radius.",
+        "response": "stilts tapskymatch tapurl=http://tapvizier.u-strasbg.fr/TAPVizieR/tap taptable='\"VIII/92/first14\"' taplon=RAJ2000 taplat=DEJ2000 in=my_radio_sources.fits inlon=RA inlat=DEC sr=0.00138 out=first_matches.fits",
+        "chat.jar": "executed successfully"
+    }
+]

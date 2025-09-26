@@ -274,3 +274,358 @@ Other
 [] (array dereferencing - first element is zero)
 ?: (conditional switch)
 instanceof (class membership)
+
+
+10.7.2 Arrays
+Functions which operate on array-valued cells. The array parameters of these functions can only be used on values which are already arrays (usually, numeric arrays). In most cases that means on values in table columns which are declared as array-valued. FITS and VOTable tables can have columns which contain array values, but other formats such as CSV cannot.
+
+If you want to calculate aggregating functions like sum, min, max etc on multiple values which are not part of an array, it's easier to use the functions from the Lists class.
+
+Note that none of these functions will calculate statistical functions over a whole column of a table.
+
+The functions fall into a number of categories:
+
+Aggregating operations, which map an array value to a scalar, including size, count, countTrue, maximum, minimum, sum, mean, median, quantile, stdev, variance, join.
+Operations on one or more arrays which produce array results, including add, subtract, multiply, divide, reciprocal, condition, slice, pick. Mostly these work on any numeric array type and return floating point (double precision) values, but some of them (slice, pick) have variants for different array types.
+The function array, which lets you assemble a floating point array value from a list of scalar numbers. There are variants (intArray, stringArray) for some different array types.
+
+sum( array )
+Returns the sum of all the non-blank elements in the array. If array is not a numeric array, null is returned.
+
+Parameters:
+array (Object): array of numbers
+Return value
+(floating point): sum of all the numeric values in array
+mean( array )
+Returns the mean of all the non-blank elements in the array. If array is not a numeric array, null is returned.
+
+Parameters:
+array (Object): array of numbers
+Return value
+(floating point): mean of all the numeric values in array
+variance( array )
+Returns the population variance of all the non-blank elements in the array. If array is not a numeric array, null is returned.
+
+Parameters:
+array (Object): array of numbers
+Return value
+(floating point): variance of the numeric values in array
+stdev( array )
+Returns the population standard deviation of all the non-blank elements in the array. If array is not a numeric array, null is returned.
+
+Parameters:
+array (Object): array of numbers
+Return value
+(floating point): standard deviation of the numeric values in array
+minimum( array )
+Returns the smallest of the non-blank elements in the array. If array is not a numeric array, null is returned.
+
+Parameters:
+array (Object): array of numbers
+Return value
+(floating point): minimum of the numeric values in array
+maximum( array )
+Returns the largest of the non-blank elements in the array. If array is not a numeric array, null is returned.
+
+Parameters:
+array (Object): array of numbers
+Return value
+(floating point): maximum of the numeric values in array
+median( array )
+Returns the median of the non-blank elements in the array. If array is not a numeric array, null is returned.
+
+Parameters:
+array (Object): array of numbers
+Return value
+(floating point): median of the numeric values in array
+quantile( array, quant )
+Returns a quantile value of the non-blank elements in the array. Which quantile is determined by the quant value; values of 0, 0.5 and 1 give the minimum, median and maximum respectively. A value of 0.99 would give the 99th percentile.
+
+Parameters:
+array (Object): array of numbers
+quant (floating point): number in the range 0-1 deterining which quantile to calculate
+Return value
+(floating point): quantile corresponding to quant
+size( array )
+Returns the number of elements in the array. If array is not an array, zero is returned.
+
+Parameters:
+array (Object): array
+Return value
+(integer): size of array
+count( array )
+Returns the number of non-blank elements in the array. If array is not an array, zero is returned.
+
+Parameters:
+array (Object): array (may or may not be numeric)
+Return value
+(integer): number of non-blank elements in array
+countTrue( array )
+Returns the number of true elements in an array of boolean values.
+
+Parameters:
+array (array of boolean): array of true/false values
+Return value
+(integer): number of true values in array
+join( array, joiner )
+Returns a string composed of concatenating all the elements of an array, separated by a joiner string. If array is not an array, null is returned.
+
+Parameters:
+array (Object): array of numbers or strings
+joiner (String): text string to interpose between adjacent elements
+Return value
+(String): string composed of array elements separated by joiner strings
+Example:
+join(array(1.5,2.1,-3.9), "; ") = "1.5; 2.1; -3.9"
+dotProduct( array1, array2 )
+Returns the dot (scalar) product of two numeric arrays. If either argument is not an array, or if the arrays are not of the same length, a blank value is returned.
+
+Parameters:
+array1 (Object): first array
+array2 (Object): second array
+Return value
+(floating point): sum of element-wise products of input arrays
+Example:
+dotProduct(array(3,4,5), array(1,2,3)) = 26
+add( arrayOrScalar1, arrayOrScalar2 )
+Returns the element-by-element result of adding either two numeric arrays of the same length, or an array and a scalar considered as if an array of the right length.
+If the arguments are not as expected (e.g. arrays of different lengths, both scalars, not numeric) then null is returned.
+
+
+Parameters:
+arrayOrScalar1 (Object): first numeric array/scalar
+arrayOrScalar2 (Object): second numeric array/scalar
+Return value
+(array of floating point): element-by-element result of arrayOrScalar1 + arrayOrScalar2, the same length as the input array(s)
+Examples:
+add(array(1,2,3), array(0.1,0.2,0.3)) = [1.1, 2.2, 3.3]
+add(array(1,2,3), 10) = [11,12,13]
+subtract( arrayOrScalar1, arrayOrScalar2 )
+Returns the element-by-element result of subtracting either two numeric arrays of the same length, or an array and a scalar considered as if an array of the right length.
+If the arguments are not as expected (e.g. arrays of different lengths, both scalars, not numeric) then null is returned.
+
+
+Parameters:
+arrayOrScalar1 (Object): first numeric array/scalar
+arrayOrScalar2 (Object): second numeric array/scalar
+Return value
+(array of floating point): element-by-element result of arrayOrScalar1 - arrayOrScalar2, the same length as the input array(s)
+Examples:
+subtract(array(1,2,3), array(0.1,0.2,0.3)) = [0.9, 1.8, 2.7]
+subtract(array(1,2,3), 1.0) = [0, 1, 2]
+multiply( arrayOrScalar1, arrayOrScalar2 )
+Returns the element-by-element result of multiplying either two numeric arrays of the same length, or an array and a scalar considered as if an array of the right length.
+If the arguments are not as expected (e.g. arrays of different lengths, both scalars, not numeric) then null is returned.
+
+
+Parameters:
+arrayOrScalar1 (Object): first numeric array/scalar
+arrayOrScalar2 (Object): second numeric array/scalar
+Return value
+(array of floating point): element-by-element result of arrayOrScalar1 * arrayOrScalar2, the same length as the input array(s)
+Examples:
+multiply(array(1,2,3), array(2,4,6)) = [2, 8, 18]
+multiply(2, array(1,2,3)) = [2, 4, 6]
+divide( arrayOrScalar1, arrayOrScalar2 )
+Returns the element-by-element result of dividing either two numeric arrays of the same length, or an array and a scalar considered as if an array of the right length.
+If the arguments are not as expected (e.g. arrays of different lengths, both scalars, not numeric) then null is returned.
+
+
+Parameters:
+arrayOrScalar1 (Object): first numeric array/scalar
+arrayOrScalar2 (Object): second numeric array/scalar
+Return value
+(array of floating point): element-by-element result of arrayOrScalar1 / arrayOrScalar2, the same length as the input array(s)
+Examples:
+divide(array(0,9,4), array(1,3,8)) = [0, 3, 0.5]
+divide(array(50,60,70), 10) = [5, 6, 7]
+reciprocal( array )
+Returns the result of taking the reciprocal of every element of a numeric array. If the supplied array argument is not a numeric array, null is returned.
+
+Parameters:
+array (Object): array input
+Return value
+(array of floating point): array output, the same length as the array parameter
+Example:
+reciprocal(array(1,2,0.25) = [1, 0.5, 4]
+condition( flagArray, trueValue, falseValue )
+Maps a boolean array to a numeric array by using supplied numeric values to represent true and false values from the input array.
+This has the same effect as applying the expression outArray[i] = flagArray[i] ? trueValue : falseValue.
+
+
+Parameters:
+flagArray (array of boolean): array of boolean values
+trueValue (floating point): output value corresponding to an input true value
+falseValue (floating point): output value corresponding to an input false value
+Return value
+(array of floating point): output numeric array, same length as flagArray
+Example:
+condition([true, false, true], 1, 0) = [1, 0, 1]
+constant( n, value )
+Returns a fixed-size array filled with a given constant value.
+Note: This documents the double-precision version of the routine. Corresponding routines exist for other data types (float, long, int, short, byte).
+
+
+Parameters:
+n (integer): size of output array
+value (floating point): value of every element in the output array
+Return value
+(array of floating point): n-element array with every element set to value
+Example:
+constant(5, 23.5) = [23.5, 23.5, 23.5, 23.5, 23.5]
+slice( array, i0, i1 )
+Returns a sub-sequence of values from a given array.
+The semantics are like python array slicing, though both limits have to be specified: the output array contains the sequence of elements in the input array from i0 (inclusive) to i1 (exclusive). If a negative value is given in either case, it is added to the length of the input array, so that -1 indicates the last element of the input array. The indices are capped at 0 and the input array length respectively, so a large positive value may be used to indicate the end of the array. If the end index is less than or equal to the start index, a zero-length array is returned.
+
+Note: This documents the double-precision version of the routine. Corresponding routines exist for other data types (float, long, int, short, byte, String, Object).
+
+
+Parameters:
+array (array of floating point): input array
+i0 (integer): index of first element, inclusive (may be negative to count back from the end)
+i1 (integer): index of the last element, exclusive (may be negative to count back from the end)
+Return value
+(array of floating point): array giving the sequence of elements specified by i0 and i1
+Examples:
+slice(array(10,11,12,13), 0, 3) = [10, 11, 12]
+slice(array(10,11,12,13), -2, 999) = [12, 13]
+pick( array, indices, ... )
+Returns a selection of elements from a given array.
+The output array consists of one element selected from the input array for each of the supplied index values. If a negative value is supplied for an index value, it is added to the input array length, so that -1 indicates the last element of the input array. If the input array is null, null is returned. If any of the index values is out of the range of the extent of the input array, an error results.
+
+Note: This documents the double-precision version of the routine. Corresponding routines exist for other data types (float, long, int, short, byte, String, Object).
+
+
+Parameters:
+array (array of floating point): input array
+indices (integer, one or more): one or more index into the input array (may be negative to count back from the end)
+Return value
+(array of floating point): array giving the elements specified by indices
+Examples:
+pick(array(10,11,12,13), 0, 3) = [10, 13]
+pick(array(10,11,12,13), -1, -2, -3) = [13, 12, 11]
+arrayFunc( expr, inArray )
+Returns a floating-point array resulting from applying a given function expression element-by-element to an input array. The output array is the same length as the input array.
+The supplied expression can use the variable "x" to refer to the corresponding element of the input array, and "i" to refer to its (zero-based) index. The various functions and operators from the expression language can all be used, but it is currently not possible to reference other table column values.
+
+If there is an error in the expression, a blank value (not an array) will be returned.
+
+
+Parameters:
+expr (String): expression mapping input to output array values
+inArray (Object): input array
+Return value
+(array of floating point): floating point array with the same number of elements as inArray, or null for a bad expr
+Examples:
+arrayFunc("3*x",array(0,1,2,3,NaN)) = [0, 3, 6, 9, NaN]
+arrayFunc("pow(2,i)+x", array(0.5,0.5,0.5,0.5)) = [1.5, 2.5, 4.5, 8.5]
+intArrayFunc( expr, inArray )
+Returns an integer array resulting from applying a given function expression element-by-element to an input array. The output array is the same length as the input array.
+The supplied expression can use the variable "x" to refer to the corresponding element of the input array, and "i" to refer to its (zero-based) index. The various functions and operators from the expression language can all be used, but it is currently not possible to reference other table column values.
+
+If there is an error in the expression, a blank value (not an array) will be returned.
+
+
+Parameters:
+expr (String): expression mapping input to output array values
+inArray (Object): input array
+Return value
+(array of integer): floating point array with the same number of elements as inArray, or null for a bad expr
+Example:
+intArrayFunc("-x",sequence(5)) = [0, -1, -2, -3, -4]
+indexOf( array, item )
+Returns the position in a supplied array at which a given item appears. The result is zero-based, so if the supplied item is the first entry in the array, the return value will be zero.
+If the item does not appear in the array, -1 is returned. If it appears multiple times, the index of its first appearance is returned.
+
+If indexOf(array, item)==n, then array[n] is equal to item.
+
+Note: This documents the Object version of the routine. Corresponding routines exist for other data types (double, float, long, int, short).
+
+
+Parameters:
+array (array of Object): array which may contain the supplied item
+item (Object): entry to look for in the array
+Return value
+(integer): the index of item in array, or -1
+Examples:
+indexOf(stringArray("QSO", "BCG", "SNR"), "BCG") = 1
+indexOf(stringArray("QSO", "BCG", "SNR"), "TLA") = -1
+sequence( n )
+Returns an integer array of a given length with the values 0, 1, 2, ....
+See also the loop functions, which provide similar functionality.
+
+
+Parameters:
+n (integer): length of array
+Return value
+(array of integer): n-element array, (0, 1, 2, ... n-1)
+Example:
+sequence(4) = (0, 1, 2, 3)
+sequence( n, start, step )
+Returns a floating point array of a given length with values starting at a given value and increasing with a given increment.
+See also the loop functions, which provide similar functionality.
+
+
+Parameters:
+n (integer): length of array
+start (floating point): value of first element
+step (floating point): increment to apply to each element
+Return value
+(array of floating point): n-element array, (start, start+step, start+2*step, ... start+(n-1)*step)
+Example:
+sequence(4, 100, 0.1) = (100.0, 100.1, 100.2, 100.3)
+loop( start, end )
+Returns an integer array like the values taken in a for-loop with given start and end elements and a step of 1. The notional loop corresponds to:
+    for (int x = start; x < end; x++)
+ 
+If you want a floating point array, or one with a non-unit step, you can use the three-parameter version of the loop function. See also the sequence functions.
+
+
+Parameters:
+start (integer): value for first element of output array
+end (integer): value one greater than last element of output array
+Return value
+(array of integer): array with end-start (or 0) elements (start, start+1, start+2, ..., end-1)
+Examples:
+loop(0, 5) = (0, 1, 2, 3, 4)
+loop(5, 0) = ()
+loop( start, end, step )
+Returns a floating point array like the values taken in a for-loop with given start, end, and step arguments. For a positive step, the notional loop corresponds to:
+    for (double x = start; x < end; x += step)
+ 
+Note that numerical precision issues may result in the output array differing from its expected length by 1 (it is generally risky to rely on exact comparison of floating point values). If you want to be sure of the number of elements you can use the sequence function instead.
+
+
+Parameters:
+start (floating point): value for first element of output array
+end (floating point): first value beyond last element of output array
+step (floating point): increment between output array values; may not be zero
+Return value
+(array of floating point): array with approximately (end-start)/step (or 0) elements
+Examples:
+loop(10, 12, 0.5) = (10.0, 10.5, 11.0, 11.5)
+loop(0, 10, 3) = (0., 3., 6., 9.)
+loop(5, 0, -1) = (5., 4., 3., 2., 1.)
+array( values, ... )
+Returns a floating point numeric array built from the given arguments.
+
+Parameters:
+values (floating point, one or more): one or more array elements
+Return value
+(array of floating point): array
+intArray( values, ... )
+Returns an integer numeric array built from the given arguments.
+
+Parameters:
+values (integer, one or more): one or more array elements
+Return value
+(array of integer): array
+stringArray( values, ... )
+Returns a String array built from the given arguments.
+
+Parameters:
+values (String, one or more): one or more array elements
+Return value
+(array of String): array
+
+Use these functions only to include in your expressions. Also produce descriptions of these in the training data. Produce 100 examples.

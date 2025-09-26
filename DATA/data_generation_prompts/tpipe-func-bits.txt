@@ -274,3 +274,51 @@ Other
 [] (array dereferencing - first element is zero)
 ?: (conditional switch)
 instanceof (class membership)
+
+
+10.7.3 Bits
+Bit manipulation functions.
+
+Note that for bitwise AND, OR, XOR of integer values etc you can use the java bitwise operators "&", "|", "^".
+
+
+hasBit( value, bitIndex )
+Determines whether a given integer has a certain bit set to 1.
+
+Parameters:
+value (long integer): integer whose bits are to be tested
+bitIndex (integer): index of bit to be tested in range 0..63, where 0 is the least significant bit
+Return value
+(boolean): true if bit is set; more or less equivalent to (value & 1L<<bitIndex) != 0
+Examples:
+hasBit(64, 6) = true
+hasBit(63, 6) = false
+bitCount( i )
+Returns the number of set bits in the 64-bit two's complement representation of the integer argument.
+
+Parameters:
+i (long integer): integer value
+Return value
+(integer): number of "1" bits in the binary representation of i
+Examples:
+bitCount(64) = 1
+bitCount(3) = 2
+toBinary( value )
+Converts the integer argument to a binary string consisting only of 1s and 0s.
+
+Parameters:
+value (long integer): integer value
+Return value
+(String): binary representation of value
+Examples:
+toBinary(42) = "101010"
+toBinary(255^7) = "11111000"
+fromBinary( binVal )
+Converts a string representing a binary number to its integer value.
+
+Parameters:
+binVal (String): binary representation of value
+Return value
+(integer): integer value represented by binary string binVal
+Example:
+fromBinary("101010") = 42
