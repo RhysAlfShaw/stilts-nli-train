@@ -9,15 +9,60 @@ from transformers import (
     TrainingArguments,
     DataCollatorForLanguageModeling,
 )
+import argparse
 
-# base model.
-MODEL_NAME = (
-    "/scratch/Rhys/stilts_models/gemma-2b-pretrained-sun256-no-quant/final_model"
+# expect the following args
+
+argparser = argparse.ArgumentParser()
+argparser.add_argument(
+    "--model_path",
+    type=str,
+    default="/scratch/Rhys/stilts_models/gemma-2b-pretrained-sun256-no-quant/final_model",
 )
-# MODEL_NAME = "google/gemma-2b"
-OUTPUT_DIR = "/scratch/Rhys/stilts_models/gemma-2b-finetuned"
-PLOT_OUTPUT_DIR = "."
-TRAIN_FILE = "DATA/training_data.json"
+
+argparser.add_argument(
+    "--output_dir",
+    type=str,
+    default="/scratch/Rhys/stilts_models/gemma-2b-finetuned",
+)
+
+argparser.add_argument(
+    "--plot_output_dir",
+    type=str,
+    default=".",
+)
+
+argparser.add_argument(
+    "--train_file_dir",
+    type=str,
+    default="DATA",
+)
+
+argparser.add_argument(
+    "--mem_red",
+    type=bool,
+    default=True,
+)
+
+argparser.add_argument(
+    "--batch_size",
+    type=int,
+    default=2,
+)
+
+argparser.add_argument(
+    "--gguf-consersion",
+    type=bool,
+    default=True,
+)
+
+TRAINING_DATA_DIR = argparser.parse_args().train_file_dir
+OUTPUT_DIR = argparser.parse_args().output_dir
+MODEL_NAME = argparser.parse_args().model_path
+PLOT_OUTPUT_DIR = argparser.parse_args().plot_output_dir
+limit_mem = argparser.parse_args().mem_red
+
+TRAIN_FILE = f"{TRAINING_DATA_DIR}/training_data.json"
 ADDITIONAL_TRAIN_FILES = [
     "DATA/training_data-tpipe.json",
     "DATA/training_data-tpipe2.json",
@@ -61,7 +106,7 @@ ADDITIONAL_TRAIN_FILES = [
     "DATA/training_data-options-desc.json",
 ]
 EVAL_TEST_SPLIT = 0.2
-BATCH_SIZE = 2  # good starting point.
+BATCH_SIZE = argparser.parse_args().batch_size
 LEARNING_RATE = 5e-5  # 5e-5 is a common learning rate for fine-tuning large models
 NUM_EPOCHS = 5  # 1 epoch is often sufficient for pre-trained models on specific tasks.
 GRADIENT_ACCUMULATION_STEPS = 1
@@ -79,9 +124,10 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"Using device: {device}")
 
 # set a max usage of GPU memory
-if device.type == "cuda":
-    # set to 80% of total memory
-    torch.cuda.set_per_process_memory_fraction(0.60)
+if limit_mem:
+    if device.type == "cuda":
+        # set to 80% of total memory
+        torch.cuda.set_per_process_memory_fraction(0.60)
 
 
 os.makedirs(OUTPUT_DIR, exist_ok=True)
