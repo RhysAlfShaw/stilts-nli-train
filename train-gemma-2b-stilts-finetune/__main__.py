@@ -44,9 +44,24 @@ ADDITIONAL_TRAIN_FILES = [
     "DATA/training_data-tpipefunc-coverage.json",
     "DATA/training_data-tpipefunc-coordsDegrees.json",
     "DATA/training_data-tapquery.json",
+    "DATA/training_data-cone.json",
+    "DATA/tpipe.json",
+    "DATA/tmatchn.json",
+    "DATA/tmatch2.json",
+    "DATA/tcopy.json",
+    "DATA/tcat.json",
+    "DATA/tcatn.json",
+    "DATA/tapquery.json",
+    "DATA/mocshape.json",
+    "DATA/pixfoot.json",
+    "DATA/plot2plane.json",
+    "DATA/cone-examples.json",
+    "DATA/training_data-tpipe6.json",
+    "DATA/tapquery2.json",
+    "DATA/training_data-options-desc.json",
 ]
-EVAL_TEST_SPLIT = 0.2  # 30% for evaluation
-BATCH_SIZE = 1  # good starting point.
+EVAL_TEST_SPLIT = 0.2
+BATCH_SIZE = 2  # good starting point.
 LEARNING_RATE = 5e-5  # 5e-5 is a common learning rate for fine-tuning large models
 NUM_EPOCHS = 5  # 1 epoch is often sufficient for pre-trained models on specific tasks.
 GRADIENT_ACCUMULATION_STEPS = 1
@@ -173,7 +188,8 @@ training_args = TrainingArguments(
     report_to="tensorboard",
     push_to_hub=False,
     metric_for_best_model="eval_loss",
-    eval_strategy="epoch",
+    eval_strategy="steps",
+    eval_steps=50,  # after how many steps to eval effects training time.
 )
 
 data_collator = DataCollatorForLanguageModeling(
