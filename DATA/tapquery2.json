@@ -1,0 +1,1890 @@
+[
+    {
+        "prompt": "I need the RA, Dec, parallax, and G magnitude for all Gaia DR3 stars brighter than G=6. Save the output to a CSV file called 'bright_stars.csv'.",
+        "response": "stilts tapquery tapurl=\"https://gea.esac.esa.int/tap-server/tap\" adql=\"SELECT ra, dec, parallax, phot_g_mean_mag FROM gaiadr3.gaia_source WHERE phot_g_mean_mag < 6\" out=\"bright_stars.csv\" ofmt=csv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find 500 Gaia DR3 sources with total proper motion greater than 1000 mas/yr. I only need the source ID and proper motion columns.",
+        "response": "stilts tapquery tapurl=\"https://gea.esac.esa.int/tap-server/tap\" adql=\"SELECT TOP 500 source_id, pmra, pmdec FROM gaiadr3.gaia_source WHERE sqrt(pmra*pmra + pmdec*pmdec) > 1000\" out=\"high_pm.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I have a list of targets in 'my_targets.csv' with columns 'RA_deg' and 'DEC_deg'. Can you find the nearest Gaia DR3 source within 5 arcseconds for each of them?",
+        "response": "stilts tapskymatch in=\"my_targets.csv\" ifmt=csv ra=\"RA_deg\" dec=\"DEC_deg\" sr=5 find=best tapurl=\"https://gea.esac.esa.int/tap-server/tap\" taptable=\"gaiadr3.gaia_source\" taplon=\"ra\" taplat=\"dec\" out=\"gaia_matches.fits\"",
+        "chat.jar": "failed",
+        "error": "Error: Bad value for parameter inlon: null value not allowed\nUsage: inlon=<expr/deg>\n\n"
+    },
+    {
+        "prompt": "Get the 100 Gaia DR3 sources with the highest parallax_over_error values. Output the result directly to TOPCAT.",
+        "response": "stilts tapquery tapurl=\"https://gea.esac.esa.int/tap-server/tap\" adql=\"SELECT TOP 100 source_id, ra, dec, parallax, parallax_over_error FROM gaiadr3.gaia_source ORDER BY parallax_over_error DESC\" omode=topcat",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Count the number of Gaia DR3 sources within a 1-degree radius of galactic coordinates l=180, b=0.",
+        "response": "stilts tapquery tapurl=\"https://gea.esac.esa.int/tap-server/tap\" adql=\"SELECT COUNT(*) FROM gaiadr3.gaia_source WHERE 1=CONTAINS(POINT('ICRS', ra, dec), CIRCLE('GALACTIC', 180, 0, 1.0))\" omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Using the VizieR TAP service, get all columns for the first 100 entries in the General Catalogue of Variable Stars (GCVS). The table name is 'B/gcvs/gcvs_cat'.",
+        "response": "stilts tapquery tapurl=\"https://tapvizier.cds.unistra.fr/TAPVizieR/tap\" adql=\"SELECT TOP 100 * FROM \\\"B/gcvs/gcvs_cat\\\"\" out=\"gcvs_sample.vot\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find all sources in the 2MASS Point Source Catalog via VizieR that are within 0.5 degrees of M31 (RA=10.68, Dec=41.27) and have a J magnitude brighter than 15.",
+        "response": "stilts tapquery tapurl=\"https://tapvizier.cds.unistra.fr/TAPVizieR/tap\" adql=\"SELECT * FROM \\\"II/246/out\\\" WHERE 1=CONTAINS(POINT('ICRS',RAJ2000,DEJ2000),CIRCLE('ICRS',10.68,41.27,0.5)) AND Jmag < 15\" out=\"m31_2mass.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From VizieR, get the name, RA, and Dec for all sources from the ROSAT All-Sky Survey Bright Source Catalog ('IX/29/rascbsd') with a count rate greater than 10.",
+        "response": "stilts tapquery tapurl=\"https://tapvizier.cds.unistra.fr/TAPVizieR/tap\" adql=\"SELECT Name, RAh, RAm, RAs, DEd, DEm, DEs FROM \\\"IX/29/rascbsd\\\" WHERE Ctr > 10\" out=\"rosat_bright.csv\" ofmt=csv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I have a file of radio sources, 'radio_sources.fits', with RA and Dec columns. Please crossmatch it against the NVSS catalog ('VIII/65/nvss') in VizieR with a 15 arcsecond radius.",
+        "response": "stilts tapskymatch in=\"radio_sources.fits\" ra=\"RA\" dec=\"DEC\" sr=15 tapurl=\"https://tapvizier.cds.unistra.fr/TAPVizieR/tap\" taptable=\"\\\"VIII/65/nvss\\\"\" taplon=\"_RAJ2000\" taplat=\"_DEJ2000\" out=\"nvss_matches.fits\"",
+        "chat.jar": "failed",
+        "error": "Error: Bad value for parameter inlon: null value not allowed\nUsage: inlon=<expr/deg>\n\n"
+    },
+    {
+        "prompt": "Query the SDSS DR9 catalog (V/139/sdss9) from VizieR for 1000 objects classified as galaxies (class=3) with a redshift between 0.1 and 0.11.",
+        "response": "stilts tapquery tapurl=\"https://tapvizier.cds.unistra.fr/TAPVizieR/tap\" adql=\"SELECT TOP 1000 RAJ2000, DEJ2000, zsp, u, g, r, i, z FROM \\\"V/139/sdss9\\\" WHERE class=3 AND zsp BETWEEN 0.1 AND 0.11\" out=\"sdss_galaxies.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Get the main ID, object type, and coordinates for all objects in SIMBAD identified as a 'galaxy'. Limit the result to the first 500.",
+        "response": "stilts tapquery tapurl=\"http://simbad.cds.unistra.fr/simbad/sim-tap\" adql=\"SELECT TOP 500 main_id, otype_txt, ra, dec FROM basic WHERE otype_txt = 'Galaxy'\" out=\"simbad_galaxies.vot\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Crossmatch my list of candidate stars in 'candidates.fits' (columns ra_hms, dec_dms) against SIMBAD with a 2 arcsecond radius, keeping all matches.",
+        "response": "stilts tapskymatch in=\"candidates.fits\" icmd='addskycoords -inunit sex fk5 fk5 ra_hms dec_dms ra_deg dec_deg' ra=\"ra_deg\" dec=\"dec_deg\" sr=2 find=all tapurl=\"http://simbad.cds.unistra.fr/simbad/sim-tap\" taptable=\"simbad\" taplon=\"ra\" taplat=\"dec\" out=\"simbad_xmatch.fits\"",
+        "chat.jar": "failed",
+        "error": "Error: Bad value for parameter inlon: null value not allowed\nUsage: inlon=<expr/deg>\n\n"
+    },
+    {
+        "prompt": "From SIMBAD, find all objects with a parallax measurement greater than 200 mas.",
+        "response": "stilts tapquery tapurl=\"http://simbad.cds.unistra.fr/simbad/sim-tap\" adql=\"SELECT main_id, ra, dec, plx_value FROM basic WHERE plx_value > 200\" out=\"nearby_stars_simbad.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Upload my local table 'targets.csv' (cols: my_ra, my_dec) and find all SIMBAD objects within 10 arcseconds. Name my uploaded table 'mytargets'.",
+        "response": "stilts tapquery tapurl=\"http://simbad.cds.unistra.fr/simbad/sim-tap\" adql=\"SELECT s.* FROM simbad AS s JOIN TAP_UPLOAD.mytargets AS t ON 1=CONTAINS(POINT('ICRS', s.ra, s.dec), CIRCLE('ICRS', t.my_ra, t.my_dec, 10.0/3600.0))\" nupload=1 upload1=\"targets.csv\" ufmt1=csv upname1=\"mytargets\" out=\"simbad_upload_match.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Query SIMBAD for all objects of type 'PN' (Planetary Nebula) and save their identifiers and coordinates to an ASCII file.",
+        "response": "stilts tapquery tapurl=\"http://simbad.cds.unistra.fr/simbad/sim-tap\" adql=\"SELECT main_id, ra, dec FROM basic WHERE otype = 'PN'\" out=\"planetary_nebulae.txt\" ofmt=ascii",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Perform a cone search on the PanSTARRS1 DR2 catalog at MAST for sources within a 0.1-degree radius of RA=150.1, Dec=2.2. Get all columns.",
+        "response": "stilts tapquery tapurl=\"https://mast.stsci.edu/vo-tap/api/v0.1/ps1dr2\" adql=\"SELECT * FROM dbo.mean WHERE 1=CONTAINS(POINT('ICRS', ra, dec), CIRCLE('ICRS', 150.1, 2.2, 0.1))\" out=\"ps1_cone.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the PanSTARRS1 DR2 catalog, find 2000 objects with a g-band magnitude between 14.0 and 14.1 and save to a CSV.",
+        "response": "stilts tapquery tapurl=\"https://mast.stsci.edu/vo-tap/api/v0.1/ps1dr2\" adql=\"SELECT TOP 2000 objID, ra, dec, gMeanPSFMag FROM dbo.mean WHERE gMeanPSFMag BETWEEN 14.0 AND 14.1\" out=\"ps1_gmag_slice.csv\" ofmt=csv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Count how many objects in the PanSTARRS1 DR2 catalog are flagged as extended in the i-band.",
+        "response": "stilts tapquery tapurl=\"https://mast.stsci.edu/vo-tap/api/v0.1/ps1dr2\" adql=\"SELECT count(*) FROM dbo.mean WHERE iMeanPSFMag - iMeanKronMag > 0.05\" omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Crossmatch my local file 'my_sources.fits' (with columns RAJ2000, DEJ2000) against the PanSTARRS1 DR2 catalog using tapskymatch. Use a 2.5 arcsecond radius and find the best match for each of my sources.",
+        "response": "stilts tapskymatch in=\"my_sources.fits\" ra=\"RAJ2000\" dec=\"DEJ2000\" sr=2.5 find=best tapurl=\"https://mast.stsci.edu/vo-tap/api/v0.1/ps1dr2\" taptable=\"dbo.mean\" taplon=\"ra\" taplat=\"dec\" out=\"ps1_matches.fits\"",
+        "chat.jar": "failed",
+        "error": "Error: Bad value for parameter inlon: null value not allowed\nUsage: inlon=<expr/deg>\n\n"
+    },
+    {
+        "prompt": "Get the object ID, RA, Dec, and all 5 PS1 magnitudes for 500 objects from the PanSTARRS1 DR2 stack table.",
+        "response": "stilts tapquery tapurl=\"https://mast.stsci.edu/vo-tap/api/v0.1/ps1dr2\" adql=\"SELECT TOP 500 objID, raStack, decStack, gMeanPSFMag, rMeanPSFMag, iMeanPSFMag, zMeanPSFMag, yMeanPSFMag FROM dbo.stack\" out=\"ps1_stack_sample.vot\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Query the Chandra Source Catalog 2.1 for the 100 brightest sources in the broad energy band (0.5-7.0 keV) and send the output to TOPCAT.",
+        "response": "stilts tapquery tapurl=\"https://cda.cfa.harvard.edu/csc21tap\" adql=\"SELECT TOP 100 name, ra, dec, flux_aper_b FROM csc21.master_source ORDER BY flux_aper_b DESC\" omode=topcat",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find all Chandra Source Catalog 2.1 sources with a hardness ratio 'hard_hs' greater than 0.8. Give me the name and position.",
+        "response": "stilts tapquery tapurl=\"https://cda.cfa.harvard.edu/csc21tap\" adql=\"SELECT name, ra, dec, hard_hs FROM csc21.master_source WHERE hard_hs > 0.8\" out=\"hard_csc_sources.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need all Chandra sources from observation ID 1838. I want the source name, RA, Dec, and detection significance.",
+        "response": "stilts tapquery tapurl=\"https://cda.cfa.harvard.edu/csc21tap\" adql=\"SELECT name, ra, dec, detect_significance FROM csc21.master_source WHERE obsid=1838\" out=\"csc_obsid_1838.csv\" ofmt=csv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Crossmatch my FITS table 'xray_targets.fits' (columns RA_OBJ, DEC_OBJ) against the Chandra Source Catalog 2.1 with a 10 arcsecond radius.",
+        "response": "stilts tapskymatch in=\"xray_targets.fits\" ra=\"RA_OBJ\" dec=\"DEC_OBJ\" sr=10 tapurl=\"https://cda.cfa.harvard.edu/csc21tap\" taptable=\"csc21.master_source\" taplon=\"ra\" taplat=\"dec\" out=\"csc_xmatches.fits\"",
+        "chat.jar": "failed",
+        "error": "Error: Bad value for parameter inlon: null value not allowed\nUsage: inlon=<expr/deg>\n\n"
+    },
+    {
+        "prompt": "Get all master sources from the Chandra Source Catalog 2.1 that have a variability index greater than 8.",
+        "response": "stilts tapquery tapurl=\"https://cda.cfa.harvard.edu/csc21tap\" adql=\"SELECT name, ra, dec, var_index FROM csc21.master_source WHERE var_index > 8\" out=\"csc_variable_sources.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Query the GAVO data center for all objects in the RAVE DR5 catalog with a metallicity [M/H] less than -2.0. Limit to 100 objects.",
+        "response": "stilts tapquery tapurl=\"http://dc.g-vo.org/tap\" adql=\"SELECT TOP 100 raveid, raj2000, dej2000, met_feh FROM rave.dr5 WHERE met_feh < -2.0\" out=\"rave_metal_poor.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find all observations in the GAVO data center's observation core table that used the 'OmegaCAM' instrument.",
+        "response": "stilts tapquery tapurl=\"http://dc.g-vo.org/tap\" adql=\"SELECT * FROM ivoa.obscore WHERE instrument_name = 'OmegaCAM'\" out=\"omegacam_obs.vot\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Crossmatch a local file 'targets.csv' (ra, dec) with the Tycho-2 catalog at GAVO within 3 arcseconds. The remote table is 'tycho2.main'.",
+        "response": "stilts tapskymatch in=\"targets.csv\" ifmt=csv ra=\"ra\" dec=\"dec\" sr=3 tapurl=\"http://dc.g-vo.org/tap\" taptable=\"tycho2.main\" taplon=\"raj2000\" taplat=\"dej2000\" out=\"tycho2_matches.fits\"",
+        "chat.jar": "failed",
+        "error": "Error: Bad value for parameter inlon: null value not allowed\nUsage: inlon=<expr/deg>\n\n"
+    },
+    {
+        "prompt": "Count the number of tables available through the GAVO TAP service.",
+        "response": "stilts tapquery tapurl=\"http://dc.g-vo.org/tap\" adql=\"SELECT count(*) FROM tap_schema.tables\" omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Get the table names and descriptions for all tables in the 'arihip' schema from the GAVO TAP service.",
+        "response": "stilts tapquery tapurl=\"http://dc.g-vo.org/tap\" adql=\"SELECT table_name, description FROM tap_schema.tables WHERE schema_name = 'arihip'\" omode=out ofmt=ascii",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Using the CADC TAP service, find all CFHT MegaPrime observations of the target 'M33'.",
+        "response": "stilts tapquery tapurl=\"https://ws.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/argus\" adql=\"SELECT * FROM caom.ObsCore WHERE target_name = 'M33' AND instrument_name='MegaPrime'\" out=\"cadc_m33_megaprime.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Count the number of public observations available at the CADC.",
+        "response": "stilts tapquery tapurl=\"https://ws.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/argus\" adql=\"SELECT COUNT(*) FROM caom.Observation\" omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Get the observation ID and access URL for all public data products from the JCMT telescope at the CADC.",
+        "response": "stilts tapquery tapurl=\"https://ws.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/argus\" adql=\"SELECT observationID, access_url FROM caom.ObsCore WHERE facility_name = 'JCMT'\" out=\"jcmt_urls.csv\" ofmt=csv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find all proprietary observations from the DAO telescope at CADC. I need the observation ID and release date.",
+        "response": "stilts tapquery tapurl=\"https://ws.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/argus\" adql=\"SELECT observationID, releaseDate FROM caom.Plane WHERE telescope_name = 'DAO' AND dataRelease IS NOT NULL\" out=\"dao_proprietary.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Crossmatch my local target list 'dao_targets.fits' against the CADC observation core table for observations within 10 arcminutes.",
+        "response": "stilts tapskymatch in=\"dao_targets.fits\" ra=\"ra\" dec=\"dec\" sr=600 tapurl=\"https://ws.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/argus\" taptable=\"caom.ObsCore\" taplon=\"s_ra\" taplat=\"s_dec\" out=\"cadc_target_matches.fits\"",
+        "chat.jar": "failed",
+        "error": "Error: Bad value for parameter inlon: null value not allowed\nUsage: inlon=<expr/deg>\n\n"
+    },
+    {
+        "prompt": "From the ESO observation log, find all observations taken with the VIMOS instrument with an exposure time longer than 1800 seconds.",
+        "response": "stilts tapquery tapurl=\"https://archive.eso.org/tap_obs\" adql=\"SELECT * FROM eso.obs_core WHERE instrument_name = 'VIMOS' AND t_exptime > 1800\" out=\"vimos_long_exp.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Count how many science observations are available in the ESO TAP observation log.",
+        "response": "stilts tapquery tapurl=\"https://archive.eso.org/tap_obs\" adql=\"SELECT COUNT(*) FROM eso.obs_core WHERE dp_type = 'SCIENCE'\" omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Get the program ID for all observations of 'NGC 1313' from the ESO observation archive.",
+        "response": "stilts tapquery tapurl=\"https://archive.eso.org/tap_obs\" adql=\"SELECT prog_id FROM eso.obs_core WHERE target_name = 'NGC 1313'\" ocmd=\"uniq\" omode=out ofmt=ascii",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Crossmatch my list of objects ('my_objects.fits') against the ESO observation log to see if any have been observed. Use a 1 arcminute radius.",
+        "response": "stilts tapskymatch in=\"my_objects.fits\" ra=\"RA\" dec=\"DEC\" sr=60 tapurl=\"https://archive.eso.org/tap_obs\" taptable=\"eso.obs_core\" taplon=\"s_ra\" taplat=\"s_dec\" find=best out=\"eso_obs_matches.fits\"",
+        "chat.jar": "failed",
+        "error": "Error: Bad value for parameter inlon: null value not allowed\nUsage: inlon=<expr/deg>\n\n"
+    },
+    {
+        "prompt": "Find all calibration data (dp_type = CALIB) from the FORS2 instrument in the ESO archive and send to TOPCAT.",
+        "response": "stilts tapquery tapurl=\"https://archive.eso.org/tap_obs\" adql=\"SELECT * FROM eso.obs_core WHERE instrument_name = 'FORS2' AND dp_type = 'CALIB'\" omode=topcat",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Query the ALMA science archive at ESO for observations of the target 'Orion-S'.",
+        "response": "stilts tapquery tapurl=\"https://almascience.eso.org/tap\" adql=\"SELECT * FROM ivoa.ObsCore WHERE target_name = 'Orion-S'\" out=\"alma_orion_s.vot\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find all ALMA observations with a frequency support greater than 10 GHz.",
+        "response": "stilts tapquery tapurl=\"https://almascience.eso.org/tap\" adql=\"SELECT * FROM ivoa.ObsCore WHERE s_resolution_max > 10e9\" out=\"alma_high_res.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Count the number of science programs in the ALMA archive at ESO.",
+        "response": "stilts tapquery tapurl=\"https://almascience.eso.org/tap\" adql=\"SELECT count(DISTINCT proposal_id) FROM ivoa.ObsCore\" omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From ALMA, get the access URL and estimated size for all data products associated with proposal '2017.1.01355.S'.",
+        "response": "stilts tapquery tapurl=\"https://almascience.eso.org/tap\" adql=\"SELECT access_url, access_estsize FROM ivoa.ObsCore WHERE proposal_id = '2017.1.01355.S'\" out=\"alma_prop_data.csv\" ofmt=csv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find all ALMA observations that are publicly available (data_rights = 'Public').",
+        "response": "stilts tapquery tapurl=\"https://almascience.eso.org/tap\" adql=\"SELECT * FROM ivoa.ObsCore WHERE data_rights = 'Public'\" out=\"alma_public.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Query the IRSA TAP service for the 2MASS extended source catalog ('fp_xsc') for objects with a j_m_k20fe magnitude brighter than 10.",
+        "response": "stilts tapquery tapurl=\"https://irsa.ipac.caltech.edu/TAP\" adql=\"SELECT TOP 500 designation, ra, dec, j_m_k20fe FROM fp_xsc WHERE j_m_k20fe < 10\" out=\"bright_2mass_xsc.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From IRSA, find all WISE All-Sky Source Catalog ('allwise_p3as_psd') sources within a 1 degree box around RA=250.4, Dec=36.4.",
+        "response": "stilts tapquery tapurl=\"https://irsa.ipac.caltech.edu/TAP\" adql=\"SELECT source_id, ra, dec, w1mpro, w2mpro FROM allwise_p3as_psd WHERE ra BETWEEN 249.9 AND 250.9 AND dec BETWEEN 35.9 AND 36.9\" out=\"wise_box.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Crossmatch my local catalog 'spitzer_targets.fits' against the Spitzer Enhanced Imaging Products Source List ('seip_p3am_psl') at IRSA with a 3 arcsec radius.",
+        "response": "stilts tapskymatch in=\"spitzer_targets.fits\" ra=\"ra\" dec=\"dec\" sr=3 tapurl=\"https://irsa.ipac.caltech.edu/TAP\" taptable=\"seip_p3am_psl\" taplon=\"ra\" taplat=\"dec\" out=\"irsa_spitzer_matches.fits\"",
+        "chat.jar": "failed",
+        "error": "Error: Bad value for parameter inlon: null value not allowed\nUsage: inlon=<expr/deg>\n\n"
+    },
+    {
+        "prompt": "Count the number of sources in the UKIDSS Large Area Survey DR10 ('las_dr10') available via the IRSA TAP service.",
+        "response": "stilts tapquery tapurl=\"https://irsa.ipac.caltech.edu/TAP\" adql=\"SELECT COUNT(*) FROM las_dr10.source\" omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the IRAS Point Source Catalog at IRSA ('iras_psc'), get the 100 brightest sources at 100 microns.",
+        "response": "stilts tapquery tapurl=\"https://irsa.ipac.caltech.edu/TAP\" adql=\"SELECT TOP 100 name, ra, dec, fnu_100 FROM iras_psc ORDER BY fnu_100 DESC\" out=\"iras_brightest_100um.vot\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Using the J-PLUS DR3 TAP service, get the first 100 objects from the 'jplus.MagABSingleObj' table.",
+        "response": "stilts tapquery tapurl=\"https://archive.cefca.es/catalogues/vo/tap/jplus-dr3\" adql=\"SELECT TOP 100 * FROM jplus.MagABSingleObj\" out=\"jplus_dr3_sample.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find J-PLUS DR3 objects with a g-band magnitude brighter than 15 and r-band magnitude brighter than 14.5.",
+        "response": "stilts tapquery tapurl=\"https://archive.cefca.es/catalogues/vo/tap/jplus-dr3\" adql=\"SELECT * FROM jplus.MagAbAndErr WHERE g < 15 AND r < 14.5\" out=\"jplus_bright_gr.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Count how many unique tiles are in the J-PLUS DR3 main table.",
+        "response": "stilts tapquery tapurl=\"https://archive.cefca.es/catalogues/vo/tap/jplus-dr3\" adql=\"SELECT count(DISTINCT TILE_ID) FROM jplus.JPLUS\" omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Crossmatch my local catalog 'targets_jplus.fits' against the J-PLUS DR3 catalog with a 2 arcsec radius and output to TOPCAT.",
+        "response": "stilts tapskymatch in=\"targets_jplus.fits\" ra=\"RA\" dec=\"Dec\" sr=2 tapurl=\"https://archive.cefca.es/catalogues/vo/tap/jplus-dr3\" taptable=\"jplus.JPLUS\" taplon=\"RA\" taplat=\"DEC\" omode=topcat",
+        "chat.jar": "failed",
+        "error": "Error: Bad value for parameter inlon: null value not allowed\nUsage: inlon=<expr/deg>\n\n"
+    },
+    {
+        "prompt": "Get objects from J-PLUS DR3 with a star/galaxy classification greater than 0.9 (likely stars).",
+        "response": "stilts tapquery tapurl=\"https://archive.cefca.es/catalogues/vo/tap/jplus-dr3\" adql=\"SELECT ID, RA, DEC, CLASS_STAR FROM jplus.JPLUS WHERE CLASS_STAR > 0.9\" out=\"jplus_stars.csv\" ofmt=csv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the WFCAM Science Archive, get the J, H, and K magnitudes for 1000 sources from the UKIDSS Galactic Plane Survey (gps.source).",
+        "response": "stilts tapquery tapurl=\"http://tap.roe.ac.uk/wsa\" adql=\"SELECT TOP 1000 ra, dec, jAperMag3, hAperMag3, kAperMag3 FROM gps.source\" out=\"wsa_gps_sample.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Count the number of sources in the WSA UKIDSS Large Area Survey (las.source) that are flagged as stellar (mergedClass = -1).",
+        "response": "stilts tapquery tapurl=\"http://tap.roe.ac.uk/wsa\" adql=\"SELECT count(*) FROM las.source WHERE mergedClass = -1\" omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Crossmatch a local file 'my_stars.vot' against the WSA UKIDSS Deep Extragalactic Survey (dxs.source) with a 1.5 arcsec radius.",
+        "response": "stilts tapskymatch in=\"my_stars.vot\" ra=\"RA\" dec=\"DEC\" sr=1.5 tapurl=\"http://tap.roe.ac.uk/wsa\" taptable=\"dxs.source\" taplon=\"ra\" taplat=\"dec\" out=\"wsa_dxs_matches.fits\"",
+        "chat.jar": "failed",
+        "error": "Error: Bad value for parameter inlon: null value not allowed\nUsage: inlon=<expr/deg>\n\n"
+    },
+    {
+        "prompt": "Get all sources from the WSA UKIDSS Galactic Clusters Survey (gcs.source) with a J-K color greater than 2.0.",
+        "response": "stilts tapquery tapurl=\"http://tap.roe.ac.uk/wsa\" adql=\"SELECT ra, dec, jAperMag3, kAperMag3 FROM gcs.source WHERE jAperMag3 - kAperMag3 > 2.0\" out=\"wsa_red_gcs.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the WSA, find 100 sources in the UKIDSS Large Area Survey that have proper motions measured in both RA and Dec.",
+        "response": "stilts tapquery tapurl=\"http://tap.roe.ac.uk/wsa\" adql=\"SELECT TOP 100 ra, dec, muRA, muDec FROM las.source WHERE muRA IS NOT NULL AND muDec IS NOT NULL\" out=\"wsa_pm_sources.vot\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Query the NED TAP service for all objects with a redshift greater than 5.",
+        "response": "stilts tapquery tapurl=\"https://ned.ipac.caltech.edu/tap/\" adql=\"SELECT * FROM objdir WHERE z > 5\" out=\"high_z_ned.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From NED, get the object name and object type for all objects within 30 arcminutes of the galaxy NGC 4486.",
+        "response": "stilts tapquery tapurl=\"https://ned.ipac.caltech.edu/tap/\" adql=\"SELECT objname, objtype FROM objdir WHERE CONTAINS(POINT('ICRS', ra, dec), CIRCLE('ICRS', 187.705, 12.39, 0.5))=1\" out=\"ngc4486_field.csv\" ofmt=csv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Crossmatch my list of galaxy clusters in 'clusters.fits' with NED using a 5 arcminute radius.",
+        "response": "stilts tapskymatch in=\"clusters.fits\" ra=\"RA\" dec=\"DEC\" sr=300 tapurl=\"https://ned.ipac.caltech.edu/tap/\" taptable=\"objdir\" taplon=\"ra\" taplat=\"dec\" out=\"ned_cluster_matches.fits\"",
+        "chat.jar": "failed",
+        "error": "Error: Bad value for parameter inlon: null value not allowed\nUsage: inlon=<expr/deg>\n\n"
+    },
+    {
+        "prompt": "Find all objects in NED classified as 'QSO' and send the first 1000 to TOPCAT.",
+        "response": "stilts tapquery tapurl=\"https://ned.ipac.caltech.edu/tap/\" adql=\"SELECT TOP 1000 * FROM objdir WHERE objtype = 'QSO'\" omode=topcat",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Count the number of objects in the NED TAP service.",
+        "response": "stilts tapquery tapurl=\"https://ned.ipac.caltech.edu/tap/\" adql=\"SELECT COUNT(*) FROM objdir\" omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Get the observation ID and start time for all XMM-Newton observations longer than 100,000 seconds.",
+        "response": "stilts tapquery tapurl=\"https://nxsa.esac.esa.int/tap-server/tap\" adql=\"SELECT observation_id, start_time FROM nxsa.v_obs_master WHERE duration > 100000\" out=\"xmm_long_obs.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find all XMM-Newton EPIC camera observations for the target 'SN 1987A'.",
+        "response": "stilts tapquery tapurl=\"https://nxsa.esac.esa.int/tap-server/tap\" adql=\"SELECT * FROM nxsa.v_obs_master WHERE target_name = 'SN 1987A' AND instrument = 'EPIC'\" out=\"xmm_sn1987a.vot\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Crossmatch my list of gamma-ray bursts 'grbs.fits' against the XMM-Newton observation log with a search radius of 20 arcminutes.",
+        "response": "stilts tapskymatch in=\"grbs.fits\" ra=\"ra\" dec=\"dec\" sr=1200 tapurl=\"https://nxsa.esac.esa.int/tap-server/tap\" taptable=\"nxsa.v_obs_master\" taplon=\"ra\" taplat=\"dec\" out=\"xmm_grb_matches.fits\"",
+        "chat.jar": "failed",
+        "error": "Error: Bad value for parameter inlon: null value not allowed\nUsage: inlon=<expr/deg>\n\n"
+    },
+    {
+        "prompt": "Count the total number of public observations in the XMM-Newton Science Archive.",
+        "response": "stilts tapquery tapurl=\"https://nxsa.esac.esa.int/tap-server/tap\" adql=\"SELECT count(*) FROM nxsa.v_obs_master WHERE public_date < CURRENT_TIMESTAMP\" omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the XMM-Newton archive, retrieve the top 500 sources from the 4XMM-DR9 source catalog ('nxsa.v_epic_source_cat_v4'), ordered by decreasing broad-band flux.",
+        "response": "stilts tapquery tapurl=\"https://nxsa.esac.esa.int/tap-server/tap\" adql=\"SELECT TOP 500 * FROM nxsa.v_epic_source_cat_v4 ORDER BY epic_total_flux DESC\" out=\"xmm_brightest_dr9.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Query the European HST Archive for all WFPC2 observations with an exposure time over 1000s.",
+        "response": "stilts tapquery tapurl=\"https://hst.esac.esa.int/tap-server/tap\" adql=\"SELECT * FROM hsc.observation WHERE instrument_name='WFPC2' AND exposure_duration > 1000\" out=\"hst_wfpc2_long.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find all public HST observations of target 'M87'.",
+        "response": "stilts tapquery tapurl=\"https://hst.esac.esa.int/tap-server/tap\" adql=\"SELECT * FROM hsc.observation WHERE target_name='M87' AND data_release < CURRENT_TIMESTAMP\" out=\"hst_m87.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Crossmatch a local FITS file 'my_hst_targets.fits' (cols: RA_TARG, DEC_TARG) against the Hubble Source Catalog (hsc.sum) at the HST archive with a 1 arcsecond radius.",
+        "response": "stilts tapskymatch in=\"my_hst_targets.fits\" ra=\"RA_TARG\" dec=\"DEC_TARG\" sr=1 tapurl=\"https://hst.esac.esa.int/tap-server/tap\" taptable=\"hsc.sum\" taplon=\"ra\" taplat=\"dec\" out=\"hst_hsc_matches.fits\"",
+        "chat.jar": "failed",
+        "error": "Error: Bad value for parameter inlon: null value not allowed\nUsage: inlon=<expr/deg>\n\n"
+    },
+    {
+        "prompt": "Count the number of available ACS/WFC datasets in the European HST Archive.",
+        "response": "stilts tapquery tapurl=\"https://hst.esac.esa.int/tap-server/tap\" adql=\"SELECT count(*) FROM hsc.observation WHERE instrument_name='ACS' AND detector_name='WFC'\" omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Get the top 100 objects with the most observations from the Hubble Source Catalog v3 (hsc.sum) and send to TOPCAT.",
+        "response": "stilts tapquery tapurl=\"https://hst.esac.esa.int/tap-server/tap\" adql=\"SELECT TOP 100 * FROM hsc.sum ORDER BY NumImages DESC\" omode=topcat",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Get the observation ID and access URL for all public data from the European HST Archive.",
+        "response": "stilts tapquery tapurl=\"https://hst.esac.esa.int/tap-server/tap\" adql=\"SELECT observation_id, access_url FROM hsc.observation WHERE data_release < CURRENT_TIMESTAMP\" out=\"hst_data.csv\" ofmt=csv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the MAST Registry, find all resources published by 'STScI'.",
+        "response": "stilts tapquery tapurl=\"https://mast.stsci.edu/vo-tap/api/v0.1/registry\" adql=\"SELECT * FROM rr.resource WHERE publisher = 'STScI'\" out=\"mast_resources.vot\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find me 50 sources from the CANDELS high-level science products at MAST.",
+        "response": "stilts tapquery tapurl=\"https://mast.stsci.edu/vo-tap/api/v0.1/candels/\" adql=\"SELECT TOP 50 * FROM caom.ObsCore\" out=\"candels_sample.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Query the 3D-HST data at MAST for observations with an exposure time greater than 5000 seconds.",
+        "response": "stilts tapquery tapurl=\"https://mast.stsci.edu/vo-tap/api/v0.1/3dhst/\" adql=\"SELECT * FROM caom.ObsCore WHERE t_exptime > 5000\" out=\"3dhst_long_exp.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Get the first 100 entries from the GOODS survey data available at MAST.",
+        "response": "stilts tapquery tapurl=\"https://mast.stsci.edu/vo-tap/api/v0.1/goods/\" adql=\"SELECT TOP 100 * FROM caom.ObsCore\" out=\"goods_sample.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Can you list all the tables available from the Byurakan Astrophysical Observatory's archive?",
+        "response": "stilts tapquery tapurl=\"http://arvo-registry.sci.am/tap\" adql=\"SELECT table_name, description FROM tap_schema.tables\" omode=out ofmt=ascii",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the CLASSY high-level science products at MAST, find all observations of NGC 1705.",
+        "response": "stilts tapquery tapurl=\"https://mast.stsci.edu/vo-tap/api/v0.1/classy/\" adql=\"SELECT * FROM caom.ObsCore WHERE target_name = 'NGC 1705'\" out=\"classy_ngc1705.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Query the ESASky Legacy archive for any data from the 'XMM-OM' instrument.",
+        "response": "stilts tapquery tapurl=\"http://esaskylegacy.esac.esa.int/esasky-legacy-sl-tap/tap\" adql=\"SELECT * FROM esasky.merged_obscore WHERE instrument_name='XMM-OM'\" out=\"esasky_legacy_xmmom.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find all public observations in the main ESASky database and send them to TOPCAT.",
+        "response": "stilts tapquery tapurl=\"https://sky.esa.int/esasky-tap/tap\" adql=\"SELECT * FROM esasky.obscore WHERE data_rights = 'PUBLIC'\" omode=topcat",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Get the source_id, ra, and dec for 1000 stars from the Gaia archive with parallax greater than 50.",
+        "response": "stilts tapquery tapurl=\"https://gea.esac.esa.int/tap-server/tap\" adql=\"SELECT TOP 1000 source_id, ra, dec FROM gaiadr3.gaia_source WHERE parallax > 50\" out=\"nearby_gaia.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "What schemas are available in the LMD planetary data archive?",
+        "response": "stilts tapquery tapurl=\"http://vo.lmd.jussieu.fr/tap\" adql=\"SELECT schema_name FROM tap_schema.schemata\" omode=out",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Crossmatch my local file `targets.fits` (ra, dec columns) against the Gaia DR3 catalog hosted at MAST. Use a 1.5 arcsecond radius.",
+        "response": "stilts tapskymatch in=\"targets.fits\" ra=\"ra\" dec=\"dec\" sr=1.5 tapurl=\"https://mast.stsci.edu/vo-tap/api/v0.1/gaiadr3/\" taptable=\"gaiadr3.gaia_source\" taplon=\"ra\" taplat=\"dec\" out=\"mast_gaia_matches.fits\"",
+        "chat.jar": "failed",
+        "error": "Error: Bad value for parameter inlon: null value not allowed\nUsage: inlon=<expr/deg>\n\n"
+    },
+    {
+        "prompt": "Get any available data from the Konkoly Observatory archive for the target 'M31'.",
+        "response": "stilts tapquery tapurl=\"http://nadir.konkoly.hu:80/tap\" adql=\"SELECT * FROM ivoa.ObsCore WHERE target_name = 'M31'\" out=\"konkoly_m31.vot\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the SkyMapper DR4 archive at MAST, find 200 sources with a g-band psf magnitude brighter than 10.",
+        "response": "stilts tapquery tapurl=\"https://mast.stsci.edu/vo-tap/api/v0.1/skymapperdr4/\" adql=\"SELECT TOP 200 * FROM dr4.master WHERE g_psf < 10\" out=\"bright_skymapper.csv\" ofmt=csv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Query the PanSTARRS DR1 archive for objects within 0.1 degrees of RA=200, Dec=-10.",
+        "response": "stilts tapquery tapurl=\"https://mast.stsci.edu/vo-tap/api/v0.1/ps1dr1\" adql=\"SELECT * FROM dbo.mean WHERE 1=CONTAINS(POINT('ICRS', ra, dec), CIRCLE('ICRS', 200.0, -10.0, 0.1))\" out=\"ps1dr1_cone.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find sources in the Hubble Source Catalog v3 with more than 10 associated images. Give me the top 50.",
+        "response": "stilts tapquery tapurl=\"https://mast.stsci.edu/vo-tap/api/v0.1/hsc/\" adql=\"SELECT TOP 50 * FROM hsc_v3.hsc_view WHERE NumImages > 10\" out=\"hsc_multi_image.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "What tables related to solar system bodies are available at the Royal Observatory of Belgium?",
+        "response": "stilts tapquery tapurl=\"http://vo-tap.oma.be/tap\" adql=\"SELECT table_name FROM tap_schema.tables WHERE schema_name = 'mpcorb'\" omode=out",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need all Hubble observations from the MAST archive taken with the 'WFC3' instrument.",
+        "response": "stilts tapquery tapurl=\"https://mast.stsci.edu/vo-tap/api/v0.1/missionmast/\" adql=\"SELECT * FROM caom.ObsCore WHERE collection='HST' AND instrument_name='WFC3'\" out=\"hst_wfc3_obs.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the TESS Input Catalog at MAST, find 1000 stars with a TESS magnitude brighter than 6.",
+        "response": "stilts tapquery tapurl=\"https://mast.stsci.edu/vo-tap/api/v0.1/tic\" adql=\"SELECT TOP 1000 * FROM tic.main WHERE tmag < 6\" out=\"bright_tic_stars.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Get 500 objects from the PanSTARRS DR2 catalog with an i-band magnitude between 15.0 and 15.1.",
+        "response": "stilts tapquery tapurl=\"https://mast.stsci.edu/vo-tap/api/v0.1/ps1dr2\" adql=\"SELECT TOP 500 objID, ra, dec, iMeanPSFMag FROM dbo.mean WHERE iMeanPSFMag BETWEEN 15.0 AND 15.1\" out=\"ps1dr2_slice.csv\" ofmt=csv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "List all observation collections from the ULLYSES high-level science products at MAST.",
+        "response": "stilts tapquery tapurl=\"https://mast.stsci.edu/vo-tap/api/v0.1/ullyses/\" adql=\"SELECT DISTINCT collection FROM caom.ObsCore\" omode=out ofmt=ascii",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Using the main MAST archive, find all observations from the 'GALEX' mission.",
+        "response": "stilts tapquery tapurl=\"https://mast.stsci.edu/vo-tap/api/v0.1/caom\" adql=\"SELECT * FROM caom.ObsCore WHERE obs_collection = 'GALEX'\" out=\"mast_galex_obs.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "What are the column descriptions for the master table in the SkyMapper DR4 data?",
+        "response": "stilts tapquery tapurl=\"https://mast.stsci.edu/vo-tap/api/v0.1/skymapperdr4/\" adql=\"SELECT column_name, description FROM tap_schema.columns WHERE table_name = 'dr4.master'\" omode=out ofmt=text",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Query the planetary data at FU Berlin for tables in the 'em1' schema.",
+        "response": "stilts tapquery tapurl=\"http://dachs.planet.fu-berlin.de/tap\" adql=\"SELECT table_name FROM tap_schema.tables WHERE schema_name='em1'\" omode=out",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "List the available schemas from the Paris Observatory's main astronomical data archive.",
+        "response": "stilts tapquery tapurl=\"http://voparis-tap-astro-m.obspm.fr/tap\" adql=\"SELECT schema_name FROM tap_schema.schemata\" omode=out",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find all observations from the HREDA archive taken in 2020.",
+        "response": "stilts tapquery tapurl=\"https://hreda.esac.esa.int/hreda-sl-tap/tap\" adql=\"SELECT * FROM hreda.obscore WHERE t_min >= 2020.0 AND t_max < 2021.0\" out=\"hreda_2020.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the European JWST Archive, count how many observations used the 'MIRI' instrument.",
+        "response": "stilts tapquery tapurl=\"https://jwst.esac.esa.int/server/tap\" adql=\"SELECT COUNT(*) FROM jwst.obscore WHERE instrument_name='MIRI'\" omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "What tables are provided by the UCL DaCHS server?",
+        "response": "stilts tapquery tapurl=\"http://astroweb.projects.phys.ucl.ac.uk:8000/tap\" adql=\"SELECT table_name FROM tap_schema.tables\" omode=out",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "At the AIP data archive, find all objects in the RAVE DR5 catalog with a radial velocity greater than 400 km/s.",
+        "response": "stilts tapquery tapurl=\"http://gavo.aip.de/tap\" adql=\"SELECT * FROM rave.dr5 WHERE hrv > 400\" out=\"rave_high_vel.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Count the tables available through the IAP data archive.",
+        "response": "stilts tapquery tapurl=\"http://dorotka.ufa.cas.cz/tap\" adql=\"SELECT count(*) FROM tap_schema.tables\" omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the PVOL EPN database, get all observations of 'Mars'.",
+        "response": "stilts tapquery tapurl=\"http://pvol2.ehu.eus:8083/tap\" adql=\"SELECT * FROM epn_core.epn_core WHERE target_name='Mars'\" out=\"pvol_mars.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find all Near-Earth Objects in the NEOCC database with a semi-major axis greater than 3 AU.",
+        "response": "stilts tapquery tapurl=\"https://dachs.neo.s2p.esa.int/tap\" adql=\"SELECT * FROM neocc.nea_physical_properties WHERE semi_major_axis > 3.0\" out=\"distant_neos.csv\" ofmt=csv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Get the main ID and object type from SIMBAD for everything classified as a 'PlanetaryNebula'.",
+        "response": "stilts tapquery tapurl=\"http://simbad.cds.unistra.fr/simbad/sim-tap\" adql=\"SELECT main_id, otype FROM basic WHERE otype = 'PN'\" out=\"simbad_pn.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find the 1000 objects with the highest redshift in the SDSS DR12 quasar catalog (`VII/270/catalog`) at VizieR.",
+        "response": "stilts tapquery tapurl=\"https://tapvizier.cds.unistra.fr/TAPVizieR/tap\" adql=\"SELECT TOP 1000 * FROM \\\"VII/270/catalog\\\" ORDER BY z DESC\" out=\"high_z_qso.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find all tables at the VizieR archive provided by CDS that have 'ROSAT' in their description.",
+        "response": "stilts tapquery tapurl=\"http://cdsarc.cds.unistra.fr/saadavizier.tap/tap\" adql=\"SELECT table_name, description FROM tap_schema.tables WHERE description LIKE '%ROSAT%'\" omode=out ofmt=text",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the Australia Telescope Online Archive, find all observations longer than 10000 seconds.",
+        "response": "stilts tapquery tapurl=\"https://atoavo.atnf.csiro.au/tap\" adql=\"SELECT * FROM ivoa.obscore WHERE t_exptime > 10000\" out=\"atnf_long_obs.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Count how many pulsars are in the Parkes Pulsar Data Archive at CSIRO.",
+        "response": "stilts tapquery tapurl=\"https://data.csiro.au/psrdavo/tap\" adql=\"SELECT count(*) FROM ivoa.ObsCore\" omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "What are the different data collections available from Data Central?",
+        "response": "stilts tapquery tapurl=\"https://datacentral.org.au:443/vo/tap\" adql=\"SELECT DISTINCT collection FROM ivoa.obscore\" omode=out",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Crossmatch my local file `askap_targets.fits` against the ASKAP archive at CSIRO with a 1 arcminute radius.",
+        "response": "stilts tapskymatch in=\"askap_targets.fits\" ra=\"ra\" dec=\"dec\" sr=60 tapurl=\"https://casda.csiro.au/casda_vo_tools/tap\" taptable=\"ivoa.obscore\" taplon=\"s_ra\" taplat=\"s_dec\" out=\"askap_matches.fits\"",
+        "chat.jar": "failed",
+        "error": "Error: Bad value for parameter inlon: null value not allowed\nUsage: inlon=<expr/deg>\n\n"
+    },
+    {
+        "prompt": "List the tables from the IDOC archive at IAS.",
+        "response": "stilts tapquery tapurl=\"https://idoc-dachs.ias.u-psud.fr/tap\" adql=\"SELECT table_name, description FROM tap_schema.tables\" omode=out",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the EVN Data Archive, get observations of the source '3C273'.",
+        "response": "stilts tapquery tapurl=\"http://evn-vo.jive.eu/tap\" adql=\"SELECT * FROM ivoa.obscore WHERE target_name = '3C273'\" out=\"evn_3c273.vot\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "What instruments are represented in the FAI archives in Kazakhstan?",
+        "response": "stilts tapquery tapurl=\"https://dachs.fai.kz/tap\" adql=\"SELECT DISTINCT instrument_name FROM ivoa.obscore\" omode=out",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find all public data in the AIASCR VO archive.",
+        "response": "stilts tapquery tapurl=\"http://vos2.asu.cas.cz/tap\" adql=\"SELECT * FROM ivoa.obscore WHERE data_rights='PUBLIC'\" out=\"aiascr_public.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "How many tables are in the 'public' schema at the ASTRON data archive?",
+        "response": "stilts tapquery tapurl=\"https://vo.astron.nl/tap\" adql=\"SELECT count(*) FROM tap_schema.tables WHERE schema_name='public'\" omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Get 20 sources from the Chandra Source Catalog Release 1 with a hard-band flux greater than 1e-12.",
+        "response": "stilts tapquery tapurl=\"https://cda.cfa.harvard.edu/csc1tap\" adql=\"SELECT TOP 20 * FROM csc1.master_source WHERE flux_aper_h > 1e-12\" out=\"csc1_hard.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the main Chandra Data Archive, count the observations where the PI's last name is 'Smith'.",
+        "response": "stilts tapquery tapurl=\"https://cda.harvard.edu/cxctap\" adql=\"SELECT count(*) FROM cda.obs WHERE pi_last LIKE 'Smith'\" omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need the name, ra, and dec of the 50 sources with the highest detection significance in the main Chandra Source Catalog.",
+        "response": "stilts tapquery tapurl=\"https://cda.cfa.harvard.edu/csctap\" adql=\"SELECT TOP 50 name, ra, dec FROM master_source ORDER BY detect_significance DESC\" out=\"csc_top_sig.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Query the Chandra Source Catalog Release 2 for sources in observation 2224.",
+        "response": "stilts tapquery tapurl=\"https://cda.cfa.harvard.edu/csc2tap\" adql=\"SELECT * FROM csc2.master_source WHERE obsid=2224\" out=\"csc2_obs2224.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find 100 variable sources from the Chandra Source Catalog 2.1 and send them to topcat.",
+        "response": "stilts tapquery tapurl=\"https://cda.cfa.harvard.edu/csc21tap\" adql=\"SELECT TOP 100 * FROM csc21.master_source WHERE var_flag = 'T'\" omode=topcat",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the VESPA PA archive, list all targets that are comets.",
+        "response": "stilts tapquery tapurl=\"http://vespa-ae.oma.be/tap\" adql=\"SELECT DISTINCT target_name FROM epn_core.epn_core WHERE target_class = 'Comet'\" omode=out",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Count how many distinct publishers have data in the CeSAM archive.",
+        "response": "stilts tapquery tapurl=\"https://vo.lam.fr/tap\" adql=\"SELECT count(DISTINCT publisher_id) FROM ivoa.obscore\" omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Get me all observations from the CADC archive that used the 'CFHT' telescope.",
+        "response": "stilts tapquery tapurl=\"https://ws.cadc-ccda.hia-iha.nrc-cnrc.ca/argus\" adql=\"SELECT * FROM caom.ObsCore WHERE facility_name = 'CFHT'\" out=\"cadc_cfht.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Are there any user-provided catalogs available from CANFAR for a user named 'smith'?",
+        "response": "stilts tapquery tapurl=\"https://ws-uv.canfar.net/youcat\" adql=\"SELECT table_name FROM tap_schema.tables WHERE table_name LIKE '%smith%'\" omode=out",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Retrieve the first 200 entries from the MUDEHAR DR1 catalog at CEFCA.",
+        "response": "stilts tapquery tapurl=\"https://archive.cefca.es/catalogues/vo/tap/mudehar-dr1\" adql=\"SELECT TOP 200 * FROM mudehar.dr1\" out=\"mudehar_sample.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find all objects in the J-PAS EDR catalog brighter than magnitude 15 in the rSDSS filter.",
+        "response": "stilts tapquery tapurl=\"https://archive.cefca.es/catalogues/vo/tap/jpas-edr\" adql=\"SELECT * FROM jpas.FilterAndCalib WHERE rSDSS < 15\" out=\"jpas_bright.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "List the tables in the OSUG data archive.",
+        "response": "stilts tapquery tapurl=\"http://osug-vo.osug.fr:8080/tap\" adql=\"SELECT table_name, description FROM tap_schema.tables\" omode=out",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the KIS Science Data Centre, find observations with a wavelength coverage that includes 656 nm.",
+        "response": "stilts tapquery tapurl=\"http://dachs.sdc.leibniz-kis.de/tap\" adql=\"SELECT * FROM ivoa.obscore WHERE spectral_range_min < 656e-9 AND spectral_range_max > 656e-9\" out=\"kis_halpha_obs.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Get the top 100 objects from the J-NEP PDR202107 catalog.",
+        "response": "stilts tapquery tapurl=\"https://archive.cefca.es/catalogues/vo/tap/jnep-pdr202107\" adql=\"SELECT TOP 100 * FROM jnep.main\" out=\"jnep_sample.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the miniJ-PAS PDR201912 catalog, find objects with a star classification probability greater than 0.9.",
+        "response": "stilts tapquery tapurl=\"https://archive.cefca.es/catalogues/vo/tap/minijpas-pdr201912\" adql=\"SELECT * FROM minijpas.CoaddPhotos WHERE CLASS_STAR > 0.9\" out=\"minijpas_stars.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need objects from the J-PLUS DR3 catalog that have a g-r color index between 0.5 and 0.6.",
+        "response": "stilts tapquery tapurl=\"https://archive.cefca.es/catalogues/vo/tap/jplus-dr3\" adql=\"SELECT * FROM jplus.MagAbAndErr WHERE (g - r) BETWEEN 0.5 AND 0.6\" out=\"jplus_color_slice.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "What data models are referenced in the Paris Observatory's research and reference data archive?",
+        "response": "stilts tapquery tapurl=\"http://voparis-rr.obspm.fr/tap\" adql=\"SELECT DISTINCT datamodel FROM ivoa.obscore\" omode=out",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the Pithia database, count all observations.",
+        "response": "stilts tapquery tapurl=\"http://pithia.cbk.waw.pl/tap\" adql=\"SELECT COUNT(*) FROM ivoa.ObsCore\" omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "List the tables provided by the OCA Data Center.",
+        "response": "stilts tapquery tapurl=\"https://dachs.oca.eu/tap\" adql=\"SELECT table_name, description FROM tap_schema.tables\" omode=out",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Query the official ALMA archive at NAOJ for all observations of 'NGC 253'.",
+        "response": "stilts tapquery tapurl=\"https://almascience.nao.ac.jp/tap\" adql=\"SELECT * FROM ivoa.ObsCore WHERE target_name = 'NGC 253'\" out=\"alma_naoj_ngc253.vot\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find all public Cycle 7 observations from the official ALMA archive at ESO.",
+        "response": "stilts tapquery tapurl=\"https://almascience.eso.org/tap\" adql=\"SELECT * FROM ivoa.ObsCore WHERE data_rights = 'Public' AND proposal_id LIKE '2019.1%'\" out=\"alma_eso_c7.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Crossmatch my targets in `targets.csv` (ra_h, dec_d) against the official ALMA archive at NRAO with a 1 arcminute radius.",
+        "response": "stilts tapskymatch in=\"targets.csv\" ifmt=csv icmd='addskycoords fk5 fk5 ra_h dec_d ra dec' ra=\"ra\" dec=\"dec\" sr=60 tapurl=\"https://almascience.nrao.edu/tap\" taptable=\"ivoa.ObsCore\" taplon=\"s_ra\" taplat=\"s_dec\" out=\"alma_nrao_matches.fits\"",
+        "chat.jar": "failed",
+        "error": "Error: Bad value for parameter inlon: null value not allowed\nUsage: inlon=<expr/deg>\n\n"
+    },
+    {
+        "prompt": "From the Pollux database, get me synthetic spectra with a resolution greater than 50000.",
+        "response": "stilts tapquery tapurl=\"https://pollux.oreme.org/vo/datalink/speconvol?\" adql=\"SELECT * FROM pollux.models WHERE resolving_power > 50000\" out=\"pollux_highres.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Retrieve the 50 brightest quasars from the Laurino et al. 2011 catalog at INAF-OATS.",
+        "response": "stilts tapquery tapurl=\"http://ia2-tap.oats.inaf.it:8080/wgetap\" adql=\"SELECT TOP 50 * FROM laurino2011.main WHERE class = 'qso' ORDER BY rmag\" out=\"laurino_qsos.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Search the SkyMapper database for sources where the mean stellar probability is greater than 0.99.",
+        "response": "stilts tapquery tapurl=\"https://api.skymapper.nci.org.au/public/tap\" adql=\"SELECT * FROM dr3.master WHERE prob_star > 0.99\" out=\"skymapper_stars.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the 4XMM catalog, get 100 sources with a detection likelihood greater than 20.",
+        "response": "stilts tapquery tapurl=\"https://xcatdb.unistra.fr/xtapdb\" adql=\"SELECT TOP 100 * FROM dr11.slim_spec WHERE det_ml > 20\" out=\"xcat_highlike.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "List the target classes from the INAF-OATs VESPA data service.",
+        "response": "stilts tapquery tapurl=\"http://vespa.ia2.inaf.it/tap\" adql=\"SELECT DISTINCT target_class FROM epn_core.epn_core\" omode=out",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the INAF IA2 Project Resources, count how many observations are available.",
+        "response": "stilts tapquery tapurl=\"http://archives.ia2.inaf.it:80/vo/tap/projects\" adql=\"SELECT COUNT(*) FROM ivoa.ObsCore\" omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Get the 50 brightest stars from the MACHO database.",
+        "response": "stilts tapquery tapurl=\"http://machotap.asvo.nci.org.au/ncitap//tap\" adql=\"SELECT TOP 50 * FROM macho.v_light_curves ORDER BY vmag_mean\" out=\"macho_brightest.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the WiggleZ final data release, select galaxies with a quality flag of 4 or greater.",
+        "response": "stilts tapquery tapurl=\"http://wiggleztap.asvo.nci.org.au/ncitap//tap\" adql=\"SELECT * FROM final.main WHERE qop >= 4\" out=\"wigglez_highq.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find all observations from the CLIMSO coronagraph database of the target 'Sun'.",
+        "response": "stilts tapquery tapurl=\"https://epntap.climso.ovgso.fr/tap\" adql=\"SELECT * FROM epn_core.epn_core WHERE target_name='Sun'\" out=\"climso_sun.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Crossmatch my local file `my_stars.fits` against the Gaia archive at ARI with a 0.5 arcsecond radius.",
+        "response": "stilts tapskymatch in=\"my_stars.fits\" ra=\"RA\" dec=\"DEC\" sr=0.5 tapurl=\"https://gaia.ari.uni-heidelberg.de/tap\" taptable=\"gaiadr3.gaia_source\" taplon=\"ra\" taplat=\"dec\" out=\"ari_gaia_matches.fits\"",
+        "chat.jar": "failed",
+        "error": "Error: Bad value for parameter inlon: null value not allowed\nUsage: inlon=<expr/deg>\n\n"
+    },
+    {
+        "prompt": "List the available data collections from the SSDC archive.",
+        "response": "stilts tapquery tapurl=\"https://tools.ssdc.asi.it/TAPSSDC/tap\" adql=\"SELECT DISTINCT obs_collection FROM ivoa.ObsCore\" omode=out",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the ESA Planetary Science Archive, get all data for the 'Rosetta' mission.",
+        "response": "stilts tapquery tapurl=\"https://psa.esa.int/psa-tap/tap\" adql=\"SELECT * FROM epn_core.epn_core WHERE instrument_host_name='Rosetta'\" out=\"psa_rosetta.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Query the Integral Science Archive for observations longer than 200000 seconds.",
+        "response": "stilts tapquery tapurl=\"https://isla.esac.esa.int/tap/tap\" adql=\"SELECT * FROM ivoa.obscore WHERE t_exptime > 200000\" out=\"integral_long.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find all observations from the Infrared Space Observatory archive and send them to topcat.",
+        "response": "stilts tapquery tapurl=\"http://nida.esac.esa.int/nida-sl-tap/tap\" adql=\"SELECT * FROM iso.main\" omode=topcat",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the XMM-Newton archive, retrieve the top 500 sources from the 4XMM-DR11 catalog, ordered by decreasing broad-band flux.",
+        "response": "stilts tapquery tapurl=\"https://nxsa.esac.esa.int/tap-server/tap\" adql=\"SELECT TOP 500 * FROM nxsa.v_epic_source_cat_v4 ORDER BY sc_ep_8_flux DESC\" out=\"xmm_brightest_dr11.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the Herschel archive, find observations of the target 'M101'.",
+        "response": "stilts tapquery tapurl=\"https://archives.esac.esa.int/hsa/whsa-tap-server/tap\" adql=\"SELECT * FROM hsa.observation WHERE target_name = 'M101'\" out=\"herschel_m101.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "What tables are available from the Euclid archive?",
+        "response": "stilts tapquery tapurl=\"https://eas.esac.esa.int/tap-server/tap\" adql=\"SELECT table_name FROM tap_schema.tables\" omode=out",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Query the EURO-VO Registry for all resources that are of type 'vs:CatalogService'.",
+        "response": "stilts tapquery tapurl=\"https://registry.euro-vo.org/regtap/tap\" adql=\"SELECT * FROM rr.resource WHERE res_type = 'vs:CatalogService'\" out=\"vo_catalogs.vot\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Get the top 100 entries from the ESO catalog archive's main table.",
+        "response": "stilts tapquery tapurl=\"http://archive.eso.org/tap_cat\" adql=\"SELECT TOP 100 * FROM eso.main\" out=\"eso_cat_sample.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Search the ESO observation log for data from the 'VLT' telescope.",
+        "response": "stilts tapquery tapurl=\"https://archive.eso.org/tap_obs\" adql=\"SELECT * FROM eso.obs_core WHERE telescope_name='VLT'\" out=\"eso_vlt_obs.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "How many tables are in the 'nancay' schema at the CDN VO server?",
+        "response": "stilts tapquery tapurl=\"http://vogate.obs-nancay.fr/tap\" adql=\"SELECT count(*) FROM tap_schema.tables WHERE schema_name='nancay'\" omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Retrieve all columns for the first 10 entries from the cross section database at spectrum.iaa.es.",
+        "response": "stilts tapquery tapurl=\"http://spectrum.iaa.es/tap\" adql=\"SELECT TOP 10 * FROM amda.amda\" out=\"cross_section_sample.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From IRSA, find all WISE All-Sky Source Catalog sources within a 1 degree box around RA=250.4, Dec=36.4.",
+        "response": "stilts tapquery tapurl=\"https://irsa.ipac.caltech.edu/TAP\" adql=\"SELECT source_id, ra, dec, w1mpro, w2mpro FROM allwise_p3as_psd WHERE ra BETWEEN 249.9 AND 250.9 AND dec BETWEEN 35.9 AND 36.9\" out=\"wise_box.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "List the tables in the maser database at the Paris Observatory.",
+        "response": "stilts tapquery tapurl=\"http://voparis-tap-maser.obspm.fr/tap\" adql=\"SELECT table_name FROM tap_schema.tables\" omode=out",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "What high-energy data schemas are available from the PADC HE archive?",
+        "response": "stilts tapquery tapurl=\"http://voparis-tap-he.obspm.fr/tap\" adql=\"SELECT schema_name FROM tap_schema.schemata\" omode=out",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Count the observations in the PADC helio data archive.",
+        "response": "stilts tapquery tapurl=\"http://voparis-tap-helio.obspm.fr/tap\" adql=\"SELECT COUNT(*) FROM ivoa.obscore\" omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the VST ATLAS Survey at OSA, get 100 sources with g-band aperture magnitude 3 brighter than 12.",
+        "response": "stilts tapquery tapurl=\"http://tap.roe.ac.uk/osa\" adql=\"SELECT TOP 100 * FROM atlas.main WHERE gAperMag3 < 12\" out=\"atlas_bright.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Query the SuperCOSMOS Science Archive for objects with a proper motion in RA greater than 1000 mas/yr.",
+        "response": "stilts tapquery tapurl=\"http://tap.roe.ac.uk/ssa\" adql=\"SELECT * FROM ssa.main WHERE muRA > 1000\" out=\"ssa_high_pm.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the VISTA Science Archive, find objects in the 'viking' survey.",
+        "response": "stilts tapquery tapurl=\"http://tap.roe.ac.uk/vsa\" adql=\"SELECT * FROM viking.main LIMIT 200\" out=\"vsa_viking_sample.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the WFCAM Science Archive, get the J, H, and K magnitudes for 1000 sources from the UKIDSS Galactic Plane Survey.",
+        "response": "stilts tapquery tapurl=\"http://tap.roe.ac.uk/wsa\" adql=\"SELECT TOP 1000 ra, dec, jAperMag3, hAperMag3, kAperMag3 FROM gps.source\" out=\"wsa_gps_sample.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "List the available observation targets from the Europlanet Telescope Network Database.",
+        "response": "stilts tapquery tapurl=\"http://parsec-europlanet.eu:81/tap\" adql=\"SELECT DISTINCT target_name FROM epn_core.epn_core\" omode=out",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "What schemas are published by the Gaia archive at AIP?",
+        "response": "stilts tapquery tapurl=\"https://gaia.aip.de/tap\" adql=\"SELECT schema_name FROM tap_schema.schemata\" omode=out",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Query the GAVO data center for all objects in the RAVE DR5 catalog with a metallicity [M/H] less than -2.0. Limit to 100 objects.",
+        "response": "stilts tapquery tapurl=\"http://dc.g-vo.org/tap\" adql=\"SELECT TOP 100 raveid, raj2000, dej2000, met_feh FROM rave.dr5 WHERE met_feh < -2.0\" out=\"rave_metal_poor.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the CDPP EPN database, get all observations of 'Jupiter'.",
+        "response": "stilts tapquery tapurl=\"http://cdpp-epntap.irap.omp.eu:80/tap\" adql=\"SELECT * FROM epn_core.epn_core WHERE target_name='Jupiter'\" out=\"cdpp_jupiter.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Query the NED database for all objects with a redshift greater than 5.",
+        "response": "stilts tapquery tapurl=\"https://ned.ipac.caltech.edu/tap/\" adql=\"SELECT * FROM objdir WHERE z > 5\" out=\"high_z_ned.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the Keck Observatory Archive, find all observations using the 'HIRES' instrument.",
+        "response": "stilts tapquery tapurl=\"https://koa.ipac.caltech.edu/TAP\" adql=\"SELECT * FROM koa.koa_obscore WHERE instrument = 'HIRES'\" out=\"koa_hires.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Get the top 200 entries from the MUSE-Wide survey archive.",
+        "response": "stilts tapquery tapurl=\"https://musewide.aip.de/tap\" adql=\"SELECT TOP 200 * FROM musewide.dr1\" out=\"musewide_sample.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the J-PLUS DR2 catalog, find objects with a g-band magnitude brighter than 16 and r-band magnitude brighter than 15.5.",
+        "response": "stilts tapquery tapurl=\"https://archive.cefca.es/catalogues/vo/tap/jplus-dr2\" adql=\"SELECT * FROM jplus.MagAbAndErr WHERE g < 16 AND r < 15.5\" out=\"jplus_dr2_bright.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find objects in the J-PLUS DR1 catalog with a star/galaxy classification greater than 0.95.",
+        "response": "stilts tapquery tapurl=\"https://archive.cefca.es/catalogues/vo/tap/jplus-dr1\" adql=\"SELECT * FROM jplus.jplus WHERE CLASS_STAR > 0.95\" out=\"jplus_dr1_stars.csv\" ofmt=csv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "List the tables available from the Smithsonian Astrophysical Observatory Telescope Data Center.",
+        "response": "stilts tapquery tapurl=\"http://oirsa.cfa.harvard.edu:8080/tap\" adql=\"SELECT table_name FROM tap_schema.tables\" omode=out",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Get 100 observations from the Subaru Suprime-Cam data archive.",
+        "response": "stilts tapquery tapurl=\"http://jvo.nao.ac.jp/skynode/do/tap/spcam\" adql=\"SELECT TOP 100 * FROM ivoa.obscore\" out=\"subaru_spcam_sample.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the Subaru/XMM-Newton Deep Survey, find objects with a photo-z greater than 2.",
+        "response": "stilts tapquery tapurl=\"http://jvo.nao.ac.jp/skynode/do/tap/sxds_v1\" adql=\"SELECT * FROM sxds.main WHERE photoz > 2.0\" out=\"sxds_highz.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find all Subaru HDS Spectrum observations and send the results to topcat.",
+        "response": "stilts tapquery tapurl=\"http://jvo.nao.ac.jp/skynode/do/tap/hds/\" adql=\"SELECT * FROM ivoa.obscore\" omode=topcat",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the SAGA database, find stars with [Fe/H] less than -3.",
+        "response": "stilts tapquery tapurl=\"http://jvo.nao.ac.jp/skynode/do/tap/saga\" adql=\"SELECT * FROM saga.main WHERE feh < -3.0\" out=\"saga_metalpoor.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Retrieve all galaxies from the Kiso UV-X Galaxies catalog that have a B magnitude.",
+        "response": "stilts tapquery tapurl=\"http://jvo.nao.ac.jp/skynode/do/tap/kug2000\" adql=\"SELECT * FROM kug2000.main WHERE bmag IS NOT NULL\" out=\"kug_bmag.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find all Subaru MOIRCS observations of 'Orion'.",
+        "response": "stilts tapquery tapurl=\"http://jvo.nao.ac.jp/skynode/do/tap/moircs\" adql=\"SELECT * FROM ivoa.obscore WHERE target_name = 'Orion'\" out=\"moircs_orion.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Count how many objects are in the JVO Quasars and Active Galactic Nuclei catalog.",
+        "response": "stilts tapquery tapurl=\"http://jvo.nao.ac.jp/skynode/do/tap/agn\" adql=\"SELECT count(*) FROM agn.main\" omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Get all ALMA observations from the JVO archive.",
+        "response": "stilts tapquery tapurl=\"http://jvo.nao.ac.jp/skynode/do/tap/alma\" adql=\"SELECT * FROM ivoa.obscore\" out=\"jvo_alma.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the AKARI Far-infrared All-Sky Survey Maps, what data is available?",
+        "response": "stilts tapquery tapurl=\"http://jvo.nao.ac.jp/skynode/do/tap/akari\" adql=\"SELECT * FROM ivoa.obscore\" out=\"akari_fis_obs.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "List the FITS files available in the Nobeyama Radio Telescope Archive.",
+        "response": "stilts tapquery tapurl=\"http://jvo.nao.ac.jp/skynode/do/tap/nobeyama/\" adql=\"SELECT * FROM ivoa.obscore\" out=\"nobeyama_obs.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Retrieve all entries from the Hitomi Master Catalog.",
+        "response": "stilts tapquery tapurl=\"http://jvo.nao.ac.jp/skynode/do/tap/hitomi\" adql=\"SELECT * FROM hitomi.main\" out=\"hitomi_master.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the HALCA VSOP archive, find all observations.",
+        "response": "stilts tapquery tapurl=\"http://jvo.nao.ac.jp/skynode/do/tap/halca\" adql=\"SELECT * FROM ivoa.obscore\" out=\"halca_obs.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Get all analysis data from the VSOP 5 GHz AGN Survey.",
+        "response": "stilts tapquery tapurl=\"http://jvo.nao.ac.jp/skynode/do/tap/halca_agn\" adql=\"SELECT * FROM halca_agn.main\" out=\"halca_agn_data.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find sources from the AKARI/IRC MIR-S 9um point source catalog with a flux quality flag of 3.",
+        "response": "stilts tapquery tapurl=\"http://jvo.nao.ac.jp/skynode/do/tap/akari/catalog/slitless_mir_psc\" adql=\"SELECT * FROM slitless_mir_psc.main WHERE fquality = 3\" out=\"akari_mir_good.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Get all asteroid flux measurements from the AKARI archive.",
+        "response": "stilts tapquery tapurl=\"http://jvo.nao.ac.jp/skynode/do/tap/akari/catalog/asteroid_flux\" adql=\"SELECT * FROM asteroid_flux.main\" out=\"akari_asteroids.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Retrieve 100 spectra from the AKARI/IRC MIR-S slit-less spectroscopic catalog.",
+        "response": "stilts tapquery tapurl=\"http://jvo.nao.ac.jp/skynode/do/tap/akari/spectrum/slitless_mir_spec\" adql=\"SELECT TOP 100 * FROM ivoa.obscore\" out=\"akari_mir_spectra.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find all spectra from the AKARI/IRC NIR Spectral Atlas of Galactic Planetary Nebulae.",
+        "response": "stilts tapquery tapurl=\"http://jvo.nao.ac.jp/skynode/do/tap/akari/spectrum/galactic_planetary_nebulae\" adql=\"SELECT * FROM ivoa.obscore\" out=\"akari_pn_spectra.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Get all spectra from the AKARI/IRC NIR Low-resolution Spectral Catalogue of Diffuse Sky Patches.",
+        "response": "stilts tapquery tapurl=\"http://jvo.nao.ac.jp/skynode/do/tap/akari/spectrum/diffuse_sky_patch\" adql=\"SELECT * FROM ivoa.obscore\" out=\"akari_diffuse_spectra.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Retrieve the 50 brightest sources from the IRTS NIRS Point Source Catalog.",
+        "response": "stilts tapquery tapurl=\"http://jvo.nao.ac.jp/skynode/do/tap/irts/catalog/irts_nirs_psc_1_3\" adql=\"SELECT TOP 50 * FROM irts_nirs_psc_1_3.main ORDER BY f_2_2um_mag\" out=\"irts_nirs_bright.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the IRTS MIRS Point Source Catalog, find sources with a flux quality flag of 'A' at 4.5um.",
+        "response": "stilts tapquery tapurl=\"http://jvo.nao.ac.jp/skynode/do/tap/irts/catalog/irts_mirs_psc_2_1\" adql=\"SELECT * FROM irts_mirs_psc_2_1.main WHERE f_4_5um_quality = 'A'\" out=\"irts_mirs_good.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Count the total number of observations in the AKARI archive at JVO.",
+        "response": "stilts tapquery tapurl=\"http://jvo.nao.ac.jp/skynode/do/tap/akari/ivoa/obscore\" adql=\"SELECT COUNT(*) FROM ivoa.obscore\" omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Retrieve 100 public images from the Bisei Space Guard Center.",
+        "response": "stilts tapquery tapurl=\"http://jvo.nao.ac.jp/skynode/do/tap/bsgc/public/image\" adql=\"SELECT TOP 100 * FROM ivoa.obscore WHERE data_rights='PUBLIC'\" out=\"bsgc_images.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "What schemas are in the LATMOS data archive?",
+        "response": "stilts tapquery tapurl=\"http://vo.projet.latmos.ipsl.fr/tap\" adql=\"SELECT schema_name FROM tap_schema.schemata\" omode=out",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the HEASARC Xamin interface, find all tables related to the 'ROSAT' mission.",
+        "response": "stilts tapquery tapurl=\"https://heasarc.gsfc.nasa.gov/xamin/vo/tap\" adql=\"SELECT table_name, description FROM tap_schema.tables WHERE table_name LIKE '%rosat%'\" omode=out",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Count how many plates are available in the APPLAUSE archive.",
+        "response": "stilts tapquery tapurl=\"https://www.plate-archive.org/tap\" adql=\"SELECT COUNT(*) FROM applause_dr3.plate\" omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the NOIRLab Astro Data Lab, get 100 entries from the SMASH DR2 catalog.",
+        "response": "stilts tapquery tapurl=\"https://datalab.noirlab.edu/tap\" adql=\"SELECT TOP 100 * FROM smash_dr2.object\" out=\"smash_dr2_sample.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Get a list of tables from the PADC planetary data archive.",
+        "response": "stilts tapquery tapurl=\"http://voparis-tap-planeto.obspm.fr/tap\" adql=\"SELECT table_name FROM tap_schema.tables\" omode=out",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "What are the schemas in the ChiVO archive?",
+        "response": "stilts tapquery tapurl=\"https://vo.chivo.cl/tap\" adql=\"SELECT schema_name FROM tap_schema.schemata\" omode=out",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the Gaia archive, find all sources within 1 arcminute of RA=180, Dec=0.",
+        "response": "stilts tapquery tapurl=\"https://gea.esac.esa.int/tap-server/tap\" adql=\"SELECT * FROM gaiadr3.gaia_source WHERE 1=CONTAINS(POINT('ICRS', ra, dec), CIRCLE('ICRS', 180, 0, 1.0/60.0))\" out=\"gaia_field.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Crossmatch my file `targets.fits` with the 2MASS catalog at VizieR with a 2 arcsec radius.",
+        "response": "stilts tapskymatch in=\"targets.fits\" ra=\"RA\" dec=\"DEC\" sr=2 tapurl=\"https://tapvizier.cds.unistra.fr/TAPVizieR/tap\" taptable=\"\\\"II/246/out\\\"\" taplon=\"RAJ2000\" taplat=\"DEJ2000\" out=\"2mass_matches.fits\"",
+        "chat.jar": "failed",
+        "error": "Error: Bad value for parameter inlon: null value not allowed\nUsage: inlon=<expr/deg>\n\n"
+    },
+    {
+        "prompt": "Get all objects from SIMBAD whose main ID contains 'M31'.",
+        "response": "stilts tapquery tapurl=\"http://simbad.cds.unistra.fr/simbad/sim-tap\" adql=\"SELECT * FROM basic WHERE main_id LIKE '%M31%'\" out=\"simbad_m31.vot\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the MAST PanSTARRS1 DR2 archive, count objects with g-band magnitude brighter than 12.",
+        "response": "stilts tapquery tapurl=\"https://mast.stsci.edu/vo-tap/api/v0.1/ps1dr2\" adql=\"SELECT COUNT(*) FROM dbo.mean WHERE gMeanPSFMag < 12\" omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find all variable sources in the Chandra Source Catalog 2.1 that are classified as stars.",
+        "response": "stilts tapquery tapurl=\"https://cda.cfa.harvard.edu/csc21tap\" adql=\"SELECT * FROM csc21.master_source WHERE var_flag='T' AND class='STAR'\" out=\"csc_var_stars.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the GAVO data center, what tables are in the 'public' schema?",
+        "response": "stilts tapquery tapurl=\"http://dc.g-vo.org/tap\" adql=\"SELECT table_name FROM tap_schema.tables WHERE schema_name = 'public'\" omode=out",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need all public Gemini observations from the CADC archive. Send the result to TOPCAT.",
+        "response": "stilts tapquery tapurl=\"https://ws.cadc-ccda.hia-iha.nrc-cnrc.ca/argus\" adql=\"SELECT * FROM caom.ObsCore WHERE facility_name = 'Gemini' AND data_rights='PUBLIC'\" omode=topcat",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the ESO observation log, find all observations taken with the 'HAWK-I' instrument.",
+        "response": "stilts tapquery tapurl=\"https://archive.eso.org/tap_obs\" adql=\"SELECT * FROM eso.obs_core WHERE instrument_name='HAWK-I'\" out=\"hawki_obs.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Search the ALMA archive at ESO for observations where the Principal Investigator is 'ALMA'.",
+        "response": "stilts tapquery tapurl=\"https://almascience.eso.org/tap\" adql=\"SELECT * FROM ivoa.ObsCore WHERE proposal_authors LIKE '%ALMA%'\" out=\"alma_pi_alma.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the IRSA database, get the first 1000 entries from the WISE All-Sky Source Catalog.",
+        "response": "stilts tapquery tapurl=\"https://irsa.ipac.caltech.edu/TAP\" adql=\"SELECT TOP 1000 * FROM allwise_p3as_psd\" out=\"wise_sample.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Query the J-PLUS DR3 database for objects with a stellaricity index > 0.8.",
+        "response": "stilts tapquery tapurl=\"https://archive.cefca.es/catalogues/vo/tap/jplus-dr3\" adql=\"SELECT * FROM jplus.JPLUS WHERE CLASS_STAR > 0.8\" out=\"jplus_likely_stars.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Count the number of sources in the WSA UKIDSS Large Area Survey that are flagged as stellar.",
+        "response": "stilts tapquery tapurl=\"http://tap.roe.ac.uk/wsa\" adql=\"SELECT count(*) FROM las.source WHERE mergedClass = -1\" omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From NED, find all objects with an object type of 'G' (galaxy) and a redshift less than 0.01.",
+        "response": "stilts tapquery tapurl=\"https://ned.ipac.caltech.edu/tap/\" adql=\"SELECT * FROM objdir WHERE objtype='G' AND z < 0.01\" out=\"nearby_galaxies_ned.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need the observation ID and start time for all XMM-Newton observations longer than 100,000 seconds.",
+        "response": "stilts tapquery tapurl=\"https://nxsa.esac.esa.int/tap-server/tap\" adql=\"SELECT observation_id, start_time FROM nxsa.v_obs_master WHERE duration > 100000\" out=\"xmm_long_obs.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Query the European HST Archive for all WFPC2 observations with an exposure time over 1000s.",
+        "response": "stilts tapquery tapurl=\"https://hst.esac.esa.int/tap-server/tap\" adql=\"SELECT * FROM hsc.observation WHERE instrument_name='WFPC2' AND exposure_duration > 1000\" out=\"hst_wfpc2_long.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the Gaia archive, find the 100 sources with the highest proper motion.",
+        "response": "stilts tapquery tapurl=\"https://gea.esac.esa.int/tap-server/tap\" adql=\"SELECT TOP 100 source_id, pm FROM gaiadr3.gaia_source ORDER BY pm DESC\" out=\"gaia_high_pm.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From VizieR, get all entries from the Henry Draper catalog ('V/50/catalog').",
+        "response": "stilts tapquery tapurl=\"https://tapvizier.cds.unistra.fr/TAPVizieR/tap\" adql=\"SELECT * FROM \\\"V/50/catalog\\\"\" out=\"henry_draper.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "List all observations from the ESO log that were part of program ID '076.A-0888'.",
+        "response": "stilts tapquery tapurl=\"https://archive.eso.org/tap_obs\" adql=\"SELECT * FROM eso.obs_core WHERE prog_id = '076.A-0888'\" out=\"eso_program_obs.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Get me the 1000 brightest sources in the g-band from the PanSTARRS DR2 database at MAST.",
+        "response": "stilts tapquery tapurl=\"https://mast.stsci.edu/vo-tap/api/v0.1/ps1dr2\" adql=\"SELECT TOP 1000 * FROM dbo.mean ORDER BY gMeanPSFMag ASC\" out=\"ps1dr2_brightest.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Crossmatch my local sources `my_sources.fits` with the official ALMA archive at ESO. Use a 30 arcsecond radius.",
+        "response": "stilts tapskymatch in=\"my_sources.fits\" ra=\"RA\" dec=\"DEC\" sr=30 tapurl=\"https://almascience.eso.org/tap\" taptable=\"ivoa.ObsCore\" taplon=\"s_ra\" taplat=\"s_dec\" out=\"alma_matches.fits\"",
+        "chat.jar": "failed",
+        "error": "Error: Bad value for parameter inlon: null value not allowed\nUsage: inlon=<expr/deg>\n\n"
+    },
+    {
+        "prompt": "From the WFCAM Science Archive, get all sources from the Galactic Clusters Survey with a J-K color greater than 2.0.",
+        "response": "stilts tapquery tapurl=\"http://tap.roe.ac.uk/wsa\" adql=\"SELECT ra, dec, jAperMag3, kAperMag3 FROM gcs.source WHERE jAperMag3 - kAperMag3 > 2.0\" out=\"wsa_red_gcs.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find all observations of Jupiter's moon 'Io' from the CADC archive.",
+        "response": "stilts tapquery tapurl=\"https://ws.cadc-ccda.hia-iha.nrc-cnrc.ca/argus\" adql=\"SELECT * FROM caom.ObsCore WHERE target_name = 'Io'\" out=\"cadc_io.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Get statistics on the parallax column from the Gaia archive at AIP.",
+        "response": "stilts tapquery tapurl=\"https://gaia.aip.de/tap\" adql=\"SELECT parallax FROM gaiadr3.gaia_source\" ocmd=\"stats\" omode=out",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find me all planetary data from the PADC archive.",
+        "response": "stilts tapquery tapurl=\"http://voparis-tap-planeto.obspm.fr/tap\" adql=\"SELECT * FROM epn_core.epn_core\" out=\"padc_planeto.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the main Chandra Data Archive, get all observations of 'Cas A'.",
+        "response": "stilts tapquery tapurl=\"https://cda.harvard.edu/cxctap\" adql=\"SELECT * FROM cda.obs WHERE target_name = 'Cas A'\" out=\"chandra_casa.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the official ALMA archive at NAOJ, count the number of scientific projects.",
+        "response": "stilts tapquery tapurl=\"https://almascience.nao.ac.jp/tap\" adql=\"SELECT count(DISTINCT proposal_id) FROM ivoa.ObsCore\" omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From IRSA, count the number of sources in the UKIDSS Large Area Survey DR10.",
+        "response": "stilts tapquery tapurl=\"https://irsa.ipac.caltech.edu/TAP\" adql=\"SELECT COUNT(*) FROM las_dr10.source\" omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find the 100 objects with the most observations from the Hubble Source Catalog v3.",
+        "response": "stilts tapquery tapurl=\"https://mast.stsci.edu/vo-tap/api/v0.1/hsc/\" adql=\"SELECT TOP 100 * FROM hsc_v3.hsc_view ORDER BY NumImages DESC\" out=\"hsc_most_observed.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the APPLAUSE archive, find all plates with an exposure time greater than 3600 seconds.",
+        "response": "stilts tapquery tapurl=\"https://www.plate-archive.org/tap\" adql=\"SELECT * FROM applause_dr3.plate WHERE exposure_time > 3600\" out=\"applause_long_exp.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Get all observations of the Sun from the Nancay radio telescope archive.",
+        "response": "stilts tapquery tapurl=\"http://vogate.obs-nancay.fr/tap\" adql=\"SELECT * FROM ivoa.obscore WHERE target_name='Sun'\" out=\"nancay_sun.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Retrieve all observations from the GAVO data center that used the 'OmegaCAM' instrument.",
+        "response": "stilts tapquery tapurl=\"http://dc.g-vo.org/tap\" adql=\"SELECT * FROM ivoa.obscore WHERE instrument_name = 'OmegaCAM'\" out=\"omegacam_obs.vot\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find all entries in SIMBAD that are part of a Cluster of Galaxies.",
+        "response": "stilts tapquery tapurl=\"http://simbad.cds.unistra.fr/simbad/sim-tap\" adql=\"SELECT main_id, otype, ra, dec FROM basic WHERE otype = 'ClG'\" out=\"galaxy_clusters.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the NOIRLab Astro Data Lab, get all sources from the DES DR2 main table with a MAG_AUTO_G less than 15.",
+        "response": "stilts tapquery tapurl=\"https://datalab.noirlab.edu/tap\" adql=\"SELECT * FROM des_dr2.main WHERE mag_auto_g < 15\" out=\"des_dr2_bright.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Get the access URL and estimated size for all data products from the European JWST Archive associated with proposal '1063'.",
+        "response": "stilts tapquery tapurl=\"https://jwst.esac.esa.int/server/tap\" adql=\"SELECT access_url, access_estsize FROM jwst.obscore WHERE proposal_id = '1063'\" out=\"jwst_prop_data.csv\" ofmt=csv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the main VizieR archive, find stars in the Tycho-2 catalog ('I/259/tyc2') with a proper motion > 500 mas/yr.",
+        "response": "stilts tapquery tapurl=\"http://cdsarc.cds.unistra.fr/saadavizier.tap/tap\" adql=\"SELECT * FROM \\\"I/259/tyc2\\\" WHERE pm > 500\" out=\"tycho2_high_pm.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "List the tables related to the AKARI mission in the JVO archive.",
+        "response": "stilts tapquery tapurl=\"http://jvo.nao.ac.jp/skynode/do/tap/akari/ivoa/obscore\" adql=\"SELECT DISTINCT table_name FROM tap_schema.columns WHERE table_name LIKE '%.%.%'\" omode=out",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the Keck Observatory Archive, find all public NIRC2 observations.",
+        "response": "stilts tapquery tapurl=\"https://koa.ipac.caltech.edu/TAP\" adql=\"SELECT * FROM koa.koa_obscore WHERE instrument='NIRC2' AND datarelease IS NOT NULL\" out=\"koa_nirc2_public.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find all resources published by 'STScI' from the MAST Registry.",
+        "response": "stilts tapquery tapurl=\"https://mast.stsci.edu/vo-tap/api/v0.1/registry\" adql=\"SELECT * FROM rr.resource WHERE publisher = 'STScI'\" out=\"mast_resources.vot\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Get 50 sources from the CANDELS high-level science products at MAST.",
+        "response": "stilts tapquery tapurl=\"https://mast.stsci.edu/vo-tap/api/v0.1/candels/\" adql=\"SELECT TOP 50 * FROM caom.ObsCore\" out=\"candels_sample.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Query the 3D-HST data at MAST for observations with an exposure time greater than 5000 seconds.",
+        "response": "stilts tapquery tapurl=\"https://mast.stsci.edu/vo-tap/api/v0.1/3dhst/\" adql=\"SELECT * FROM caom.ObsCore WHERE t_exptime > 5000\" out=\"3dhst_long_exp.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Get the first 100 entries from the GOODS survey data available at MAST.",
+        "response": "stilts tapquery tapurl=\"https://mast.stsci.edu/vo-tap/api/v0.1/goods/\" adql=\"SELECT TOP 100 * FROM caom.ObsCore\" out=\"goods_sample.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Can you list all the tables available from the Byurakan Astrophysical Observatory's archive?",
+        "response": "stilts tapquery tapurl=\"http://arvo-registry.sci.am/tap\" adql=\"SELECT table_name, description FROM tap_schema.tables\" omode=out ofmt=ascii",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the CLASSY high-level science products at MAST, find all observations of NGC 1705.",
+        "response": "stilts tapquery tapurl=\"https://mast.stsci.edu/vo-tap/api/v0.1/classy/\" adql=\"SELECT * FROM caom.ObsCore WHERE target_name = 'NGC 1705'\" out=\"classy_ngc1705.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Query the ESASky Legacy archive for any data from the 'XMM-OM' instrument.",
+        "response": "stilts tapquery tapurl=\"http://esaskylegacy.esac.esa.int/esasky-legacy-sl-tap/tap\" adql=\"SELECT * FROM esasky.merged_obscore WHERE instrument_name='XMM-OM'\" out=\"esasky_legacy_xmmom.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find all public observations in the main ESASky database and send them to TOPCAT.",
+        "response": "stilts tapquery tapurl=\"https://sky.esa.int/esasky-tap/tap\" adql=\"SELECT * FROM esasky.obscore WHERE data_rights = 'PUBLIC'\" omode=topcat",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "What schemas are available in the LMD planetary data archive in Paris?",
+        "response": "stilts tapquery tapurl=\"http://vo.lmd.jussieu.fr/tap\" adql=\"SELECT schema_name FROM tap_schema.schemata\" omode=out",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Get any available data from the Konkoly Observatory archive for the target 'M31'.",
+        "response": "stilts tapquery tapurl=\"http://nadir.konkoly.hu:80/tap\" adql=\"SELECT * FROM ivoa.ObsCore WHERE target_name = 'M31'\" out=\"konkoly_m31.vot\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the SkyMapper DR4 archive at MAST, find 200 sources with a g-band psf magnitude brighter than 10.",
+        "response": "stilts tapquery tapurl=\"https://mast.stsci.edu/vo-tap/api/v0.1/skymapperdr4/\" adql=\"SELECT TOP 200 * FROM dr4.master WHERE g_psf < 10\" out=\"bright_skymapper.csv\" ofmt=csv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Query the PanSTARRS DR1 archive for objects within 0.1 degrees of RA=200, Dec=-10.",
+        "response": "stilts tapquery tapurl=\"https://mast.stsci.edu/vo-tap/api/v0.1/ps1dr1\" adql=\"SELECT * FROM dbo.mean WHERE 1=CONTAINS(POINT('ICRS', ra, dec), CIRCLE('ICRS', 200.0, -10.0, 0.1))\" out=\"ps1dr1_cone.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "What tables related to solar system bodies are available at the Royal Observatory of Belgium?",
+        "response": "stilts tapquery tapurl=\"http://vo-tap.oma.be/tap\" adql=\"SELECT table_name FROM tap_schema.tables WHERE schema_name = 'mpcorb'\" omode=out",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the TESS Input Catalog at MAST, find 1000 stars with a TESS magnitude brighter than 6.",
+        "response": "stilts tapquery tapurl=\"https://mast.stsci.edu/vo-tap/api/v0.1/tic\" adql=\"SELECT TOP 1000 * FROM tic.main WHERE tmag < 6\" out=\"bright_tic_stars.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "List all observation collections from the ULLYSES high-level science products at MAST.",
+        "response": "stilts tapquery tapurl=\"https://mast.stsci.edu/vo-tap/api/v0.1/ullyses/\" adql=\"SELECT DISTINCT collection FROM caom.ObsCore\" omode=out ofmt=ascii",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Query the planetary data at FU Berlin for tables in the 'em1' schema.",
+        "response": "stilts tapquery tapurl=\"http://dachs.planet.fu-berlin.de/tap\" adql=\"SELECT table_name FROM tap_schema.tables WHERE schema_name='em1'\" omode=out",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find all observations from the HREDA archive taken in 2020.",
+        "response": "stilts tapquery tapurl=\"https://hreda.esac.esa.int/hreda-sl-tap/tap\" adql=\"SELECT * FROM hreda.obscore WHERE t_min >= 2020.0 AND t_max < 2021.0\" out=\"hreda_2020.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the European JWST Archive, count how many observations used the 'MIRI' instrument.",
+        "response": "stilts tapquery tapurl=\"https://jwst.esac.esa.int/server/tap\" adql=\"SELECT COUNT(*) FROM jwst.obscore WHERE instrument_name='MIRI'\" omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "What tables are provided by the UCL DaCHS server?",
+        "response": "stilts tapquery tapurl=\"http://astroweb.projects.phys.ucl.ac.uk:8000/tap\" adql=\"SELECT table_name FROM tap_schema.tables\" omode=out",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "At the AIP data archive, find all objects in the RAVE DR5 catalog with a radial velocity greater than 400 km/s.",
+        "response": "stilts tapquery tapurl=\"http://gavo.aip.de/tap\" adql=\"SELECT * FROM rave.dr5 WHERE hrv > 400\" out=\"rave_high_vel.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Count the tables available through the IAP data archive in Czechia.",
+        "response": "stilts tapquery tapurl=\"http://dorotka.ufa.cas.cz/tap\" adql=\"SELECT count(*) FROM tap_schema.tables\" omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the PVOL EPN database, get all observations of 'Mars'.",
+        "response": "stilts tapquery tapurl=\"http://pvol2.ehu.eus:8083/tap\" adql=\"SELECT * FROM epn_core.epn_core WHERE target_name='Mars'\" out=\"pvol_mars.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find all Near-Earth Objects in the NEOCC database with a semi-major axis greater than 3 AU.",
+        "response": "stilts tapquery tapurl=\"https://dachs.neo.s2p.esa.int/tap\" adql=\"SELECT * FROM neocc.nea_physical_properties WHERE semi_major_axis > 3.0\" out=\"distant_neos.csv\" ofmt=csv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the Australia Telescope Online Archive, find all observations longer than 10000 seconds.",
+        "response": "stilts tapquery tapurl=\"https://atoavo.atnf.csiro.au/tap\" adql=\"SELECT * FROM ivoa.obscore WHERE t_exptime > 10000\" out=\"atnf_long_obs.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Count how many pulsars are in the Parkes Pulsar Data Archive at CSIRO.",
+        "response": "stilts tapquery tapurl=\"https://data.csiro.au/psrdavo/tap\" adql=\"SELECT count(DISTINCT source_name) FROM ivoa.ObsCore\" omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "What are the different data collections available from Data Central in Australia?",
+        "response": "stilts tapquery tapurl=\"https://datacentral.org.au:443/vo/tap\" adql=\"SELECT DISTINCT collection FROM ivoa.obscore\" omode=out",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Crossmatch my local file `askap_targets.fits` against the ASKAP archive at CSIRO with a 1 arcminute radius.",
+        "response": "stilts tapskymatch in=\"askap_targets.fits\" ra=\"ra\" dec=\"dec\" sr=60 tapurl=\"https://casda.csiro.au/casda_vo_tools/tap\" taptable=\"ivoa.obscore\" taplon=\"s_ra\" taplat=\"s_dec\" out=\"askap_matches.fits\"",
+        "chat.jar": "failed",
+        "error": "Error: Bad value for parameter inlon: null value not allowed\nUsage: inlon=<expr/deg>\n\n"
+    },
+    {
+        "prompt": "List the tables from the IDOC archive at IAS.",
+        "response": "stilts tapquery tapurl=\"https://idoc-dachs.ias.u-psud.fr/tap\" adql=\"SELECT table_name, description FROM tap_schema.tables\" omode=out",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the EVN Data Archive, get observations of the source '3C273'.",
+        "response": "stilts tapquery tapurl=\"http://evn-vo.jive.eu/tap\" adql=\"SELECT * FROM ivoa.obscore WHERE target_name = '3C273'\" out=\"evn_3c273.vot\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "What instruments are represented in the FAI archives in Kazakhstan?",
+        "response": "stilts tapquery tapurl=\"https://dachs.fai.kz/tap\" adql=\"SELECT DISTINCT instrument_name FROM ivoa.obscore\" omode=out",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find all public data in the AIASCR VO archive.",
+        "response": "stilts tapquery tapurl=\"http://vos2.asu.cas.cz/tap\" adql=\"SELECT * FROM ivoa.obscore WHERE data_rights='PUBLIC'\" out=\"aiascr_public.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "How many tables are in the 'public' schema at the ASTRON data archive?",
+        "response": "stilts tapquery tapurl=\"https://vo.astron.nl/tap\" adql=\"SELECT count(*) FROM tap_schema.tables WHERE schema_name='public'\" omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Get 20 sources from the Chandra Source Catalog Release 1 with a hard-band flux greater than 1e-12.",
+        "response": "stilts tapquery tapurl=\"https://cda.cfa.harvard.edu/csc1tap\" adql=\"SELECT TOP 20 * FROM csc1.master_source WHERE flux_aper_h > 1e-12\" out=\"csc1_hard.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the main Chandra Data Archive, count the observations where the PI's last name is 'Smith'.",
+        "response": "stilts tapquery tapurl=\"https://cda.harvard.edu/cxctap\" adql=\"SELECT count(*) FROM cda.obs WHERE pi_last LIKE 'Smith'\" omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need the name, ra, and dec of the 50 sources with the highest detection significance in the Chandra Source Catalog.",
+        "response": "stilts tapquery tapurl=\"https://cda.cfa.harvard.edu/csctap\" adql=\"SELECT TOP 50 name, ra, dec FROM master_source ORDER BY detect_significance DESC\" out=\"csc_top_sig.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Query the Chandra Source Catalog Release 2 for sources in observation 2224.",
+        "response": "stilts tapquery tapurl=\"https://cda.cfa.harvard.edu/csc2tap\" adql=\"SELECT * FROM csc2.master_source WHERE obsid=2224\" out=\"csc2_obs2224.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the VESPA PA archive, list all targets that are comets.",
+        "response": "stilts tapquery tapurl=\"http://vespa-ae.oma.be/tap\" adql=\"SELECT DISTINCT target_name FROM epn_core.epn_core WHERE target_class = 'Comet'\" omode=out",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Count how many distinct publishers have data in the CeSAM archive.",
+        "response": "stilts tapquery tapurl=\"https://vo.lam.fr/tap\" adql=\"SELECT count(DISTINCT publisher_id) FROM ivoa.obscore\" omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Are there any user-provided catalogs available from CANFAR for a user named 'smith'?",
+        "response": "stilts tapquery tapurl=\"https://ws-uv.canfar.net/youcat\" adql=\"SELECT table_name FROM tap_schema.tables WHERE table_name LIKE '%smith%'\" omode=out",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Retrieve the first 200 entries from the MUDEHAR DR1 catalog at CEFCA.",
+        "response": "stilts tapquery tapurl=\"https://archive.cefca.es/catalogues/vo/tap/mudehar-dr1\" adql=\"SELECT TOP 200 * FROM mudehar.dr1\" out=\"mudehar_sample.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find all objects in the J-PAS EDR catalog brighter than magnitude 15 in the rSDSS filter.",
+        "response": "stilts tapquery tapurl=\"https://archive.cefca.es/catalogues/vo/tap/jpas-edr\" adql=\"SELECT * FROM jpas.FilterAndCalib WHERE rSDSS < 15\" out=\"jpas_bright.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "List the tables in the OSUG data archive.",
+        "response": "stilts tapquery tapurl=\"http://osug-vo.osug.fr:8080/tap\" adql=\"SELECT table_name, description FROM tap_schema.tables\" omode=out",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the KIS Science Data Centre, find observations with a wavelength coverage that includes 656 nm.",
+        "response": "stilts tapquery tapurl=\"http://dachs.sdc.leibniz-kis.de/tap\" adql=\"SELECT * FROM ivoa.obscore WHERE spectral_range_min < 656e-9 AND spectral_range_max > 656e-9\" out=\"kis_halpha_obs.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Get the top 100 objects from the J-NEP PDR202107 catalog.",
+        "response": "stilts tapquery tapurl=\"https://archive.cefca.es/catalogues/vo/tap/jnep-pdr202107\" adql=\"SELECT TOP 100 * FROM jnep.main\" out=\"jnep_sample.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the miniJ-PAS PDR201912 catalog, find objects with a star classification probability greater than 0.9.",
+        "response": "stilts tapquery tapurl=\"https://archive.cefca.es/catalogues/vo/tap/minijpas-pdr201912\" adql=\"SELECT * FROM minijpas.CoaddPhotos WHERE CLASS_STAR > 0.9\" out=\"minijpas_stars.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "What data models are referenced in the Paris Observatory's research and reference data archive?",
+        "response": "stilts tapquery tapurl=\"http://voparis-rr.obspm.fr/tap\" adql=\"SELECT DISTINCT datamodel FROM ivoa.obscore\" omode=out",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the Pithia database for ionospheric data, count all observations.",
+        "response": "stilts tapquery tapurl=\"http://pithia.cbk.waw.pl/tap\" adql=\"SELECT COUNT(*) FROM ivoa.ObsCore\" omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "List the tables provided by the OCA Data Center.",
+        "response": "stilts tapquery tapurl=\"https://dachs.oca.eu/tap\" adql=\"SELECT table_name, description FROM tap_schema.tables\" omode=out",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Query the official ALMA archive at NAOJ for all observations of 'NGC 253'.",
+        "response": "stilts tapquery tapurl=\"https://almascience.nao.ac.jp/tap\" adql=\"SELECT * FROM ivoa.ObsCore WHERE target_name = 'NGC 253'\" out=\"alma_naoj_ngc253.vot\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Crossmatch my targets in `targets.csv` (ra_h, dec_d) against the official ALMA archive at NRAO with a 1 arcminute radius.",
+        "response": "stilts tapskymatch in=\"targets.csv\" ifmt=csv icmd='addskycoords fk5 fk5 ra_h dec_d ra dec' ra=\"ra\" dec=\"dec\" sr=60 tapurl=\"https://almascience.nrao.edu/tap\" taptable=\"ivoa.ObsCore\" taplon=\"s_ra\" taplat=\"s_dec\" out=\"alma_nrao_matches.fits\"",
+        "chat.jar": "failed",
+        "error": "Error: Bad value for parameter inlon: null value not allowed\nUsage: inlon=<expr/deg>\n\n"
+    },
+    {
+        "prompt": "From the Pollux database, get me synthetic spectra with a resolution greater than 50000.",
+        "response": "stilts tapquery tapurl=\"https://pollux.oreme.org/vo/datalink/speconvol?\" adql=\"SELECT * FROM pollux.models WHERE resolving_power > 50000\" out=\"pollux_highres.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Retrieve the 50 brightest quasars from the Laurino et al. 2011 catalog at INAF-OATS.",
+        "response": "stilts tapquery tapurl=\"http://ia2-tap.oats.inaf.it:8080/wgetap\" adql=\"SELECT TOP 50 * FROM laurino2011.main WHERE class = 'qso' ORDER BY rmag\" out=\"laurino_qsos.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Search the SkyMapper database for sources where the mean stellar probability is greater than 0.99.",
+        "response": "stilts tapquery tapurl=\"https://api.skymapper.nci.org.au/public/tap\" adql=\"SELECT * FROM dr3.master WHERE prob_star > 0.99\" out=\"skymapper_stars.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the 4XMM catalog at Unistra, get 100 sources with a detection likelihood greater than 20.",
+        "response": "stilts tapquery tapurl=\"https://xcatdb.unistra.fr/xtapdb\" adql=\"SELECT TOP 100 * FROM dr11.slim_spec WHERE det_ml > 20\" out=\"xcat_highlike.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "List the target classes from the INAF-OATs VESPA data service.",
+        "response": "stilts tapquery tapurl=\"http://vespa.ia2.inaf.it/tap\" adql=\"SELECT DISTINCT target_class FROM epn_core.epn_core\" omode=out",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the INAF IA2 Project Resources, count how many observations are available.",
+        "response": "stilts tapquery tapurl=\"http://archives.ia2.inaf.it:80/vo/tap/projects\" adql=\"SELECT COUNT(*) FROM ivoa.ObsCore\" omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Get the 50 brightest stars from the MACHO database.",
+        "response": "stilts tapquery tapurl=\"http://machotap.asvo.nci.org.au/ncitap//tap\" adql=\"SELECT TOP 50 * FROM macho.v_light_curves ORDER BY vmag_mean\" out=\"macho_brightest.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the WiggleZ final data release, select galaxies with a quality flag of 4 or greater.",
+        "response": "stilts tapquery tapurl=\"http://wiggleztap.asvo.nci.org.au/ncitap//tap\" adql=\"SELECT * FROM final.main WHERE qop >= 4\" out=\"wigglez_highq.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find all observations from the CLIMSO coronagraph database of the target 'Sun'.",
+        "response": "stilts tapquery tapurl=\"https://epntap.climso.ovgso.fr/tap\" adql=\"SELECT * FROM epn_core.epn_core WHERE target_name='Sun'\" out=\"climso_sun.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Crossmatch my local file `my_stars.fits` against the Gaia archive at ARI with a 0.5 arcsecond radius.",
+        "response": "stilts tapskymatch in=\"my_stars.fits\" ra=\"RA\" dec=\"DEC\" sr=0.5 tapurl=\"https://gaia.ari.uni-heidelberg.de/tap\" taptable=\"gaiadr3.gaia_source\" taplon=\"ra\" taplat=\"dec\" out=\"ari_gaia_matches.fits\"",
+        "chat.jar": "failed",
+        "error": "Error: Bad value for parameter inlon: null value not allowed\nUsage: inlon=<expr/deg>\n\n"
+    },
+    {
+        "prompt": "List the available data collections from the SSDC archive in Italy.",
+        "response": "stilts tapquery tapurl=\"https://tools.ssdc.asi.it/TAPSSDC/tap\" adql=\"SELECT DISTINCT obs_collection FROM ivoa.ObsCore\" omode=out",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the ESA Planetary Science Archive, get all data for the 'Rosetta' mission.",
+        "response": "stilts tapquery tapurl=\"https://psa.esa.int/psa-tap/tap\" adql=\"SELECT * FROM epn_core.epn_core WHERE instrument_host_name='Rosetta'\" out=\"psa_rosetta.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Query the Integral Science Archive for observations longer than 200000 seconds.",
+        "response": "stilts tapquery tapurl=\"https://isla.esac.esa.int/tap/tap\" adql=\"SELECT * FROM ivoa.obscore WHERE t_exptime > 200000\" out=\"integral_long.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find all observations from the Infrared Space Observatory archive and send them to topcat.",
+        "response": "stilts tapquery tapurl=\"http://nida.esac.esa.int/nida-sl-tap/tap\" adql=\"SELECT * FROM iso.main\" omode=topcat",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the Herschel archive, find observations of the target 'M101'.",
+        "response": "stilts tapquery tapurl=\"https://archives.esac.esa.int/hsa/whsa-tap-server/tap\" adql=\"SELECT * FROM hsa.observation WHERE target_name = 'M101'\" out=\"herschel_m101.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "What tables are available from the Euclid archive?",
+        "response": "stilts tapquery tapurl=\"https://eas.esac.esa.int/tap-server/tap\" adql=\"SELECT table_name FROM tap_schema.tables\" omode=out",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Query the EURO-VO Registry for all resources that are of type 'vs:CatalogService'.",
+        "response": "stilts tapquery tapurl=\"https://registry.euro-vo.org/regtap/tap\" adql=\"SELECT * FROM rr.resource WHERE res_type = 'vs:CatalogService'\" out=\"vo_catalogs.vot\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Get the top 100 entries from the ESO catalog archive's main table.",
+        "response": "stilts tapquery tapurl=\"http://archive.eso.org/tap_cat\" adql=\"SELECT TOP 100 * FROM eso.main\" out=\"eso_cat_sample.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "How many tables are in the 'nancay' schema at the CDN VO server?",
+        "response": "stilts tapquery tapurl=\"http://vogate.obs-nancay.fr/tap\" adql=\"SELECT count(*) FROM tap_schema.tables WHERE schema_name='nancay'\" omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Retrieve all columns for the first 10 entries from the cross section database at spectrum.iaa.es.",
+        "response": "stilts tapquery tapurl=\"http://spectrum.iaa.es/tap\" adql=\"SELECT TOP 10 * FROM amda.amda\" out=\"cross_section_sample.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "List the tables in the maser database at the Paris Observatory.",
+        "response": "stilts tapquery tapurl=\"http://voparis-tap-maser.obspm.fr/tap\" adql=\"SELECT table_name FROM tap_schema.tables\" omode=out",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "What high-energy data schemas are available from the PADC HE archive?",
+        "response": "stilts tapquery tapurl=\"http://voparis-tap-he.obspm.fr/tap\" adql=\"SELECT schema_name FROM tap_schema.schemata\" omode=out",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Count the observations in the PADC helio data archive.",
+        "response": "stilts tapquery tapurl=\"http://voparis-tap-helio.obspm.fr/tap\" adql=\"SELECT COUNT(*) FROM ivoa.obscore\" omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the VST ATLAS Survey at OSA, get 100 sources with g-band aperture magnitude 3 brighter than 12.",
+        "response": "stilts tapquery tapurl=\"http://tap.roe.ac.uk/osa\" adql=\"SELECT TOP 100 * FROM atlas.main WHERE gAperMag3 < 12\" out=\"atlas_bright.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Query the SuperCOSMOS Science Archive for objects with a proper motion in RA greater than 1000 mas/yr.",
+        "response": "stilts tapquery tapurl=\"http://tap.roe.ac.uk/ssa\" adql=\"SELECT * FROM ssa.main WHERE muRA > 1000\" out=\"ssa_high_pm.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the VISTA Science Archive, find objects in the 'viking' survey.",
+        "response": "stilts tapquery tapurl=\"http://tap.roe.ac.uk/vsa\" adql=\"SELECT * FROM viking.main LIMIT 200\" out=\"vsa_viking_sample.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "List the available observation targets from the Europlanet Telescope Network Database.",
+        "response": "stilts tapquery tapurl=\"http://parsec-europlanet.eu:81/tap\" adql=\"SELECT DISTINCT target_name FROM epn_core.epn_core\" omode=out",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "What schemas are published by the Gaia archive at AIP?",
+        "response": "stilts tapquery tapurl=\"https://gaia.aip.de/tap\" adql=\"SELECT schema_name FROM tap_schema.schemata\" omode=out",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the CDPP EPN database, get all observations of 'Jupiter'.",
+        "response": "stilts tapquery tapurl=\"http://cdpp-epntap.irap.omp.eu:80/tap\" adql=\"SELECT * FROM epn_core.epn_core WHERE target_name='Jupiter'\" out=\"cdpp_jupiter.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the Keck Observatory Archive, find all observations using the 'HIRES' instrument.",
+        "response": "stilts tapquery tapurl=\"https://koa.ipac.caltech.edu/TAP\" adql=\"SELECT * FROM koa.koa_obscore WHERE instrument = 'HIRES'\" out=\"koa_hires.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Get the top 200 entries from the MUSE-Wide survey archive.",
+        "response": "stilts tapquery tapurl=\"https://musewide.aip.de/tap\" adql=\"SELECT TOP 200 * FROM musewide.dr1\" out=\"musewide_sample.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the J-PLUS DR2 catalog, find objects with a g-band magnitude brighter than 16.",
+        "response": "stilts tapquery tapurl=\"https://archive.cefca.es/catalogues/vo/tap/jplus-dr2\" adql=\"SELECT * FROM jplus.MagAbAndErr WHERE g < 16\" out=\"jplus_dr2_bright.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find objects in the J-PLUS DR1 catalog with a star/galaxy classification greater than 0.95.",
+        "response": "stilts tapquery tapurl=\"https://archive.cefca.es/catalogues/vo/tap/jplus-dr1\" adql=\"SELECT * FROM jplus.jplus WHERE CLASS_STAR > 0.95\" out=\"jplus_dr1_stars.csv\" ofmt=csv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "List the tables available from the Smithsonian Astrophysical Observatory Telescope Data Center.",
+        "response": "stilts tapquery tapurl=\"http://oirsa.cfa.harvard.edu:8080/tap\" adql=\"SELECT table_name FROM tap_schema.tables\" omode=out",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Get 100 observations from the Subaru Suprime-Cam data archive.",
+        "response": "stilts tapquery tapurl=\"http://jvo.nao.ac.jp/skynode/do/tap/spcam\" adql=\"SELECT TOP 100 * FROM ivoa.obscore\" out=\"subaru_spcam_sample.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the Subaru/XMM-Newton Deep Survey, find objects with a photo-z greater than 2.",
+        "response": "stilts tapquery tapurl=\"http://jvo.nao.ac.jp/skynode/do/tap/sxds_v1\" adql=\"SELECT * FROM sxds.main WHERE photoz > 2.0\" out=\"sxds_highz.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find all Subaru HDS Spectrum observations and send the results to topcat.",
+        "response": "stilts tapquery tapurl=\"http://jvo.nao.ac.jp/skynode/do/tap/hds/\" adql=\"SELECT * FROM ivoa.obscore\" omode=topcat",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the SAGA database, find stars with [Fe/H] less than -3.",
+        "response": "stilts tapquery tapurl=\"http://jvo.nao.ac.jp/skynode/do/tap/saga\" adql=\"SELECT * FROM saga.main WHERE feh < -3.0\" out=\"saga_metalpoor.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Retrieve all galaxies from the Kiso UV-X Galaxies catalog that have a B magnitude.",
+        "response": "stilts tapquery tapurl=\"http://jvo.nao.ac.jp/skynode/do/tap/kug2000\" adql=\"SELECT * FROM kug2000.main WHERE bmag IS NOT NULL\" out=\"kug_bmag.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find all Subaru MOIRCS observations of 'Orion'.",
+        "response": "stilts tapquery tapurl=\"http://jvo.nao.ac.jp/skynode/do/tap/moircs\" adql=\"SELECT * FROM ivoa.obscore WHERE target_name = 'Orion'\" out=\"moircs_orion.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Count how many objects are in the JVO Quasars and Active Galactic Nuclei catalog.",
+        "response": "stilts tapquery tapurl=\"http://jvo.nao.ac.jp/skynode/do/tap/agn\" adql=\"SELECT count(*) FROM agn.main\" omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Get all ALMA observations from the JVO archive.",
+        "response": "stilts tapquery tapurl=\"http://jvo.nao.ac.jp/skynode/do/tap/alma\" adql=\"SELECT * FROM ivoa.obscore\" out=\"jvo_alma.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "List the FITS files available in the Nobeyama Radio Telescope Archive.",
+        "response": "stilts tapquery tapurl=\"http://jvo.nao.ac.jp/skynode/do/tap/nobeyama/\" adql=\"SELECT * FROM ivoa.obscore\" out=\"nobeyama_obs.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Retrieve all entries from the Hitomi Master Catalog.",
+        "response": "stilts tapquery tapurl=\"http://jvo.nao.ac.jp/skynode/do/tap/hitomi\" adql=\"SELECT * FROM hitomi.main\" out=\"hitomi_master.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Get all analysis data from the VSOP 5 GHz AGN Survey.",
+        "response": "stilts tapquery tapurl=\"http://jvo.nao.ac.jp/skynode/do/tap/halca_agn\" adql=\"SELECT * FROM halca_agn.main\" out=\"halca_agn_data.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find sources from the AKARI/IRC MIR-S 9um point source catalog with a flux quality flag of 3.",
+        "response": "stilts tapquery tapurl=\"http://jvo.nao.ac.jp/skynode/do/tap/akari/catalog/slitless_mir_psc\" adql=\"SELECT * FROM slitless_mir_psc.main WHERE fquality = 3\" out=\"akari_mir_good.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Get all asteroid flux measurements from the AKARI archive.",
+        "response": "stilts tapquery tapurl=\"http://jvo.nao.ac.jp/skynode/do/tap/akari/catalog/asteroid_flux\" adql=\"SELECT * FROM asteroid_flux.main\" out=\"akari_asteroids.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Retrieve 100 spectra from the AKARI/IRC MIR-S slit-less spectroscopic catalog.",
+        "response": "stilts tapquery tapurl=\"http://jvo.nao.ac.jp/skynode/do/tap/akari/spectrum/slitless_mir_spec\" adql=\"SELECT TOP 100 * FROM ivoa.obscore\" out=\"akari_mir_spectra.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Retrieve the 50 brightest sources from the IRTS NIRS Point Source Catalog.",
+        "response": "stilts tapquery tapurl=\"http://jvo.nao.ac.jp/skynode/do/tap/irts/catalog/irts_nirs_psc_1_3\" adql=\"SELECT TOP 50 * FROM irts_nirs_psc_1_3.main ORDER BY f_2_2um_mag\" out=\"irts_nirs_bright.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Retrieve 100 public images from the Bisei Space Guard Center.",
+        "response": "stilts tapquery tapurl=\"http://jvo.nao.ac.jp/skynode/do/tap/bsgc/public/image\" adql=\"SELECT TOP 100 * FROM ivoa.obscore WHERE data_rights='PUBLIC'\" out=\"bsgc_images.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "What schemas are in the LATMOS data archive?",
+        "response": "stilts tapquery tapurl=\"http://vo.projet.latmos.ipsl.fr/tap\" adql=\"SELECT schema_name FROM tap_schema.schemata\" omode=out",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the HEASARC Xamin interface, find all tables related to the 'ROSAT' mission.",
+        "response": "stilts tapquery tapurl=\"https://heasarc.gsfc.nasa.gov/xamin/vo/tap\" adql=\"SELECT table_name, description FROM tap_schema.tables WHERE table_name LIKE '%rosat%'\" omode=out",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Count how many plates are available in the APPLAUSE archive.",
+        "response": "stilts tapquery tapurl=\"https://www.plate-archive.org/tap\" adql=\"SELECT COUNT(*) FROM applause_dr3.plate\" omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the NOIRLab Astro Data Lab, get 100 entries from the SMASH DR2 catalog.",
+        "response": "stilts tapquery tapurl=\"https://datalab.noirlab.edu/tap\" adql=\"SELECT TOP 100 * FROM smash_dr2.object\" out=\"smash_dr2_sample.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Get a list of tables from the PADC planetary data archive.",
+        "response": "stilts tapquery tapurl=\"http://voparis-tap-planeto.obspm.fr/tap\" adql=\"SELECT table_name FROM tap_schema.tables\" omode=out",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "What are the schemas in the ChiVO archive?",
+        "response": "stilts tapquery tapurl=\"https://vo.chivo.cl/tap\" adql=\"SELECT schema_name FROM tap_schema.schemata\" omode=out",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "List all the tables in the 'dbs' schema from the Byurakan Astrophysical Observatory archive.",
+        "response": "stilts tapquery tapurl=\"http://arvo-registry.sci.am/tap\" adql=\"SELECT table_name FROM tap_schema.tables WHERE schema_name = 'dbs'\" omode=out ofmt=ascii",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find all public observations taken with the 'RCC84' instrument at the Konkoly Observatory.",
+        "response": "stilts tapquery tapurl=\"http://nadir.konkoly.hu:80/tap\" adql=\"SELECT * FROM ivoa.obscore WHERE instrument_name = 'RCC84' AND data_rights = 'PUBLIC'\" out=\"konkoly_rcc84.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the Royal Observatory of Belgium, find the orbital parameters for the first 100 minor planets with an inclination greater than 45 degrees.",
+        "response": "stilts tapquery tapurl=\"http://vo-tap.oma.be/tap\" adql=\"SELECT TOP 100 number, designation, inclination, eccentricity FROM mpcorb.main WHERE inclination > 45\" out=\"high_inc_mpc.vot\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need Mars Express mission data from the planetary archive at FU Berlin. Can you find all observations from the 'OMEGA' instrument?",
+        "response": "stilts tapquery tapurl=\"http://dachs.planet.fu-berlin.de/tap\" adql=\"SELECT * FROM ivoa.obscore WHERE instrument_host_name='Mars Express' AND instrument_name='OMEGA'\" out=\"mex_omega.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Show me the tables available from the UCL DaCHS server.",
+        "response": "stilts tapquery tapurl=\"http://astroweb.projects.phys.ucl.ac.uk:8000/tap\" adql=\"SELECT table_name, description FROM tap_schema.tables\" omode=out ofmt=ascii",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Search the IAP data archive for observations of the target 'M101'.",
+        "response": "stilts tapquery tapurl=\"http://dorotka.ufa.cas.cz/tap\" adql=\"SELECT * FROM ivoa.obscore WHERE target_name = 'M101'\" out=\"iap_m101.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the PVOL amateur planetary observation database, get me all data for 'Venus'.",
+        "response": "stilts tapquery tapurl=\"http://pvol2.ehu.eus:8083/tap\" adql=\"SELECT * FROM epn_core.epn_core WHERE target_name = 'Venus'\" out=\"pvol_venus.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find all Near-Earth Objects from the NEOCC database with an orbital eccentricity greater than 0.9.",
+        "response": "stilts tapquery tapurl=\"https://dachs.neo.s2p.esa.int/tap\" adql=\"SELECT * FROM neocc.nea_physical_properties WHERE eccentricity > 0.9\" out=\"high_ecc_neos.csv\" ofmt=csv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Query the Parkes Pulsar Data Archive for all observations that used the 'PDFB1' receiver.",
+        "response": "stilts tapquery tapurl=\"https://data.csiro.au/psrdavo/tap\" adql=\"SELECT * FROM ivoa.obscore WHERE instrument_name='PDFB1'\" out=\"parkes_pdfb1.vot\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find all data from the Taipan galaxy survey in the Data Central archive.",
+        "response": "stilts tapquery tapurl=\"https://datacentral.org.au:443/vo/tap\" adql=\"SELECT * FROM ivoa.obscore WHERE obs_collection = 'Taipan'\" out=\"taipan_data.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need to find all Planck observations from the IDOC archive at IAS.",
+        "response": "stilts tapquery tapurl=\"https://idoc-dachs.ias.u-psud.fr/tap\" adql=\"SELECT * FROM ivoa.obscore WHERE facility_name = 'Planck'\" out=\"idoc_planck.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the FAI archives in Kazakhstan, list all observations taken during the year 2015.",
+        "response": "stilts tapquery tapurl=\"https://dachs.fai.kz/tap\" adql=\"SELECT * FROM ivoa.obscore WHERE t_min >= 2015.0 AND t_max < 2016.0\" out=\"fai_2015.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Get all observations of the Sun from the AIASCR VO archive in Czechia.",
+        "response": "stilts tapquery tapurl=\"http://vos2.asu.cas.cz/tap\" adql=\"SELECT * FROM ivoa.obscore WHERE target_name = 'Sun'\" out=\"aiascr_sun.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Show me all tables in the 'lofar' schema at the ASTRON data archive.",
+        "response": "stilts tapquery tapurl=\"https://vo.astron.nl/tap\" adql=\"SELECT table_name, description FROM tap_schema.tables WHERE schema_name = 'lofar'\" omode=out ofmt=text",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the Chandra Source Catalog Release 1, find 50 sources with a detection significance over 200.",
+        "response": "stilts tapquery tapurl=\"https://cda.cfa.harvard.edu/csc1tap\" adql=\"SELECT TOP 50 name, ra, dec, detect_significance FROM csc1.master_source WHERE detect_significance > 200\" out=\"csc1_highsig.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the VESPA Planetary Archive, search for all observations of asteroids.",
+        "response": "stilts tapquery tapurl=\"http://vespa-ae.oma.be/tap\" adql=\"SELECT * FROM epn_core.epn_core WHERE target_class = 'Asteroid'\" out=\"vespa_asteroids.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need to find a user-provided table named 'my_star_list' from the CANFAR system.",
+        "response": "stilts tapquery tapurl=\"https://ws-uv.canfar.net/youcat\" adql=\"SELECT * FROM TAP_UPLOAD.my_star_list\" out=\"canfar_user_table.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "List the observing programs available from the OSUG data archive in France.",
+        "response": "stilts tapquery tapurl=\"http://osug-vo.osug.fr:8080/tap\" adql=\"SELECT DISTINCT obs_id FROM ivoa.obscore\" omode=out ofmt=text",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Query the KIS Science Data Centre for observations of solar flares.",
+        "response": "stilts tapquery tapurl=\"http://dachs.sdc.leibniz-kis.de/tap\" adql=\"SELECT * FROM ivoa.obscore WHERE target_name LIKE '%flare%'\" out=\"kis_flares.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From the Pithia ionospheric database, find all data from the 'DPS' instrument.",
+        "response": "stilts tapquery tapurl=\"http://pithia.cbk.waw.pl/tap\" adql=\"SELECT * FROM ivoa.obscore WHERE instrument_name='DPS'\" out=\"pithia_dps.fits\"",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need to query the cross-section database for data on the 'H2O' molecule.",
+        "response": "stilts tapquery tapurl=\"http://spectrum.iaa.es/tap\" adql=\"SELECT * FROM amda.amda WHERE species = 'H2O'\" out=\"h2o_xsections.fits\"",
+        "chat.jar": "executed successfully"
+    }
+]

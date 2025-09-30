@@ -132,10 +132,6 @@
         "response": "The `ofmt` parameter specifies the Output ForMaT of the table being written. This is how you tell `tcopy` what kind of file you want to create, for instance `csv`, `fits`, `votable`, or `ascii`.\n\nExample: `stilts tcopy in=data.vot ofmt=fits-plus out=data.fits`"
     },
     {
-        "prompt": "How do I filter for rows that have a non-null value in a specific column?",
-        "response": "You can use the `select` command with a special expression. The `isFinite()` function or checking for `null` can be used. For numbers, checking for `!isFinite(colname)` is robust.\n\nExample (to keep rows where 'pm_ra' is not null): `stilts tpipe in=data.fits cmd='select \"pm_ra != null\"' out=filtered.fits`"
-    },
-    {
         "prompt": "I want to create a density map instead of a scatter plot.",
         "response": "You can do this with `plot2plane` by changing the `layer` type. Instead of the default scatter plot, you can specify `layer=hist` for a 2D histogram or `layer=kde` for a Kernel Density Estimate, both of which show density.\n\nExample: `stilts plot2plane in=sky_survey.fits x=RA y=DEC layer=hist out=density_map.png`"
     },

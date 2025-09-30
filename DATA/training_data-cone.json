@@ -258,11 +258,6 @@
         "chat.jar": "executed successfully"
     },
     {
-        "prompt": "Run a cone search on the APASS DR9 catalog for RA 333, Dec 33, radius 0.9 degrees, and then only keep rows where the 'Vmag' column is not null.",
-        "response": "stilts cone serviceurl=http://vizier.u-strasbg.fr/viz-bin/conesearch/II/336/apass9 lon=333 lat=33 radius=0.9 ocmd='select \"!isblank(Vmag)\"'",
-        "chat.jar": "executed successfully"
-    },
-    {
         "prompt": "Find all images from the UKIDSS DR10 SIA service within 0.1 degrees of RA 240, Dec -45. Show me the stats.",
         "response": "stilts cone servicetype=sia serviceurl=http://wsa.roe.ac.uk/wsa-siap.html lon=240 lat=-45 radius=0.1 omode=stats",
         "chat.jar": "executed successfully"

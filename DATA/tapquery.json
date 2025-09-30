@@ -1,0 +1,543 @@
+[
+    {
+        "prompt": "Query the Gaia DR3 archive to get the first 100 sources and save them to a FITS file named `gaia_sample.fits`.",
+        "response": "stilts tapquery tapurl=https://gea.esac.esa.int/tap-server/tap adql='SELECT TOP 100 * FROM gaiadr3.gaia_source' out=gaia_sample.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "How can I get a count of all objects in the `twomass.data` table from the GAVO TAP service?",
+        "response": "stilts tapquery tapurl=http://dc.g-vo.org/tap adql='SELECT COUNT(*) FROM twomass.data' omode=out ofmt=text",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need to query the VizieR TAP service for the first 10 rows of the 2MASS Point Source Catalogue (II/246/out).",
+        "response": "stilts tapquery tapurl=http://tapvizier.u-strasbg.fr/tap adql='SELECT TOP 10 * FROM \"II/246/out\"'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Perform an asynchronous query on the Gaia archive for sources with parallax greater than 50 mas. Save the result to `nearby_stars.csv`.",
+        "response": "stilts tapquery tapurl=https://gea.esac.esa.int/tap-server/tap adql='SELECT source_id, ra, dec, parallax FROM gaiadr3.gaia_source WHERE parallax > 50' sync=false out=nearby_stars.csv ofmt=csv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "What is the command to run a synchronous TAP query on the GAVO service?",
+        "response": "stilts tapquery tapurl=http://dc.g-vo.org/tap adql='SELECT TOP 10 * FROM ivoa.obscore' sync=true",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Upload my local table `my_targets.fits` to the Gaia TAP service and crossmatch it with `gaiadr3.gaia_source` within 2 arcseconds. The table should be called `my_cat` on the service.",
+        "response": "stilts tapquery tapurl=https://gea.esac.esa.int/tap-server/tap nupload=1 upload1=my_targets.fits upname1=my_cat adql='SELECT s.*, t.* FROM gaiadr3.gaia_source AS s JOIN TAP_UPLOAD.my_cat AS t ON 1=CONTAINS(POINT(\"ICRS\", s.ra, s.dec), CIRCLE(\"ICRS\", t.ra, t.dec, 2.0/3600.0))' out=remote_crossmatch.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Run a TAP query but don't delete the job when it's done, I want to resume it later.",
+        "response": "stilts tapquery tapurl=https://gea.esac.esa.int/tap-server/tap adql='SELECT TOP 5 * FROM gaiadr3.gaia_source' sync=false delete=never",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Query the GAVO TAP service for RAVE DR3 data and sort the result by radial velocity before saving.",
+        "response": "stilts tapquery tapurl=http://dc.g-vo.org/tap adql='SELECT raveid, teff, hrv FROM rave.dr3 WHERE hrv IS NOT NULL' ocmd='sort -down hrv' out=sorted_rave.vot",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "How do I set a maximum record limit of 5000 for my TAP query?",
+        "response": "stilts tapquery tapurl=http://dc.g-vo.org/tap adql='SELECT * FROM twomass.data' maxrec=5000",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I have a file `targets.csv`. Upload it and find all Gaia DR3 sources within 1.5 arcsec of my targets. The uploaded table should be named `tlist`.",
+        "response": "stilts tapquery tapurl=https://gea.esac.esa.int/tap-server/tap nupload=1 upload1=targets.csv ifmt1=csv upname1=tlist adql='SELECT s.source_id, t.target_name, DISTANCE(POINT(\"ICRS\",s.ra,s.dec),POINT(\"ICRS\",t.ra,t.dec))*3600. AS sep_arcsec FROM gaiadr3.gaia_source AS s JOIN TAP_UPLOAD.tlist AS t ON 1=CONTAINS(POINT(\"ICRS\", s.ra, s.dec), CIRCLE(\"ICRS\", t.ra, t.dec, 1.5/3600.0))' out=gaia_matches_for_targets.fits",
+        "chat.jar": "failed",
+        "error": "\nUnused arguments: ifmt1=csv\n\nUsage: tapquery nupload=<count> ufmtN=<in-format> uploadN=<tableN>\n                ucmdN=<cmds> ocmd=<cmds>\n                omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n                out=<out-table> ofmt=<out-format> upnameN=<adql-identifier>\n                tapurl=<url-value> interface=tap1.0|tap1.1|cap auth=true|false\n                adql=<query-text> parse=true|false sync=true|false\n                maxrec=<nrow> destruction=<iso8601>\n                executionduration=<seconds> compress=true|false\n                upvotformat=TABLEDATA|BINARY|BINARY2 language=<lang-name>\n                poll=<millisec> progress=true|false\n                delete=finished|never|always|now\n\n"
+    },
+    {
+        "prompt": "Get the top 10 brightest stars (lowest G magnitude) from Gaia DR3.",
+        "response": "stilts tapquery tapurl=https://gea.esac.esa.int/tap-server/tap adql='SELECT TOP 10 source_id, ra, dec, phot_g_mean_mag FROM gaiadr3.gaia_source ORDER BY phot_g_mean_mag ASC'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need to query a TAP service that requires authentication.",
+        "response": "stilts tapquery tapurl=https://my.secure.service/tap adql='SELECT * FROM secret_table' auth=true",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Query the VizieR TAP service for all entries in the Messier catalogue (VII/118/messier) and save as a VOTable.",
+        "response": "stilts tapquery tapurl=http://tapvizier.u-strasbg.fr/tap adql='SELECT * FROM \"VII/118/messier\"' out=messier_catalog.xml ofmt=votable",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find all Gaia DR3 sources within a 10x10 arcmin box around RA=120, Dec=30.",
+        "response": "stilts tapquery tapurl=https://gea.esac.esa.int/tap-server/tap adql='SELECT source_id, ra, dec FROM gaiadr3.gaia_source WHERE 1=CONTAINS(POINT(\"ICRS\", ra, dec), BOX(\"ICRS\", 120, 30, 10.0/60.0, 10.0/60.0))'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "How can I check the syntax of my ADQL query before submitting it to the GAVO service?",
+        "response": "stilts tapquery tapurl=http://dc.g-vo.org/tap adql='SELECT ra, dec FROM ivoa.obscore' parse=true",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Request the result in VOTable BINARY2 format from the service.",
+        "response": "stilts tapquery tapurl=https://gea.esac.esa.int/tap-server/tap adql='SELECT TOP 10 * FROM gaiadr3.gaia_source' out=binary2_result.vot ofmt='votable(format=BINARY2)'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Submit a query and request an execution duration of no more than 300 seconds.",
+        "response": "stilts tapquery tapurl=http://dc.g-vo.org/tap adql='SELECT * FROM ivoa.obscore' sync=false executionduration=300",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Upload `sources.vot` and `calibrators.vot` and join them on the service.",
+        "response": "stilts tapquery tapurl=http://dc.g-vo.org/tap nupload=2 upload1=sources.vot upname1=src upload2=calibrators.vot upname2=cal adql='SELECT * FROM TAP_UPLOAD.src AS s JOIN TAP_UPLOAD.cal AS c ON s.field_id = c.field_id' out=uploaded_join.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Query the Gaia service and then load the results directly into TOPCAT.",
+        "response": "stilts tapquery tapurl=https://gea.esac.esa.int/tap-server/tap adql='SELECT TOP 500 * FROM gaiadr3.gaia_source WHERE parallax > 100' omode=topcat",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Get a statistical summary of the parallax column for the 1000 nearest stars in Gaia DR3.",
+        "response": "stilts tapquery tapurl=https://gea.esac.esa.int/tap-server/tap adql='SELECT TOP 1000 parallax FROM gaiadr3.gaia_source ORDER BY parallax DESC' ocmd='keepcols parallax' omode=stats",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need to query a service and force it to use TAP 1.1 protocol rules.",
+        "response": "stilts tapquery tapurl=http://some.service/tap adql='SELECT TOP 10 * FROM some.table' interface=tap1.1",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find all objects from the GAVO service that have an associated spectrum.",
+        "response": "stilts tapquery tapurl=http://dc.g-vo.org/tap adql='SELECT * FROM ivoa.obscore WHERE dataproduct_type = ''spectrum''' out=spectral_data.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Upload my target list `targets.csv`, call it `mylist`, and find all 2MASS counterparts within 3 arcseconds.",
+        "response": "stilts tapquery tapurl=http://dc.g-vo.org/tap nupload=1 upload1=targets.csv ifmt1=csv upname1=mylist adql='SELECT t.*, s.* FROM twomass.data AS t JOIN TAP_UPLOAD.mylist AS s ON 1=CONTAINS(POINT(\"J2000\",t.raj2000,t.dej2000),CIRCLE(\"J2000\",s.ra,s.dec,3.0/3600.))' out=2mass_counterparts.vot",
+        "chat.jar": "failed",
+        "error": "\nUnused arguments: ifmt1=csv\n\nUsage: tapquery nupload=<count> ufmtN=<in-format> uploadN=<tableN>\n                ucmdN=<cmds> ocmd=<cmds>\n                omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n                out=<out-table> ofmt=<out-format> upnameN=<adql-identifier>\n                tapurl=<url-value> interface=tap1.0|tap1.1|cap auth=true|false\n                adql=<query-text> parse=true|false sync=true|false\n                maxrec=<nrow> destruction=<iso8601>\n                executionduration=<seconds> compress=true|false\n                upvotformat=TABLEDATA|BINARY|BINARY2 language=<lang-name>\n                poll=<millisec> progress=true|false\n                delete=finished|never|always|now\n\n"
+    },
+    {
+        "prompt": "Request a query to be destroyed in one day from now.",
+        "response": "stilts tapquery tapurl=https://gea.esac.esa.int/tap-server/tap adql='SELECT TOP 1 * FROM gaiadr3.gaia_source' destruction='2025-10-27T12:00:00Z' sync=false",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "How to query the GAVO TAP service and save the output as an ECSV file?",
+        "response": "stilts tapquery tapurl=http://dc.g-vo.org/tap adql='SELECT TOP 100 * FROM ivoa.obscore' ofmt=ecsv out=query_result.ecsv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Select all Gaia sources where the parallax error is less than 0.1 mas.",
+        "response": "stilts tapquery tapurl=https://gea.esac.esa.int/tap-server/tap adql='SELECT source_id, parallax, parallax_error FROM gaiadr3.gaia_source WHERE parallax_error < 0.1' out=low_error_parallax.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Get 100 random objects from the VizieR 2MASS catalog.",
+        "response": "stilts tapquery tapurl=http://tapvizier.u-strasbg.fr/tap adql='SELECT TOP 100 * FROM \"II/246/out\" ORDER BY RAND()'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need to run a very long query asynchronously and I don't want to see progress updates.",
+        "response": "stilts tapquery tapurl=https://gea.esac.esa.int/tap-server/tap adql='SELECT * FROM gaiadr3.gaia_source' sync=false progress=false",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Join the `gaia_source` and `tmass_best_neighbour` tables in the Gaia archive on their common `source_id`.",
+        "response": "stilts tapquery tapurl=https://gea.esac.esa.int/tap-server/tap adql='SELECT TOP 100 g.source_id, g.ra, g.dec, t.tmass_oid FROM gaiadr3.gaia_source AS g JOIN gaiadr3.tmass_best_neighbour AS t ON g.source_id=t.source_id' out=gaia_tmass_join.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "How can I use `tapquery` to just see the metadata of the `ivoa.obscore` table at GAVO?",
+        "response": "stilts tapquery tapurl=http://dc.g-vo.org/tap adql='SELECT * FROM ivoa.obscore' maxrec=0 omode=meta",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find all entries in VizieR's General Catalogue of Variable Stars (B/gcvs/gcvs_cat) that are of type 'RR'.",
+        "response": "stilts tapquery tapurl=http://tapvizier.u-strasbg.fr/tap adql='SELECT Name, RAJ2000, DEJ2000, VarType FROM \"B/gcvs/gcvs_cat\" WHERE VarType LIKE ''%RR%''' out=rr_lyrae_stars.vot",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Run a TAP query and save the output as a parquet file.",
+        "response": "stilts tapquery tapurl=https://gea.esac.esa.int/tap-server/tap adql='SELECT TOP 1000 * FROM gaiadr3.gaia_source' ofmt=parquet out=gaia_data.parquet",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need to upload a table, but before uploading, I need to keep only the ID, RA, and DEC columns.",
+        "response": "stilts tapquery tapurl=http://dc.g-vo.org/tap nupload=1 upload1=my_full_table.fits ucmd1='keepcols \"ID RA DEC\"' upname1=up adql='SELECT * FROM TAP_UPLOAD.up' out=upload_subset.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Perform a query for all Gaia sources in a polygon region on the sky.",
+        "response": "stilts tapquery tapurl=https://gea.esac.esa.int/tap-server/tap adql='SELECT source_id, ra, dec FROM gaiadr3.gaia_source WHERE 1=CONTAINS(POINT(\"ICRS\",ra,dec), POLYGON(\"ICRS\", 10,10, 10,20, 20,20, 20,10))' out=polygon_search.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Query the GAVO TAP service and discard the result. I just want to test the connection.",
+        "response": "stilts tapquery tapurl=http://dc.g-vo.org/tap adql='SELECT TOP 1 * FROM ivoa.obscore' omode=discard",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "What does the `delete` parameter in `tapquery` do?",
+        "response": "The `delete` parameter in `tapquery` controls when an asynchronous UWS job is deleted from the server. Options are `finished` (default, deletes after completion), `never` (leaves the job on the server), `always` (deletes on command exit), and `now` (deletes immediately) [4].",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: Syntax error: \"(\" unexpected\n"
+    },
+    {
+        "prompt": "Can `tapquery` list the tables available at a service?",
+        "response": "No, `tapquery` is for executing ADQL queries, not for discovering table metadata. To list tables, you would typically query the `TAP_SCHEMA.tables` table, for instance: `stilts tapquery tapurl=... adql='SELECT * FROM TAP_SCHEMA.tables'`.",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: tapquery: not found\n/bin/sh: 1: TAP_SCHEMA.tables: not found\n/bin/sh: 1: tapquery: not found\n\nNo such task: No,\n\nUsage:\n   stilts [-help] [-version] [-verbose] [-allowunused] [-prompt] [-bench]\n          [-debug] [-batch] [-memory] [-disk] [-memgui]\n          [-checkversion <vers>] [-stdout <file>] [-stderr <file>]\n          <task-name> <task-args>\n\n   stilts <task-name> help[=<param-name>|*]\n\n   Known tasks:\n      arrayjoin\n      calc\n      cdsskymatch\n      cone\n      coneskymatch\n      datalinklint\n      funcs\n      mocshape\n      parqlint\n      parqlook\n      pixfoot\n      pixsample\n      plot2d\n      plot3d\n      plothist\n      regquery\n      server\n      sqlclient\n      sqlskymatch\n      sqlupdate\n      taplint\n      tapquery\n      tapresume\n      tapskymatch\n      tcat\n      tcatn\n      tcopy\n      tcube\n      tgridmap\n      tgroup\n      tjoin\n      tloop\n      tmatch1\n      tmatch2\n      tmatchn\n      tmulti\n      tmultin\n      tpipe\n      tskymap\n      tskymatch2\n      votcopy\n      votlint\n      xsdvalidate\n      plot2plane\n      plot2sky\n      plot2cube\n      plot2sphere\n      plot2corner\n      plot2time\n\n"
+    },
+    {
+        "prompt": "Fetch 5000 records from the Gaia archive and save the result as a text file.",
+        "response": "stilts tapquery tapurl=https://gea.esac.esa.int/tap-server/tap adql='SELECT TOP 5000 * FROM gaiadr3.gaia_source' ofmt=text out=gaia_5k.txt",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I'm uploading a table for a crossmatch. How do I specify the VOTable format for the upload?",
+        "response": "stilts tapquery tapurl=... nupload=1 upload1=... upname1=... adql='...' upvotformat=BINARY2",
+        "chat.jar": "failed",
+        "error": "Error: Bad value for parameter tapurl: Not a URL\n    (No scheme for URL: ...)\nUsage: tapurl=<url-value>\n\n"
+    },
+    {
+        "prompt": "Query for Gaia sources with high proper motion (> 500 mas/yr).",
+        "response": "stilts tapquery tapurl=https://gea.esac.esa.int/tap-server/tap adql='SELECT source_id, pmra, pmdec FROM gaiadr3.gaia_source WHERE pmra*pmra+pmdec*pmdec > 500*500' out=high_pm_stars.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "How can I run a query and have the result sent to a running SAMP client?",
+        "response": "stilts tapquery tapurl=http://dc.g-vo.org/tap adql='SELECT TOP 100 * FROM ivoa.obscore' omode=samp",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Select sources from VizieR's Hipparcos catalog (I/239/hip_main) that have a parallax greater than 100.",
+        "response": "stilts tapquery tapurl=http://tapvizier.u-strasbg.fr/tap adql='SELECT HIP, RArad, DErad, Plx FROM \"I/239/hip_main\" WHERE Plx > 100' out=nearby_hipparcos.vot",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "How do I use an ADQL query from a file named `myquery.adql`?",
+        "response": "stilts tapquery tapurl=https://gea.esac.esa.int/tap-server/tap adql=@myquery.adql",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Query the Gaia service for stars in the Pleiades region (RA~56.75, Dec~24.12) with a radius of 1 degree.",
+        "response": "stilts tapquery tapurl=https://gea.esac.esa.int/tap-server/tap adql='SELECT source_id, ra, dec FROM gaiadr3.gaia_source WHERE 1=CONTAINS(POINT(\"ICRS\", ra, dec), CIRCLE(\"ICRS\", 56.75, 24.12, 1.0))' out=pleiades_region.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Upload `my_sources.fits`, preprocess it to select only sources with `FLAG==0`, and then match against `twomass.data` at GAVO.",
+        "response": "stilts tapquery tapurl=http://dc.g-vo.org/tap nupload=1 upload1=my_sources.fits ucmd1='select FLAG==0' upname1=clean_src adql='SELECT t.*, s.* FROM twomass.data AS t JOIN TAP_UPLOAD.clean_src AS s ON 1=CONTAINS(POINT(\"J2000\",t.raj2000,t.dej2000),CIRCLE(\"J2000\",s.ra,s.dec,2.0/3600.))' out=clean_matches.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find all public observations from the GAVO ObsCore table.",
+        "response": "stilts tapquery tapurl=http://dc.g-vo.org/tap adql='SELECT * FROM ivoa.obscore WHERE obs_release_date < CURRENT_TIMESTAMP' out=public_observations.vot",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Query Gaia for stars with a G-band magnitude between 10 and 11.",
+        "response": "stilts tapquery tapurl=https://gea.esac.esa.int/tap-server/tap adql='SELECT source_id, phot_g_mean_mag FROM gaiadr3.gaia_source WHERE phot_g_mean_mag BETWEEN 10 AND 11'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "What's the default value for the `sync` parameter in tapquery?",
+        "response": "The default value for the `sync` parameter is `false`, which means queries are submitted asynchronously by default [5].",
+        "chat.jar": "failed",
+        "error": "\nNo such task: The\n\nUsage:\n   stilts [-help] [-version] [-verbose] [-allowunused] [-prompt] [-bench]\n          [-debug] [-batch] [-memory] [-disk] [-memgui]\n          [-checkversion <vers>] [-stdout <file>] [-stderr <file>]\n          <task-name> <task-args>\n\n   stilts <task-name> help[=<param-name>|*]\n\n   Known tasks:\n      arrayjoin\n      calc\n      cdsskymatch\n      cone\n      coneskymatch\n      datalinklint\n      funcs\n      mocshape\n      parqlint\n      parqlook\n      pixfoot\n      pixsample\n      plot2d\n      plot3d\n      plothist\n      regquery\n      server\n      sqlclient\n      sqlskymatch\n      sqlupdate\n      taplint\n      tapquery\n      tapresume\n      tapskymatch\n      tcat\n      tcatn\n      tcopy\n      tcube\n      tgridmap\n      tgroup\n      tjoin\n      tloop\n      tmatch1\n      tmatch2\n      tmatchn\n      tmulti\n      tmultin\n      tpipe\n      tskymap\n      tskymatch2\n      votcopy\n      votlint\n      xsdvalidate\n      plot2plane\n      plot2sky\n      plot2cube\n      plot2sphere\n      plot2corner\n      plot2time\n\n"
+    },
+    {
+        "prompt": "Query for all observations in the last 10 years from the GAVO obscore table.",
+        "response": "stilts tapquery tapurl=http://dc.g-vo.org/tap adql='SELECT * FROM ivoa.obscore WHERE t_min > MJD_TO_TIMESTAMP(56000)'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Download data and then add a new column 'LOG_FLUX' to the result.",
+        "response": "stilts tapquery tapurl=https://gea.esac.esa.int/tap-server/tap adql='SELECT phot_g_mean_flux FROM gaiadr3.gaia_source' ocmd='addcol LOG_FLUX log10(phot_g_mean_flux)'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Query the Heidelberg service for the first 10 rows of the RAVE DR5 catalog.",
+        "response": "stilts tapquery tapurl=http://dc.zah.uni-heidelberg.de/__system__/tap/run/tap adql='SELECT TOP 10 * FROM rave.main5' out=rave_dr5_sample.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find Gaia sources that have a radial velocity measurement.",
+        "response": "stilts tapquery tapurl=https://gea.esac.esa.int/tap-server/tap adql='SELECT source_id, ra, dec, radial_velocity FROM gaiadr3.gaia_source WHERE radial_velocity IS NOT NULL' out=rv_sources.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Query VizieR for SDSS DR9 galaxies (V/139/sdss9) and output to an IPAC table.",
+        "response": "stilts tapquery tapurl=http://tapvizier.u-strasbg.fr/tap adql='SELECT * FROM \"V/139/sdss9\" WHERE cl=3' ofmt=ipac out=sdss_galaxies.tbl",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "How do I specify the query language for my TAP query?",
+        "response": "You can use the `language` parameter. For example, `language=ADQL-2.0` [6].",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: language: not found\n\nNo such task: You\n\nUsage:\n   stilts [-help] [-version] [-verbose] [-allowunused] [-prompt] [-bench]\n          [-debug] [-batch] [-memory] [-disk] [-memgui]\n          [-checkversion <vers>] [-stdout <file>] [-stderr <file>]\n          <task-name> <task-args>\n\n   stilts <task-name> help[=<param-name>|*]\n\n   Known tasks:\n      arrayjoin\n      calc\n      cdsskymatch\n      cone\n      coneskymatch\n      datalinklint\n      funcs\n      mocshape\n      parqlint\n      parqlook\n      pixfoot\n      pixsample\n      plot2d\n      plot3d\n      plothist\n      regquery\n      server\n      sqlclient\n      sqlskymatch\n      sqlupdate\n      taplint\n      tapquery\n      tapresume\n      tapskymatch\n      tcat\n      tcatn\n      tcopy\n      tcube\n      tgridmap\n      tgroup\n      tjoin\n      tloop\n      tmatch1\n      tmatch2\n      tmatchn\n      tmulti\n      tmultin\n      tpipe\n      tskymap\n      tskymatch2\n      votcopy\n      votlint\n      xsdvalidate\n      plot2plane\n      plot2sky\n      plot2cube\n      plot2sphere\n      plot2corner\n      plot2time\n\n"
+    },
+    {
+        "prompt": "Select Gaia sources where the number of observations is greater than 100.",
+        "response": "stilts tapquery tapurl=https://gea.esac.esa.int/tap-server/tap adql='SELECT source_id, astrometric_n_good_obs_al FROM gaiadr3.gaia_source WHERE astrometric_n_good_obs_al > 100'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Get 1000 stars from Gaia and save the result as a gzipped FITS file.",
+        "response": "stilts tapquery tapurl=https://gea.esac.esa.int/tap-server/tap adql='SELECT TOP 1000 * FROM gaiadr3.gaia_source' out=gaia_1k.fits.gz",
+        "chat.jar": "failed",
+        "error": "Error: Can't guess output format for gaia_1k.fits.gz\n    (No handler specified for writing table.\nKnown formats: jdbc, fits, colfits, votable, fits-healpix, ECSV, parquet, text, ascii, CSV, IPAC, HTML, LaTeX, TST, feather, mirage)\nUsage: tapquery nupload=<count> ufmtN=<in-format> uploadN=<tableN>\n                ucmdN=<cmds> ocmd=<cmds>\n                omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n                out=<out-table> ofmt=<out-format> upnameN=<adql-identifier>\n                tapurl=<url-value> interface=tap1.0|tap1.1|cap auth=true|false\n                adql=<query-text> parse=true|false sync=true|false\n                maxrec=<nrow> destruction=<iso8601>\n                executionduration=<seconds> compress=true|false\n                upvotformat=TABLEDATA|BINARY|BINARY2 language=<lang-name>\n                poll=<millisec> progress=true|false\n                delete=finished|never|always|now\n\n"
+    },
+    {
+        "prompt": "Can you get me all the data from the GAVO obscore table and then filter it locally to only keep rows where `target_name` is 'M31'?",
+        "response": "stilts tapquery tapurl=http://dc.g-vo.org/tap adql='SELECT * FROM ivoa.obscore' ocmd='select equalsIgnoreCase(target_name, \"M31\")'",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: 'M31' ')'\n\nCommand was: select equalsIgnoreCase(target_name, \"M31\")\n\nUsage: select <expr>\n    (Unused arguments: 'M31' ')')\n"
+    },
+    {
+        "prompt": "Query the GAVO service using the capabilities to determine the endpoints.",
+        "response": "stilts tapquery tapurl=http://dc.g-vo.org/tap adql='SELECT TOP 10 * FROM ivoa.obscore' interface=cap",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "What ADQL function can I use for a sky crossmatch in `tapquery`?",
+        "response": "You can use geometric functions like `CONTAINS`, `INTERSECTS`, and `DISTANCE`. A common pattern is `1=CONTAINS(POINT(...), CIRCLE(...))` in the WHERE clause, where 1 is the ADQL boolean for 'true' [3, 7].",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: Syntax error: word unexpected (expecting \")\")\n"
+    },
+    {
+        "prompt": "Find all Gaia DR3 sources in a 1-degree radius of the galactic center.",
+        "response": "stilts tapquery tapurl=https://gea.esac.esa.int/tap-server/tap adql='SELECT source_id, l, b FROM gaiadr3.gaia_source WHERE 1=CONTAINS(POINT(\"GALACTIC\", l, b), CIRCLE(\"GALACTIC\", 0, 0, 1.0))'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Query and then rename the 'source_id' column to 'GAIA_ID'.",
+        "response": "stilts tapquery tapurl=https://gea.esac.esa.int/tap-server/tap adql='SELECT TOP 10 * FROM gaiadr3.gaia_source' ocmd='colmeta -name GAIA_ID source_id'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Fetch the 100 most distant quasars from the Milliquas catalog (VII/288/milliquas7) from VizieR.",
+        "response": "stilts tapquery tapurl=http://tapvizier.u-strasbg.fr/tap adql='SELECT TOP 100 Name, z FROM \"VII/288/milliquas7\" WHERE Type=\"Q\" ORDER BY z DESC'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I have an ADQL query in `query.txt`. How do I use it and send the output to the GUI?",
+        "response": "stilts tapquery tapurl=https://gea.esac.esa.int/tap-server/tap adql=@query.txt omode=gui",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Query for Gaia sources and their 2MASS best neighbor, but only if the neighbor is brighter than K=12.",
+        "response": "stilts tapquery tapurl=https://gea.esac.esa.int/tap-server/tap adql='SELECT g.source_id, t.tmass_oid, t.k_m FROM gaiadr3.gaia_source AS g JOIN gaiadr3.tmass_best_neighbour AS t ON g.source_id = t.source_id WHERE t.k_m < 12' maxrec=1000",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Is it possible to submit a query and get the result as an HTML table?",
+        "response": "stilts tapquery tapurl=http://dc.g-vo.org/tap adql='SELECT TOP 20 * FROM ivoa.obscore' ofmt=html",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "How to select all columns except one in ADQL?",
+        "response": "ADQL, like SQL, does not have a standard syntax for 'SELECT ALL EXCEPT'. You must explicitly list all the columns you want to keep. You can get the column list from the service's `/tables` endpoint.",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: Syntax error: Unterminated quoted string\n"
+    },
+    {
+        "prompt": "Get all sources from Gaia DR3 within 10 arcmin of M31.",
+        "response": "stilts tapquery tapurl=https://gea.esac.esa.int/tap-server/tap adql='SELECT source_id, ra, dec FROM gaiadr3.gaia_source WHERE 1=CONTAINS(POINT(\"ICRS\", ra, dec), CIRCLE(\"ICRS\", 10.6847, 41.2690, 10.0/60.0))' out=m31_stars.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Run a TAP query, then locally add a column `IS_BRIGHT` which is true if `phot_g_mean_mag` < 12.",
+        "response": "stilts tapquery tapurl=https://gea.esac.esa.int/tap-server/tap adql='SELECT source_id, phot_g_mean_mag FROM gaiadr3.gaia_source' ocmd='addcol IS_BRIGHT phot_g_mean_mag<12' out=bright_check.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find all entries in the GAVO TAP service where the data comes from the Effelsberg telescope.",
+        "response": "stilts tapquery tapurl=http://dc.g-vo.org/tap adql='SELECT * FROM ivoa.obscore WHERE facility_name LIKE ''%Effelsberg%'''",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Upload `targets.fits` and find their proper motions from `gaiadr3.gaia_source` using a 1 arcsec match.",
+        "response": "stilts tapquery tapurl=https://gea.esac.esa.int/tap-server/tap nupload=1 upload1=targets.fits upname1=myup adql='SELECT s.source_id, s.pmra, s.pmdec, t.name FROM gaiadr3.gaia_source AS s JOIN TAP_UPLOAD.myup AS t ON 1=CONTAINS(POINT(\"ICRS\", s.ra, s.dec), CIRCLE(\"ICRS\", t.ra, t.dec, 1.0/3600.0))' out=target_pms.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Query GAVO for images (`dataproduct_type='image'`) and then just count them.",
+        "response": "stilts tapquery tapurl=http://dc.g-vo.org/tap adql='SELECT * FROM ivoa.obscore WHERE dataproduct_type = ''image''' omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Fetch data from Gaia and then calculate a checksum on the result table.",
+        "response": "stilts tapquery tapurl=https://gea.esac.esa.int/tap-server/tap adql='SELECT TOP 1000 * FROM gaiadr3.gaia_source' omode=checksum",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Can I query a TAP service using HTTP POST instead of GET?",
+        "response": "STILTS handles the POST/GET submission automatically. For short queries, it typically uses GET. For longer queries, especially those with uploads, it will use POST behind the scenes.",
+        "chat.jar": "failed",
+        "error": "\nNo such task: STILTS\n\nUsage:\n   stilts [-help] [-version] [-verbose] [-allowunused] [-prompt] [-bench]\n          [-debug] [-batch] [-memory] [-disk] [-memgui]\n          [-checkversion <vers>] [-stdout <file>] [-stderr <file>]\n          <task-name> <task-args>\n\n   stilts <task-name> help[=<param-name>|*]\n\n   Known tasks:\n      arrayjoin\n      calc\n      cdsskymatch\n      cone\n      coneskymatch\n      datalinklint\n      funcs\n      mocshape\n      parqlint\n      parqlook\n      pixfoot\n      pixsample\n      plot2d\n      plot3d\n      plothist\n      regquery\n      server\n      sqlclient\n      sqlskymatch\n      sqlupdate\n      taplint\n      tapquery\n      tapresume\n      tapskymatch\n      tcat\n      tcatn\n      tcopy\n      tcube\n      tgridmap\n      tgroup\n      tjoin\n      tloop\n      tmatch1\n      tmatch2\n      tmatchn\n      tmulti\n      tmultin\n      tpipe\n      tskymap\n      tskymatch2\n      votcopy\n      votlint\n      xsdvalidate\n      plot2plane\n      plot2sky\n      plot2cube\n      plot2sphere\n      plot2corner\n      plot2time\n\n"
+    },
+    {
+        "prompt": "Get the `ra_dec_corr` for all Gaia sources where it's not null.",
+        "response": "stilts tapquery tapurl=https://gea.esac.esa.int/tap-server/tap adql='SELECT source_id, ra_dec_corr FROM gaiadr3.gaia_source WHERE ra_dec_corr IS NOT NULL'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Run a query to find sources in a specific declination band from VizieR's USNO-B1 catalog (I/284/out).",
+        "response": "stilts tapquery tapurl=http://tapvizier.u-strasbg.fr/tap adql='SELECT USNO_B1_0, RAm, DEm FROM \"I/284/out\" WHERE DEm > 20 AND DEm < 21'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "How do I make a query and keep only the `source_id` and `parallax` columns from the result?",
+        "response": "stilts tapquery tapurl=https://gea.esac.esa.int/tap-server/tap adql='SELECT * FROM gaiadr3.gaia_source' ocmd='keepcols \"source_id parallax\"' maxrec=100",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Submit a query asynchronously and then immediately delete it.",
+        "response": "stilts tapquery tapurl=http://dc.g-vo.org/tap adql='SELECT TOP 1 * FROM ivoa.obscore' sync=false delete=now",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Query for all XMM observations from the GAVO service.",
+        "response": "stilts tapquery tapurl=http://dc.g-vo.org/tap adql='SELECT * FROM ivoa.obscore WHERE obs_collection = ''XMM'''",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find all Gaia sources with negative parallax (potential artifacts).",
+        "response": "stilts tapquery tapurl=https://gea.esac.esa.int/tap-server/tap adql='SELECT source_id, parallax FROM gaiadr3.gaia_source WHERE parallax < 0' out=negative_parallax.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "What's the ADQL syntax for a cross join in a TAP query?",
+        "response": "You can perform a cross join by listing multiple tables in the FROM clause, for example: `... adql='SELECT TOP 10 * FROM table1, table2'`",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: ...: not found\n\nNo such task: You\n\nUsage:\n   stilts [-help] [-version] [-verbose] [-allowunused] [-prompt] [-bench]\n          [-debug] [-batch] [-memory] [-disk] [-memgui]\n          [-checkversion <vers>] [-stdout <file>] [-stderr <file>]\n          <task-name> <task-args>\n\n   stilts <task-name> help[=<param-name>|*]\n\n   Known tasks:\n      arrayjoin\n      calc\n      cdsskymatch\n      cone\n      coneskymatch\n      datalinklint\n      funcs\n      mocshape\n      parqlint\n      parqlook\n      pixfoot\n      pixsample\n      plot2d\n      plot3d\n      plothist\n      regquery\n      server\n      sqlclient\n      sqlskymatch\n      sqlupdate\n      taplint\n      tapquery\n      tapresume\n      tapskymatch\n      tcat\n      tcatn\n      tcopy\n      tcube\n      tgridmap\n      tgroup\n      tjoin\n      tloop\n      tmatch1\n      tmatch2\n      tmatchn\n      tmulti\n      tmultin\n      tpipe\n      tskymap\n      tskymatch2\n      votcopy\n      votlint\n      xsdvalidate\n      plot2plane\n      plot2sky\n      plot2cube\n      plot2sphere\n      plot2corner\n      plot2time\n\n"
+    },
+    {
+        "prompt": "Select 100 rows from the Gaia `vari_summary` table.",
+        "response": "stilts tapquery tapurl=https://gea.esac.esa.int/tap-server/tap adql='SELECT TOP 100 * FROM gaiadr3.vari_summary'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Run a query and then replace all nulls in the `radial_velocity` column with -9999.",
+        "response": "stilts tapquery tapurl=https://gea.esac.esa.int/tap-server/tap adql='SELECT source_id, radial_velocity FROM gaiadr3.gaia_source' ocmd='replaceval null -9999 radial_velocity'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need to get data from a TAP service and make sure the output table name is `MyQuery`.",
+        "response": "stilts tapquery tapurl=http://dc.g-vo.org/tap adql='SELECT * FROM ivoa.obscore' ocmd='tablename MyQuery' maxrec=10",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find all SDSS QSOs from VizieR (VII/288/milliquas7) with redshift > 5.",
+        "response": "stilts tapquery tapurl=http://tapvizier.u-strasbg.fr/tap adql='SELECT Name, z FROM \"VII/288/milliquas7\" WHERE Type=\"Q\" AND z > 5' out=high_z_quasars.txt",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Query the Gaia archive synchronously for up to 1000 records.",
+        "response": "stilts tapquery tapurl=https://gea.esac.esa.int/tap-server/tap adql='SELECT * FROM gaiadr3.gaia_source' sync=true maxrec=1000",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "How do I specify the name of my uploaded table within the ADQL query?",
+        "response": "You use the syntax `TAP_UPLOAD.<upname>`, where `<upname>` is the name you provided with the `upnameN` parameter. For example, if you set `upname1=mydata`, you would use `TAP_UPLOAD.mydata` in the ADQL [8, 9].",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: Syntax error: end of file unexpected\n"
+    },
+    {
+        "prompt": "Get 100 stars and their J, H, K magnitudes from the 2MASS catalog at GAVO.",
+        "response": "stilts tapquery tapurl=http://dc.g-vo.org/tap adql='SELECT TOP 100 pts_key, j_m, h_m, k_m FROM twomass.data'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Run a TAP query and then only keep the first 10 rows of the result locally.",
+        "response": "stilts tapquery tapurl=https://gea.esac.esa.int/tap-server/tap adql='SELECT * FROM gaiadr3.gaia_source' ocmd='head 10'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need to do an authenticated TAP query and have it run asynchronously without deleting the job.",
+        "response": "stilts tapquery tapurl=https://my.secure.service/tap adql='SELECT * FROM my_project_data' auth=true sync=false delete=never",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Get all sources from the WISE All-Sky catalog (II/328/allwise) within 1 degree of the north ecliptic pole.",
+        "response": "stilts tapquery tapurl=http://tapvizier.u-strasbg.fr/tap adql='SELECT AllWISE, RAJ2000, DEJ2000 FROM \"II/328/allwise\" WHERE 1=CONTAINS(POINT(\"ECLIPTIC\", 270, 90), CIRCLE(\"ICRS\", RAJ2000, DEJ2000, 1.0))'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "What is the simplest `tapquery` command I can run to test a service?",
+        "response": "stilts tapquery tapurl=http://dc.g-vo.org/tap adql='SELECT TOP 1 * FROM ivoa.obscore' omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Query GAVO and then sort the results by `s_ra`.",
+        "response": "stilts tapquery tapurl=http://dc.g-vo.org/tap adql='SELECT * FROM ivoa.obscore WHERE s_ra IS NOT NULL' ocmd='sort s_ra'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need to get 10000 records but the service limit is 2000. Can `tapquery` handle this?",
+        "response": "No, `tapquery` submits a single ADQL query, so it is bound by the service's `maxrec` limit. You would need to split your query into multiple `tapquery` commands, for instance by breaking up the sky area, and then use `tcat` to combine the results.",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: Syntax error: Unterminated quoted string\n"
+    },
+    {
+        "prompt": "Find all entries in the `gaiadr3.vari_summary` table for sources classified as RR Lyrae.",
+        "response": "stilts tapquery tapurl=https://gea.esac.esa.int/tap-server/tap adql='SELECT source_id, best_class_name FROM gaiadr3.vari_summary WHERE best_class_name = ''RRLyr'''",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Submit an ADQL query to find all sources from Gaia with parallax measurements and save to `parallax_sources.fits`.",
+        "response": "stilts tapquery tapurl=https://gea.esac.esa.int/tap-server/tap adql='SELECT source_id, parallax FROM gaiadr3.gaia_source WHERE parallax IS NOT NULL' out=parallax_sources.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Upload my list of objects, `object_list.csv`, and join it with a TAP table on the `object_id` column.",
+        "response": "stilts tapquery tapurl=http://my.service/tap nupload=1 upload1=object_list.csv ifmt1=csv upname1=myobs adql='SELECT r.*, u.* FROM remote_table AS r JOIN TAP_UPLOAD.myobs AS u ON r.object_id = u.object_id' out=id_join.fits",
+        "chat.jar": "failed",
+        "error": "\nUnused arguments: ifmt1=csv\n\nUsage: tapquery nupload=<count> ufmtN=<in-format> uploadN=<tableN>\n                ucmdN=<cmds> ocmd=<cmds>\n                omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n                out=<out-table> ofmt=<out-format> upnameN=<adql-identifier>\n                tapurl=<url-value> interface=tap1.0|tap1.1|cap auth=true|false\n                adql=<query-text> parse=true|false sync=true|false\n                maxrec=<nrow> destruction=<iso8601>\n                executionduration=<seconds> compress=true|false\n                upvotformat=TABLEDATA|BINARY|BINARY2 language=<lang-name>\n                poll=<millisec> progress=true|false\n                delete=finished|never|always|now\n\n"
+    },
+    {
+        "prompt": "Query the Gaia archive for the top 10 stars with the largest proper motion in declination.",
+        "response": "stilts tapquery tapurl=https://gea.esac.esa.int/tap-server/tap adql='SELECT TOP 10 source_id, pmdec FROM gaiadr3.gaia_source ORDER BY ABS(pmdec) DESC'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Get 100 rows from GAVO and then view them in a temporary GUI window.",
+        "response": "stilts tapquery tapurl=http://dc.g-vo.org/tap adql='SELECT TOP 100 * FROM ivoa.obscore' omode=gui",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "How to query for sources from Gaia DR3 that are flagged as duplicates?",
+        "response": "stilts tapquery tapurl=https://gea.esac.esa.int/tap-server/tap adql='SELECT source_id FROM gaiadr3.gaia_source WHERE duplicated_source = ''true''' out=duplicate_sources.txt",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Retrieve data and then calculate the mean of the `phot_g_mean_mag` column.",
+        "response": "stilts tapquery tapurl=https://gea.esac.esa.int/tap-server/tap adql='SELECT phot_g_mean_mag FROM gaiadr3.gaia_source' maxrec=10000 ocmd='keepcols phot_g_mean_mag' omode=stats",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Query for all Hubble observations from the GAVO obscore table.",
+        "response": "stilts tapquery tapurl=http://dc.g-vo.org/tap adql='SELECT * FROM ivoa.obscore WHERE facility_name = ''HST''' out=hst_obs.vot",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find all sources from Gaia with a proper motion greater than 1 arcsecond per year.",
+        "response": "stilts tapquery tapurl=https://gea.esac.esa.int/tap-server/tap adql='SELECT source_id, pm FROM gaiadr3.gaia_source WHERE pm > 1000' out=fast_movers.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Write a query to get 10 random stars from the Tycho-2 catalog at VizieR.",
+        "response": "stilts tapquery tapurl=http://tapvizier.u-strasbg.fr/tap adql='SELECT TOP 10 * FROM \"I/259/tyc2\" ORDER BY RAND()'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Perform an asynchronous TAP query and set the polling interval to 10 seconds.",
+        "response": "stilts tapquery tapurl=https://gea.esac.esa.int/tap-server/tap adql='SELECT * FROM gaiadr3.gaia_source' sync=false poll=10000",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Get sources from the Gaia archive and then locally remove any row that has a null parallax value.",
+        "response": "stilts tapquery tapurl=https://gea.esac.esa.int/tap-server/tap adql='SELECT source_id, parallax FROM gaiadr3.gaia_source' ocmd='select !NULL_parallax' maxrec=10000",
+        "chat.jar": "executed successfully"
+    }
+]

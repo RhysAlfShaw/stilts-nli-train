@@ -225,16 +225,6 @@
         "chat.jar": "executed successfully"
     },
     {
-        "prompt": "Count how many rows in `quality.fits` have a non-blank value in the `COMMENT` column.",
-        "response": "stilts tpipe in=quality.fits cmd='select \"!isBlank(COMMENT)\"' omode=count",
-        "chat.jar": "executed successfully"
-    },
-    {
-        "prompt": "Select all rows from `sources.csv` where the `DEBLEND_FLAG` is not set (i.e., is null). Output to `clean_sources.csv`.",
-        "response": "stilts tpipe ifmt=csv in=sources.csv cmd='select \"isBlank(DEBLEND_FLAG)\"' ofmt=csv out=clean_sources.csv",
-        "chat.jar": "executed successfully"
-    },
-    {
         "prompt": "In `mags.fits`, the `AB_MAG` column contains AB magnitudes. Add a new column `FLUX_JANSKY` with the equivalent flux in Janskys. Save to `mags_flux.fits`.",
         "response": "stilts tpipe in=mags.fits cmd='addcol FLUX_JANSKY \"abToJansky(AB_MAG)\"' out=mags_flux.fits",
         "chat.jar": "executed successfully"

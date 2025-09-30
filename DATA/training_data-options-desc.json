@@ -1,0 +1,138 @@
+[
+    {
+        "prompt": "What are the main things I can do with `stilts tpipe`?",
+        "response": "With `stilts tpipe`, you have a wide range of table manipulation capabilities. You can: \n- **Convert** tables between dozens of formats (like FITS, CSV, VOTable). \n- **Filter** rows based on complex logical and mathematical conditions using the `select` command. \n- **Modify columns** by adding new ones with calculated values (`addcol`), removing unwanted ones (`delcols`), or keeping only essential ones (`keepcols`). \n- **Transform data** by sorting rows (`sort`), converting astronomical coordinates (`addskycoords`), or replacing specific values (`replaceval`). \n- **Summarize results** by calculating column statistics (`omode=stats`) or counting rows (`omode=count`) instead of writing a new file."
+    },
+    {
+        "prompt": "Can you give me an overview of the processing filters available in `tpipe`?",
+        "response": "`tpipe` and some others offers a rich set of processing filters via the `cmd` parameter. Key categories include: \n- **Row Selection**: `select` (for conditional filtering), `head`/`tail` (for the first/last N rows), `uniq` (for unique rows), and `every` (for sampling). \n- **Column Management**: `keepcols` (to specify which columns to retain), `delcols` (to remove columns), and `fixcolnames` (to clean up names). \n- **Data Creation/Modification**: `addcol` (to add a new calculated column), `replacecol` (to modify an existing column), `replaceval` (to find and replace specific values), and `addskycoords` (for astronomical coordinate conversions). \n- **Structural Changes**: `sort`/`sorthead` (to order rows) and `transpose` (to swap rows and columns)."
+    },
+    {
+        "prompt": "What are the different ways `tpipe` can output a table? Summarize the `omode` parameter.",
+        "response": "The `omode` (output mode) parameter determines what happens to your table after processing. Instead of just saving a file, you can: \n- **`out`**: The default mode, which writes the final table to a file or standard output. Example: `... out=final.fits`. \n- **`stats`**: Calculates and prints summary statistics (mean, min, max, etc.) for each column. \n- **`meta`**: Displays the table's metadata, such as column names, data types, and descriptions. \n- **`count`**: Simply prints the total number of rows in the final table. \n- **`topcat`**: Sends the table directly to an open TOPCAT application for immediate visualization. \n- **`discard`**: Performs all processing steps but produces no output, which is useful for testing the speed of a command."
+    },
+    {
+        "prompt": "What is the basic function of the `stilts tpipe` command?",
+        "response": "`stilts tpipe` is a versatile command for processing tabular data. It functions as a pipeline, reading a table from an input source, performing a series of user-defined processing steps, and then writing the resulting table to a destination. It's a powerful tool for manipulating tables from the command line."
+    },
+    {
+        "prompt": "How does `tpipe` handle different file formats?",
+        "response": "`tpipe` can automatically detect many common formats like FITS, VOTable, and CSV based on the filename extension. You can also explicitly specify the input and output formats using the `ifmt` and `ofmt` parameters, respectively. For example, to convert a CSV to FITS: `stilts tpipe in=data.csv ifmt=csv out=data.fits ofmt=fits`"
+    },
+    {
+        "prompt": "Explain the three main parts of a `tpipe` command.",
+        "response": "A `tpipe` command consists of three logical parts: 1. **Input**, specified by the `in` parameter (e.g., a filename). 2. **Processing**, defined by one or more `cmd` parameters that list the filter steps. 3. **Output**, controlled by the `omode` parameter, which determines what to do with the final table (e.g., save it, get stats, etc.)."
+    },
+    {
+        "prompt": "How can I filter rows based on a condition?",
+        "response": "You can use the `select` filter to keep only the rows that match a specific algebraic or boolean condition. The condition is an expression that evaluates to true or false. For instance, to select rows where the 'REDSHIFT' column is greater than 0.5: `stilts tpipe in=galaxies.fits cmd='select \"REDSHIFT > 0.5\"'`"
+    },
+    {
+        "prompt": "What is the `keepcols` command for?",
+        "response": "The `keepcols` filter is used to select which columns from the input table you want to keep in the output table. All other columns will be discarded. You provide a space-separated list of column names. Example: `stilts tpipe in=data.fits cmd='keepcols \"RA DEC MAG\"' out=subset.fits`"
+    },
+    {
+        "prompt": "How do I remove specific columns from a table?",
+        "response": "To remove columns, use the `delcols` filter. You provide a space-separated list of the names of the columns you wish to delete. For example, to remove temporary flag columns: `stilts tpipe in=data.fits cmd='delcols \"FLAG1 FLAG2\"' out=clean_data.fits`"
+    },
+    {
+        "prompt": "Tell me about the `addcol` command.",
+        "response": "The `addcol` filter adds a new column to the table. You must specify the new column's name and an expression to calculate its value for each row. The expression can use values from other columns. Example: `stilts tpipe in=phot.fits cmd='addcol COLOR \"B_MAG - V_MAG\"' out=phot_color.fits`"
+    },
+    {
+        "prompt": "How can I sort my table?",
+        "response": "The `sort` filter reorders the rows of the table based on the values in one or more columns. By default, it sorts in ascending order. To sort in descending order, use the `-down` flag. Example: `stilts tpipe in=stars.fits cmd='sort -down V_MAG' out=sorted_stars.fits`"
+    },
+    {
+        "prompt": "What does the `omode=stats` option do?",
+        "response": "The output mode `omode=stats` prevents `tpipe` from writing an output table. Instead, it calculates and displays summary statistics (like mean, min, max, and standard deviation) for each numeric column in the processed table. Example: `stilts tpipe in=measurements.fits omode=stats`"
+    },
+    {
+        "prompt": "How can I just see the metadata of a table?",
+        "response": "Use the output mode `omode=meta`. This will display information about the table itself and its columns, such as column names, data types, units, and UCDs, without showing any row data. Example: `stilts tpipe in=archive_data.vot omode=meta`"
+    },
+    {
+        "prompt": "What's an efficient way to find the top 10 largest values in a column?",
+        "response": "The `sorthead` filter is the most efficient method. It sorts the table and keeps only the top N rows, using much less memory than a full `sort` followed by `head`. To find the 10 rows with the largest 'AREA': `stilts tpipe in=data.fits cmd='sorthead -down 10 AREA'`"
+    },
+    {
+        "prompt": "How can I count the number of rows that meet a certain condition?",
+        "response": "Combine the `select` filter with the `omode=count` output mode. `tpipe` will first filter the table and then simply output the total number of rows in the resulting table. Example: `stilts tpipe in=catalog.fits cmd='select \"MAG < 15\"' omode=count`"
+    },
+    {
+        "prompt": "Can `tpipe` add astronomical coordinate columns?",
+        "response": "Yes, the `addskycoords` filter is designed for this. It can convert between different coordinate systems (e.g., ICRS/FK5 to Galactic). You specify the input and output systems and the columns involved. Example: `stilts tpipe in=radec.fits cmd='addskycoords fk5 gal RA DEC GAL_LON GAL_LAT'`"
+    },
+    {
+        "prompt": "How do I select just the first few rows of a file?",
+        "response": "Use the `head` filter, followed by the number of rows you want to see. This is useful for quickly inspecting the structure of a large file. Example: `stilts tpipe in=big_survey.fits cmd='head 5'`"
+    },
+    {
+        "prompt": "How can I get the last few rows of a table?",
+        "response": "The `tail` filter works just like `head`, but it selects the final N rows of the table instead of the first. Example: `stilts tpipe in=log.csv cmd='tail 50'`"
+    },
+    {
+        "prompt": "What are the boolean operators I can use in a `select` expression?",
+        "response": "You can use standard boolean logic. `&&` is used for AND, `||` is used for OR, and `!` is used for NOT. You can also use comparison operators like `==` (equals), `!=` (not equals), `>`, `<`, `>=`, and `<=`. Example: `select \"MAG < 20 && ERR_MAG < 0.1\"`"
+    },
+    {
+        "prompt": "Explain how to replace a bad value in a column.",
+        "response": "The `replaceval` filter finds all occurrences of a specific value in one or more columns and replaces them with a new value. This is very useful for handling sentinel values like -999 or NaNs. Example: `stilts tpipe in=data.fits cmd='replaceval -999 null FLUX'`"
+    },
+    {
+        "prompt": "What is the `uniq` filter for?",
+        "response": "The `uniq` filter removes duplicate rows from a table based on the value in a specified column. It keeps only the first row it encounters for each unique value in that key column. Example: `stilts tpipe in=obs.fits cmd='uniq SOURCE_ID'`"
+    },
+    {
+        "prompt": "How can I add a column with the same value for every row?",
+        "response": "Use the `constcol` filter. It adds a new column and fills every row with a constant value you provide. Example, to tag data with a survey name: `stilts tpipe in=data.fits cmd='constcol SURVEY SDSS'`"
+    },
+    {
+        "prompt": "What does the `fixcolnames` filter do?",
+        "response": "The `fixcolnames` filter cleans up column names to make them easier to work with. It can remove special characters, replace spaces with underscores, and ensure names are unique, which is helpful when dealing with tables from various sources. Example: `stilts tpipe in=messy.csv cmd=fixcolnames out=clean.csv`"
+    },
+    {
+        "prompt": "How do I handle array columns in a FITS file?",
+        "response": "The `explodeall` filter can be used to convert all fixed-size array columns into multiple scalar columns. For example, a 3-element array column named 'FLUX' would become three columns named 'FLUX_1', 'FLUX_2', and 'FLUX_3'. Example: `stilts tpipe in=arrays.fits cmd=explodeall`"
+    },
+    {
+        "prompt": "Can I perform multiple processing steps at once?",
+        "response": "Yes, you can chain multiple processing steps by providing multiple `cmd` parameters. They are executed in the order they appear on the command line. This allows you to build complex processing pipelines. Example: `stilts tpipe in=d.fits cmd='select \"FLAG==0\"' cmd='keepcols \"RA DEC\"' cmd='head 100'`"
+    },
+    {
+        "prompt": "How do I change the metadata of a column, like its name or units?",
+        "response": "The `colmeta` filter allows you to modify column metadata. You can change a column's name, UCD, or units. For example, to rename 'RA_DEGREES' to 'RA': `stilts tpipe in=data.fits cmd='colmeta -name RA_DEGREES RA'`"
+    },
+    {
+        "prompt": "What if my table is very large and a sort operation uses too much memory?",
+        "response": "For memory-intensive operations like sorting a large file, you can add the `-disk` flag before `tpipe`. This tells STILTS to use temporary disk files for caching instead of keeping everything in memory, which is slower but can handle much larger datasets. Example: `stilts -disk tpipe in=big.fits cmd='sort AREA'`"
+    },
+    {
+        "prompt": "How can I randomize the order of rows in my table?",
+        "response": "The `shuffle` filter randomly reorders all the rows in the table. This is often used when preparing datasets for machine learning to ensure training and test sets are unbiased. Example: `stilts tpipe in=ml_data.fits cmd=shuffle out=shuffled_data.fits`"
+    },
+    {
+        "prompt": "Can `tpipe` perform aggregation or grouping operations?",
+        "response": "Yes, the `group` filter can perform aggregation. You specify a key column to group by, and then provide aggregation functions (like `avg`, `sum`, `min`, `max`) for other columns. It creates a new table with one row for each unique key. Example: `stilts tpipe in=obs.fits cmd='group TARGET_ID avg(FLUX)'`"
+    },
+    {
+        "prompt": "How do I perform string comparisons in a `select` filter?",
+        "response": "For string comparisons, it's best to use dedicated functions like `equals()`, `startsWith()`, or `contains()`. This avoids issues with shell quoting. Example: `stilts tpipe in=cat.fits cmd='select \"equals(OBJ_TYPE, \\\"STAR\\\")\"'`"
+    },
+    {
+        "prompt": "What is the `transpose` filter used for?",
+        "response": "The `transpose` filter swaps the rows and columns of a table. The first column of the input table becomes the header row for the output table. This can be useful for restructuring small tables for analysis. Example: `stilts tpipe in=small.fits cmd=transpose`"
+    },
+    {
+        "prompt": "How can I modify the values in an existing column?",
+        "response": "Use the `replacecol` filter. It works like `addcol` but overwrites an existing column with the result of a new expression instead of creating a new one. Example, to convert a flux to magnitude in place: `stilts tpipe in=d.fits cmd='replacecol FLUX \"-2.5*log10(FLUX)\"'`"
+    },
+    {
+        "prompt": "How do I select every Nth row from a table?",
+        "response": "The `every` filter provides a way to systematically sample a table by selecting one row at regular intervals. For example, to select every 1000th row: `stilts tpipe in=large_cat.fits cmd='every 1000'`"
+    },
+    {
+        "prompt": "What stilts tasks do you support generating?",
+        "response": "I was trained to generate for stilts tasks: `tpipe`, 'tmatchn', 'tcat', 'tapquery' and  'cone'. Ask me for examples of these!"
+    }
+]

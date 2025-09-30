@@ -149,11 +149,6 @@
         "chat.jar": "executed successfully"
     },
     {
-        "prompt": "In `data.fits`, find any rows where the `MAG_ERR` column is not a valid number (e.g., NaN or Infinity) and select only those rows.",
-        "response": "stilts tpipe in=data.fits cmd='select \"!isFinite(MAG_ERR)\"' out=bad_mag_err.fits",
-        "chat.jar": "executed successfully"
-    },
-    {
         "prompt": "Select rows from `catalog.fits` where the `ID` string starts with 'NGC'.",
         "response": "stilts tpipe in=catalog.fits cmd='select \"startsWith(ID, \\'NGC\\')\"' out=ngc_objects.fits",
         "chat.jar": "fixed",

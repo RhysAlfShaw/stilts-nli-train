@@ -1,0 +1,995 @@
+[
+    {
+        "prompt": "Create a simple scatter plot of RMAG vs BMAG from `catalog.fits` and display it on the screen.",
+        "response": "stilts plot2plane in=catalog.fits layer=mark x=BMAG y=RMAG",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"BMAG\"\n    (The name \"BMAG\" is unknown.)\n"
+    },
+    {
+        "prompt": "Generate a PNG image named `cmd_plot.png` of a color-magnitude diagram (CMD) from `photometry.vot`. X-axis should be 'g-r' and Y-axis should be 'g'.",
+        "response": "stilts plot2plane in=photometry.vot layer=mark x=g-r y=g out=cmd_plot.png",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"g-r\"\n    (The name \"g\" is unknown.)\n"
+    },
+    {
+        "prompt": "How do I make a histogram of the 'REDSHIFT' column in `galaxies.csv`?",
+        "response": "stilts plot2plane in=galaxies.csv ifmt=csv layer=histogram x=REDSHIFT",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"REDSHIFT\"\n    (The name \"REDSHIFT\" is unknown.)\n"
+    },
+    {
+        "prompt": "I need to plot two different datasets on the same axes. `data1.fits` (red crosses) and `data2.fits` (blue circles).",
+        "response": "stilts plot2plane layer_1=mark in_1=data1.fits x_1=X_POS y_1=Y_POS color_1=red shape_1=cross layer_2=mark in_2=data2.fits x_2=XPOS y_2=YPOS color_2=blue shape_2=open_circle",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"X_POS\"\n    (The name \"X_POS\" is unknown.)\n"
+    },
+    {
+        "prompt": "Create a scatter plot with logarithmic scaling on both axes.",
+        "response": "stilts plot2plane in=data.fits layer=mark x=FLUX y=FLUX_ERROR xlog=true ylog=true",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"FLUX\"\n    (The name \"FLUX\" is unknown.)\n"
+    },
+    {
+        "prompt": "Can you plot a scatter plot and overplot a line of best fit?",
+        "response": "stilts plot2plane in=calibration.dat ifmt=ascii layer_pts=mark x_pts=SIGNAL y_pts=MEASURED layer_fit=linearfit x_fit=SIGNAL y_fit=MEASURED",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"SIGNAL\"\n    (The name \"SIGNAL\" is unknown.)\n"
+    },
+    {
+        "prompt": "I want to create a density map of my data. How can I color the points by density using the viridis color map?",
+        "response": "stilts plot2plane in=deep_field.fits layer=mark x=X_IMAGE y=Y_IMAGE shading=density densemap=viridis",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"X_IMAGE\"\n    (The name \"X_IMAGE\" is unknown.)\n"
+    },
+    {
+        "prompt": "Plot 'V_MAG' vs 'B_V_COLOR', but invert the y-axis so bright objects are at the top.",
+        "response": "stilts plot2plane in=stars.fits layer=mark x=B_V_COLOR y=V_MAG yflip=true",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"B_V_COLOR\"\n    (The name \"B_V_COLOR\" is unknown.)\n"
+    },
+    {
+        "prompt": "Generate a scatter plot with symmetric error bars for both x and y coordinates.",
+        "response": "stilts plot2plane in=measurements.fits layer_m=mark x_m=X y_m=Y layer_e=xyerror x_e=X y_e=Y xerrhi_e=X_ERR yerrhi_e=Y_ERR",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"X\"\n    (The name \"X\" is unknown.)\n"
+    },
+    {
+        "prompt": "How do I add a title and axis labels to my plot?",
+        "response": "stilts plot2plane in=data.fits layer=mark x=LOG_TEMP y=LOG_LUM title='Hertzsprung-Russell Diagram' xlabel='Log(Temperature)' ylabel='Log(Luminosity)'",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"LOG_TEMP\"\n    (The name \"LOG_TEMP\" is unknown.)\n"
+    },
+    {
+        "prompt": "Plot a histogram with 50 bins and filled blue bars.",
+        "response": "stilts plot2plane in=data.fits layer=histogram x=VALUE binsize=-50 barform=filled color=blue",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"VALUE\"\n    (The name \"VALUE\" is unknown.)\n"
+    },
+    {
+        "prompt": "Create a 2D plot coloring the points by the value of a third column, 'METALLICITY', using the plasma color map.",
+        "response": "stilts plot2plane in=star_properties.fits layer=mark x=TEFF y=LOGG shading=aux aux=METALLICITY auxmap=plasma",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"TEFF\"\n    (The name \"TEFF\" is unknown.)\n"
+    },
+    {
+        "prompt": "Plot the analytic function y = sin(x)/x from x=-20 to 20.",
+        "response": "stilts plot2plane layer=function fexpr='sin(x)/x' xmin=-20 xmax=20",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need to filter my table for `QUALITY_FLAG==0` before plotting.",
+        "response": "stilts plot2plane in=raw_data.fits icmd='select QUALITY_FLAG==0' layer=mark x=X y=Y",
+        "chat.jar": "failed",
+        "error": "Error: Table processing error\n    (Bad expression \"QUALITY_FLAG==0\" (The name \"QUALITY_FLAG\" is unknown.)\n        (The name \"QUALITY_FLAG\" is unknown.))\n"
+    },
+    {
+        "prompt": "How can I plot a cumulative histogram?",
+        "response": "stilts plot2plane in=data.fits layer=histogram x=VALUE cumulative=true",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"VALUE\"\n    (The name \"VALUE\" is unknown.)\n"
+    },
+    {
+        "prompt": "Show density contours over my scatter plot.",
+        "response": "stilts plot2plane in=cluster.fits layer_m=mark x_m=RA y_m=DEC layer_c=contour x_c=RA y_c=DEC smooth_c=4",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"RA\"\n    (The name \"RA\" is unknown.)\n"
+    },
+    {
+        "prompt": "I have columns `X_ERR_LO` and `X_ERR_HI`. How do I plot asymmetric error bars?",
+        "response": "stilts plot2plane in=errors.fits layer=xyerror x=X y=Y xerrlo=X_ERR_LO xerrhi=X_ERR_HI",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"X\"\n    (The name \"X\" is unknown.)\n"
+    },
+    {
+        "prompt": "Generate a 2D binned histogram (grid plot) of X vs Y.",
+        "response": "stilts plot2plane in=large_survey.fits layer=grid x=RA y=DEC xbinsize=-100 ybinsize=-100 combine=count",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"RA\"\n    (The name \"RA\" is unknown.)\n"
+    },
+    {
+        "prompt": "I have an array column 'FLUX_SPEC' and a parameter 'WAVELENGTHS'. Can I plot them?",
+        "response": "stilts plot2plane in=spectra.fits layer=lines xs=param$WAVELENGTHS ys=FLUX_SPEC",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"param\"\n    (The name \"param\" is unknown.)\n"
+    },
+    {
+        "prompt": "Plot a scatter plot with transparent points. Let's say 10 points make it opaque.",
+        "response": "stilts plot2plane in=crowded.fits layer=mark x=X y=Y shading=transparent opaque=10",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"X\"\n    (The name \"X\" is unknown.)\n"
+    },
+    {
+        "prompt": "Can you plot text labels from the 'ID' column at each point?",
+        "response": "stilts plot2plane in=named_objects.fits layer=label x=RA y=DEC label=ID",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"RA\"\n    (The name \"RA\" is unknown.)\n"
+    },
+    {
+        "prompt": "Plot a Kernel Density Estimate (KDE) instead of a histogram.",
+        "response": "stilts plot2plane in=data.fits layer=kde x=VALUE",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"VALUE\"\n    (The name \"VALUE\" is unknown.)\n"
+    },
+    {
+        "prompt": "How do I normalize a histogram so that the total area is 1?",
+        "response": "stilts plot2plane in=data.fits layer=histogram x=VALUE normalise=area",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"VALUE\"\n    (The name \"VALUE\" is unknown.)\n"
+    },
+    {
+        "prompt": "I want to plot vectors showing proper motion. My columns are RA, DEC, PMRA, and PMDEC.",
+        "response": "stilts plot2plane in=propermotion.fits layer=xyvector x=RA y=DEC xdelta=PMRA ydelta=PMDEC autoscale=true",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"RA\"\n    (The name \"RA\" is unknown.)\n"
+    },
+    {
+        "prompt": "Create a plot from a strange attractor simulation with 1 million points and save it as a high-res PNG.",
+        "response": "stilts plot2plane in=:attractor:1e6,clifford layer=mark x=x y=y shading=density xpix=1024 ypix=1024 out=attractor.png",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"x\"\n    (The name \"x\" is unknown.)\n"
+    },
+    {
+        "prompt": "Add a legend to a multi-layer plot.",
+        "response": "stilts plot2plane layer_A=mark in_A=catA.fits x_A=X y_A=Y leglabel_A='Catalog A' layer_B=mark in_B=catB.fits x_B=X y_B=Y leglabel_B='Catalog B' legend=true",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"X\"\n    (The name \"X\" is unknown.)\n"
+    },
+    {
+        "prompt": "How can I set the exact plot range, for instance X from -5 to 5 and Y from 0 to 100?",
+        "response": "stilts plot2plane in=data.fits layer=mark x=X y=Y xmin=-5 xmax=5 ymin=0 ymax=100",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"X\"\n    (The name \"X\" is unknown.)\n"
+    },
+    {
+        "prompt": "Plot error ellipses using columns for major axis, minor axis, and position angle.",
+        "response": "stilts plot2plane in=galaxy_shapes.fits layer=xyellipse x=X_CEN y=Y_CEN ra=MAJOR_AXIS rb=MINOR_AXIS posang=POS_ANGLE",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"X_CEN\"\n    (The name \"X_CEN\" is unknown.)\n"
+    },
+    {
+        "prompt": "Create a 2D weighted density map where the color represents the mean temperature in each bin.",
+        "response": "stilts plot2plane in=simulation.fits layer=grid x=POS_X y=POS_Y weight=TEMPERATURE combine=mean",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"POS_X\"\n    (The name \"POS_X\" is unknown.)\n"
+    },
+    {
+        "prompt": "Can I plot multiple histograms with different colors on the same axes?",
+        "response": "stilts plot2plane layer_1=histogram in_1=sample1.fits x_1=MASS color_1=blue layer_2=histogram in_2=sample2.fits x_2=MASS color_2=red",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"MASS\"\n    (The name \"MASS\" is unknown.)\n"
+    },
+    {
+        "prompt": "Plot a light curve from an array column `FLUX_VALUES` vs a generated time axis.",
+        "response": "stilts plot2plane in=lightcurve.fits layer=lines ys=FLUX_VALUES",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"FLUX_VALUES\"\n    (The name \"FLUX_VALUES\" is unknown.)\n"
+    },
+    {
+        "prompt": "I need to draw a filled area under a curve. My table has X and Y columns.",
+        "response": "stilts plot2plane in=curve.fits layer=fill x=X y=Y color=skyblue",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"X\"\n    (The name \"X\" is unknown.)\n"
+    },
+    {
+        "prompt": "Generate a plot and show it in a GUI window instead of saving to a file.",
+        "response": "stilts plot2plane in=data.fits layer=mark x=X y=Y omode=gui",
+        "chat.jar": "failed",
+        "error": "Error: Bad value for parameter omode: Unknown value \"gui\" - must be one of swing, out, cgi, discard, auto\nUsage: omode=swing|out|cgi|discard|auto\n\n"
+    },
+    {
+        "prompt": "How can I change the font size of the axis labels?",
+        "response": "stilts plot2plane in=data.fits layer=mark x=X y=Y xlabel=X-Axis ylabel=Y-Axis fontsize=16",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"X\"\n    (The name \"X\" is unknown.)\n"
+    },
+    {
+        "prompt": "Plot `y=x^2` and `y=x^3` as functions on the same plot.",
+        "response": "stilts plot2plane layer_sq=function fexpr_sq='x*x' color_sq=red layer_cb=function fexpr_cb='x*x*x' color_cb=blue xmin=-2 xmax=2 ymin=-8 ymax=8",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Show the median line for a noisy scatter plot.",
+        "response": "stilts plot2plane in=noisy_data.fits layer_pts=mark x_pts=TIME y_pts=FLUX layer_med=quantile x_med=TIME y_med=FLUX quantiles_med=0.5 color_med=red",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"TIME\"\n    (The name \"TIME\" is unknown.)\n"
+    },
+    {
+        "prompt": "I want to create an animation zooming into a cluster. The animation control is in `zoom.csv`.",
+        "response": "stilts plot2plane in=cluster.fits layer=mark x=X y=Y animate=zoom.csv afmt=csv out=zoom_movie.png",
+        "chat.jar": "failed",
+        "error": "java.lang.IllegalStateException\n\tat uk.ac.starlink.table.EmptyRowSequence.getRow(EmptyRowSequence.java:57)\n\tat uk.ac.starlink.ttools.plot2.task.AbstractPlot2Task$Row0Table.<init>(AbstractPlot2Task.java:3055)\n\tat uk.ac.starlink.ttools.plot2.task.AbstractPlot2Task.createExecutable(AbstractPlot2Task.java:574)\n\tat uk.ac.starlink.ttools.task.LineInvoker.invoke(LineInvoker.java:285)\n\tat CommandValidator.checkInvocation(CommandValidator.java:46)\n\tat CommandValidator.main(CommandValidator.java:66)\n"
+    },
+    {
+        "prompt": "How do I make the plot grid lines dashed and grey?",
+        "response": "This level of customization for grid lines is not directly available. You can change the color with `gridcolor=grey`, but not the dash style.",
+        "chat.jar": "non-fail",
+        "error": "\nNo such task: This\n\nUsage:\n   stilts [-help] [-version] [-verbose] [-allowunused] [-prompt] [-bench]\n          [-debug] [-batch] [-memory] [-disk] [-memgui]\n          [-checkversion <vers>] [-stdout <file>] [-stderr <file>]\n          <task-name> <task-args>\n\n   stilts <task-name> help[=<param-name>|*]\n\n   Known tasks:\n      arrayjoin\n      calc\n      cdsskymatch\n      cone\n      coneskymatch\n      datalinklint\n      funcs\n      mocshape\n      parqlint\n      parqlook\n      pixfoot\n      pixsample\n      plot2d\n      plot3d\n      plothist\n      regquery\n      server\n      sqlclient\n      sqlskymatch\n      sqlupdate\n      taplint\n      tapquery\n      tapresume\n      tapskymatch\n      tcat\n      tcatn\n      tcopy\n      tcube\n      tgridmap\n      tgroup\n      tjoin\n      tloop\n      tmatch1\n      tmatch2\n      tmatchn\n      tmulti\n      tmultin\n      tpipe\n      tskymap\n      tskymatch2\n      votcopy\n      votlint\n      xsdvalidate\n      plot2plane\n      plot2sky\n      plot2cube\n      plot2sphere\n      plot2corner\n      plot2time\n\n"
+    },
+    {
+        "prompt": "Plot error ellipses for Gaia data using the error and correlation columns.",
+        "response": "stilts plot2plane in=gaia_data.fits layer=xycorr x=pmra y=pmdec xerr=pmra_error yerr=pmdec_error xycorr=pmra_pmdec_corr",
+        "chat.jar": "failed",
+        "error": "Error: Bad Expression \"pmra\"\n    (The name \"pmra\" is unknown.)\n"
+    },
+    {
+        "prompt": "Create a plot with LaTeX formatted labels.",
+        "response": "stilts plot2plane in=data.fits layer=mark x=alpha y=delta texttype=latex xlabel='$\\alpha$' ylabel='$\\delta$'",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"alpha\"\n    (The name \"alpha\" is unknown.)\n"
+    },
+    {
+        "prompt": "Draw lines connecting two positions from each row, (X1,Y1) to (X2,Y2).",
+        "response": "stilts plot2plane in=pairs.fits layer=link2 x1=X1 y1=Y1 x2=X2 y2=Y2",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"X1\"\n    (The name \"X1\" is unknown.)\n"
+    },
+    {
+        "prompt": "My histogram has a very long tail. Can I plot it on a log-log scale?",
+        "response": "stilts plot2plane in=powerlaw.fits layer=histogram x=VALUE xlog=true ylog=true",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"VALUE\"\n    (The name \"VALUE\" is unknown.)\n"
+    },
+    {
+        "prompt": "Generate a plot and immediately send it to TOPCAT.",
+        "response": "This is not a direct feature of `plot2plane`. You would generate the plot as an image file and then load that image into TOPCAT, or more commonly, send the *table* to TOPCAT and use its interactive plotting GUI.",
+        "chat.jar": "non-fail",
+        "error": "/bin/sh: 1: plot2plane: not found\n\nNo such task: This\n\nUsage:\n   stilts [-help] [-version] [-verbose] [-allowunused] [-prompt] [-bench]\n          [-debug] [-batch] [-memory] [-disk] [-memgui]\n          [-checkversion <vers>] [-stdout <file>] [-stderr <file>]\n          <task-name> <task-args>\n\n   stilts <task-name> help[=<param-name>|*]\n\n   Known tasks:\n      arrayjoin\n      calc\n      cdsskymatch\n      cone\n      coneskymatch\n      datalinklint\n      funcs\n      mocshape\n      parqlint\n      parqlook\n      pixfoot\n      pixsample\n      plot2d\n      plot3d\n      plothist\n      regquery\n      server\n      sqlclient\n      sqlskymatch\n      sqlupdate\n      taplint\n      tapquery\n      tapresume\n      tapskymatch\n      tcat\n      tcatn\n      tcopy\n      tcube\n      tgridmap\n      tgroup\n      tjoin\n      tloop\n      tmatch1\n      tmatch2\n      tmatchn\n      tmulti\n      tmultin\n      tpipe\n      tskymap\n      tskymatch2\n      votcopy\n      votlint\n      xsdvalidate\n      plot2plane\n      plot2sky\n      plot2cube\n      plot2sphere\n      plot2corner\n      plot2time\n\n"
+    },
+    {
+        "prompt": "How do I plot multiple spectra from an array column, each with a small vertical offset?",
+        "response": "stilts plot2plane in=spectra.fits layer=lines xs=param$WAVELENGTHS ys='FLUX_SPEC + $0 * 0.1'",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"param\"\n    (The name \"param\" is unknown.)\n"
+    },
+    {
+        "prompt": "Create a scatter plot but only for the first 1000 rows of a very large file.",
+        "response": "stilts plot2plane in=large_file.fits icmd='head 1000' layer=mark x=X y=Y",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"X\"\n    (The name \"X\" is unknown.)\n"
+    },
+    {
+        "prompt": "I need to plot a histogram of a value per unit area, e.g., number of galaxies per square degree.",
+        "response": "`plot2plane` histograms are 1D. For a 2D histogram (density map), use `layer=grid` and `combine=count-per-unit`. For a 1D histogram normalized by some external area, you would need to calculate that manually and apply it to the `weight` parameter.",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: Syntax error: \"(\" unexpected\n"
+    },
+    {
+        "prompt": "Can you show me the quantile range (25% to 75%) for my noisy dataset as a shaded region?",
+        "response": "stilts plot2plane in=noisy_data.fits layer_pts=mark x_pts=TIME y_pts=FLUX layer_q=quantile x_q=TIME y_q=FLUX quantiles_q='0.25,0.75' color_q=blue transparency_q=0.5",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"TIME\"\n    (The name \"TIME\" is unknown.)\n"
+    },
+    {
+        "prompt": "Plot a histogram where the bar style is just the top line (`tops`).",
+        "response": "stilts plot2plane in=data.fits layer=histogram x=VALUE barform=tops",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"VALUE\"\n    (The name \"VALUE\" is unknown.)\n"
+    },
+    {
+        "prompt": "How do I force the plot aspect ratio to be 1:1 (isotropic)?",
+        "response": "stilts plot2plane in=data.fits layer=mark x=X y=Y aspect=1",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"X\"\n    (The name \"X\" is unknown.)\n"
+    },
+    {
+        "prompt": "Create a PDF plot of 'temp' vs 'pressure' with fat red crosses as markers.",
+        "response": "stilts plot2plane in=atmosphere.dat ifmt=ascii layer=mark x=temp y=pressure shape=fat_cross color=red out=atmos.pdf",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"temp\"\n    (The name \"temp\" is unknown.)\n"
+    },
+    {
+        "prompt": "Plot a weighted histogram. The values are in 'energy' and the weights are in 'exposure_time'.",
+        "response": "stilts plot2plane in=events.fits layer=histogram x=energy weight=exposure_time",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"energy\"\n    (The name \"energy\" is unknown.)\n"
+    },
+    {
+        "prompt": "Make a plot using the `asinh` scale for the x-axis to handle a wide dynamic range.",
+        "response": "stilts plot2plane in=data.fits layer=mark x=X y=Y xscale=asinh",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"X\"\n    (The name \"X\" is unknown.)\n"
+    },
+    {
+        "prompt": "Generate a plot from a `:loop:1000` table where y = sin(x/10).",
+        "response": "stilts plot2plane in=:loop:1000 layer=mark x=i y='sin(i/10.0)'",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"i\"\n    (The name \"i\" is unknown.)\n"
+    },
+    {
+        "prompt": "Plot the mean of an array column `SPEC_ARRAY` vs wavelength.",
+        "response": "stilts plot2plane in=spectra.fits layer=statline xs=param$WAVELENGTHS ys=SPEC_ARRAY xcombine=mean ycombine=mean",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"param\"\n    (The name \"param\" is unknown.)\n"
+    },
+    {
+        "prompt": "Can I hide the legend on a multi-layer plot?",
+        "response": "stilts plot2plane layer_1=mark in_1=d1.fits x_1=X y_1=Y layer_2=mark in_2=d2.fits x_2=X y_2=Y legend=false",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"X\"\n    (The name \"X\" is unknown.)\n"
+    },
+    {
+        "prompt": "Draw filled quadrilaterals defined by four corner coordinate columns.",
+        "response": "stilts plot2plane in=ccd_corners.fits layer=poly4 x1=X1 y1=Y1 x2=X2 y2=Y2 x3=X3 y3=Y3 x4=X4 y4=Y4 polymode=fill",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"X1\"\n    (The name \"X1\" is unknown.)\n"
+    },
+    {
+        "prompt": "Create a histogram with step-like bars instead of filled rectangles.",
+        "response": "stilts plot2plane in=data.fits layer=histogram x=VALUE barform=steps",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"VALUE\"\n    (The name \"VALUE\" is unknown.)\n"
+    },
+    {
+        "prompt": "Plot points with a variable size given by the `LUMINOSITY` column.",
+        "response": "stilts plot2plane in=sources.fits layer=size x=DISTANCE y=VELOCITY size=LUMINOSITY",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"DISTANCE\"\n    (The name \"DISTANCE\" is unknown.)\n"
+    },
+    {
+        "prompt": "How to make a plot with a black background?",
+        "response": "There is no direct parameter for background color in `plot2plane`. This is typically handled by the viewing or image editing software after the plot is generated with a transparent background (`ofmt=png-transp`).",
+        "chat.jar": "non-fail",
+        "error": "/bin/sh: 1: Syntax error: \"(\" unexpected\n"
+    },
+    {
+        "prompt": "Plot a Gaussian curve fitted to my 'velocity' data distribution.",
+        "response": "stilts plot2plane in=velocities.fits layer_h=histogram x_h=velocity layer_g=gaussian x_g=velocity",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"velocity\"\n    (The name \"velocity\" is unknown.)\n"
+    },
+    {
+        "prompt": "I want to plot the `marks` layer type from an array of X and an array of Y coordinates.",
+        "response": "stilts plot2plane in=trajectories.fits layer=marks xs=X_POS_ARRAY ys=Y_POS_ARRAY shape=open_diamond",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"X_POS_ARRAY\"\n    (The name \"X_POS_ARRAY\" is unknown.)\n"
+    },
+    {
+        "prompt": "Show the 1st and 3rd quartiles of my data distribution as lines on a scatter plot.",
+        "response": "stilts plot2plane in=data.fits layer_m=mark x_m=X y_m=Y layer_q1=quantile x_q1=X y_q1=Y quantiles_q1=0.25 color_q1=blue layer_q3=quantile x_q3=X y_q3=Y quantiles_q3=0.75 color_q3=red",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"X\"\n    (The name \"X\" is unknown.)\n"
+    },
+    {
+        "prompt": "Animate a plot by rotating vectors. The control table is `:loop:0,360,10`.",
+        "response": "stilts plot2plane in=vectors.fits layer=xyvector x=X y=Y animate=:loop:0,360,10 acmd='addcol ang $1' xdelta='DX*cosDeg(ang)-DY*sinDeg(ang)' ydelta='DX*sinDeg(ang)+DY*cosDeg(ang)' out=rotating_vectors.gif",
+        "chat.jar": "failed",
+        "error": "Error: Error reading animation table: java.io.IOException: Bad expression \"$1\" (The name \"$1\" is unknown.)\n    (Bad expression \"$1\" (The name \"$1\" is unknown.)\n        (The name \"$1\" is unknown.))\n"
+    },
+    {
+        "prompt": "Can I plot a 2D histogram where the color shows the standard deviation of a 'TEMP' column in each bin?",
+        "response": "stilts plot2plane in=gas_cloud.fits layer=grid x=X y=Y weight=TEMP combine=stdev",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"X\"\n    (The name \"X\" is unknown.)\n"
+    },
+    {
+        "prompt": "I have multiple spectra in array columns. Plot the 10th-90th percentile range.",
+        "response": "stilts plot2plane in=spectra.fits layer=arrayquantile xs=param$WAVELENGTHS ys=FLUX_ARRAY quantiles='0.1,0.9'",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"param\"\n    (The name \"param\" is unknown.)\n"
+    },
+    {
+        "prompt": "How to set the output image size to 800x600 pixels?",
+        "response": "stilts plot2plane in=data.fits layer=mark x=X y=Y xpix=800 ypix=600 out=plot.png",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"X\"\n    (The name \"X\" is unknown.)\n"
+    },
+    {
+        "prompt": "Plot a histogram where bars are horizontal instead of vertical.",
+        "response": "stilts plot2plane in=data.fits layer=histogram x=VALUE sideways=true",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"VALUE\"\n    (The name \"VALUE\" is unknown.)\n"
+    },
+    {
+        "prompt": "Create a plot and save it as an EPS file for a publication.",
+        "response": "stilts plot2plane in=final_data.fits layer=mark x=X y=Y out=figure1.eps",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"X\"\n    (The name \"X\" is unknown.)\n"
+    },
+    {
+        "prompt": "My table has polygons defined by a single column of coordinate pairs. How do I plot them?",
+        "response": "stilts plot2plane in=regions.fits layer=polygon coords=VERTICES polymode=outline",
+        "chat.jar": "failed",
+        "error": "Error: Bad value for parameter x: null value not allowed\nUsage: x=<num-expr>\n\n"
+    },
+    {
+        "prompt": "Show a scatter plot of a random 10% sample of my `huge_catalog.fits`.",
+        "response": "stilts plot2plane in=huge_catalog.fits icmd='random 0.1' layer=mark x=RA y=DEC",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '0.1'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: random 0.1\n\nUsage: random\n    (Unused arguments: '0.1'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "Use the `symlog` scale to plot data with a large dynamic range around zero.",
+        "response": "stilts plot2plane in=data.fits layer=mark x=X y=Y yscale=symlog",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"X\"\n    (The name \"X\" is unknown.)\n"
+    },
+    {
+        "prompt": "Draw a line plot with a thicker, dashed red line.",
+        "response": "stilts plot2plane in=timeseries.fits layer=line x=TIME y=FLUX color=red thick=3 dash=dash",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"TIME\"\n    (The name \"TIME\" is unknown.)\n"
+    },
+    {
+        "prompt": "Overplot a horizontal line at y=1.0 and a vertical line at x=0.0.",
+        "response": "stilts plot2plane in=data.fits layer_d=mark x_d=X y_d=Y layer_h=function fexpr_h=1 color_h=black layer_v=function axis_v=vertical fexpr_v=0 color_v=black",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"X\"\n    (The name \"X\" is unknown.)\n"
+    },
+    {
+        "prompt": "How to create a plot legend and place it in the top left corner?",
+        "response": "stilts plot2plane layer_1=mark in_1=d1.fits x_1=X y_1=Y leglabel_1='Set 1' layer_2=mark in_2=d2.fits x_2=X y_2=Y leglabel_2='Set 2' legend=true legpos=0.05,0.95",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"X\"\n    (The name \"X\" is unknown.)\n"
+    },
+    {
+        "prompt": "Plot a KDE with a Gaussian smoothing kernel.",
+        "response": "stilts plot2plane in=data.fits layer=kde x=VALUE kernel=gauss3",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"VALUE\"\n    (The name \"VALUE\" is unknown.)\n"
+    },
+    {
+        "prompt": "I have multiple spectra. Can I plot markers at the position of the peak flux for each?",
+        "response": "stilts plot2plane in=spectra.fits layer=handles xs=param$WAVELENGTHS ys=FLUX_ARRAY placement=ymax",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"param\"\n    (The name \"param\" is unknown.)\n"
+    },
+    {
+        "prompt": "Generate a plot where markers are sized by one column and colored by another.",
+        "response": "stilts plot2plane in=data.fits layer=size x=X y=Y size=SIZE_COL shading=aux aux=COLOR_COL",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"X\"\n    (The name \"X\" is unknown.)\n"
+    },
+    {
+        "prompt": "How can I turn off the grid lines on my plot?",
+        "response": "stilts plot2plane in=data.fits layer=mark x=X y=Y grid=false",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"X\"\n    (The name \"X\" is unknown.)\n"
+    },
+    {
+        "prompt": "Plot a weighted linear fit, with weights given by 1/(ERROR*ERROR).",
+        "response": "stilts plot2plane in=data.fits layer_m=mark x_m=X y_m=Y layer_f=linearfit x_f=X y_f=Y weight_f='1/(ERROR*ERROR)'",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"X\"\n    (The name \"X\" is unknown.)\n"
+    },
+    {
+        "prompt": "Create a 2D plot with a secondary y-axis on the right.",
+        "response": "stilts plot2plane in=data.fits layer=mark x=X y=Y y2func='1/y' y2label='1/Y'",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"X\"\n    (The name \"X\" is unknown.)\n"
+    },
+    {
+        "prompt": "I want to plot markers for two populations from the same table without a legend.",
+        "response": "stilts plot2plane in=data.fits x=X y=Y layer_1=mark icmd_1='select POP==1' color_1=red layer_2=mark icmd_2='select POP==2' color_2=blue legend=false",
+        "chat.jar": "failed",
+        "error": "Error: Table processing error\n    (Bad expression \"POP==1\" (The name \"POP\" is unknown.)\n        (The name \"POP\" is unknown.))\n"
+    },
+    {
+        "prompt": "Plot a histogram where the bin width is exactly 0.1 units.",
+        "response": "stilts plot2plane in=data.fits layer=histogram x=VALUE binsize=0.1",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"VALUE\"\n    (The name \"VALUE\" is unknown.)\n"
+    },
+    {
+        "prompt": "My CSV file uses a semicolon as a delimiter. How do I plot it?",
+        "response": "stilts plot2plane in=data.csv ifmt='csv(delimiter=;)' layer=mark x=col1 y=col2",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"col1\"\n    (The name \"col1\" is unknown.)\n"
+    },
+    {
+        "prompt": "Generate a plot with 1-pixel markers.",
+        "response": "stilts plot2plane in=data.fits layer=mark x=X y=Y size=0.5",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"X\"\n    (The name \"X\" is unknown.)\n"
+    },
+    {
+        "prompt": "Plot the mean of multiple spectra as a line, and the standard deviation as a shaded region around it.",
+        "response": "stilts plot2plane in=spectra.fits xs=param$WAVELENGTHS layer_m=statline ys_m=FLUX_ARRAY ycombine_m=mean color_m=blue layer_q=arrayquantile ys_q=FLUX_ARRAY quantiles_q='(mean(FLUX_ARRAY)-stdev(FLUX_ARRAY))/mean(FLUX_ARRAY),(mean(FLUX_ARRAY)+stdev(FLUX_ARRAY))/mean(FLUX_ARRAY))' This is complex. A better approach might be to calculate the +/- 1-sigma arrays first with `tpipe`.",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: tpipe: not found\nError: Bad Expression \"param\"\n    (The name \"param\" is unknown.)\n"
+    },
+    {
+        "prompt": "Can I plot filled polygons from a column of vertex arrays?",
+        "response": "stilts plot2plane in=polygons.fits layer=polygon coords=VERTICES polymode=fill shading=aux aux=AREA",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad value for parameter x: null value not allowed\nUsage: x=<num-expr>\n\n"
+    },
+    {
+        "prompt": "Display a scatter plot in a temporary GUI window.",
+        "response": "stilts plot2plane in=data.fits layer=mark x=X y=Y omode=gui",
+        "chat.jar": "failed",
+        "error": "Error: Bad value for parameter omode: Unknown value \"gui\" - must be one of swing, out, cgi, discard, auto\nUsage: omode=swing|out|cgi|discard|auto\n\n"
+    },
+    {
+        "prompt": "Create a scatter plot and a histogram as two separate layers, one for X and one for Y.",
+        "response": "This is not standard for `plot2plane`. The `histogram` layer is 1D. You could use `plot2corner` to achieve this effect.",
+        "chat.jar": "non-fail",
+        "error": "/bin/sh: 1: plot2plane: not found\n/bin/sh: 1: histogram: not found\n/bin/sh: 1: plot2corner: not found\n\nNo such task: This\n\nUsage:\n   stilts [-help] [-version] [-verbose] [-allowunused] [-prompt] [-bench]\n          [-debug] [-batch] [-memory] [-disk] [-memgui]\n          [-checkversion <vers>] [-stdout <file>] [-stderr <file>]\n          <task-name> <task-args>\n\n   stilts <task-name> help[=<param-name>|*]\n\n   Known tasks:\n      arrayjoin\n      calc\n      cdsskymatch\n      cone\n      coneskymatch\n      datalinklint\n      funcs\n      mocshape\n      parqlint\n      parqlook\n      pixfoot\n      pixsample\n      plot2d\n      plot3d\n      plothist\n      regquery\n      server\n      sqlclient\n      sqlskymatch\n      sqlupdate\n      taplint\n      tapquery\n      tapresume\n      tapskymatch\n      tcat\n      tcatn\n      tcopy\n      tcube\n      tgridmap\n      tgroup\n      tjoin\n      tloop\n      tmatch1\n      tmatch2\n      tmatchn\n      tmulti\n      tmultin\n      tpipe\n      tskymap\n      tskymatch2\n      votcopy\n      votlint\n      xsdvalidate\n      plot2plane\n      plot2sky\n      plot2cube\n      plot2sphere\n      plot2corner\n      plot2time\n\n"
+    },
+    {
+        "prompt": "How to save a plot as an SVG file?",
+        "response": "stilts plot2plane in=data.fits layer=mark x=X y=Y out=plot.svg",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"X\"\n    (The name \"X\" is unknown.)\n"
+    },
+    {
+        "prompt": "Plot a 2D grid where each cell color is the maximum 'VALUE' of points falling into it.",
+        "response": "stilts plot2plane in=data.fits layer=grid x=X y=Y weight=VALUE combine=max",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"X\"\n    (The name \"X\" is unknown.)\n"
+    },
+    {
+        "prompt": "Create a scatter plot of every 100th point from a file.",
+        "response": "stilts plot2plane in=bigdata.fits icmd='every 100' layer=mark x=X y=Y",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"X\"\n    (The name \"X\" is unknown.)\n"
+    },
+    {
+        "prompt": "I want to show y-error bars from an array column `ERR_ARRAY` for a spectrum in `SPEC_ARRAY`.",
+        "response": "stilts plot2plane in=spectrum.fits layer=yerrors xs=param$WAVELENGTHS ys=SPEC_ARRAY yerrhis=ERR_ARRAY",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"param\"\n    (The name \"param\" is unknown.)\n"
+    },
+    {
+        "prompt": "Plot the X and Y columns, but color points based on whether `FLAG` is true or false.",
+        "response": "stilts plot2plane in=data.fits x=X y=Y layer_t=mark icmd_t='select FLAG' color_t=green layer_f=mark icmd_f='select !FLAG' color_f=orange",
+        "chat.jar": "non-fail",
+        "error": "Error: Table processing error\n    (Bad expression \"FLAG\" (The name \"FLAG\" is unknown.)\n        (The name \"FLAG\" is unknown.))\n"
+    },
+    {
+        "prompt": "Can you plot a line connecting points, sorted by their x-value?",
+        "response": "stilts plot2plane in=unsorted.fits layer=line x=X y=Y sortaxis=X",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"X\"\n    (The name \"X\" is unknown.)\n"
+    },
+    {
+        "prompt": "How do I make the marker edges black but the fill color variable?",
+        "response": "This level of marker style customization is not available. You could overplot two layers: one for filled markers and one slightly larger for open black markers.",
+        "chat.jar": "non-fail",
+        "error": "\nNo such task: This\n\nUsage:\n   stilts [-help] [-version] [-verbose] [-allowunused] [-prompt] [-bench]\n          [-debug] [-batch] [-memory] [-disk] [-memgui]\n          [-checkversion <vers>] [-stdout <file>] [-stderr <file>]\n          <task-name> <task-args>\n\n   stilts <task-name> help[=<param-name>|*]\n\n   Known tasks:\n      arrayjoin\n      calc\n      cdsskymatch\n      cone\n      coneskymatch\n      datalinklint\n      funcs\n      mocshape\n      parqlint\n      parqlook\n      pixfoot\n      pixsample\n      plot2d\n      plot3d\n      plothist\n      regquery\n      server\n      sqlclient\n      sqlskymatch\n      sqlupdate\n      taplint\n      tapquery\n      tapresume\n      tapskymatch\n      tcat\n      tcatn\n      tcopy\n      tcube\n      tgridmap\n      tgroup\n      tjoin\n      tloop\n      tmatch1\n      tmatch2\n      tmatchn\n      tmulti\n      tmultin\n      tpipe\n      tskymap\n      tskymatch2\n      votcopy\n      votlint\n      xsdvalidate\n      plot2plane\n      plot2sky\n      plot2cube\n      plot2sphere\n      plot2corner\n      plot2time\n\n"
+    },
+    {
+        "prompt": "Animate a point moving along a sine curve.",
+        "response": "stilts plot2plane layer=function fexpr=sin(x) xmin=0 xmax=10 animate=:loop:0,10,0.1 acmd='addcol xval $1; addcol yval sin($1)' layer_pt=mark x_pt=xval y_pt=yval size_pt=5 color_pt=red out=sinewave.gif",
+        "chat.jar": "non-fail",
+        "error": "/bin/sh: 1: Syntax error: \"(\" unexpected\n"
+    },
+    {
+        "prompt": "What's the command to plot points with a size of 10 pixels?",
+        "response": "stilts plot2plane in=data.fits layer=mark x=X y=Y size=10",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"X\"\n    (The name \"X\" is unknown.)\n"
+    },
+    {
+        "prompt": "I need a histogram normalized by the maximum bin height.",
+        "response": "stilts plot2plane in=data.fits layer=histogram x=VALUE normalise=maximum",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"VALUE\"\n    (The name \"VALUE\" is unknown.)\n"
+    },
+    {
+        "prompt": "Plot a grid where the color indicates the number of points per square arcsecond.",
+        "response": "This is a feature of `tskymap` or the `skydensity` layer in `plot2sky`, not `plot2plane` which works in Cartesian coordinates.",
+        "chat.jar": "non-fail",
+        "error": "/bin/sh: 1: tskymap: not found\n/bin/sh: 1: skydensity: not found\n/bin/sh: 1: plot2sky: not found\n/bin/sh: 1: plot2plane: not found\n\nNo such task: This\n\nUsage:\n   stilts [-help] [-version] [-verbose] [-allowunused] [-prompt] [-bench]\n          [-debug] [-batch] [-memory] [-disk] [-memgui]\n          [-checkversion <vers>] [-stdout <file>] [-stderr <file>]\n          <task-name> <task-args>\n\n   stilts <task-name> help[=<param-name>|*]\n\n   Known tasks:\n      arrayjoin\n      calc\n      cdsskymatch\n      cone\n      coneskymatch\n      datalinklint\n      funcs\n      mocshape\n      parqlint\n      parqlook\n      pixfoot\n      pixsample\n      plot2d\n      plot3d\n      plothist\n      regquery\n      server\n      sqlclient\n      sqlskymatch\n      sqlupdate\n      taplint\n      tapquery\n      tapresume\n      tapskymatch\n      tcat\n      tcatn\n      tcopy\n      tcube\n      tgridmap\n      tgroup\n      tjoin\n      tloop\n      tmatch1\n      tmatch2\n      tmatchn\n      tmulti\n      tmultin\n      tpipe\n      tskymap\n      tskymatch2\n      votcopy\n      votlint\n      xsdvalidate\n      plot2plane\n      plot2sky\n      plot2cube\n      plot2sphere\n      plot2corner\n      plot2time\n\n"
+    },
+    {
+        "prompt": "Draw a scatter plot where the marker shape is a filled downward-pointing triangle.",
+        "response": "stilts plot2plane in=data.fits layer=mark x=X y=Y shape=filled_triangle_down",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"X\"\n    (The name \"X\" is unknown.)\n"
+    },
+    {
+        "prompt": "Plot a filled histogram where the color is semi-transparent.",
+        "response": "stilts plot2plane in=data.fits layer=histogram x=X barform=filled transparency=0.5",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"X\"\n    (The name \"X\" is unknown.)\n"
+    },
+    {
+        "prompt": "I want to plot a set of rectangles defined by four corner points from columns X1,Y1...X4,Y4.",
+        "response": "stilts plot2plane in=rectangles.fits layer=poly4 x1=X1 y1=Y1 x2=X2 y2=Y2 x3=X3 y3=Y3 x4=X4 y4=Y4 polymode=outline",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"X1\"\n    (The name \"X1\" is unknown.)\n"
+    },
+    {
+        "prompt": "How do I specify a bold, italic, 10-point serif font for my plot labels?",
+        "response": "stilts plot2plane in=data.fits layer=mark x=X y=Y fontstyle=serif fontweight=bold_italic fontsize=10",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"X\"\n    (The name \"X\" is unknown.)\n"
+    },
+    {
+        "prompt": "Plot the `central` position of a set of polygons.",
+        "response": "stilts plot2plane in=polygons.fits layer=central area=VERTICES shape=cross",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"VERTICES\"\n    (The name \"VERTICES\" is unknown.)\n"
+    },
+    {
+        "prompt": "Can `plot2plane` discard the plot output completely?",
+        "response": "Yes, using `omode=discard`. This can be useful for benchmarking data preparation steps.",
+        "chat.jar": "non-fail",
+        "error": "\nNo such task: Yes,\n\nUsage:\n   stilts [-help] [-version] [-verbose] [-allowunused] [-prompt] [-bench]\n          [-debug] [-batch] [-memory] [-disk] [-memgui]\n          [-checkversion <vers>] [-stdout <file>] [-stderr <file>]\n          <task-name> <task-args>\n\n   stilts <task-name> help[=<param-name>|*]\n\n   Known tasks:\n      arrayjoin\n      calc\n      cdsskymatch\n      cone\n      coneskymatch\n      datalinklint\n      funcs\n      mocshape\n      parqlint\n      parqlook\n      pixfoot\n      pixsample\n      plot2d\n      plot3d\n      plothist\n      regquery\n      server\n      sqlclient\n      sqlskymatch\n      sqlupdate\n      taplint\n      tapquery\n      tapresume\n      tapskymatch\n      tcat\n      tcatn\n      tcopy\n      tcube\n      tgridmap\n      tgroup\n      tjoin\n      tloop\n      tmatch1\n      tmatch2\n      tmatchn\n      tmulti\n      tmultin\n      tpipe\n      tskymap\n      tskymatch2\n      votcopy\n      votlint\n      xsdvalidate\n      plot2plane\n      plot2sky\n      plot2cube\n      plot2sphere\n      plot2corner\n      plot2time\n\n"
+    },
+    {
+        "prompt": "Generate a plot where x is row index and y is a column value.",
+        "response": "stilts plot2plane in=data.fits layer=mark x=$0 y=VALUE",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"/bin/sh\"\n    (Encountered unexpected character 'b'.)\n"
+    },
+    {
+        "prompt": "Overlay a gaussian fit on a histogram of my data.",
+        "response": "stilts plot2plane in=data.fits layer_h=histogram x_h=VALUE layer_g=gaussian x_g=VALUE color_g=blue thick_g=2",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"VALUE\"\n    (The name \"VALUE\" is unknown.)\n"
+    },
+    {
+        "prompt": "Create a PDF with a color-magnitude diagram for two clusters from two different files.",
+        "response": "stilts plot2plane layer_1=mark in_1=cluster1.fits x_1=B-V y_1=V color_1=blue layer_2=mark in_2=cluster2.fits x_2=B-V y_2=V color_2=red yflip=true out=clusters.pdf",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"B-V\"\n    (The name \"B\" is unknown.)\n"
+    },
+    {
+        "prompt": "Plot points with a size proportional to `log10(FLUX)`.",
+        "response": "stilts plot2plane in=data.fits layer=size x=X y=Y size='log10(FLUX)'",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"X\"\n    (The name \"X\" is unknown.)\n"
+    },
+    {
+        "prompt": "How do I show error bars that are 10% of the y-value?",
+        "response": "stilts plot2plane in=data.fits layer=xyerror x=X y=Y yerror='0.1*Y'",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad value for parameter layer: Unknown value \"yerror\" - must be one of mark, size, sizexy, xyvector, xyerror, xyellipse, xycorr, link2, mark2, poly4, mark4, polygon, area, central, lines, marks, handles, yerrors, xyerrors, statline, statmark, arrayquantile, line, linearfit, label, arealabel, contour, grid, fill, quantile, histogram, kde, knn, densogram, gaussian, function\nUsage: layer=<layer-type> <layer-specific-params>\n\n"
+    },
+    {
+        "prompt": "Create a plot where the x-axis label is 'RA (deg)' and y-axis is 'Dec (deg)'.",
+        "response": "stilts plot2plane in=coords.fits layer=mark x=RA y=DEC xlabel='RA (deg)' ylabel='Dec (deg)'",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"RA\"\n    (The name \"RA\" is unknown.)\n"
+    },
+    {
+        "prompt": "Plot `y=tan(x)` as a function.",
+        "response": "stilts plot2plane layer=function fexpr=tan(x) xmin=-PI/2*0.99 xmax=PI/2*0.99 ymin=-50 ymax=50",
+        "chat.jar": "non-fail",
+        "error": "/bin/sh: 1: Syntax error: \"(\" unexpected\n"
+    },
+    {
+        "prompt": "I want to plot a filled histogram with a black outline.",
+        "response": "You can achieve this by overplotting two histogram layers: one with `barform=filled` and a color, and another with `barform=open` and `color=black`.",
+        "chat.jar": "non-fail",
+        "error": "\nNo such task: You\n\nUsage:\n   stilts [-help] [-version] [-verbose] [-allowunused] [-prompt] [-bench]\n          [-debug] [-batch] [-memory] [-disk] [-memgui]\n          [-checkversion <vers>] [-stdout <file>] [-stderr <file>]\n          <task-name> <task-args>\n\n   stilts <task-name> help[=<param-name>|*]\n\n   Known tasks:\n      arrayjoin\n      calc\n      cdsskymatch\n      cone\n      coneskymatch\n      datalinklint\n      funcs\n      mocshape\n      parqlint\n      parqlook\n      pixfoot\n      pixsample\n      plot2d\n      plot3d\n      plothist\n      regquery\n      server\n      sqlclient\n      sqlskymatch\n      sqlupdate\n      taplint\n      tapquery\n      tapresume\n      tapskymatch\n      tcat\n      tcatn\n      tcopy\n      tcube\n      tgridmap\n      tgroup\n      tjoin\n      tloop\n      tmatch1\n      tmatch2\n      tmatchn\n      tmulti\n      tmultin\n      tpipe\n      tskymap\n      tskymatch2\n      votcopy\n      votlint\n      xsdvalidate\n      plot2plane\n      plot2sky\n      plot2cube\n      plot2sphere\n      plot2corner\n      plot2time\n\n"
+    },
+    {
+        "prompt": "Generate a plot from a table with a billion rows using density shading.",
+        "response": "stilts plot2plane in=big_data.fits layer=mark x=X y=Y shading=density storage=disk out=density.png",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"X\"\n    (The name \"X\" is unknown.)\n"
+    },
+    {
+        "prompt": "Can you plot just the points from `data.fits` where `class=='GALAXY'`?",
+        "response": "stilts plot2plane in=data.fits icmd='select equals(class,\"GALAXY\")' layer=mark x=X y=Y",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: ')'\n\nCommand was: select equals(class,\"GALAXY\")\n\nUsage: select <expr>\n    (Unused arguments: ')')\n"
+    },
+    {
+        "prompt": "My file is `data.tbl`. How do I plot it assuming IPAC format?",
+        "response": "stilts plot2plane in=data.tbl ifmt=ipac layer=mark x=ra y=dec",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"ra\"\n    (The name \"ra\" is unknown.)\n"
+    },
+    {
+        "prompt": "Create a plot with minor grid lines turned off.",
+        "response": "stilts plot2plane in=data.fits layer=mark x=X y=Y minor=false",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"X\"\n    (The name \"X\" is unknown.)\n"
+    },
+    {
+        "prompt": "Plot a scatter plot with each point colored by its row index.",
+        "response": "stilts plot2plane in=data.fits layer=mark x=X y=Y shading=aux aux=$0",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"X\"\n    (The name \"X\" is unknown.)\n"
+    },
+    {
+        "prompt": "How do I make the plot legend have an opaque white background?",
+        "response": "The legend background is opaque by default. You cannot set the color, but `legopaque=true` is the default setting.",
+        "chat.jar": "non-fail",
+        "error": "\nNo such task: The\n\nUsage:\n   stilts [-help] [-version] [-verbose] [-allowunused] [-prompt] [-bench]\n          [-debug] [-batch] [-memory] [-disk] [-memgui]\n          [-checkversion <vers>] [-stdout <file>] [-stderr <file>]\n          <task-name> <task-args>\n\n   stilts <task-name> help[=<param-name>|*]\n\n   Known tasks:\n      arrayjoin\n      calc\n      cdsskymatch\n      cone\n      coneskymatch\n      datalinklint\n      funcs\n      mocshape\n      parqlint\n      parqlook\n      pixfoot\n      pixsample\n      plot2d\n      plot3d\n      plothist\n      regquery\n      server\n      sqlclient\n      sqlskymatch\n      sqlupdate\n      taplint\n      tapquery\n      tapresume\n      tapskymatch\n      tcat\n      tcatn\n      tcopy\n      tcube\n      tgridmap\n      tgroup\n      tjoin\n      tloop\n      tmatch1\n      tmatch2\n      tmatchn\n      tmulti\n      tmultin\n      tpipe\n      tskymap\n      tskymatch2\n      votcopy\n      votlint\n      xsdvalidate\n      plot2plane\n      plot2sky\n      plot2cube\n      plot2sphere\n      plot2corner\n      plot2time\n\n"
+    },
+    {
+        "prompt": "I need to plot markers for each point in an array column.",
+        "response": "stilts plot2plane in=data.fits layer=marks xs=X_ARRAY ys=Y_ARRAY",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"X_ARRAY\"\n    (The name \"X_ARRAY\" is unknown.)\n"
+    },
+    {
+        "prompt": "Plot a histogram of `MAG` where `MAG` is not null.",
+        "response": "stilts plot2plane in=data.fits icmd='select !NULL_MAG' layer=histogram x=MAG",
+        "chat.jar": "non-fail",
+        "error": "Error: Table processing error\n    (Bad expression \"!NULL_MAG\" (The name \"NULL_MAG\" is unknown.)\n        (The name \"NULL_MAG\" is unknown.))\n"
+    },
+    {
+        "prompt": "Draw a line plot of `y=x` on top of a scatter plot.",
+        "response": "stilts plot2plane in=data.fits layer_s=mark x_s=X y_s=Y layer_l=function fexpr_l=x color_l=red",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"X\"\n    (The name \"X\" is unknown.)\n"
+    },
+    {
+        "prompt": "Generate a plot where the x-axis range is determined by the data but the y-axis is fixed from 0 to 1.",
+        "response": "stilts plot2plane in=data.fits layer=mark x=X y=Y ymin=0 ymax=1",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"X\"\n    (The name \"X\" is unknown.)\n"
+    },
+    {
+        "prompt": "How can I plot a histogram of the separation between two sets of coordinates in my table?",
+        "response": "stilts plot2plane in=pairs.fits layer=histogram x='skyDistanceDegrees(RA1,DEC1,RA2,DEC2)*3600'",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"skyDistanceDegrees(RA1,DEC1,RA2,DEC2)*3600\"\n    (The name \"RA1\" is unknown.)\n"
+    },
+    {
+        "prompt": "Create a plot and save the output to standard output as a GIF.",
+        "response": "stilts plot2plane in=data.fits layer=mark x=X y=Y ofmt=gif out=-",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"X\"\n    (The name \"X\" is unknown.)\n"
+    },
+    {
+        "prompt": "I want to show the 5th and 95th percentiles of my data on a scatter plot.",
+        "response": "stilts plot2plane in=data.fits layer_m=mark x_m=X y_m=Y layer_q=quantile x_q=X y_q=Y quantiles_q='0.05,0.95' color_q=green",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"X\"\n    (The name \"X\" is unknown.)\n"
+    },
+    {
+        "prompt": "Plot a 2D grid colored by the number of points per unit area.",
+        "response": "stilts plot2plane in=data.fits layer=grid x=X y=Y combine=count-per-unit",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"X\"\n    (The name \"X\" is unknown.)\n"
+    },
+    {
+        "prompt": "Generate a histogram with logarithmic y-axis and cumulative values.",
+        "response": "stilts plot2plane in=data.fits layer=histogram x=VALUE ylog=true cumulative=true",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"VALUE\"\n    (The name \"VALUE\" is unknown.)\n"
+    },
+    {
+        "prompt": "Change the marker size for only one of two layers.",
+        "response": "stilts plot2plane layer_1=mark in_1=d1.fits x_1=X y_1=Y size_1=5 layer_2=mark in_2=d2.fits x_2=X y_2=Y size_2=2",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"X\"\n    (The name \"X\" is unknown.)\n"
+    },
+    {
+        "prompt": "Create a plot from a simulated sky catalog, plotting l vs b.",
+        "response": "stilts plot2plane in=:skysim:10000 layer=mark x=l y=b",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"l\"\n    (The name \"l\" is unknown.)\n"
+    },
+    {
+        "prompt": "Plot a KDE with a custom color and smoothing width.",
+        "response": "stilts plot2plane in=data.fits layer=kde x=VALUE color=purple smooth=0.5",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"VALUE\"\n    (The name \"VALUE\" is unknown.)\n"
+    },
+    {
+        "prompt": "How can I turn off the wireframe axes in a 2D plot?",
+        "response": "The `plot2plane` command does not have a wireframe like `plot2cube`. You can turn off grid lines with `grid=false` and axis labels with `xlabel=` and `ylabel=`.",
+        "chat.jar": "non-fail",
+        "error": "/bin/sh: 1: plot2plane: not found\n/bin/sh: 1: plot2cube: not found\n\nNo such task: The\n\nUsage:\n   stilts [-help] [-version] [-verbose] [-allowunused] [-prompt] [-bench]\n          [-debug] [-batch] [-memory] [-disk] [-memgui]\n          [-checkversion <vers>] [-stdout <file>] [-stderr <file>]\n          <task-name> <task-args>\n\n   stilts <task-name> help[=<param-name>|*]\n\n   Known tasks:\n      arrayjoin\n      calc\n      cdsskymatch\n      cone\n      coneskymatch\n      datalinklint\n      funcs\n      mocshape\n      parqlint\n      parqlook\n      pixfoot\n      pixsample\n      plot2d\n      plot3d\n      plothist\n      regquery\n      server\n      sqlclient\n      sqlskymatch\n      sqlupdate\n      taplint\n      tapquery\n      tapresume\n      tapskymatch\n      tcat\n      tcatn\n      tcopy\n      tcube\n      tgridmap\n      tgroup\n      tjoin\n      tloop\n      tmatch1\n      tmatch2\n      tmatchn\n      tmulti\n      tmultin\n      tpipe\n      tskymap\n      tskymatch2\n      votcopy\n      votlint\n      xsdvalidate\n      plot2plane\n      plot2sky\n      plot2cube\n      plot2sphere\n      plot2corner\n      plot2time\n\n"
+    },
+    {
+        "prompt": "Make a scatter plot with large, semi-transparent blue open squares.",
+        "response": "stilts plot2plane in=data.fits layer=mark x=X y=Y shape=open_square color=blue size=10 shading=transparent opaque=3",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"X\"\n    (The name \"X\" is unknown.)\n"
+    },
+    {
+        "prompt": "Plot a 2D histogram (grid) with 50 bins in X and 20 bins in Y.",
+        "response": "stilts plot2plane in=data.fits layer=grid x=X y=Y xbinsize=-50 ybinsize=-20",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"X\"\n    (The name \"X\" is unknown.)\n"
+    },
+    {
+        "prompt": "Can you plot y-error bars from one column and x-error bars from another column?",
+        "response": "stilts plot2plane in=errors.fits layer=xyerror x=X y=Y xerrhi=X_ERROR_COL yerrhi=Y_ERROR_COL",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"X\"\n    (The name \"X\" is unknown.)\n"
+    },
+    {
+        "prompt": "Generate a plot from an ECSV file.",
+        "response": "stilts plot2plane in=my_data.ecsv ifmt=ecsv layer=mark x=col_A y=col_B",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"col_A\"\n    (The name \"col_A\" is unknown.)\n"
+    },
+    {
+        "prompt": "Plot a histogram where the bin color changes based on its height.",
+        "response": "This is not a standard feature. You would have to use `tpipe` with `tgridmap` to calculate the histogram bins first, and then plot the resulting table with `plot2plane` using `shading=aux` where `aux` is the count column.",
+        "chat.jar": "non-fail",
+        "error": "/bin/sh: 1: tpipe: not found\n/bin/sh: 1: tgridmap: not found\n/bin/sh: 1: plot2plane: not found\n/bin/sh: 1: aux: not found\n\nNo such task: This\n\nUsage:\n   stilts [-help] [-version] [-verbose] [-allowunused] [-prompt] [-bench]\n          [-debug] [-batch] [-memory] [-disk] [-memgui]\n          [-checkversion <vers>] [-stdout <file>] [-stderr <file>]\n          <task-name> <task-args>\n\n   stilts <task-name> help[=<param-name>|*]\n\n   Known tasks:\n      arrayjoin\n      calc\n      cdsskymatch\n      cone\n      coneskymatch\n      datalinklint\n      funcs\n      mocshape\n      parqlint\n      parqlook\n      pixfoot\n      pixsample\n      plot2d\n      plot3d\n      plothist\n      regquery\n      server\n      sqlclient\n      sqlskymatch\n      sqlupdate\n      taplint\n      tapquery\n      tapresume\n      tapskymatch\n      tcat\n      tcatn\n      tcopy\n      tcube\n      tgridmap\n      tgroup\n      tjoin\n      tloop\n      tmatch1\n      tmatch2\n      tmatchn\n      tmulti\n      tmultin\n      tpipe\n      tskymap\n      tskymatch2\n      votcopy\n      votlint\n      xsdvalidate\n      plot2plane\n      plot2sky\n      plot2cube\n      plot2sphere\n      plot2corner\n      plot2time\n\n"
+    },
+    {
+        "prompt": "I need to plot a line connecting a sequence of points from an array-valued column.",
+        "response": "stilts plot2plane in=data.fits layer=lines xs=TIME_ARRAY ys=FLUX_ARRAY",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"TIME_ARRAY\"\n    (The name \"TIME_ARRAY\" is unknown.)\n"
+    },
+    {
+        "prompt": "How do I add a secondary X axis showing velocity, calculated from a redshift Z axis?",
+        "response": "stilts plot2plane in=data.fits layer=mark x=Z y=FLUX x2func='(pow(1+x,2)-1)/(pow(1+x,2)+1) * 299792.458' x2label='Velocity (km/s)'",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"Z\"\n    (The name \"Z\" is unknown.)\n"
+    },
+    {
+        "prompt": "Plot a histogram with `barform=spikes`.",
+        "response": "stilts plot2plane in=data.fits layer=histogram x=VALUE barform=spikes",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"VALUE\"\n    (The name \"VALUE\" is unknown.)\n"
+    },
+    {
+        "prompt": "Animate a line getting longer, controlled by `:loop:10,100,10`.",
+        "response": "stilts plot2plane in=data.fits layer=line x=X y=Y animate=:loop:10,100,10 acmd='head $1' out=growing_line.gif",
+        "chat.jar": "failed",
+        "error": "Error: Row count $1 not numeric\n\nCommand was: head $1\n\nUsage: head <nrows>\n    (Row count $1 not numeric)\n"
+    },
+    {
+        "prompt": "Create a plot where the color is determined by a flat value, but the size is from an `aux` column.",
+        "response": "This is a bit unusual. You would use the `size` layer and set `shading=flat` and `color=...`, while providing the size from the `size=...` parameter: `stilts plot2plane layer=size in=data.fits x=X y=Y size=SIZE_COL shading=flat color=blue`.",
+        "chat.jar": "non-fail",
+        "error": "size: 'a.out': No such file\n/bin/sh: 1: plot2plane: not found\n\nNo such task: This\n\nUsage:\n   stilts [-help] [-version] [-verbose] [-allowunused] [-prompt] [-bench]\n          [-debug] [-batch] [-memory] [-disk] [-memgui]\n          [-checkversion <vers>] [-stdout <file>] [-stderr <file>]\n          <task-name> <task-args>\n\n   stilts <task-name> help[=<param-name>|*]\n\n   Known tasks:\n      arrayjoin\n      calc\n      cdsskymatch\n      cone\n      coneskymatch\n      datalinklint\n      funcs\n      mocshape\n      parqlint\n      parqlook\n      pixfoot\n      pixsample\n      plot2d\n      plot3d\n      plothist\n      regquery\n      server\n      sqlclient\n      sqlskymatch\n      sqlupdate\n      taplint\n      tapquery\n      tapresume\n      tapskymatch\n      tcat\n      tcatn\n      tcopy\n      tcube\n      tgridmap\n      tgroup\n      tjoin\n      tloop\n      tmatch1\n      tmatch2\n      tmatchn\n      tmulti\n      tmultin\n      tpipe\n      tskymap\n      tskymatch2\n      votcopy\n      votlint\n      xsdvalidate\n      plot2plane\n      plot2sky\n      plot2cube\n      plot2sphere\n      plot2corner\n      plot2time\n\n"
+    },
+    {
+        "prompt": "Generate a plot and show it in the `omode=swing` window.",
+        "response": "stilts plot2plane in=data.fits layer=mark x=X y=Y omode=swing",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"X\"\n    (The name \"X\" is unknown.)\n"
+    },
+    {
+        "prompt": "Plot a line fit that ignores points where `FLAG==1`.",
+        "response": "stilts plot2plane in=data.fits layer_pts=mark x_pts=X y_pts=Y layer_fit=linearfit x_fit=X y_fit=Y icmd_fit='select FLAG!=1'",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"X\"\n    (The name \"X\" is unknown.)\n"
+    },
+    {
+        "prompt": "How do I plot just the error bars without the central marker?",
+        "response": "You can use two layers: one `xyerror` layer for the bars, and one `mark` layer. Then you can either omit the `mark` layer entirely or set `hide_mark=true` for the `xyerror` layer's dataset, though the simplest is just `stilts plot2plane in=data.fits layer=xyerror x=X y=Y xerrhi=XE yerrhi=YE`.",
+        "chat.jar": "non-fail",
+        "error": "/bin/sh: 1: Syntax error: Unterminated quoted string\n"
+    },
+    {
+        "prompt": "Make the legend border invisible.",
+        "response": "stilts plot2plane layer_1=mark in_1=d1.fits x_1=X y_1=Y leglabel_1=A layer_2=mark in_2=d2.fits x_2=X y_2=Y leglabel_2=B legborder=false",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"X\"\n    (The name \"X\" is unknown.)\n"
+    },
+    {
+        "prompt": "Plot a 2D grid colored by the median of the `TEMP` column.",
+        "response": "stilts plot2plane in=data.fits layer=grid x=X y=Y weight=TEMP combine=median",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"X\"\n    (The name \"X\" is unknown.)\n"
+    },
+    {
+        "prompt": "Create a plot with a serif font for the title and labels.",
+        "response": "stilts plot2plane in=data.fits layer=mark x=X y=Y title='My Plot' fontstyle=serif",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"X\"\n    (The name \"X\" is unknown.)\n"
+    },
+    {
+        "prompt": "Plot a histogram of `log10(FLUX)`.",
+        "response": "stilts plot2plane in=data.fits layer=histogram x='log10(FLUX)'",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"log10(FLUX)\"\n    (The name \"FLUX\" is unknown.)\n"
+    },
+    {
+        "prompt": "I need to display a `densogram` for my data.",
+        "response": "stilts plot2plane in=data.fits layer=densogram x=VALUE",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"VALUE\"\n    (The name \"VALUE\" is unknown.)\n"
+    },
+    {
+        "prompt": "How do I plot the same data twice, once as points and once as a density contour?",
+        "response": "stilts plot2plane in=data.fits x=X y=Y layer_m=mark layer_c=contour",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"X\"\n    (The name \"X\" is unknown.)\n"
+    },
+    {
+        "prompt": "Generate a plot where the marker size is determined by `sqrt(AREA)`.",
+        "response": "stilts plot2plane in=data.fits layer=size x=X y=Y size='sqrt(AREA)'",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"X\"\n    (The name \"X\" is unknown.)\n"
+    },
+    {
+        "prompt": "Plot a line connecting points, but only for points where `QUALITY > 0.9`.",
+        "response": "stilts plot2plane in=data.fits layer=line x=X y=Y icmd='select QUALITY > 0.9'",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '>' '0.9'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: select QUALITY > 0.9\n\nUsage: select <expr>\n    (Unused arguments: '>' '0.9'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "I need a histogram with a bin width of 5, starting at x=0.5.",
+        "response": "stilts plot2plane in=data.fits layer=histogram x=VALUE binsize=5 phase=0.5",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"VALUE\"\n    (The name \"VALUE\" is unknown.)\n"
+    },
+    {
+        "prompt": "Show error bars only in the y-direction.",
+        "response": "stilts plot2plane in=errors.fits layer=xyerror x=X y=Y yerror=Y_ERR",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad value for parameter layer: Unknown value \"yerror\" - must be one of mark, size, sizexy, xyvector, xyerror, xyellipse, xycorr, link2, mark2, poly4, mark4, polygon, area, central, lines, marks, handles, yerrors, xyerrors, statline, statmark, arrayquantile, line, linearfit, label, arealabel, contour, grid, fill, quantile, histogram, kde, knn, densogram, gaussian, function\nUsage: layer=<layer-type> <layer-specific-params>\n\n"
+    },
+    {
+        "prompt": "Plot a histogram where the x-axis is 'Magnitude' and the y-axis is 'Number of Stars'.",
+        "response": "stilts plot2plane in=stars.fits layer=histogram x=MAG xlabel='Magnitude' ylabel='Number of Stars'",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"MAG\"\n    (The name \"MAG\" is unknown.)\n"
+    },
+    {
+        "prompt": "Create a scatter plot and a linear fit, and report the fit coefficients in the legend.",
+        "response": "This is not directly possible. The fit coefficients are logged to the console with `-verbose`, but cannot be automatically placed in the legend. You would have to determine them first, then manually add a text annotation layer.",
+        "chat.jar": "non-fail",
+        "error": "/bin/sh: 1: -verbose: not found\n\nNo such task: This\n\nUsage:\n   stilts [-help] [-version] [-verbose] [-allowunused] [-prompt] [-bench]\n          [-debug] [-batch] [-memory] [-disk] [-memgui]\n          [-checkversion <vers>] [-stdout <file>] [-stderr <file>]\n          <task-name> <task-args>\n\n   stilts <task-name> help[=<param-name>|*]\n\n   Known tasks:\n      arrayjoin\n      calc\n      cdsskymatch\n      cone\n      coneskymatch\n      datalinklint\n      funcs\n      mocshape\n      parqlint\n      parqlook\n      pixfoot\n      pixsample\n      plot2d\n      plot3d\n      plothist\n      regquery\n      server\n      sqlclient\n      sqlskymatch\n      sqlupdate\n      taplint\n      tapquery\n      tapresume\n      tapskymatch\n      tcat\n      tcatn\n      tcopy\n      tcube\n      tgridmap\n      tgroup\n      tjoin\n      tloop\n      tmatch1\n      tmatch2\n      tmatchn\n      tmulti\n      tmultin\n      tpipe\n      tskymap\n      tskymatch2\n      votcopy\n      votlint\n      xsdvalidate\n      plot2plane\n      plot2sky\n      plot2cube\n      plot2sphere\n      plot2corner\n      plot2time\n\n"
+    },
+    {
+        "prompt": "Plot the X and Y columns against each other using `omode=topcat`.",
+        "response": "The `plot2plane` command itself generates a plot. To send the *table* to TOPCAT, you would use `tpipe in=data.fits omode=topcat`. `plot2plane` does not have an `omode=topcat`.",
+        "chat.jar": "non-fail",
+        "error": "/bin/sh: 1: plot2plane: not found\n/bin/sh: 1: tpipe: not found\n/bin/sh: 1: plot2plane: not found\n\nNo such task: The\n\nUsage:\n   stilts [-help] [-version] [-verbose] [-allowunused] [-prompt] [-bench]\n          [-debug] [-batch] [-memory] [-disk] [-memgui]\n          [-checkversion <vers>] [-stdout <file>] [-stderr <file>]\n          <task-name> <task-args>\n\n   stilts <task-name> help[=<param-name>|*]\n\n   Known tasks:\n      arrayjoin\n      calc\n      cdsskymatch\n      cone\n      coneskymatch\n      datalinklint\n      funcs\n      mocshape\n      parqlint\n      parqlook\n      pixfoot\n      pixsample\n      plot2d\n      plot3d\n      plothist\n      regquery\n      server\n      sqlclient\n      sqlskymatch\n      sqlupdate\n      taplint\n      tapquery\n      tapresume\n      tapskymatch\n      tcat\n      tcatn\n      tcopy\n      tcube\n      tgridmap\n      tgroup\n      tjoin\n      tloop\n      tmatch1\n      tmatch2\n      tmatchn\n      tmulti\n      tmultin\n      tpipe\n      tskymap\n      tskymatch2\n      votcopy\n      votlint\n      xsdvalidate\n      plot2plane\n      plot2sky\n      plot2cube\n      plot2sphere\n      plot2corner\n      plot2time\n\n"
+    },
+    {
+        "prompt": "Can you make a plot with a custom dash pattern for a line, like '10 on, 5 off'?",
+        "response": "stilts plot2plane in=data.fits layer=line x=X y=Y dash='10,5'",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"X\"\n    (The name \"X\" is unknown.)\n"
+    },
+    {
+        "prompt": "Plot the `marks` for two different array columns on the same axes.",
+        "response": "stilts plot2plane in=data.fits xs=WAVE layer_1=marks ys_1=FLUX1 color_1=blue layer_2=marks ys_2=FLUX2 color_2=red",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"WAVE\"\n    (The name \"WAVE\" is unknown.)\n"
+    },
+    {
+        "prompt": "Generate a histogram with filled red bars that are 50% transparent.",
+        "response": "stilts plot2plane in=data.fits layer=histogram x=VALUE color=red barform=filled transparency=0.5",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"VALUE\"\n    (The name \"VALUE\" is unknown.)\n"
+    },
+    {
+        "prompt": "Plot a filled region between two lines, defined by columns Y_UPPER and Y_LOWER.",
+        "response": "stilts plot2plane in=data.fits layer=fill x=X y=Y_UPPER y0=Y_LOWER color=lightblue",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"X\"\n    (The name \"X\" is unknown.)\n"
+    },
+    {
+        "prompt": "Show a scatter plot where points are colored by one aux value and sized by another.",
+        "response": "stilts plot2plane in=data.fits layer=size x=X y=Y size=SIZE_COL shading=aux aux=COLOR_COL",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"X\"\n    (The name \"X\" is unknown.)\n"
+    },
+    {
+        "prompt": "What is the command to create a plot using `storage=persistent` for faster re-plotting?",
+        "response": "stilts plot2plane in=large_data.fits layer=mark x=X y=Y storage=persistent",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"X\"\n    (The name \"X\" is unknown.)\n"
+    },
+    {
+        "prompt": "Plot a line of `y=0` across the entire plot.",
+        "response": "stilts plot2plane layer=function fexpr=0 color=black",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I want to show the 5th and 95th percentiles of my data on a scatter plot.",
+        "response": "stilts plot2plane in=data.fits layer_m=mark x_m=X y_m=Y layer_q=quantile x_q=X y_q=Y quantiles_q='0.05,0.95' color_q=green",
+        "chat.jar": "non-fail",
+        "error": "Error: Bad Expression \"X\"\n    (The name \"X\" is unknown.)\n"
+    }
+]

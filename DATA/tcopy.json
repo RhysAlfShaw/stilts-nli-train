@@ -1,0 +1,509 @@
+[
+    {
+        "prompt": "Convert a FITS table to a VOTable, letting STILTS guess the formats from the filenames.",
+        "response": "stilts tcopy in=my_catalog.fits out=my_catalog.vot",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "How do I convert a CSV file to a FITS file?",
+        "response": "stilts tcopy in=data.csv out=data.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need to convert a VOTable to a simple ASCII text file for a quick look.",
+        "response": "stilts tcopy in=results.vot ofmt=ascii out=results.txt",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Convert a FITS file to a VOTable, but use the compact BINARY2 encoding.",
+        "response": "stilts tcopy in=data.fits out=data.vot ofmt='votable(format=BINARY2)'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I have a table in IPAC format. How can I convert it to a standard FITS table?",
+        "response": "stilts tcopy ifmt=ipac in=ipac_table.tbl ofmt=fits out=standard.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Convert a table to CSV, but use a pipe character '|' as the delimiter.",
+        "response": "stilts tcopy in=my_table.fits ofmt='csv(delimiter=|)' out=pipe_delimited.csv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Take a gzipped FITS file from a URL and convert it to a local ECSV file.",
+        "response": "stilts tcopy in=http://example.com/data/survey.fits.gz out=survey.ecsv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "How can I pipe a CSV file into `tcopy` and get a FITS file out?",
+        "response": "cat data.csv | stilts tcopy ifmt=csv in=- ofmt=fits out=from_pipe.fits",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: tcopy: not found\n\nNo such task: cat\n\nUsage:\n   stilts [-help] [-version] [-verbose] [-allowunused] [-prompt] [-bench]\n          [-debug] [-batch] [-memory] [-disk] [-memgui]\n          [-checkversion <vers>] [-stdout <file>] [-stderr <file>]\n          <task-name> <task-args>\n\n   stilts <task-name> help[=<param-name>|*]\n\n   Known tasks:\n      arrayjoin\n      calc\n      cdsskymatch\n      cone\n      coneskymatch\n      datalinklint\n      funcs\n      mocshape\n      parqlint\n      parqlook\n      pixfoot\n      pixsample\n      plot2d\n      plot3d\n      plothist\n      regquery\n      server\n      sqlclient\n      sqlskymatch\n      sqlupdate\n      taplint\n      tapquery\n      tapresume\n      tapskymatch\n      tcat\n      tcatn\n      tcopy\n      tcube\n      tgridmap\n      tgroup\n      tjoin\n      tloop\n      tmatch1\n      tmatch2\n      tmatchn\n      tmulti\n      tmultin\n      tpipe\n      tskymap\n      tskymatch2\n      votcopy\n      votlint\n      xsdvalidate\n      plot2plane\n      plot2sky\n      plot2cube\n      plot2sphere\n      plot2corner\n      plot2time\n\n"
+    },
+    {
+        "prompt": "Extract the third table extension from a FITS file and save it as a VOTable.",
+        "response": "stilts tcopy in=multi_extension.fits#3 out=ext3.vot",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Convert my table to a 'basic' FITS file without the extra VOTable metadata in the primary HDU.",
+        "response": "stilts tcopy in=my_table.vot ofmt=fits-basic out=basic.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Create a 1000-row simulated star catalog and save it directly as a Parquet file.",
+        "response": "stilts tcopy in=:skysim:1000 ofmt=parquet out=sim_stars.parquet",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I have a VOTable. How can I generate an HTML table from it to put on a web page?",
+        "response": "stilts tcopy in=results.vot ofmt=html out=results.html",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Convert a FITS file to a column-oriented FITS file.",
+        "response": "stilts tcopy in=row_oriented.fits ofmt=colfits out=column_oriented.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "My ASCII file `data.dat` has no header. How do I convert it to CSV with a header?",
+        "response": "stilts tcopy ifmt=ascii in=data.dat ofmt='csv(header=true)' out=data.csv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Convert an ECSV file to a Feather file for use in R or Python.",
+        "response": "stilts tcopy in=my_data.ecsv out=my_data.feather",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "How do I just display the contents of a FITS file on my terminal in a readable format?",
+        "response": "stilts tcopy in=my_table.fits ofmt=text out=-",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Convert a table to a specific version of VOTable, say v1.2.",
+        "response": "stilts tcopy in=data.fits ofmt='votable(version=V12)' out=data_v12.vot",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I have a NASA PDS4 file. Can I convert it to a VOTable?",
+        "response": "stilts tcopy in=pds4_data.xml out=pds4_data.vot",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Generate a simple table with a loop and save it as a FITS file.",
+        "response": "stilts tcopy in=:loop:1,101 out=loop.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "How can I convert a table into a format for a LaTeX document?",
+        "response": "stilts tcopy in=publication_data.fits ofmt=latex out=table.tex",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I have a gzipped CSV file. Can `tcopy` read it directly to produce a VOTable?",
+        "response": "stilts tcopy in=data.csv.gz out=data.vot",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Convert a Parquet file to a FITS file.",
+        "response": "stilts tcopy in=my_data.parquet out=my_data.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "What's the command to convert a CDF file into a VOTable?",
+        "response": "stilts tcopy in=space_data.cdf out=space_data.vot",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Convert a FITS file to a CSV file without the header row.",
+        "response": "stilts tcopy in=data.fits ofmt='csv(header=false)' out=noheader.csv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I have a table in MRT (Machine-Readable Table) format. Convert it to FITS.",
+        "response": "stilts tcopy in=journal_table.mrt out=journal_table.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Use a system command to generate input for `tcopy`. For instance, combine two text files first.",
+        "response": "stilts tcopy in='<cat header.txt data.txt' ifmt=ascii ofmt=fits out=combined.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "How do I convert a table to the old TST (Tab-Separated Table) format?",
+        "response": "stilts tcopy in=my_catalog.fits ofmt=tst out=my_catalog.tst",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Convert a Feather file back to a VOTable.",
+        "response": "stilts tcopy in=from_python.feather out=for_vo.vot",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Generate a test table and save it as an ECSV file.",
+        "response": "stilts tcopy in=:test:100,bs ofmt=ecsv out=test_data.ecsv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I have a FITS file with multiple tables. How do I copy just the first one?",
+        "response": "stilts tcopy in=multi.fits out=first_table.vot",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Can you convert my table into a standalone HTML document?",
+        "response": "stilts tcopy in=data.fits ofmt='html(standalone=true)' out=report.html",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Convert a GBIN file to FITS (assuming I have the necessary Gaia libraries on my classpath).",
+        "response": "stilts tcopy ifmt=gbin in=my_data.gbin ofmt=fits out=my_data.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Copy a table while explicitly stating both input and output formats.",
+        "response": "stilts tcopy ifmt=fits ofmt=votable in=input.fits out=output.vot",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need to convert a VOTable to a Parquet file with Snappy compression.",
+        "response": "stilts tcopy in=data.vot ofmt='parquet(compression=snappy)' out=data.parquet",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "What is the command to convert a WDC format file to CSV?",
+        "response": "stilts tcopy ifmt=wdc in=data.wdc ofmt=csv out=data.csv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Take a table from a URL and display it on the terminal.",
+        "response": "stilts tcopy in=http://example.com/data.fits out=-",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Convert my table into a tab-delimited file.",
+        "response": "stilts tcopy in=data.fits ofmt='csv(delimiter=\\t)' out=data.tsv",
+        "chat.jar": "failed",
+        "error": "Error: No handler for output format csv(delimiter=\\t)\n    (Handler configuration failed: uk.ac.starlink.util.LoadException: Failed setting \"delimiter=\\t\" - Usage is delimiter=<char>|0xNN\n        (Failed setting \"delimiter=\\t\" - Usage is delimiter=<char>|0xNN\n            (character to be escaped is missing)))\nUsage: tcopy ifmt=<in-format> ofmt=<out-format>\n             [in=]<table> [out=]<out-table>\n\n"
+    },
+    {
+        "prompt": "Generate a table from a Clifford attractor and save it as a FITS file.",
+        "response": "stilts tcopy in=:attractor:10000,clifford out=attractor.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "How do I read a TST file and write it out as a VOTable?",
+        "response": "stilts tcopy ifmt=tst in=old_data.tst out=new_data.vot",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Convert a HAPI stream file to a local FITS table.",
+        "response": "stilts tcopy ifmt=hapi in=stream.hapi out=table.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Copy a FITS table to another FITS table. Is this useful?",
+        "response": "Yes, it can be. For example, it can be used to regularize a non-standard FITS file into a standard one: `stilts tcopy in=weird.fits out=standard.fits`",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: tcopy: not found\n\nNo such task: Yes,\n\nUsage:\n   stilts [-help] [-version] [-verbose] [-allowunused] [-prompt] [-bench]\n          [-debug] [-batch] [-memory] [-disk] [-memgui]\n          [-checkversion <vers>] [-stdout <file>] [-stderr <file>]\n          <task-name> <task-args>\n\n   stilts <task-name> help[=<param-name>|*]\n\n   Known tasks:\n      arrayjoin\n      calc\n      cdsskymatch\n      cone\n      coneskymatch\n      datalinklint\n      funcs\n      mocshape\n      parqlint\n      parqlook\n      pixfoot\n      pixsample\n      plot2d\n      plot3d\n      plothist\n      regquery\n      server\n      sqlclient\n      sqlskymatch\n      sqlupdate\n      taplint\n      tapquery\n      tapresume\n      tapskymatch\n      tcat\n      tcatn\n      tcopy\n      tcube\n      tgridmap\n      tgroup\n      tjoin\n      tloop\n      tmatch1\n      tmatch2\n      tmatchn\n      tmulti\n      tmultin\n      tpipe\n      tskymap\n      tskymatch2\n      votcopy\n      votlint\n      xsdvalidate\n      plot2plane\n      plot2sky\n      plot2cube\n      plot2sphere\n      plot2corner\n      plot2time\n\n"
+    },
+    {
+        "prompt": "How can I convert a table into the Mirage format?",
+        "response": "stilts tcopy in=data.fits ofmt=mirage out=data.mirage",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Convert a VOTable with TABLEDATA to one with BINARY encoding, preserving the version.",
+        "response": "stilts tcopy in=tabledata.vot ofmt='votable(format=BINARY)' out=binary.vot",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I have an ASCII file with space-separated values. Can `tcopy` convert it to FITS?",
+        "response": "stilts tcopy ifmt=ascii in=space_separated.txt ofmt=fits out=table.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "What's the shortest way to view the second HDU of a FITS file on the terminal?",
+        "response": "stilts tcopy multi.fits#2",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Convert a VOTable to a basic column-oriented FITS file.",
+        "response": "stilts tcopy in=my_table.vot ofmt=colfits-basic out=col_basic.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Create a standalone LaTeX file from my table.",
+        "response": "stilts tcopy in=my_table.fits ofmt='latex(standalone=true)' out=my_table.tex",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Can `tcopy` handle bzipped input files?",
+        "response": "Yes, it handles `.bz2` compressed files automatically. For example: `stilts tcopy in=data.fits.bz2 out=data.vot`",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: .bz2: not found\n/bin/sh: 1: tcopy: not found\n\nNo such task: Yes,\n\nUsage:\n   stilts [-help] [-version] [-verbose] [-allowunused] [-prompt] [-bench]\n          [-debug] [-batch] [-memory] [-disk] [-memgui]\n          [-checkversion <vers>] [-stdout <file>] [-stderr <file>]\n          <task-name> <task-args>\n\n   stilts <task-name> help[=<param-name>|*]\n\n   Known tasks:\n      arrayjoin\n      calc\n      cdsskymatch\n      cone\n      coneskymatch\n      datalinklint\n      funcs\n      mocshape\n      parqlint\n      parqlook\n      pixfoot\n      pixsample\n      plot2d\n      plot3d\n      plothist\n      regquery\n      server\n      sqlclient\n      sqlskymatch\n      sqlupdate\n      taplint\n      tapquery\n      tapresume\n      tapskymatch\n      tcat\n      tcatn\n      tcopy\n      tcube\n      tgridmap\n      tgroup\n      tjoin\n      tloop\n      tmatch1\n      tmatch2\n      tmatchn\n      tmulti\n      tmultin\n      tpipe\n      tskymap\n      tskymatch2\n      votcopy\n      votlint\n      xsdvalidate\n      plot2plane\n      plot2sky\n      plot2cube\n      plot2sphere\n      plot2corner\n      plot2time\n\n"
+    },
+    {
+        "prompt": "Convert a FITS file to ECSV using spaces instead of commas.",
+        "response": "stilts tcopy in=data.fits ofmt='ecsv(delimiter=space)' out=data.ecsv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Generate a 20-row test table and display it in `text` format.",
+        "response": "stilts tcopy in=:test:20 ofmt=text out=-",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Convert the first table from a CDF file to a CSV file.",
+        "response": "stilts tcopy in=data.cdf#1 out=data.csv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need to convert a table to VOTable 1.4 with BINARY2 encoding.",
+        "response": "stilts tcopy in=data.fits ofmt='votable(version=V14,format=BINARY2)' out=data.vot",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Take a table from a URL, convert it to CSV, and pipe it to another command.",
+        "response": "stilts tcopy in=http://example.com/data.vot ofmt=csv out=- | other_command",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: other_command: not found\n"
+    },
+    {
+        "prompt": "Convert a Parquet file from a URL to a local FITS file.",
+        "response": "stilts tcopy in=http://example.com/data.parquet out=local.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "How to convert an `ascii` file to an `ipac` table?",
+        "response": "stilts tcopy ifmt=ascii in=mydata.txt ofmt=ipac out=mydata.tbl",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Create a single-column table from 100 to 200 and save as a VOTable.",
+        "response": "stilts tcopy in=:loop:100,201 out=numbers.vot",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Convert a table to HTML format without the full HTML document structure.",
+        "response": "stilts tcopy in=data.fits ofmt='html(standalone=false)' out=table_fragment.html",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Can you convert a FITS table from a URL directly to a Parquet file?",
+        "response": "stilts tcopy in=http://example.com/catalog.fits out=catalog.parquet",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I have a plain text file. How can I see what `tcopy` makes of it?",
+        "response": "stilts tcopy ifmt=ascii in=data.txt",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Convert a VOTable to a Feather file.",
+        "response": "stilts tcopy in=for_r.vot ofmt=feather out=for_r.feather",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Convert a table to a VOTable using TABLEDATA encoding explicitly.",
+        "response": "stilts tcopy in=data.fits ofmt='votable(format=TABLEDATA)' out=data.vot",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Copy a table from one FITS file to another, but convert it to column-oriented format.",
+        "response": "stilts tcopy in=input.fits ofmt='fits(col=true)' out=output.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Generate a test table with a wide variety of column types and save it as FITS.",
+        "response": "stilts tcopy in=:test:50,* out=test.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "My ASCII file is very large. Does `tcopy` have to read it twice?",
+        "response": "Yes, the `ascii` reader often requires two passes to determine column types. You can limit this by using `ifmt='ascii(maxSample=1000)'` to guess types from the first 1000 rows, which is faster but may guess wrong.",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: ascii: not found\n\nNo such task: Yes,\n\nUsage:\n   stilts [-help] [-version] [-verbose] [-allowunused] [-prompt] [-bench]\n          [-debug] [-batch] [-memory] [-disk] [-memgui]\n          [-checkversion <vers>] [-stdout <file>] [-stderr <file>]\n          <task-name> <task-args>\n\n   stilts <task-name> help[=<param-name>|*]\n\n   Known tasks:\n      arrayjoin\n      calc\n      cdsskymatch\n      cone\n      coneskymatch\n      datalinklint\n      funcs\n      mocshape\n      parqlint\n      parqlook\n      pixfoot\n      pixsample\n      plot2d\n      plot3d\n      plothist\n      regquery\n      server\n      sqlclient\n      sqlskymatch\n      sqlupdate\n      taplint\n      tapquery\n      tapresume\n      tapskymatch\n      tcat\n      tcatn\n      tcopy\n      tcube\n      tgridmap\n      tgroup\n      tjoin\n      tloop\n      tmatch1\n      tmatch2\n      tmatchn\n      tmulti\n      tmultin\n      tpipe\n      tskymap\n      tskymatch2\n      votcopy\n      votlint\n      xsdvalidate\n      plot2plane\n      plot2sky\n      plot2cube\n      plot2sphere\n      plot2corner\n      plot2time\n\n"
+    },
+    {
+        "prompt": "Convert a specific table from a multi-table VOTable file.",
+        "response": "stilts tcopy in=multi.vot#2 out=table2.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "How can I convert a table into a simple text representation with table parameters included?",
+        "response": "stilts tcopy in=data.fits ofmt='text(params=true)' out=-",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Convert a FITS file from a URL to a local CSV file.",
+        "response": "stilts tcopy in=https://example.com/archive/data.fit ofmt=csv out=data.csv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Take the output of a command and pipe it into `tcopy` to create a FITS file.",
+        "response": "my_command | stilts tcopy ifmt=ascii in=- ofmt=fits out=output.fits",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: tcopy: not found\n\nNo such task: my_command\n\nUsage:\n   stilts [-help] [-version] [-verbose] [-allowunused] [-prompt] [-bench]\n          [-debug] [-batch] [-memory] [-disk] [-memgui]\n          [-checkversion <vers>] [-stdout <file>] [-stderr <file>]\n          <task-name> <task-args>\n\n   stilts <task-name> help[=<param-name>|*]\n\n   Known tasks:\n      arrayjoin\n      calc\n      cdsskymatch\n      cone\n      coneskymatch\n      datalinklint\n      funcs\n      mocshape\n      parqlint\n      parqlook\n      pixfoot\n      pixsample\n      plot2d\n      plot3d\n      plothist\n      regquery\n      server\n      sqlclient\n      sqlskymatch\n      sqlupdate\n      taplint\n      tapquery\n      tapresume\n      tapskymatch\n      tcat\n      tcatn\n      tcopy\n      tcube\n      tgridmap\n      tgroup\n      tjoin\n      tloop\n      tmatch1\n      tmatch2\n      tmatchn\n      tmulti\n      tmultin\n      tpipe\n      tskymap\n      tskymatch2\n      votcopy\n      votlint\n      xsdvalidate\n      plot2plane\n      plot2sky\n      plot2cube\n      plot2sphere\n      plot2corner\n      plot2time\n\n"
+    },
+    {
+        "prompt": "Convert an IPAC table to ECSV.",
+        "response": "stilts tcopy ifmt=ipac in=data.tbl ofmt=ecsv out=data.ecsv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "How do I check the structure of a remote FITS file quickly?",
+        "response": "stilts tcopy in=http://example.com/data.fits ofmt=text out=- icmd='head 5'",
+        "chat.jar": "failed",
+        "error": "\nUnused arguments: icmd=head 5\n\nUsage: tcopy ifmt=<in-format> ofmt=<out-format>\n             [in=]<table> [out=]<out-table>\n\n"
+    },
+    {
+        "prompt": "Convert a FITS table to a VOTable, ensuring the output version is 1.4.",
+        "response": "stilts tcopy in=data.fits ofmt='votable(version=V14)' out=data_v14.vot",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "What's the command to convert a FITS BINTABLE to a FITS ASCII table?",
+        "response": "This is not directly supported by `tcopy`'s `ofmt` options, which only writes BINTABLE extensions. You would need a different tool for that specific conversion.",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: Syntax error: Unterminated quoted string\n"
+    },
+    {
+        "prompt": "Can `tcopy` convert a FITS image to a table?",
+        "response": "No, `tcopy` and STILTS are for tabular data. A FITS file with an image in the primary HDU and no table extensions will result in an error.",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: tcopy: not found\n\nNo such task: No,\n\nUsage:\n   stilts [-help] [-version] [-verbose] [-allowunused] [-prompt] [-bench]\n          [-debug] [-batch] [-memory] [-disk] [-memgui]\n          [-checkversion <vers>] [-stdout <file>] [-stderr <file>]\n          <task-name> <task-args>\n\n   stilts <task-name> help[=<param-name>|*]\n\n   Known tasks:\n      arrayjoin\n      calc\n      cdsskymatch\n      cone\n      coneskymatch\n      datalinklint\n      funcs\n      mocshape\n      parqlint\n      parqlook\n      pixfoot\n      pixsample\n      plot2d\n      plot3d\n      plothist\n      regquery\n      server\n      sqlclient\n      sqlskymatch\n      sqlupdate\n      taplint\n      tapquery\n      tapresume\n      tapskymatch\n      tcat\n      tcatn\n      tcopy\n      tcube\n      tgridmap\n      tgroup\n      tjoin\n      tloop\n      tmatch1\n      tmatch2\n      tmatchn\n      tmulti\n      tmultin\n      tpipe\n      tskymap\n      tskymatch2\n      votcopy\n      votlint\n      xsdvalidate\n      plot2plane\n      plot2sky\n      plot2cube\n      plot2sphere\n      plot2corner\n      plot2time\n\n"
+    },
+    {
+        "prompt": "Convert a CSV file to a FITS file, letting `tcopy` guess the input format from the `.csv` extension.",
+        "response": "stilts tcopy in=data.csv out=data.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Create a test table and save it to a gzipped FITS file.",
+        "response": "stilts tcopy in=:test:200 out=test.fits.gz",
+        "chat.jar": "failed",
+        "error": "Error: Can't guess output format for test.fits.gz\n    (No handler specified for writing table.\nKnown formats: jdbc, fits, colfits, votable, fits-healpix, ECSV, parquet, text, ascii, CSV, IPAC, HTML, LaTeX, TST, feather, mirage)\nUsage: tcopy ifmt=<in-format> ofmt=<out-format>\n             [in=]<table> [out=]<out-table>\n\n"
+    },
+    {
+        "prompt": "I need to convert a table for an old application that only reads VOTable 1.1.",
+        "response": "stilts tcopy in=latest.vot ofmt='votable(version=V11)' out=legacy.vot",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Convert a table to ASCII format and show the table parameters.",
+        "response": "stilts tcopy in=data.fits ofmt='ascii(params=true)' out=-",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Is it possible to convert a table to a JPEG or other image format?",
+        "response": "No, `tcopy` only converts between tabular formats. You would need one of the `plot` commands like `plot2plane` to create an image.",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: tcopy: not found\n/bin/sh: 1: plot: not found\n/bin/sh: 1: plot2plane: not found\n\nNo such task: No,\n\nUsage:\n   stilts [-help] [-version] [-verbose] [-allowunused] [-prompt] [-bench]\n          [-debug] [-batch] [-memory] [-disk] [-memgui]\n          [-checkversion <vers>] [-stdout <file>] [-stderr <file>]\n          <task-name> <task-args>\n\n   stilts <task-name> help[=<param-name>|*]\n\n   Known tasks:\n      arrayjoin\n      calc\n      cdsskymatch\n      cone\n      coneskymatch\n      datalinklint\n      funcs\n      mocshape\n      parqlint\n      parqlook\n      pixfoot\n      pixsample\n      plot2d\n      plot3d\n      plothist\n      regquery\n      server\n      sqlclient\n      sqlskymatch\n      sqlupdate\n      taplint\n      tapquery\n      tapresume\n      tapskymatch\n      tcat\n      tcatn\n      tcopy\n      tcube\n      tgridmap\n      tgroup\n      tjoin\n      tloop\n      tmatch1\n      tmatch2\n      tmatchn\n      tmulti\n      tmultin\n      tpipe\n      tskymap\n      tskymatch2\n      votcopy\n      votlint\n      xsdvalidate\n      plot2plane\n      plot2sky\n      plot2cube\n      plot2sphere\n      plot2corner\n      plot2time\n\n"
+    },
+    {
+        "prompt": "Convert the first table from a multi-extension FITS file at a URL to a local CSV.",
+        "response": "stilts tcopy in=http://example.com/multi.fits#1 out=first_ext.csv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Convert my table to a CSV file where the delimiter is a semicolon.",
+        "response": "stilts tcopy in=data.fits ofmt='csv(delimiter=;)' out=data.csv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Generate a table from 0.0 to 1.0 in steps of 0.1 and save as FITS.",
+        "response": "stilts tcopy in=:loop:0,1.01,0.1 ofmt=fits out=steps.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "How do I convert a table into a very compact FITS file?",
+        "response": "You can try converting it to a column-oriented FITS file, which can be more efficient for some access patterns: `stilts tcopy in=data.vot ofmt=colfits out=data.colfits`",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: tcopy: not found\n\nNo such task: You\n\nUsage:\n   stilts [-help] [-version] [-verbose] [-allowunused] [-prompt] [-bench]\n          [-debug] [-batch] [-memory] [-disk] [-memgui]\n          [-checkversion <vers>] [-stdout <file>] [-stderr <file>]\n          <task-name> <task-args>\n\n   stilts <task-name> help[=<param-name>|*]\n\n   Known tasks:\n      arrayjoin\n      calc\n      cdsskymatch\n      cone\n      coneskymatch\n      datalinklint\n      funcs\n      mocshape\n      parqlint\n      parqlook\n      pixfoot\n      pixsample\n      plot2d\n      plot3d\n      plothist\n      regquery\n      server\n      sqlclient\n      sqlskymatch\n      sqlupdate\n      taplint\n      tapquery\n      tapresume\n      tapskymatch\n      tcat\n      tcatn\n      tcopy\n      tcube\n      tgridmap\n      tgroup\n      tjoin\n      tloop\n      tmatch1\n      tmatch2\n      tmatchn\n      tmulti\n      tmultin\n      tpipe\n      tskymap\n      tskymatch2\n      votcopy\n      votlint\n      xsdvalidate\n      plot2plane\n      plot2sky\n      plot2cube\n      plot2sphere\n      plot2corner\n      plot2time\n\n"
+    },
+    {
+        "prompt": "Can `tcopy` read from a `.zip` file?",
+        "response": "Not directly. `tcopy` can read `.gz` and `.bz2` files, but you would need to unzip a `.zip` archive first, for instance using a command pipeline: `unzip -p archive.zip table.fits | stilts tcopy in=- out=table.vot`",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: tcopy: not found\n/bin/sh: 1: .gz: not found\n/bin/sh: 1: .bz2: not found\n/bin/sh: 1: .zip: not found\n/bin/sh: 1: tcopy: not found\n\nNo such task: Not\n\nUsage:\n   stilts [-help] [-version] [-verbose] [-allowunused] [-prompt] [-bench]\n          [-debug] [-batch] [-memory] [-disk] [-memgui]\n          [-checkversion <vers>] [-stdout <file>] [-stderr <file>]\n          <task-name> <task-args>\n\n   stilts <task-name> help[=<param-name>|*]\n\n   Known tasks:\n      arrayjoin\n      calc\n      cdsskymatch\n      cone\n      coneskymatch\n      datalinklint\n      funcs\n      mocshape\n      parqlint\n      parqlook\n      pixfoot\n      pixsample\n      plot2d\n      plot3d\n      plothist\n      regquery\n      server\n      sqlclient\n      sqlskymatch\n      sqlupdate\n      taplint\n      tapquery\n      tapresume\n      tapskymatch\n      tcat\n      tcatn\n      tcopy\n      tcube\n      tgridmap\n      tgroup\n      tjoin\n      tloop\n      tmatch1\n      tmatch2\n      tmatchn\n      tmulti\n      tmultin\n      tpipe\n      tskymap\n      tskymatch2\n      votcopy\n      votlint\n      xsdvalidate\n      plot2plane\n      plot2sky\n      plot2cube\n      plot2sphere\n      plot2corner\n      plot2time\n\n"
+    },
+    {
+        "prompt": "Convert a VOTable to a FITS file, but without the FITS-plus headers.",
+        "response": "stilts tcopy in=data.vot ofmt='fits(primary=basic)' out=basic.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need to view just the header of an IPAC table file.",
+        "response": "You can use `tpipe` for that with `omode=meta`. A `tcopy` approach would be `stilts tcopy ifmt=ipac in=data.tbl icmd='head 0' ofmt=text` to show the column headers.",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: tpipe: not found\n/bin/sh: 1: tcopy: not found\n/bin/sh: 1: tcopy: not found\n\nNo such task: You\n\nUsage:\n   stilts [-help] [-version] [-verbose] [-allowunused] [-prompt] [-bench]\n          [-debug] [-batch] [-memory] [-disk] [-memgui]\n          [-checkversion <vers>] [-stdout <file>] [-stderr <file>]\n          <task-name> <task-args>\n\n   stilts <task-name> help[=<param-name>|*]\n\n   Known tasks:\n      arrayjoin\n      calc\n      cdsskymatch\n      cone\n      coneskymatch\n      datalinklint\n      funcs\n      mocshape\n      parqlint\n      parqlook\n      pixfoot\n      pixsample\n      plot2d\n      plot3d\n      plothist\n      regquery\n      server\n      sqlclient\n      sqlskymatch\n      sqlupdate\n      taplint\n      tapquery\n      tapresume\n      tapskymatch\n      tcat\n      tcatn\n      tcopy\n      tcube\n      tgridmap\n      tgroup\n      tjoin\n      tloop\n      tmatch1\n      tmatch2\n      tmatchn\n      tmulti\n      tmultin\n      tpipe\n      tskymap\n      tskymatch2\n      votcopy\n      votlint\n      xsdvalidate\n      plot2plane\n      plot2sky\n      plot2cube\n      plot2sphere\n      plot2corner\n      plot2time\n\n"
+    },
+    {
+        "prompt": "What's the simplest command to verify if a file is a readable table?",
+        "response": "stilts tcopy in=my_file.dat omode=count",
+        "chat.jar": "failed",
+        "error": "\nUnused arguments: omode=count\n\nUsage: tcopy ifmt=<in-format> ofmt=<out-format>\n             [in=]<table> [out=]<out-table>\n\n"
+    },
+    {
+        "prompt": "Convert a table to a VOTable with data in an external FITS file.",
+        "response": "stilts tcopy in=data.csv ofmt='votable(format=FITS,inline=false)' out=data.vot",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Take a table from standard input and write it to standard output, changing format from CSV to text.",
+        "response": "stilts tcopy ifmt=csv ofmt=text",
+        "chat.jar": "failed",
+        "error": "Error: Bad value for parameter in: null value not allowed\nUsage: in=<table>\n\n"
+    },
+    {
+        "prompt": "Can I convert a table to JSON format?",
+        "response": "STILTS `tcopy` does not support a generic JSON table output format. However, `ecsv` is based on YAML/JSON, and you could use `tpipe` with specific filters to construct JSON text.",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: tcopy: not found\n/bin/sh: 1: ecsv: not found\n/bin/sh: 1: tpipe: not found\n\nNo such task: STILTS\n\nUsage:\n   stilts [-help] [-version] [-verbose] [-allowunused] [-prompt] [-bench]\n          [-debug] [-batch] [-memory] [-disk] [-memgui]\n          [-checkversion <vers>] [-stdout <file>] [-stderr <file>]\n          <task-name> <task-args>\n\n   stilts <task-name> help[=<param-name>|*]\n\n   Known tasks:\n      arrayjoin\n      calc\n      cdsskymatch\n      cone\n      coneskymatch\n      datalinklint\n      funcs\n      mocshape\n      parqlint\n      parqlook\n      pixfoot\n      pixsample\n      plot2d\n      plot3d\n      plothist\n      regquery\n      server\n      sqlclient\n      sqlskymatch\n      sqlupdate\n      taplint\n      tapquery\n      tapresume\n      tapskymatch\n      tcat\n      tcatn\n      tcopy\n      tcube\n      tgridmap\n      tgroup\n      tjoin\n      tloop\n      tmatch1\n      tmatch2\n      tmatchn\n      tmulti\n      tmultin\n      tpipe\n      tskymap\n      tskymatch2\n      votcopy\n      votlint\n      xsdvalidate\n      plot2plane\n      plot2sky\n      plot2cube\n      plot2sphere\n      plot2corner\n      plot2time\n\n"
+    },
+    {
+        "prompt": "Copy a table from one FITS file to another, effectively 'cleaning' it.",
+        "response": "stilts tcopy in=messy.fits out=clean.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "How to convert an `ascii` file with 5 header lines to FITS?",
+        "response": "`tcopy` itself can't skip headers. You should use `tpipe` for that: `stilts tpipe ifmt=ascii in=data.txt icmd='tail ($nrow-5)' out=data.fits`",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: Syntax error: \"(\" unexpected\n"
+    },
+    {
+        "prompt": "Create a small FITS file from a simulated dataset for testing purposes.",
+        "response": "stilts tcopy in=:skysim:100 out=test_catalog.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Convert a VOTable into a CSV file and show it on the screen.",
+        "response": "stilts tcopy in=my_data.vot ofmt=csv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Convert a remote compressed VOTable to a local FITS file.",
+        "response": "stilts tcopy in=http://example.com/data/table.vot.gz out=table.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Can you convert my CSV file to a FITS BINTABLE?",
+        "response": "Yes, that's the default FITS output format. The command is simply: `stilts tcopy in=my.csv out=my.fits`",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: Syntax error: Unterminated quoted string\n"
+    },
+    {
+        "prompt": "How to convert a FITS table to a VOTable and specify the output table name in the VOTable metadata?",
+        "response": "This is a metadata manipulation task, so `tpipe` is more suitable: `stilts tpipe in=data.fits cmd='tablename \"My Table\"' out=data.vot`",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: tpipe: not found\n/bin/sh: 1: tpipe: not found\n\nNo such task: This\n\nUsage:\n   stilts [-help] [-version] [-verbose] [-allowunused] [-prompt] [-bench]\n          [-debug] [-batch] [-memory] [-disk] [-memgui]\n          [-checkversion <vers>] [-stdout <file>] [-stderr <file>]\n          <task-name> <task-args>\n\n   stilts <task-name> help[=<param-name>|*]\n\n   Known tasks:\n      arrayjoin\n      calc\n      cdsskymatch\n      cone\n      coneskymatch\n      datalinklint\n      funcs\n      mocshape\n      parqlint\n      parqlook\n      pixfoot\n      pixsample\n      plot2d\n      plot3d\n      plothist\n      regquery\n      server\n      sqlclient\n      sqlskymatch\n      sqlupdate\n      taplint\n      tapquery\n      tapresume\n      tapskymatch\n      tcat\n      tcatn\n      tcopy\n      tcube\n      tgridmap\n      tgroup\n      tjoin\n      tloop\n      tmatch1\n      tmatch2\n      tmatchn\n      tmulti\n      tmultin\n      tpipe\n      tskymap\n      tskymatch2\n      votcopy\n      votlint\n      xsdvalidate\n      plot2plane\n      plot2sky\n      plot2cube\n      plot2sphere\n      plot2corner\n      plot2time\n\n"
+    },
+    {
+        "prompt": "What does `ofmt=(auto)` mean?",
+        "response": "It means STILTS will try to guess the desired output format from the filename extension of the `out` file, for example, `.fits` for FITS or `.csv` for CSV. This is the default behavior [12, 13].",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: out: not found\n/bin/sh: 1: .fits: not found\n/bin/sh: 1: .csv: not found\n\nNo such task: It\n\nUsage:\n   stilts [-help] [-version] [-verbose] [-allowunused] [-prompt] [-bench]\n          [-debug] [-batch] [-memory] [-disk] [-memgui]\n          [-checkversion <vers>] [-stdout <file>] [-stderr <file>]\n          <task-name> <task-args>\n\n   stilts <task-name> help[=<param-name>|*]\n\n   Known tasks:\n      arrayjoin\n      calc\n      cdsskymatch\n      cone\n      coneskymatch\n      datalinklint\n      funcs\n      mocshape\n      parqlint\n      parqlook\n      pixfoot\n      pixsample\n      plot2d\n      plot3d\n      plothist\n      regquery\n      server\n      sqlclient\n      sqlskymatch\n      sqlupdate\n      taplint\n      tapquery\n      tapresume\n      tapskymatch\n      tcat\n      tcatn\n      tcopy\n      tcube\n      tgridmap\n      tgroup\n      tjoin\n      tloop\n      tmatch1\n      tmatch2\n      tmatchn\n      tmulti\n      tmultin\n      tpipe\n      tskymap\n      tskymatch2\n      votcopy\n      votlint\n      xsdvalidate\n      plot2plane\n      plot2sky\n      plot2cube\n      plot2sphere\n      plot2corner\n      plot2time\n\n"
+    }
+]

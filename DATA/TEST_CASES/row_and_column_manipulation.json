@@ -1,0 +1,27 @@
+[
+    {
+        "category": "Row/Column Manipulation",
+        "prompt": "From catalog.fits, select only the RA, DEC, and MAG_G columns.",
+        "expected": "stilts tpipe in=catalog.fits cmd='keepcols \"RA DEC MAG_G\"' ocat=-"
+    },
+    {
+        "category": "Row/Column Manipulation",
+        "prompt": "In the file sources.csv, find all rows where the parallax column is greater than 10 and the parallax_error is less than 0.5.",
+        "expected": "stilts tpipe in=sources.csv cmd='select \"parallax > 10 && parallax_error < 0.5\"' ocat=-"
+    },
+    {
+        "category": "Row/Column Manipulation",
+        "prompt": "Sort the table stars.fits in descending order based on the phot_g_mean_mag column.",
+        "expected": "stilts tpipe in=stars.fits cmd='sortdesc phot_g_mean_mag' ocat=-"
+    },
+    {
+        "category": "Row/Column Manipulation",
+        "prompt": "Remove any rows from observations.fits where the quality_flag column is not equal to 0.",
+        "expected": "stilts tpipe in=observations.fits cmd='select \"quality_flag == 0\"' ocat=-"
+    },
+    {
+        "category": "Row/Column Manipulation",
+        "prompt": "Select a random 10% sample of rows from the very large file big_survey.fits.",
+        "expected": "stilts tpipe in=big_survey.fits cmd='every 10' ocat=-"
+    }
+]

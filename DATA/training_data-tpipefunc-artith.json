@@ -391,11 +391,6 @@
         "chat.jar": "executed successfully"
     },
     {
-        "prompt": "Filter out any rows containing non-finite values (NaN, infinity) in the 'FLUX' column.",
-        "response": "stilts tpipe in=raw_phot.fits cmd='select \"isFinite(FLUX)\"' out=finite_phot.fits",
-        "chat.jar": "executed successfully"
-    },
-    {
         "prompt": "Combine 'data1.fits', 'data2.fits', and 'data3.fits' into a single output file named 'combined.fits'.",
         "response": "stilts tpipe in='data1.fits data2.fits data3.fits' out=combined.fits",
         "chat.jar": "executed successfully"

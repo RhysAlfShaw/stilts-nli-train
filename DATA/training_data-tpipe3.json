@@ -180,11 +180,6 @@
         "chat.jar": "executed successfully"
     },
     {
-        "prompt": "Select rows from 'input.vot' where 'ERR_MAG_G' is not null and is less than 0.1.",
-        "response": "stilts tpipe in=input.vot cmd='select \"!isBlank(ERR_MAG_G) && ERR_MAG_G < 0.1\"' out=output.vot",
-        "chat.jar": "executed successfully"
-    },
-    {
         "prompt": "Add a constant column named 'SURVEY' with value 'SDSS' and another named 'DR' with value 17 to 'input.fits'.",
         "response": "stilts tpipe in=input.fits cmd='constcol SURVEY SDSS' cmd='constcol DR 17' out=output.fits",
         "chat.jar": "failed",

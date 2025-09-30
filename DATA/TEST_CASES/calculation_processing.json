@@ -1,0 +1,18 @@
+[
+
+    {
+        "category": "Calculations",
+        "prompt": "In data.fits, create a new column called g_minus_r that is the difference between the gmag and rmag columns.",
+        "expected": "stilts tpipe in=data.fits cmd='addcol g_minus_r \"gmag - rmag\"' ocat=-"
+    },
+    {
+        "category": "Calculations",
+        "prompt": "Calculate the absolute G magnitude for gaia_stars.fits. The new column should be named abs_mag_g. The parallax is in a column named parallax (in milliarcseconds) and the apparent magnitude is in phot_g_mean_mag.",
+        "expected": "stilts tpipe in=gaia_stars.fits cmd='addcol abs_mag_g \"phot_g_mean_mag - 5 * (log10(1000 / parallax) - 1)\"' ocat=-"
+    },
+    {
+        "category": "Calculations",
+        "prompt": "Convert the RA and DEC columns in my_data.fits, which are in degrees, to Galactic coordinates l and b. Add them as new columns.",
+        "expected": "stilts tpipe in=my_data.fits cmd='addcol l skyToGalacticL(RA,DEC)' cmd='addcol b skyToGalacticB(RA,DEC)' ocat=-"
+    }
+]

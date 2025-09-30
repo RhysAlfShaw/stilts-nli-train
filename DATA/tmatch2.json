@@ -1,0 +1,536 @@
+[
+    {
+        "prompt": "Crossmatch two FITS files, `survey_A.fits` and `survey_B.fits`, on sky position with a 2 arcsecond radius. The coordinate columns in both are RA and DEC. Save the result to `matched_surveys.fits`.",
+        "response": "stilts tmatch2 in1=survey_A.fits in2=survey_B.fits out=matched_surveys.fits matcher=sky params=2 values1='RA DEC' values2='RA DEC'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I have a VOTable `my_targets.vot` and a CSV `reference_catalog.csv`. How do I find all counterparts in the reference catalog within 5 arcseconds of my targets? Coordinates are `RA_DEG`, `DEC_DEG` in the VOTable and `ra`, `dec` in the CSV.",
+        "response": "stilts tmatch2 in1=my_targets.vot ifmt2=csv in2=reference_catalog.csv out=target_counterparts.fits matcher=sky params=5 values1='RA_DEG DEC_DEG' values2='ra dec' find=all",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find objects from `catalog1.fits` that are NOT in `catalog2.fits`, based on a 1.5 arcsecond sky match. Coords are RAJ2000 and DEJ2000.",
+        "response": "stilts tmatch2 in1=catalog1.fits in2=catalog2.fits matcher=sky params=1.5 values1='RAJ2000 DEJ2000' values2='RAJ2000 DEJ2000' join=1not2 out=unmatched_from_cat1.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I want to join `table_x.fits` and `table_y.fits`. Before matching, I need to filter table_x to only include sources with `FLUX > 100`. The match should be on sky coordinates `pos_ra`, `pos_dec` with a 3 arcsec tolerance.",
+        "response": "stilts tmatch2 in1=table_x.fits icmd1='select FLUX > 100' in2=table_y.fits matcher=sky params=3 values1='pos_ra pos_dec' values2='pos_ra pos_dec' out=filtered_join.fits",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '>' '100'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: select FLUX > 100\n\nUsage: select <expr>\n    (Unused arguments: '>' '100'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "Match `primary_sources.vot` and `secondary_sources.vot` and then sort the resulting table by the separation distance. Save the output as `sorted_matches.csv`.",
+        "response": "stilts tmatch2 in1=primary_sources.vot in2=secondary_sources.vot matcher=sky params=10 values1='RA DEC' values2='RA DEC' ocmd='sort Separation' ofmt=csv out=sorted_matches.csv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Please match `cat_a.fits` and `cat_b.fits`. I want to keep all rows from `cat_a`, and include matched data from `cat_b` where available. Use a 4 arcsec radius.",
+        "response": "stilts tmatch2 in1=cat_a.fits in2=cat_b.fits matcher=sky params=4 values1='RA DEC' values2='RA DEC' join=all1 out=cat_a_with_matches.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "How can I count the number of matches between `gala_dr3.fits` and `sdss_dr17.fits` within 2 arcseconds, without creating an output file?",
+        "response": "stilts tmatch2 in1=gala_dr3.fits in2=sdss_dr17.fits matcher=sky params=2 values1='ra dec' values2='ra dec' omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need to match two tables, `sloan.dat` (ASCII) and `panstarrs.vot`. The coordinates in sloan are in radians (`ra_rad`, `dec_rad`). Can you convert them to degrees for a 5 arcsec sky match against the `RA`, `DEC` columns in panstarrs?",
+        "response": "stilts tmatch2 ifmt1=ascii in1=sloan.dat in2=panstarrs.vot matcher=sky params=5 values1='radiansToDegrees(ra_rad) radiansToDegrees(dec_rad)' values2='RA DEC' out=sloan_ps_match.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Join `first_epoch.fits` and `second_epoch.fits` on sky position. The column names are identical, so please add `_E1` and `_E2` suffixes to the columns from each table to avoid confusion.",
+        "response": "stilts tmatch2 in1=first_epoch.fits in2=second_epoch.fits matcher=sky params=1 values1='RA DEC' values2='RA DEC' fixcols=all suffix1=_E1 suffix2=_E2 out=epoch_join.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Can you match `sources.fits` against `detections.fits` and send the results directly to TOPCAT for me to inspect? Use a 3 arcsecond radius.",
+        "response": "stilts tmatch2 in1=sources.fits in2=detections.fits matcher=sky params=3 values1='RA DEC' values2='RA DEC' omode=topcat",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I have two tables with per-object errors. Match `cat1.fits` and `cat2.fits` using their individual errors stored in `ERR_ARCSEC_1` and `ERR_ARCSEC_2` respectively. The coordinate columns are `RA_1`, `DEC_1` and `RA_2`, `DEC_2`.",
+        "response": "stilts tmatch2 in1=cat1.fits in2=cat2.fits matcher=skyerr params=5 values1='RA_1 DEC_1 ERR_ARCSEC_1' values2='RA_2 DEC_2 ERR_ARCSEC_2' out=match_with_errors.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "How do I match two catalogs where the match radius is the quadrature sum of their individual errors (`pos_err_1`, `pos_err_2`)?",
+        "response": "stilts tmatch2 in1=cat_A.fits in2=cat_B.fits matcher=skyerr_q params=3 values1='RA DEC pos_err_1' values2='RA DEC pos_err_2' out=quadrature_error_match.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Match two tables based on elliptical regions on the sky. Table `galaxies.fits` has columns `ra`, `dec`, `a_world`, `b_world`, `pa_world`. Table `regions.vot` has `cen_ra`, `cen_dec`, `maj_ax`, `min_ax`, `pos_ang`. All angles are degrees and radii are arcseconds. The approximate scale of the radii is 30 arcsec.",
+        "response": "stilts tmatch2 in1=galaxies.fits in2=regions.vot matcher=skyellipse params=30 values1='ra dec a_world b_world pa_world' values2='cen_ra cen_dec maj_ax min_ax pos_ang' out=elliptical_matches.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need to perform a 3D match between `local_stars.fits` (columns `RA`, `DEC`, `DISTANCE_PC`) and `nearby_galaxies.vot` (columns `RA`, `DEC`, `DIST_MPC`). The maximum separation should be 0.5 Mpc.",
+        "response": "stilts tmatch2 in1=local_stars.fits in2=nearby_galaxies.vot matcher=sky3d params=0.5 values1='RA DEC DISTANCE_PC/1e6' values2='RA DEC DIST_MPC' out=3d_spatial_match.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Please join `table1.csv` and `table2.csv` where the `SOURCE_ID` column is exactly the same in both.",
+        "response": "stilts tmatch2 ifmt1=csv in1=table1.csv ifmt2=csv in2=table2.csv matcher=exact values1=SOURCE_ID values2=SOURCE_ID out=exact_id_join.csv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "How to match two tables on a 1-dimensional value, `redshift`, with a tolerance of 0.01?",
+        "response": "stilts tmatch2 in1=spec_cat.fits in2=photo_cat.fits matcher=1d params=0.01 values1=redshift values2=z_phot out=redshift_match.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I have detector coordinates (`X_IMAGE`, `Y_IMAGE`) in two files. Find matches within a 5 pixel radius.",
+        "response": "stilts tmatch2 in1=chip1.fits in2=chip2.fits matcher=2d params=5 values1='X_IMAGE Y_IMAGE' values2='X_IMAGE Y_IMAGE' out=detector_matches.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Perform a match in a 3D parameter space (`PARAM1`, `PARAM2`, `PARAM3`) with an error of 10 units.",
+        "response": "stilts tmatch2 in1=model_a.dat in2=model_b.dat ifmt=ascii matcher=3d params=10 values1='PARAM1 PARAM2 PARAM3' values2='PARAM1 PARAM2 PARAM3' out=param_space_match.dat",
+        "chat.jar": "failed",
+        "error": "Error: Can't guess output format for param_space_match.dat\n    (No handler specified for writing table.\nKnown formats: jdbc, fits, colfits, votable, fits-healpix, ECSV, parquet, text, ascii, CSV, IPAC, HTML, LaTeX, TST, feather, mirage)\nUsage: tmatch2 ifmt1=<in-format> ifmt2=<in-format> icmd1=<cmds> icmd2=<cmds>\n               ocmd=<cmds>\n               omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n               out=<out-table> ofmt=<out-format> matcher=<matcher-name>\n               values1=<expr-list> values2=<expr-list> params=<match-params>\n               tuning=<tuning-params>\n               join=1and2|1or2|all1|all2|1not2|2not1|1xor2\n               find=all|best|best1|best2 fixcols=none|dups|all suffix1=<label>\n               suffix2=<label> scorecol=<col-name>\n               progress=none|log|time|profile\n               runner=parallel|parallel<n>|parallel-all|sequential|classic|partest\n               [in1=]<table1> [in2=]<table2>\n\n"
+    },
+    {
+        "prompt": "I want to match on magnitude and color, with different tolerances. Match within 0.1 for magnitude (`mag_r`) and 0.2 for color (`g_minus_r`).",
+        "response": "stilts tmatch2 in1=phot1.fits in2=phot2.fits matcher=2d_anisotropic params='0.1 0.2' values1='mag_r g_minus_r' values2='mag_r g_minus_r' out=mag_color_match.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find objects in `obs1.fits` and `obs2.fits` that fall into the same bin, where bins are defined as +/- 2 pixels in X and +/- 3 pixels in Y.",
+        "response": "stilts tmatch2 in1=obs1.fits in2=obs2.fits matcher=2d_cuboid params='2 3' values1='X Y' values2='X Y' out=binned_matches.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Match `data_a.fits` and `data_b.fits` in a 2D space (`VAL1`, `VAL2`), where each point has its own error radius given by the `ERR` column.",
+        "response": "stilts tmatch2 in1=data_a.fits in2=data_b.fits matcher=2d_err params=10 values1='VAL1 VAL2 ERR' values2='VAL1 VAL2 ERR' out=cartesian_err_match.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I have two tables with elliptical regions defined in a 2D plane (columns `x`, `y`, `a`, `b`, `theta`). How can I find the overlapping regions? The characteristic size is about 50 units.",
+        "response": "stilts tmatch2 in1=regions1.fits in2=regions2.fits matcher=2d_ellipse params=50 values1='x y a b theta' values2='x y a b theta' out=overlapping_regions.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find objects from `cat_X.fits` and `cat_Y.fits` that are within 2 arcsec AND have a magnitude difference (`MAG`) of less than 0.25.",
+        "response": "stilts tmatch2 in1=cat_X.fits in2=cat_Y.fits matcher=sky+1d params='2 0.25' values1='RA DEC MAG' values2='RA DEC MAG' out=pos_mag_match.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need to perform a strict match in position and flux. Match if `skyDistanceDegrees(...) < 2` AND `abs(FLUX_1 - FLUX_2) < 10`. Can I do this?",
+        "response": "stilts tmatch2 in1=t1.fits in2=t2.fits matcher=sky+1d params='2 10' values1='RA DEC FLUX_1' values2='RA DEC FLUX_2' out=strict_match.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "My friend wants me to match our star lists. His is `friends_stars.txt`, mine is `my_stars.csv`. We need to find stars closer than 1 arcsec. For each of my stars, just find the single best match from his list.",
+        "response": "stilts tmatch2 ifmt1=csv in1=my_stars.csv ifmt2=ascii in2=friends_stars.txt matcher=sky params=1 values1='RA DEC' values2='RA DEC' find=best1 out=our_best_matches.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Generate a table of all rows from my primary catalog `main_survey.fits`, indicating the best match from `supplemental.fits` if one exists within 5 arcseconds.",
+        "response": "stilts tmatch2 in1=main_survey.fits in2=supplemental.fits matcher=sky params=5 values1='RA DEC' values2='RA DEC' find=best1 join=all1 out=main_with_supplemental.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find all possible pairs between `dense_field_A.fits` and `dense_field_B.fits` within 10 arcseconds. I want to see the separation in arcseconds in a column named 'AngSep'.",
+        "response": "stilts tmatch2 in1=dense_field_A.fits in2=dense_field_B.fits matcher=sky params=10 values1='RA DEC' values2='RA DEC' find=all scorecol=AngSep out=all_pairs.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "To speed up my sky match of two huge catalogs, can I adjust the HEALPix level? Let's try k=8.",
+        "response": "stilts tmatch2 in1=big_cat1.fits in2=big_cat2.fits matcher=sky params=10 values1='RA DEC' values2='RA DEC' tuning=8 out=tuned_match.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I'm matching two very large tables on a multi-core machine. How do I tell stilts to use parallel processing?",
+        "response": "stilts tmatch2 in1=massive_1.colfits in2=massive_2.colfits matcher=sky params=1 values1='RA DEC' values2='RA DEC' runner=parallel out=parallel_match.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "What's the command to get a statistical summary of the matched objects between `table1.fits` and `table2.fits`?",
+        "response": "stilts tmatch2 in1=table1.fits in2=table2.fits matcher=sky params=2 values1='RA DEC' values2='RA DEC' omode=stats",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I'm matching two tables, `A.fits` and `B.fits`, but `B.fits` has its coordinates (`B_RA`, `B_DEC`) in the FK4 system. Can you convert them to FK5 before matching against `A.fits` (`A_RA`, `A_DEC`)?",
+        "response": "stilts tmatch2 in1=A.fits in2=B.fits icmd2='addskycoords fk4 fk5 B_RA B_DEC B_RA_FK5 B_DEC_FK5' matcher=sky params=5 values1='A_RA A_DEC' values2='B_RA_FK5 B_DEC_FK5' out=fk4_fk5_match.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Match `cat_main.fits` with `cat_alt.fits`. The `cat_alt` table uses galactic coordinates `GLON`, `GLAT`. `cat_main` uses ICRS `RA`, `DEC`. Match them within 0.1 degrees.",
+        "response": "stilts tmatch2 in1=cat_main.fits in2=cat_alt.fits icmd2='addskycoords galactic icrs GLON GLAT RA_ICRS DEC_ICRS' matcher=sky params=360 values1='RA DEC' values2='RA_ICRS DEC_ICRS' out=icrs_gal_match.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need to match objects by their unique string identifier, `UID_string`, in `list1.csv` and `list2.csv`.",
+        "response": "stilts tmatch2 ifmt=csv in1=list1.csv in2=list2.csv matcher=exact values1='UID_string' values2='UID_string' out=uid_match.csv",
+        "chat.jar": "failed",
+        "error": "\nUnused arguments: ifmt=csv\n\nUsage: tmatch2 ifmt1=<in-format> ifmt2=<in-format> icmd1=<cmds> icmd2=<cmds>\n               ocmd=<cmds>\n               omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n               out=<out-table> ofmt=<out-format> matcher=<matcher-name>\n               values1=<expr-list> values2=<expr-list> params=<match-params>\n               tuning=<tuning-params>\n               join=1and2|1or2|all1|all2|1not2|2not1|1xor2\n               find=all|best|best1|best2 fixcols=none|dups|all suffix1=<label>\n               suffix2=<label> scorecol=<col-name>\n               progress=none|log|time|profile\n               runner=parallel|parallel<n>|parallel-all|sequential|classic|partest\n               [in1=]<table1> [in2=]<table2>\n\n"
+    },
+    {
+        "prompt": "Give me a list of objects that are in either `cat1.fits` or `cat2.fits` but not in both, based on a 2 arcsec sky match.",
+        "response": "stilts tmatch2 in1=cat1.fits in2=cat2.fits matcher=sky params=2 values1='RA DEC' values2='RA DEC' join=1xor2 out=symmetric_difference.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Join `a.fits` and `b.fits` with a sky match. After joining, I only want the ID columns from both (`ID_1`, `ID_2`) and the separation.",
+        "response": "stilts tmatch2 in1=a.fits in2=b.fits matcher=sky params=4 values1='RA DEC' values2='RA DEC' ocmd='keepcols \"ID_1 ID_2 Separation\"' out=id_pairs.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I'm matching two photometric catalogs. I want to find pairs within 1 arcsec that also have a G-band magnitude difference of less than 0.1, AND an R-band magnitude difference of less than 0.1.",
+        "response": "stilts tmatch2 in1=phot_a.fits in2=phot_b.fits matcher=sky+2d_anisotropic params='1 0.1 0.1' values1='RA DEC MAG_G MAG_R' values2='RA DEC MAG_G MAG_R' out=photometric_pairs.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Show me the metadata of the resulting table if I match `t1.fits` and `t2.fits` on sky position.",
+        "response": "stilts tmatch2 in1=t1.fits in2=t2.fits matcher=sky params=2 values1='RA DEC' values2='RA DEC' omode=meta",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Perform a sky match between `c1.fits` and `c2.fits`, but for `c2.fits`, only consider rows where `QUALITY_FLAG` is 'A'.",
+        "response": "stilts tmatch2 in1=c1.fits in2=c2.fits icmd2='select QUALITY_FLAG==\"A\"' matcher=sky params=3 values1='RA DEC' values2='RA DEC' out=quality_match.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "What's the command to find the best match for each row in `table1.fits` from `table2.fits`, and include all rows from `table1` in the output, even if they have no match?",
+        "response": "stilts tmatch2 in1=table1.fits in2=table2.fits matcher=sky params=5 values1='RA DEC' values2='RA DEC' find=best1 join=all1 out=complete_match.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need to do a crossmatch, but I want to see the progress because the tables are huge. The match is on `RA`, `DEC` with a 2\" radius.",
+        "response": "stilts tmatch2 in1=huge1.fits in2=huge2.fits matcher=sky params=2 values1='RA DEC' values2='RA DEC' progress=log out=huge_match.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Match `tbl_x.fits` and `tbl_y.fits`. In the output, please only keep the identifier columns (`ID_X`, `ID_Y`) and then count how many pairs there are.",
+        "response": "stilts tmatch2 in1=tbl_x.fits in2=tbl_y.fits matcher=sky params=1 values1='RA DEC' values2='RA DEC' icmd1='keepcols \"ID_X RA DEC\"' icmd2='keepcols \"ID_Y RA DEC\"' ocmd='keepcols \"ID_X ID_Y\"' omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "My tables `cat_left.fits` and `cat_right.fits` have position errors in separate `ra_err` and `dec_err` columns. Can I match them using a 2D error ellipse defined by these errors?",
+        "response": "stilts tmatch2 in1=cat_left.fits in2=cat_right.fits matcher=2d_ellipse params=1 values1='RA DEC ra_err dec_err 0' values2='RA DEC ra_err dec_err 0' out=error_ellipse_match.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Join `sources_main.fits` and `sources_extra.fits` by matching their `SOURCE_NAME` string exactly.",
+        "response": "stilts tmatch2 in1=sources_main.fits in2=sources_extra.fits matcher=exact values1=SOURCE_NAME values2=SOURCE_NAME out=name_join.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need to match `file1.dat` and `file2.dat`. The coordinates are `RA1`, `DEC1` and `RA2`, `DEC2`. After matching within 2 arcsec, calculate the color `MAG_B - MAG_R` from the joined table and save it.",
+        "response": "stilts tmatch2 ifmt=ascii in1=file1.dat in2=file2.dat matcher=sky params=2 values1='RA1 DEC1' values2='RA2 DEC2' ocmd='addcol COLOR MAG_B_1 - MAG_R_2' out=color_match.dat",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '-' 'MAG_R_2'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: addcol COLOR MAG_B_1 - MAG_R_2\n\nUsage: addcol [-after <col-id> | -before <col-id>]\n              [-units <units>] [-ucd <ucd>] [-utype <utype>] [-xtype <xtype>]\n              [-desc <descrip>] [-shape <n>[,<n>...][,*]] [-elsize <n>]\n              <col-name> <expr>\n    (Unused arguments: '-' 'MAG_R_2'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "Please find all objects from `table2.fits` that have no counterpart in `table1.fits` within a 10 arcsecond radius.",
+        "response": "stilts tmatch2 in1=table1.fits in2=table2.fits matcher=sky params=10 values1='RA DEC' values2='RA DEC' join=2not1 out=table2_unmatched.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Is it possible to match two tables based on both their sky position (within 3 arcsec) and their proper motion in RA (`PMRA`) within 5 mas/yr?",
+        "response": "stilts tmatch2 in1=t1.fits in2=t2.fits matcher=sky+1d params='3 5' values1='RA DEC PMRA' values2='RA DEC PMRA' out=pos_pm_match.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find the best match between `cat_new.fits` and `cat_old.fits`. `cat_new` has per-object errors in `ERR_ARCSEC`. `cat_old` does not. Match them.",
+        "response": "stilts tmatch2 in1=cat_new.fits in2=cat_old.fits matcher=skyerr params=2 values1='RA DEC ERR_ARCSEC' values2='RA DEC 0' find=best out=new_old_best_match.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I'm matching `a.fits` and `b.fits`. I want an output table that contains every row from both original tables, with matched rows joined and unmatched rows having nulls for the other table's columns.",
+        "response": "stilts tmatch2 in1=a.fits in2=b.fits matcher=sky params=2 values1='RA DEC' values2='RA DEC' join=1or2 out=full_outer_join.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Could you match `table1.fits` with `table2.fits` and show me a statistical summary of the resulting table?",
+        "response": "stilts tmatch2 in1=table1.fits in2=table2.fits matcher=sky params=5 values1='RA DEC' values2='RA DEC' omode=stats",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "How do I match objects within a box of 0.1 degrees in RA and 0.2 degrees in Dec?",
+        "response": "stilts tmatch2 in1=box_cat1.fits in2=box_cat2.fits matcher=sky+2d_cuboid is not suitable. You should use a sky matcher and then filter the result. For example: stilts tmatch2 in1=box_cat1.fits in2=box_cat2.fits matcher=sky params=720 values1='RA DEC' values2='RA DEC' ocmd='select abs(RA_1-RA_2)*cos(DEC_1*PI/180)<0.1 && abs(DEC_1-DEC_2)<0.2' out=box_match.fits",
+        "chat.jar": "failed",
+        "error": "Error: Bad value for parameter params: Wrong number of words - wanted 3, got 1\nUsage: params=<match-params>\n\n"
+    },
+    {
+        "prompt": "Crossmatch `t1.fits` and `t2.fits` with a 10 arcsec radius. For table 1, use columns `RA_1`, `DEC_1`. For table 2, the coordinates are in a single column `pos_j2000` as a 2-element array. How do I do that?",
+        "response": "stilts tmatch2 in1=t1.fits in2=t2.fits matcher=sky params=10 values1='RA_1 DEC_1' values2='pos_j2000 pos_j2000[7]' out=array_coord_match.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Match `cosmos_data.fits` and `hst_data.fits` and name the separation column `Separation_arcsec`.",
+        "response": "stilts tmatch2 in1=cosmos_data.fits in2=hst_data.fits matcher=sky params=1 values1='RA DEC' values2='RA DEC' scorecol=Separation_arcsec out=match_with_sep.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I want to perform a symmetric best-match between `survey_x.fits` and `survey_y.fits` such that each object can only appear in one matched pair.",
+        "response": "stilts tmatch2 in1=survey_x.fits in2=survey_y.fits matcher=sky params=2 values1='RA DEC' values2='RA DEC' find=best out=symmetric_best_match.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find all pairs within 2 arcsec between `cat1.fits` and `cat2.fits`. In the output, I want a column `SCORE` which is a combination of positional separation and magnitude difference.",
+        "response": "stilts tmatch2 in1=cat1.fits in2=cat2.fits matcher=sky*1d params='2 1.0' values1='RA DEC MAG' values2='RA DEC MAG' find=all out=weighted_score_match.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Please match `file_A.csv` and `file_B.csv` on their `OBS_ID` integer column.",
+        "response": "stilts tmatch2 ifmt=csv in1=file_A.csv in2=file_B.csv matcher=exact values1=OBS_ID values2=OBS_ID out=obs_id_match.csv",
+        "chat.jar": "failed",
+        "error": "\nUnused arguments: ifmt=csv\n\nUsage: tmatch2 ifmt1=<in-format> ifmt2=<in-format> icmd1=<cmds> icmd2=<cmds>\n               ocmd=<cmds>\n               omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n               out=<out-table> ofmt=<out-format> matcher=<matcher-name>\n               values1=<expr-list> values2=<expr-list> params=<match-params>\n               tuning=<tuning-params>\n               join=1and2|1or2|all1|all2|1not2|2not1|1xor2\n               find=all|best|best1|best2 fixcols=none|dups|all suffix1=<label>\n               suffix2=<label> scorecol=<col-name>\n               progress=none|log|time|profile\n               runner=parallel|parallel<n>|parallel-all|sequential|classic|partest\n               [in1=]<table1> [in2=]<table2>\n\n"
+    },
+    {
+        "prompt": "I have two large FITS files. I want to match them using sequential execution to avoid high memory usage.",
+        "response": "stilts tmatch2 in1=large1.fits in2=large2.fits matcher=sky params=1 values1='RA DEC' values2='RA DEC' runner=sequential out=sequential_match.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Match `cosmos.fits` and `goods.fits`. Before matching, for both tables, create a new column `LOG_FLUX` as `log10(FLUX)`.",
+        "response": "stilts tmatch2 in1=cosmos.fits in2=goods.fits icmd1='addcol LOG_FLUX log10(FLUX)' icmd2='addcol LOG_FLUX log10(FLUX)' matcher=sky params=1 values1='RA DEC' values2='RA DEC' out=match_with_logflux.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I have two tables, `t1.fits` and `t2.fits`. Match them on `RA`, `DEC`. The separation should be named 'dist'. Then, select only matches with `dist < 0.5` arcsec.",
+        "response": "stilts tmatch2 in1=t1.fits in2=t2.fits matcher=sky params=2 values1='RA DEC' values2='RA DEC' scorecol=dist ocmd='select dist < 0.5/3600.' out=close_matches.fits",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '<' '0.5/3600.'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: select dist < 0.5/3600.\n\nUsage: select <expr>\n    (Unused arguments: '<' '0.5/3600.'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "Match `cat.fits` against itself to find close pairs. Use a 5 arcsec radius.",
+        "response": "stilts tmatch2 in1=cat.fits in2=cat.fits matcher=sky params=5 values1='RA DEC' values2='RA DEC' find=all ocmd='select ID_1 < ID_2' out=internal_pairs.fits",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '<' 'ID_2'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: select ID_1 < ID_2\n\nUsage: select <expr>\n    (Unused arguments: '<' 'ID_2'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "Find objects in `cat_new.fits` which have a counterpart in `cat_ref.fits` within 3 arcsec, but only if the magnitude in `cat_new` is brighter than 18.",
+        "response": "stilts tmatch2 in1=cat_new.fits icmd1='select MAG < 18' in2=cat_ref.fits matcher=sky params=3 values1='RA DEC' values2='RA DEC' out=bright_matches.fits",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '<' '18'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: select MAG < 18\n\nUsage: select <expr>\n    (Unused arguments: '<' '18'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "How do I perform a match and see timing and profiling information?",
+        "response": "stilts tmatch2 in1=t1.fits in2=t2.fits matcher=sky params=1 values1='RA DEC' values2='RA DEC' progress=profile out=profiled_match.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Match `data1.fits` and `data2.fits` using `skyerr_q` and a scale parameter of 2.0.",
+        "response": "stilts tmatch2 in1=data1.fits in2=data2.fits matcher=skyerr_q params=2.0 values1='RA DEC ERR' values2='RA DEC ERR' out=skyerrq_match.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I want to match two tables (`a.fits`, `b.fits`) and then view the result directly in a GUI window.",
+        "response": "stilts tmatch2 in1=a.fits in2=b.fits matcher=sky params=1 values1='RA DEC' values2='RA DEC' omode=gui",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Match `t1.csv` and `t2.csv` on `ID`. After the match, rename columns from `t1` with suffix `_ONE` and from `t2` with suffix `_TWO`.",
+        "response": "stilts tmatch2 ifmt=csv in1=t1.csv in2=t2.csv matcher=exact values1=ID values2=ID fixcols=all suffix1=_ONE suffix2=_TWO out=renamed_match.csv",
+        "chat.jar": "failed",
+        "error": "\nUnused arguments: ifmt=csv\n\nUsage: tmatch2 ifmt1=<in-format> ifmt2=<in-format> icmd1=<cmds> icmd2=<cmds>\n               ocmd=<cmds>\n               omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n               out=<out-table> ofmt=<out-format> matcher=<matcher-name>\n               values1=<expr-list> values2=<expr-list> params=<match-params>\n               tuning=<tuning-params>\n               join=1and2|1or2|all1|all2|1not2|2not1|1xor2\n               find=all|best|best1|best2 fixcols=none|dups|all suffix1=<label>\n               suffix2=<label> scorecol=<col-name>\n               progress=none|log|time|profile\n               runner=parallel|parallel<n>|parallel-all|sequential|classic|partest\n               [in1=]<table1> [in2=]<table2>\n\n"
+    },
+    {
+        "prompt": "Perform a sky match between two tables, and in the output only keep rows from the first table that were matched.",
+        "response": "stilts tmatch2 in1=t1.fits in2=t2.fits matcher=sky params=1 values1='RA DEC' values2='RA DEC' join=1and2 ocmd='keepcols \"*_1\"' out=t1_matched_rows.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Can I match two tables on `RA`, `DEC`, and `EPOCH`? Tolerances are 1 arcsec and 0.5 years.",
+        "response": "stilts tmatch2 in1=e1.fits in2=e2.fits matcher=sky+1d params='1 0.5' values1='RA DEC EPOCH' values2='RA DEC EPOCH' out=spacetime_match.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find all rows in `catalog_A.fits` that do not have a match in `catalog_B.fits` within 2 arcsec.",
+        "response": "stilts tmatch2 in1=catalog_A.fits in2=catalog_B.fits matcher=sky params=2 values1='RA DEC' values2='RA DEC' join=1not2 out=A_not_in_B.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "How can I join `cat1.fits` and `cat2.fits` and calculate a checksum of the output table?",
+        "response": "stilts tmatch2 in1=cat1.fits in2=cat2.fits matcher=sky params=1 values1='RA DEC' values2='RA DEC' omode=checksum",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I want to match two tables and write the output as a LaTeX document.",
+        "response": "stilts tmatch2 in1=small_cat1.fits in2=small_cat2.fits matcher=sky params=5 values1='RA DEC' values2='RA DEC' ofmt=latex out=match_report.tex",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Match `table1.fits` and `table2.fits`. The coordinates in `table2` are `RA_RADS` and `DEC_RADS`. Then, add a column `IS_BRIGHT` to the output if `MAG_1` is less than 15.",
+        "response": "stilts tmatch2 in1=table1.fits in2=table2.fits matcher=sky params=2 values1='RA DEC' values2='radiansToDegrees(RA_RADS) radiansToDegrees(DEC_RADS)' ocmd='addcol IS_BRIGHT MAG_1 < 15' out=bright_matches_processed.fits",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '<' '15'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: addcol IS_BRIGHT MAG_1 < 15\n\nUsage: addcol [-after <col-id> | -before <col-id>]\n              [-units <units>] [-ucd <ucd>] [-utype <utype>] [-xtype <xtype>]\n              [-desc <descrip>] [-shape <n>[,<n>...][,*]] [-elsize <n>]\n              <col-name> <expr>\n    (Unused arguments: '<' '15'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "I need to match `data.fits` with `template.fits`. For `data.fits`, I need to apply a zero-point correction `MAG_CORR = MAG_RAW + 0.05` before matching on magnitude within a tolerance of 0.1.",
+        "response": "stilts tmatch2 in1=data.fits in2=template.fits icmd1='addcol MAG_CORR MAG_RAW + 0.05' matcher=1d params=0.1 values1=MAG_CORR values2=MAG_TEMPLATE out=zp_corrected_match.fits",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '+' '0.05'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: addcol MAG_CORR MAG_RAW + 0.05\n\nUsage: addcol [-after <col-id> | -before <col-id>]\n              [-units <units>] [-ucd <ucd>] [-utype <utype>] [-xtype <xtype>]\n              [-desc <descrip>] [-shape <n>[,<n>...][,*]] [-elsize <n>]\n              <col-name> <expr>\n    (Unused arguments: '+' '0.05'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "Find the best match for each object in `cat_main.fits` from `cat_ref.fits` within 10 arcsec, but only for objects with `CLASS` = 'GALAXY' in `cat_main`.",
+        "response": "stilts tmatch2 in1=cat_main.fits in2=cat_ref.fits icmd1='select CLASS==\"GALAXY\"' matcher=sky params=10 values1='RA DEC' values2='RA DEC' find=best1 out=galaxy_matches.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Can you match `cat1.fits` and `cat2.fits` using `skyerr` and then in the output keep only the ID columns and the separation?",
+        "response": "stilts tmatch2 in1=cat1.fits in2=cat2.fits matcher=skyerr params=5 values1='RA DEC ERR' values2='RA DEC ERR' scorecol=Separation ocmd='keepcols \"ID_1 ID_2 Separation\"' out=id_sep_only.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Match `a.fits` and `b.fits`. Then select only the rows from the output where the magnitude from `a` is brighter than the magnitude from `b`.",
+        "response": "stilts tmatch2 in1=a.fits in2=b.fits matcher=sky params=1 values1='RA DEC' values2='RA DEC' fixcols=all suffix1=_a suffix2=_b ocmd='select MAG_a < MAG_b' out=brighter_matches.fits",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '<' 'MAG_b'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: select MAG_a < MAG_b\n\nUsage: select <expr>\n    (Unused arguments: '<' 'MAG_b'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "I want to perform a 2D match on `X` and `Y` columns. But for table 2, the columns are named `XPOS` and `YPOS`.",
+        "response": "stilts tmatch2 in1=t1.fits in2=t2.fits matcher=2d params=3 values1='X Y' values2='XPOS YPOS' out=xy_match.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "How do I take two tables, match them, and output the result to standard output as a text file?",
+        "response": "stilts tmatch2 in1=t1.fits in2=t2.fits matcher=sky params=1 values1='RA DEC' values2='RA DEC' ofmt=text out=-",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Match `a.fits` and `b.fits`. If there are multiple matches for a row in `a.fits`, I want all of them. But for `b.fits`, each row should only be matched once (to its best partner in `a.fits`).",
+        "response": "This requires two separate matches. First find best matches for b: `stilts tmatch2 in1=a.fits in2=b.fits find=best2 ...`. Then use that result to get all matches for a.",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: tmatch2: not found\n\nNo such task: This\n\nUsage:\n   stilts [-help] [-version] [-verbose] [-allowunused] [-prompt] [-bench]\n          [-debug] [-batch] [-memory] [-disk] [-memgui]\n          [-checkversion <vers>] [-stdout <file>] [-stderr <file>]\n          <task-name> <task-args>\n\n   stilts <task-name> help[=<param-name>|*]\n\n   Known tasks:\n      arrayjoin\n      calc\n      cdsskymatch\n      cone\n      coneskymatch\n      datalinklint\n      funcs\n      mocshape\n      parqlint\n      parqlook\n      pixfoot\n      pixsample\n      plot2d\n      plot3d\n      plothist\n      regquery\n      server\n      sqlclient\n      sqlskymatch\n      sqlupdate\n      taplint\n      tapquery\n      tapresume\n      tapskymatch\n      tcat\n      tcatn\n      tcopy\n      tcube\n      tgridmap\n      tgroup\n      tjoin\n      tloop\n      tmatch1\n      tmatch2\n      tmatchn\n      tmulti\n      tmultin\n      tpipe\n      tskymap\n      tskymatch2\n      votcopy\n      votlint\n      xsdvalidate\n      plot2plane\n      plot2sky\n      plot2cube\n      plot2sphere\n      plot2corner\n      plot2time\n\n"
+    },
+    {
+        "prompt": "I'm trying to find variable stars by matching two observations `obs1.fits` and `obs2.fits`. Find pairs within 1 arcsec and then select pairs where the magnitude difference is greater than 0.5.",
+        "response": "stilts tmatch2 in1=obs1.fits in2=obs2.fits matcher=sky params=1 values1='RA DEC' values2='RA DEC' fixcols=all suffix1=_1 suffix2=_2 ocmd='select abs(MAG_1 - MAG_2) > 0.5' out=variable_candidates.fits",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '-' 'MAG_2)' '>' '0.5'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: select abs(MAG_1 - MAG_2) > 0.5\n\nUsage: select <expr>\n    (Unused arguments: '-' 'MAG_2)' '>' '0.5'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "Match `c1.fits` and `c2.fits` using `sky+1d` on `RA, DEC, FLUX`. Then calculate statistics on the `Separation` and `Score` columns.",
+        "response": "stilts tmatch2 in1=c1.fits in2=c2.fits matcher=sky+1d params='2 100' values1='RA DEC FLUX' values2='RA DEC FLUX' ocmd='keepcols \"Separation Score\"' omode=stats",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I want to match two tables and only output rows from the second table that were successfully matched.",
+        "response": "stilts tmatch2 in1=t1.fits in2=t2.fits matcher=sky params=1 values1='RA DEC' values2='RA DEC' join=1and2 ocmd='keepcols \"*_2\"' out=t2_matched_rows.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Can you match `catA.fits` and `catB.fits` and for each row in catA, just tell me the distance to its nearest neighbor in catB, even if it's outside the match radius?",
+        "response": "stilts tmatch2 in1=catA.fits in2=catB.fits matcher=sky params=180000 values1='RA DEC' values2='RA DEC' find=best1 join=all1 ocmd='keepcols \"ID_1 Separation\"' out=nearest_neighbor_dist.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Match `data.fits` to `reference.fits`. For `data.fits`, the positions are in galactic coordinates `GLON`, `GLAT`. Convert them to ICRS before matching `reference.fits`.",
+        "response": "stilts tmatch2 in1=data.fits in2=reference.fits icmd1='addskycoords galactic icrs GLON GLAT RA_ICRS DEC_ICRS' matcher=sky params=2 values1='RA_ICRS DEC_ICRS' values2='RA DEC' out=gal_icrs_match.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Perform a sky match and for the output table, replace any null values in the `FLUX_2` column with -9999.",
+        "response": "stilts tmatch2 in1=t1.fits in2=t2.fits matcher=sky params=1 values1='RA DEC' values2='RA DEC' join=all1 ocmd='replaceval null -9999 FLUX_2' out=match_with_badvals.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Match `t1.fits` and `t2.fits`. If a column `ID` exists in both, rename them to `ID_1` and `ID_2` but leave other columns as they are.",
+        "response": "stilts tmatch2 in1=t1.fits in2=t2.fits matcher=sky params=1 values1='RA DEC' values2='RA DEC' fixcols=dups suffix1=_1 suffix2=_2 out=dup_id_match.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I have two tables from different instruments. `inst1.fits` has coords `X1`, `Y1`. `inst2.fits` has `X2`, `Y2`. Match them with a 2-pixel tolerance, find all pairs, and output as an ECSV file.",
+        "response": "stilts tmatch2 in1=inst1.fits in2=inst2.fits matcher=2d params=2 values1='X1 Y1' values2='X2 Y2' find=all ofmt=ecsv out=instrument_pairs.ecsv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Match `catalog.fits` with `deep_field.fits` where the match must be within 1 arcsec, and `deep_field` objects must have `FLAG==0`.",
+        "response": "stilts tmatch2 in1=catalog.fits in2=deep_field.fits icmd2='select FLAG==0' matcher=sky params=1 values1='RA DEC' values2='RA DEC' out=clean_deep_match.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "How do I find the single best counterpart in `cat2.fits` for each object in `cat1.fits` within 5 arcsec?",
+        "response": "stilts tmatch2 in1=cat1.fits in2=cat2.fits matcher=sky params=5 values1='RA DEC' values2='RA DEC' find=best1 out=best_counterparts.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I want to match two tables and only keep the unmatched rows from the second table.",
+        "response": "stilts tmatch2 in1=t1.fits in2=t2.fits matcher=sky params=1 values1='RA DEC' values2='RA DEC' join=2not1 out=unmatched_t2.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Match two tables, then add a new column that is the ratio of their fluxes.",
+        "response": "stilts tmatch2 in1=flux_a.fits in2=flux_b.fits matcher=sky params=1 values1='RA DEC' values2='RA DEC' fixcols=dups suffix1=_a suffix2=_b ocmd='addcol FLUX_RATIO FLUX_a/FLUX_b' out=flux_ratio_matches.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Perform a sky match and for the output table, rename the `ID_1` column to `PRIMARY_ID` and `ID_2` to `SECONDARY_ID`.",
+        "response": "stilts tmatch2 in1=t1.fits in2=t2.fits matcher=sky params=1 values1='RA DEC' values2='RA DEC' ocmd='colmeta -name PRIMARY_ID ID_1; colmeta -name SECONDARY_ID ID_2' out=renamed_id_match.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need to match `catA.fits` and `catB.fits` which have per-object errors `err_a` and `err_b`. After matching with `skyerr`, I want to discard all columns except the IDs and the separation.",
+        "response": "stilts tmatch2 in1=catA.fits in2=catB.fits matcher=skyerr params=5 values1='ra dec err_a' values2='ra dec err_b' scorecol=dist ocmd='keepcols \"ID_1 ID_2 dist\"' out=minimal_match.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find the best match for each row in `table_A.fits` from `table_B.fits`. The `table_B.fits` coordinates are in a 2-element array column `pos_vec`. The search radius is 10 arcsec.",
+        "response": "stilts tmatch2 in1=table_A.fits in2=table_B.fits matcher=sky params=10 values1='RA DEC' values2='pos_vec pos_vec[7]' find=best1 out=vec_pos_match.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Match table `one.fits` and `two.fits`. The coordinates for `one` are `RA1`, `DEC1` and for `two` are `RA2`, `DEC2`. The output should be a VOTable with BINARY2 serialization.",
+        "response": "stilts tmatch2 in1=one.fits in2=two.fits matcher=sky params=1 values1='RA1 DEC1' values2='RA2 DEC2' ofmt='votable(format=BINARY2)' out=match_binary2.vot",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need to find all pairs between two catalogs, but I also want to run it with low CPU priority. How can I do that?",
+        "response": "CPU priority is controlled by your operating system, not STILTS directly. On Linux/macOS you can use `nice`: `nice stilts tmatch2 in1=c1.fits in2=c2.fits matcher=sky params=1 values1='RA DEC' values2='RA DEC' find=all out=low_priority_match.fits`.",
+        "chat.jar": "failed",
+        "error": "nice: \u2018tmatch2\u2019: No such file or directory\n\nNo such task: CPU\n\nUsage:\n   stilts [-help] [-version] [-verbose] [-allowunused] [-prompt] [-bench]\n          [-debug] [-batch] [-memory] [-disk] [-memgui]\n          [-checkversion <vers>] [-stdout <file>] [-stderr <file>]\n          <task-name> <task-args>\n\n   stilts <task-name> help[=<param-name>|*]\n\n   Known tasks:\n      arrayjoin\n      calc\n      cdsskymatch\n      cone\n      coneskymatch\n      datalinklint\n      funcs\n      mocshape\n      parqlint\n      parqlook\n      pixfoot\n      pixsample\n      plot2d\n      plot3d\n      plothist\n      regquery\n      server\n      sqlclient\n      sqlskymatch\n      sqlupdate\n      taplint\n      tapquery\n      tapresume\n      tapskymatch\n      tcat\n      tcatn\n      tcopy\n      tcube\n      tgridmap\n      tgroup\n      tjoin\n      tloop\n      tmatch1\n      tmatch2\n      tmatchn\n      tmulti\n      tmultin\n      tpipe\n      tskymap\n      tskymatch2\n      votcopy\n      votlint\n      xsdvalidate\n      plot2plane\n      plot2sky\n      plot2cube\n      plot2sphere\n      plot2corner\n      plot2time\n\n"
+    },
+    {
+        "prompt": "Match two tables, `t1.fits` and `t2.fits`. Then, for the matched pairs, calculate the average magnitude, `(MAG_1 + MAG_2) / 2`.",
+        "response": "stilts tmatch2 in1=t1.fits in2=t2.fits matcher=sky params=1 values1='RA DEC' values2='RA DEC' ocmd='addcol AVG_MAG (MAG_1 + MAG_2) / 2' out=avg_mag_matches.fits",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '+' 'MAG_2)' '/' '2'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: addcol AVG_MAG (MAG_1 + MAG_2) / 2\n\nUsage: addcol [-after <col-id> | -before <col-id>]\n              [-units <units>] [-ucd <ucd>] [-utype <utype>] [-xtype <xtype>]\n              [-desc <descrip>] [-shape <n>[,<n>...][,*]] [-elsize <n>]\n              <col-name> <expr>\n    (Unused arguments: '+' 'MAG_2)' '/' '2'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "How to do a sky match where the radius for each object in table 1 is given by `ERR_RADIUS_1` and for table 2 it is a fixed 0.5 arcsec?",
+        "response": "stilts tmatch2 in1=t1.fits in2=t2.fits matcher=skyerr params=1 values1='RA DEC ERR_RADIUS_1' values2='RA DEC 0.5' out=mixed_error_match.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I want to match two tables and only keep the columns `ID`, `RA`, `DEC` from the first table and `ID` from the second table.",
+        "response": "stilts tmatch2 in1=t1.fits in2=t2.fits matcher=sky params=1 values1='RA DEC' values2='RA DEC' icmd1='keepcols \"ID RA DEC\"' icmd2='keepcols \"ID RA DEC\"' ocmd='keepcols \"ID_1 RA_1 DEC_1 ID_2\"' out=subset_cols_match.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Match my `targets.csv` (with columns `ra`, `dec`) against `archive.fits` (with columns `RA_J2000`, `DEC_J2000`) within 2 arcsec. For each target, I only want the best match from the archive.",
+        "response": "stilts tmatch2 ifmt1=csv in1=targets.csv in2=archive.fits matcher=sky params=2 values1='ra dec' values2='RA_J2000 DEC_J2000' find=best1 out=target_archive_match.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I have two tables of events, `events_a.fits` and `events_b.fits`. Match them if their `TIME` is within 10 seconds and their `ENERGY` is within 50 keV.",
+        "response": "stilts tmatch2 in1=events_a.fits in2=events_b.fits matcher=2d_anisotropic params='10 50' values1='TIME ENERGY' values2='TIME ENERGY' out=time_energy_coincidence.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find all rows from `table1.fits` that have a match in `table2.fits`, and also all rows from `table2.fits` that have a match in `table1.fits`. A match is within 3 arcsec.",
+        "response": "stilts tmatch2 in1=table1.fits in2=table2.fits matcher=sky params=3 values1='RA DEC' values2='RA DEC' join=1and2 out=all_matched_rows.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Please match `cat1.fits` against `cat2.fits` using `skyerr`. After matching, add a column `RELIABLE` if the separation is less than half the combined error.",
+        "response": "stilts tmatch2 in1=cat1.fits in2=cat2.fits matcher=skyerr params=5 values1='RA DEC ERR_1' values2='RA DEC ERR_2' scorecol=sep ocmd='addcol RELIABLE sep < (ERR_1+ERR_2)/2' out=reliable_matches.fits",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '<' '(ERR_1+ERR_2)/2'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: addcol RELIABLE sep < (ERR_1+ERR_2)/2\n\nUsage: addcol [-after <col-id> | -before <col-id>]\n              [-units <units>] [-ucd <ucd>] [-utype <utype>] [-xtype <xtype>]\n              [-desc <descrip>] [-shape <n>[,<n>...][,*]] [-elsize <n>]\n              <col-name> <expr>\n    (Unused arguments: '<' '(ERR_1+ERR_2)/2'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "I want to match two tables and stream the input to reduce memory usage. The tables are `stream1.csv` and `stream2.csv`.",
+        "response": "stilts tmatch2 ifmt=csv istream=true in1=stream1.csv in2=stream2.csv matcher=exact values1=ID values2=ID out=streamed_match.csv",
+        "chat.jar": "failed",
+        "error": "\nUnused arguments: ifmt=csv istream=true\n\nUsage: tmatch2 ifmt1=<in-format> ifmt2=<in-format> icmd1=<cmds> icmd2=<cmds>\n               ocmd=<cmds>\n               omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n               out=<out-table> ofmt=<out-format> matcher=<matcher-name>\n               values1=<expr-list> values2=<expr-list> params=<match-params>\n               tuning=<tuning-params>\n               join=1and2|1or2|all1|all2|1not2|2not1|1xor2\n               find=all|best|best1|best2 fixcols=none|dups|all suffix1=<label>\n               suffix2=<label> scorecol=<col-name>\n               progress=none|log|time|profile\n               runner=parallel|parallel<n>|parallel-all|sequential|classic|partest\n               [in1=]<table1> [in2=]<table2>\n\n"
+    },
+    {
+        "prompt": "How do I find objects in `catalog.fits` that are within 5 arcseconds of any object in `clusters.fits`?",
+        "response": "stilts tmatch2 in1=catalog.fits in2=clusters.fits matcher=sky params=5 values1='RA DEC' values2='RA DEC' find=all join=1and2 ocmd='sort ID_1' ocmd='uniq ID_1' out=objects_near_clusters.fits",
+        "chat.jar": "executed successfully"
+    }
+]

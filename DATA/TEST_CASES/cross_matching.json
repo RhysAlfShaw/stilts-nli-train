@@ -1,0 +1,17 @@
+[
+    {
+        "category": "Crossmatching",
+        "prompt": "Crossmatch my_sources.vot and reference_catalog.fits using a 1.5 arcsecond radius. My coordinate columns are ra_deg and dec_deg and the reference columns are RA_J2000 and DEC_J2000.",
+        "expected": "stilts tmatch2 in1=my_sources.vot in2=reference_catalog.fits find=best matcher=sky params=1.5 values1='ra_deg dec_deg' values2='RA_J2000 DEC_J2000' ocat=matches.fits"
+    },
+    {
+        "category": "Crossmatching",
+        "prompt": "Find all sources from the VizieR 2MASS catalog that are within 5 arcseconds of the sources in my local file targets.csv. My coordinates are named RA and Dec.",
+        "expected": "stilts tmatch2 in1=targets.csv in2=vizier:II/246/out find=best matcher=sky params=5 values1='RA Dec' values2='RAJ2000 DEJ2000' ocat=vizier_matches.fits"
+    },
+    {
+        "category": "Crossmatching",
+        "prompt": "Join tableA.fits and tableB.fits based on a common source_id column. Keep all rows from tableA, even if there's no match in tableB.",
+        "expected": "stilts tmatch2 in1=tableA.fits in2=tableB.fits find=all matcher=exact values1=source_id values2=source_id join=all1 ocat=joined_table.fits"
+    }
+]

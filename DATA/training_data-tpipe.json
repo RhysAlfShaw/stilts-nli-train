@@ -210,11 +210,6 @@
         "error": "/bin/sh: 1: Syntax error: Unterminated quoted string\n"
     },
     {
-        "prompt": "I need to clean my table `input.fits`. Please remove all rows where the 'MAG_G' column contains a non-finite value (NaN or infinity) or is null. Save the cleaned table to `output.fits`.",
-        "response": "stilts tpipe in=input.fits cmd='select \"isFinite(MAG_G)\"' out=output.fits",
-        "chat.jar": "executed successfully"
-    },
-    {
         "prompt": "In `input.csv`, I want to add a 'QUALITY_FLAG' column. This flag should be set to 1 if the 'ERROR_MAG' is greater than 0.2, and 0 otherwise. Save the new table as `output.fits`.",
         "response": "stilts tpipe ifmt=csv in=input.csv cmd='addcol QUALITY_FLAG \"ERROR_MAG > 0.2 ? 1 : 0\"' ofmt=fits out=output.fits",
         "chat.jar": "executed successfully"

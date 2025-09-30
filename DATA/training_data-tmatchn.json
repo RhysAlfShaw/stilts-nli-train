@@ -83,11 +83,6 @@
         "chat.jar": "executed successfully"
     },
     {
-        "prompt": "Find groups of objects across three catalogues: `cat1.fits`, `cat2.fits`, and `cat3.fits`. After finding the groups with a 3\" sky match, I want to filter the resulting table. Add a new column called `GroupSize` which counts how many of the three catalogues contributed to that row. Then, select only the rows where `GroupSize` is 3, meaning we have a detection in all three catalogues. Save the final table to `triplets.fits`.",
-        "response": "stilts tmatchn nin=3 multimode=group matcher=sky params=3 in1=cat1.fits values1='RA DEC' in2=cat2.fits values2='RA DEC' in3=cat3.fits values3='RA DEC' ocmd='addcol GroupSize \"(long)!isFinite(RA_1) ? 0 : 1 + (long)!isFinite(RA_2) ? 0 : 1 + (long)!isFinite(RA_3) ? 0 : 1\"; select GroupSize==3' out=triplets.fits",
-        "chat.jar": "executed successfully"
-    },
-    {
         "prompt": "I am matching three simulation data files: `sim_a.dat`, `sim_b.dat`, and `sim_c.dat`. I need to find matching groups in 3D cartesian space (columns 'x', 'y', 'z'). The match is anisotropic: the tolerance is 0.5 in x and y, but 2.0 in the z dimension. Output the result to standard output as a CSV file.",
         "response": "stilts tmatchn nin=3 multimode=group matcher=anisotropic params=\"0.5 0.5 2.0\" in1=sim_a.dat values1=\"x y z\" in2=sim_b.dat values2=\"x y z\" in3=sim_c.dat values3=\"x y z\" ofmt=csv out=-",
         "chat.jar": "failed",

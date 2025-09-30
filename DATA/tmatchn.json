@@ -1,0 +1,476 @@
+[
+    {
+        "prompt": "Crossmatch three FITS files, `cat_A.fits`, `cat_B.fits`, and `cat_C.fits`, on sky position with a 3 arcsecond radius. Find groups of objects that are linked across any of the tables.",
+        "response": "stilts tmatchn nin=3 in1=cat_A.fits in2=cat_B.fits in3=cat_C.fits multimode=group matcher=sky params=3 values1='RA DEC' values2='RA DEC' values3='RA DEC' out=tri-survey_groups.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I have a master catalog `master.fits` and two other catalogs, `survey1.vot` and `survey2.csv`. Using `master.fits` as the reference, find all objects in it that have counterparts within 2 arcsec in EITHER `survey1` or `survey2`.",
+        "response": "stilts tmatchn nin=3 in1=master.fits ifmt2=votable in2=survey1.vot ifmt3=csv in3=survey2.csv multimode=pairs iref=1 matcher=sky params=2 values1='RA DEC' values2='RA_DEG DEC_DEG' values3='ra dec' join1=match out=master_with_any_match.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "How can I find objects that are common to all three of my catalogs: `sdss.fits`, `panstarrs.fits`, and `wise.fits`? The match radius is 1.5 arcseconds and `sdss.fits` is the reference.",
+        "response": "stilts tmatchn nin=3 in1=sdss.fits in2=panstarrs.fits in3=wise.fits multimode=pairs iref=1 matcher=sky params=1.5 values1='ra dec' values2='ra dec' values3='ra dec' join1=match join2=match join3=match out=common_sources.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find groups of objects across four tables (`t1.fits`, `t2.fits`, `t3.fits`, `t4.fits`) that match on an exact `SOURCE_ID`.",
+        "response": "stilts tmatchn nin=4 in1=t1.fits in2=t2.fits in3=t3.fits in4=t4.fits multimode=group matcher=exact values1=SOURCE_ID values2=SOURCE_ID values3=SOURCE_ID values4=SOURCE_ID out=id_groups.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I'm matching three catalogs. The coordinate columns are `ra1, dec1`, `ra2, dec2`, and `ra3, dec3`. To avoid confusion, can you add suffixes `_c1`, `_c2`, `_c3` to the columns from each table in the output?",
+        "response": "stilts tmatchn nin=3 in1=c1.fits in2=c2.fits in3=c3.fits multimode=group matcher=sky params=4 values1='ra1 dec1' values2='ra2 dec2' values3='ra3 dec3' fixcols=all suffix1=_c1 suffix2=_c2 suffix3=_c3 out=suffixed_groups.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Using `t1.fits` as a reference, find all its rows that have NO match in `t2.fits` OR `t3.fits` within 5 arcseconds.",
+        "response": "stilts tmatchn nin=3 in1=t1.fits in2=t2.fits in3=t3.fits multimode=pairs iref=1 matcher=sky params=5 values1='ra dec' values2='ra dec' values3='ra dec' join1=match join2=nomatch join3=nomatch out=isolated_t1_sources.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "What's the difference between `multimode=pairs` and `multimode=group` in `tmatchn`?",
+        "response": "In `pairs` mode, one table is designated as the reference table, and pair matches are found between it and each of the other tables. In `group` mode, the command identifies groups of objects across all input tables that are mutually linked by pair matches in a 'friends of friends' manner, with no single table being privileged as the reference [1-4].",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: pairs: not found\n/bin/sh: 1: group: not found\n\nNo such task: In\n\nUsage:\n   stilts [-help] [-version] [-verbose] [-allowunused] [-prompt] [-bench]\n          [-debug] [-batch] [-memory] [-disk] [-memgui]\n          [-checkversion <vers>] [-stdout <file>] [-stderr <file>]\n          <task-name> <task-args>\n\n   stilts <task-name> help[=<param-name>|*]\n\n   Known tasks:\n      arrayjoin\n      calc\n      cdsskymatch\n      cone\n      coneskymatch\n      datalinklint\n      funcs\n      mocshape\n      parqlint\n      parqlook\n      pixfoot\n      pixsample\n      plot2d\n      plot3d\n      plothist\n      regquery\n      server\n      sqlclient\n      sqlskymatch\n      sqlupdate\n      taplint\n      tapquery\n      tapresume\n      tapskymatch\n      tcat\n      tcatn\n      tcopy\n      tcube\n      tgridmap\n      tgroup\n      tjoin\n      tloop\n      tmatch1\n      tmatch2\n      tmatchn\n      tmulti\n      tmultin\n      tpipe\n      tskymap\n      tskymatch2\n      votcopy\n      votlint\n      xsdvalidate\n      plot2plane\n      plot2sky\n      plot2cube\n      plot2sphere\n      plot2corner\n      plot2time\n\n"
+    },
+    {
+        "prompt": "Count the number of match groups between three large catalogs without creating an output file.",
+        "response": "stilts tmatchn nin=3 in1=large1.fits in2=large2.fits in3=large3.fits multimode=group matcher=sky params=1 values1='RA DEC' values2='RA DEC' values3='RA DEC' omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I want to match three photometric catalogs (`u_band.fits`, `g_band.fits`, `r_band.fits`) on sky position (2 arcsec) and magnitude (within 0.2 mag).",
+        "response": "stilts tmatchn nin=3 in1=u_band.fits in2=g_band.fits in3=r_band.fits multimode=group matcher=sky+1d params='2 0.2' values1='RA DEC UMAG' values2='RA DEC GMAG' values3='RA DEC RMAG' out=multi_color_match.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Match `cat1.fits`, `cat2.fits`, `cat3.fits`. Before matching, filter `cat2` to only include rows where `FLAG==0`. After matching, sort the result by the `RA_1` column.",
+        "response": "stilts tmatchn nin=3 in1=cat1.fits in2=cat2.fits in3=cat3.fits icmd2='select FLAG==0' multimode=group matcher=sky params=2 values1='RA DEC' values2='RA DEC' values3='RA DEC' fixcols=dups suffix1=_1 suffix2=_2 suffix3=_3 ocmd='sort RA_1' out=filtered_sorted_match.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find groups of objects across three tables (`t1.csv`, `t2.csv`, `t3.csv`) that fall into the same 1D bin of size 0.01 in the `REDSHIFT` column.",
+        "response": "stilts tmatchn nin=3 ifmt=csv in1=t1.csv in2=t2.csv in3=t3.csv multimode=group matcher=1d params=0.01 values1=REDSHIFT values2=REDSHIFT values3=REDSHIFT out=redshift_clumps.csv",
+        "chat.jar": "failed",
+        "error": "\nUnused arguments: ifmt=csv\n\nUsage: tmatchn nin=<count> ifmtN=<in-format> inN=<tableN> icmdN=<cmds>\n               ocmd=<cmds>\n               omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n               out=<out-table> ofmt=<out-format> multimode=pairs|group\n               iref=<table-index> matcher=<matcher-name> params=<match-params>\n               tuning=<tuning-params> valuesN=<expr-list>\n               joinN=default|match|nomatch|always fixcols=none|dups|all\n               suffixN=<label> progress=none|log|time|profile\n               runner=parallel|parallel<n>|parallel-all|sequential|classic|partest\n\n"
+    },
+    {
+        "prompt": "Using `ref.fits` as the reference, find all rows that have a match in `comp1.fits` but DO NOT have a match in `comp2.fits`. Radius is 10 arcsec.",
+        "response": "stilts tmatchn nin=3 in1=ref.fits in2=comp1.fits in3=comp2.fits multimode=pairs iref=1 matcher=sky params=10 values1='ra dec' values2='ra dec' values3='ra dec' join1=match join2=match join3=nomatch out=ref_in_comp1_not_comp2.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Match three catalogs with per-object errors. `c1.fits` has error `err1`, `c2.fits` has `err2`, and `c3.fits` has `err3`. The scale is 5 arcsec.",
+        "response": "stilts tmatchn nin=3 in1=c1.fits in2=c2.fits in3=c3.fits multimode=group matcher=skyerr params=5 values1='ra dec err1' values2='ra dec err2' values3='ra dec err3' out=group_error_match.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need to match three large tables on a multi-core machine. How can I enable parallel execution?",
+        "response": "stilts tmatchn nin=3 in1=huge1.fits in2=huge2.fits in3=huge3.fits multimode=group matcher=sky params=1 values1='ra dec' values2='ra dec' values3='ra dec' runner=parallel out=parallel_3way_match.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Show me the metadata of the table that would result from a 3-way sky match.",
+        "response": "stilts tmatchn nin=3 in1=t1.fits in2=t2.fits in3=t3.fits multimode=group matcher=sky params=2 values1='ra dec' values2='ra dec' values3='ra dec' omode=meta",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Match four tables from different surveys (`s1.vot`, `s2.dat`, `s3.fits`, `s4.csv`) and send the result directly to TOPCAT.",
+        "response": "stilts tmatchn nin=4 in1=s1.vot ifmt2=ascii in2=s2.dat in3=s3.fits ifmt4=csv in4=s4.csv multimode=group matcher=sky params=5 values1='RA DEC' values2='ra dec' values3='RA_J2000 DEC_J2000' values4='alpha delta' omode=topcat",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need to find all objects that appear in a list of `transients.fits` and have counterparts in both `archive1.fits` and `archive2.fits`. A match is 2.5 arcsec.",
+        "response": "stilts tmatchn nin=3 multimode=pairs iref=1 in1=transients.fits in2=archive1.fits in3=archive2.fits matcher=sky params=2.5 values1='ra dec' values2='ra dec' values3='ra dec' join1=match join2=match join3=match out=confirmed_transients.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "What does `joinN=always` do in `tmatchn`?",
+        "response": "The `joinN=always` parameter forces every row from input table N to be included in the output table. If a row from table N is part of a match group, it will be joined with the other members of that group. If it is not part of any match group, it will appear in an output row by itself, with blank values for the columns from all other tables [2, B.41.1, 1976].",
+        "chat.jar": "failed",
+        "error": "\nNo such task: The\n\nUsage:\n   stilts [-help] [-version] [-verbose] [-allowunused] [-prompt] [-bench]\n          [-debug] [-batch] [-memory] [-disk] [-memgui]\n          [-checkversion <vers>] [-stdout <file>] [-stderr <file>]\n          <task-name> <task-args>\n\n   stilts <task-name> help[=<param-name>|*]\n\n   Known tasks:\n      arrayjoin\n      calc\n      cdsskymatch\n      cone\n      coneskymatch\n      datalinklint\n      funcs\n      mocshape\n      parqlint\n      parqlook\n      pixfoot\n      pixsample\n      plot2d\n      plot3d\n      plothist\n      regquery\n      server\n      sqlclient\n      sqlskymatch\n      sqlupdate\n      taplint\n      tapquery\n      tapresume\n      tapskymatch\n      tcat\n      tcatn\n      tcopy\n      tcube\n      tgridmap\n      tgroup\n      tjoin\n      tloop\n      tmatch1\n      tmatch2\n      tmatchn\n      tmulti\n      tmultin\n      tpipe\n      tskymap\n      tskymatch2\n      votcopy\n      votlint\n      xsdvalidate\n      plot2plane\n      plot2sky\n      plot2cube\n      plot2sphere\n      plot2corner\n      plot2time\n\n"
+    },
+    {
+        "prompt": "Match three catalogs. `ref.fits` is the reference. I want an output table that has one row for every row in `ref.fits`, with matched data from `catA.fits` and `catB.fits` included where available.",
+        "response": "stilts tmatchn nin=3 multimode=pairs iref=1 in1=ref.fits in2=catA.fits in3=catB.fits matcher=sky params=3 values1='ra dec' values2='ra dec' values3='ra dec' join1=always out=ref_with_optional_matches.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find groups of objects across three catalogs that match in a 2D plane on columns `XPOS` and `YPOS` within a 5 pixel radius.",
+        "response": "stilts tmatchn nin=3 in1=d1.fits in2=d2.fits in3=d3.fits multimode=group matcher=2d params=5 values1='XPOS YPOS' values2='XPOS YPOS' values3='XPOS YPOS' out=detector_plane_groups.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Please combine the results of matching `main.fits` (as ref) against `extra1.fits` and `extra2.fits`. In the final table, only keep the ID columns from each table.",
+        "response": "stilts tmatchn nin=3 multimode=pairs iref=1 in1=main.fits in2=extra1.fits in3=extra2.fits matcher=sky params=2 values1='RA DEC' values2='RA DEC' values3='RA DEC' fixcols=all suffix1=_m suffix2=_e1 suffix3=_e2 ocmd='keepcols \"ID_m ID_e1 ID_e2\"' out=id_triplets.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "For my three catalogs, `c_a.fits`, `c_b.fits`, `c_c.fits`, I need to identify groups where objects are within 1 arcsec AND have a `Z_SPEC` value within 0.005 of each other.",
+        "response": "stilts tmatchn nin=3 in1=c_a.fits in2=c_b.fits in3=c_c.fits multimode=group matcher=sky+1d params='1 0.005' values1='RA DEC Z_SPEC' values2='RA DEC Z_SPEC' values3='RA DEC Z_SPEC' out=pos_z_groups.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "How can I match my table `targets.fits` against `surveyA.fits`, `surveyB.fits`, and `surveyC.fits` and get a statistical summary of the results?",
+        "response": "stilts tmatchn nin=4 multimode=pairs iref=1 in1=targets.fits in2=surveyA.fits in3=surveyB.fits in4=surveyC.fits matcher=sky params=4 values1='ra dec' values2='ra dec' values3='ra dec' values4='ra dec' omode=stats",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I want to see all rows from `cat1.fits` that have a match in `cat2.fits`, alongside all rows from `cat3.fits`, using `cat1.fits` as the reference.",
+        "response": "stilts tmatchn nin=3 multimode=pairs iref=1 in1=cat1.fits in2=cat2.fits in3=cat3.fits matcher=sky params=2 values1='ra dec' values2='ra dec' values3='ra dec' join1=match join2=match join3=always out=cat1_cat2_pairs_with_cat3.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find groups of objects across four catalogs where the unique string identifier `UID` is identical.",
+        "response": "stilts tmatchn nin=4 in1=t1.csv in2=t2.csv in3=t3.csv in4=t4.csv ifmt=csv multimode=group matcher=exact values1=UID values2=UID values3=UID values4=UID out=uid_quartets.csv",
+        "chat.jar": "failed",
+        "error": "\nUnused arguments: ifmt=csv\n\nUsage: tmatchn nin=<count> ifmtN=<in-format> inN=<tableN> icmdN=<cmds>\n               ocmd=<cmds>\n               omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n               out=<out-table> ofmt=<out-format> multimode=pairs|group\n               iref=<table-index> matcher=<matcher-name> params=<match-params>\n               tuning=<tuning-params> valuesN=<expr-list>\n               joinN=default|match|nomatch|always fixcols=none|dups|all\n               suffixN=<label> progress=none|log|time|profile\n               runner=parallel|parallel<n>|parallel-all|sequential|classic|partest\n\n"
+    },
+    {
+        "prompt": "Match `ref.fits` (table 2) against `d1.fits` (table 1) and `d2.fits` (table 3). Match radius is 3 arcsec.",
+        "response": "stilts tmatchn nin=3 in1=d1.fits in2=ref.fits in3=d2.fits multimode=pairs iref=2 matcher=sky params=3 values1='ra dec' values2='ra dec' values3='ra dec' out=ref2_matches.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Show me the groups of objects that exist in `cat_u.fits` and `cat_g.fits`, but specifically DO NOT have a counterpart in `cat_r.fits`.",
+        "response": "stilts tmatchn nin=3 in1=cat_u.fits in2=cat_g.fits in3=cat_r.fits multimode=group matcher=sky params=1 values1='ra dec' values2='ra dec' values3='ra dec' join1=match join2=match join3=nomatch out=ug_not_r_groups.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I have 5 tables. `t1` is the reference. I want to see every row from `t1`, joined with the best match from `t2`, `t3`, `t4`, and `t5` if one exists.",
+        "response": "stilts tmatchn nin=5 multimode=pairs iref=1 in1=t1.fits in2=t2.fits in3=t3.fits in4=t4.fits in5=t5.fits matcher=sky params=5 values1='ra dec' values2='ra dec' values3='ra dec' values4='ra dec' values5='ra dec' join1=always out=t1_with_all_counterparts.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find groups across `obs1.fits`, `obs2.fits`, and `obs3.fits`. After matching, add a column that is the average of the `FLUX` column from the three tables.",
+        "response": "stilts tmatchn nin=3 in1=obs1.fits in2=obs2.fits in3=obs3.fits multimode=group matcher=sky params=1 values1='ra dec' values2='ra dec' values3='ra dec' fixcols=all suffix1=_1 suffix2=_2 suffix3=_3 ocmd='addcol AVG_FLUX (FLUX_1+FLUX_2+FLUX_3)/3.' out=avg_flux_groups.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Can you explain the `iref` parameter in `tmatchn`?",
+        "response": "The `iref` parameter is used only when `multimode=pairs`. It specifies the 1-based index of the input table that will be used as the reference table. All matches are then performed by pairing rows from the other tables against the rows of this reference table [2, B.41.1, 1974].",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: iref: not found\n\nNo such task: The\n\nUsage:\n   stilts [-help] [-version] [-verbose] [-allowunused] [-prompt] [-bench]\n          [-debug] [-batch] [-memory] [-disk] [-memgui]\n          [-checkversion <vers>] [-stdout <file>] [-stderr <file>]\n          <task-name> <task-args>\n\n   stilts <task-name> help[=<param-name>|*]\n\n   Known tasks:\n      arrayjoin\n      calc\n      cdsskymatch\n      cone\n      coneskymatch\n      datalinklint\n      funcs\n      mocshape\n      parqlint\n      parqlook\n      pixfoot\n      pixsample\n      plot2d\n      plot3d\n      plothist\n      regquery\n      server\n      sqlclient\n      sqlskymatch\n      sqlupdate\n      taplint\n      tapquery\n      tapresume\n      tapskymatch\n      tcat\n      tcatn\n      tcopy\n      tcube\n      tgridmap\n      tgroup\n      tjoin\n      tloop\n      tmatch1\n      tmatch2\n      tmatchn\n      tmulti\n      tmultin\n      tpipe\n      tskymap\n      tskymatch2\n      votcopy\n      votlint\n      xsdvalidate\n      plot2plane\n      plot2sky\n      plot2cube\n      plot2sphere\n      plot2corner\n      plot2time\n\n"
+    },
+    {
+        "prompt": "Match four catalogs and calculate a checksum on the output table.",
+        "response": "stilts tmatchn nin=4 in1=t1.fits in2=t2.fits in3=t3.fits in4=t4.fits multimode=group matcher=sky params=2 values1='ra dec' values2='ra dec' values3='ra dec' values4='ra dec' omode=checksum",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need to match my `target_list.csv` against three large survey FITS files. Can I show progress?",
+        "response": "stilts tmatchn nin=4 ifmt1=csv in1=target_list.csv in2=s1.fits in3=s2.fits in4=s3.fits multimode=pairs iref=1 matcher=sky params=3 values1='ra dec' values2='ra dec' values3='ra dec' values4='ra dec' progress=log out=target_matches.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find all objects in `main_cat.fits` that have a counterpart within 2 arcsec in `cat_A.fits` AND `cat_B.fits` AND `cat_C.fits`.",
+        "response": "stilts tmatchn nin=4 multimode=pairs iref=1 in1=main_cat.fits in2=cat_A.fits in3=cat_B.fits in4=cat_C.fits matcher=sky params=2 values1='ra dec' values2='ra dec' values3='ra dec' values4='ra dec' join1=match join2=match join3=match join4=match out=fully_matched_main.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Match three catalogs. `c1.fits` has FK4 coordinates `RA_1950`, `DEC_1950`. The others are J2000. How do I match them?",
+        "response": "stilts tmatchn nin=3 in1=c1.fits in2=c2.fits in3=c3.fits icmd1='addskycoords fk4 fk5 RA_1950 DEC_1950 RA_2000 DEC_2000' multimode=group matcher=sky params=2 values1='RA_2000 DEC_2000' values2='ra dec' values3='ra dec' out=fk4_j2000_groups.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I'm looking for high proper motion candidates by comparing three epochs. Find groups of objects within 1 arcsec, then select only groups where the total sky motion between epoch 1 and 3 is large.",
+        "response": "stilts tmatchn nin=3 in1=epoch1.fits in2=epoch2.fits in3=epoch3.fits multimode=group matcher=sky params=1 values1='ra dec' values2='ra dec' values3='ra dec' fixcols=all suffix1=_1 suffix2=_2 suffix3=_3 ocmd='select skyDistanceDegrees(ra_1,dec_1,ra_3,dec_3) > 1./3600.' out=high_pm_groups.fits",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '>' '1./3600.'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: select skyDistanceDegrees(ra_1,dec_1,ra_3,dec_3) > 1./3600.\n\nUsage: select <expr>\n    (Unused arguments: '>' '1./3600.'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "Match four tables and output the result as a multi-table FITS file, where each output table corresponds to one of the input tables but only contains the matched rows.",
+        "response": "This is not a standard output of `tmatchn`. You would run `tmatchn` to get the matched IDs, then use `tpipe` with a `select` filter on each of the original tables to create the four separate output tables, and finally `tmulti` to combine them.",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: tmatchn: not found\n/bin/sh: 1: tmatchn: not found\n/bin/sh: 1: tpipe: not found\n/bin/sh: 1: select: not found\n/bin/sh: 1: tmulti: not found\n\nNo such task: This\n\nUsage:\n   stilts [-help] [-version] [-verbose] [-allowunused] [-prompt] [-bench]\n          [-debug] [-batch] [-memory] [-disk] [-memgui]\n          [-checkversion <vers>] [-stdout <file>] [-stderr <file>]\n          <task-name> <task-args>\n\n   stilts <task-name> help[=<param-name>|*]\n\n   Known tasks:\n      arrayjoin\n      calc\n      cdsskymatch\n      cone\n      coneskymatch\n      datalinklint\n      funcs\n      mocshape\n      parqlint\n      parqlook\n      pixfoot\n      pixsample\n      plot2d\n      plot3d\n      plothist\n      regquery\n      server\n      sqlclient\n      sqlskymatch\n      sqlupdate\n      taplint\n      tapquery\n      tapresume\n      tapskymatch\n      tcat\n      tcatn\n      tcopy\n      tcube\n      tgridmap\n      tgroup\n      tjoin\n      tloop\n      tmatch1\n      tmatch2\n      tmatchn\n      tmulti\n      tmultin\n      tpipe\n      tskymap\n      tskymatch2\n      votcopy\n      votlint\n      xsdvalidate\n      plot2plane\n      plot2sky\n      plot2cube\n      plot2sphere\n      plot2corner\n      plot2time\n\n"
+    },
+    {
+        "prompt": "Find objects present in `catA.fits` and `catB.fits` and `catC.fits` based on an exact match of string column `OBJ_NAME`.",
+        "response": "stilts tmatchn nin=3 in1=catA.fits in2=catB.fits in3=catC.fits multimode=group matcher=exact values1=OBJ_NAME values2=OBJ_NAME values3=OBJ_NAME out=name_matched_triplets.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Using `ref_cat.fits` as the reference, show me all its rows, along with data for any rows in `survey1.fits` that match it, but ONLY if there is no match in `survey2.fits`.",
+        "response": "stilts tmatchn nin=3 in1=ref_cat.fits in2=survey1.fits in3=survey2.fits multimode=pairs iref=1 matcher=sky params=2 values1='ra dec' values2='ra dec' values3='ra dec' join1=always join2=match join3=nomatch out=ref_survey1_only.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Generate a list of all objects from `catalog1.fits`, `catalog2.fits`, and `catalog3.fits` that were part of any match group.",
+        "response": "This requires multiple steps. First, run `tmatchn` to identify groups. Then, for each catalog, select rows whose IDs appear in the matched output, and finally use `tcat` to combine these lists.",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: tmatchn: not found\n/bin/sh: 1: tcat: not found\n\nNo such task: This\n\nUsage:\n   stilts [-help] [-version] [-verbose] [-allowunused] [-prompt] [-bench]\n          [-debug] [-batch] [-memory] [-disk] [-memgui]\n          [-checkversion <vers>] [-stdout <file>] [-stderr <file>]\n          <task-name> <task-args>\n\n   stilts <task-name> help[=<param-name>|*]\n\n   Known tasks:\n      arrayjoin\n      calc\n      cdsskymatch\n      cone\n      coneskymatch\n      datalinklint\n      funcs\n      mocshape\n      parqlint\n      parqlook\n      pixfoot\n      pixsample\n      plot2d\n      plot3d\n      plothist\n      regquery\n      server\n      sqlclient\n      sqlskymatch\n      sqlupdate\n      taplint\n      tapquery\n      tapresume\n      tapskymatch\n      tcat\n      tcatn\n      tcopy\n      tcube\n      tgridmap\n      tgroup\n      tjoin\n      tloop\n      tmatch1\n      tmatch2\n      tmatchn\n      tmulti\n      tmultin\n      tpipe\n      tskymap\n      tskymatch2\n      votcopy\n      votlint\n      xsdvalidate\n      plot2plane\n      plot2sky\n      plot2cube\n      plot2sphere\n      plot2corner\n      plot2time\n\n"
+    },
+    {
+        "prompt": "Match three tables on a 1D value `FREQUENCY` with a tolerance of 100 Hz.",
+        "response": "stilts tmatchn nin=3 in1=obs1.fits in2=obs2.fits in3=obs3.fits multimode=group matcher=1d params=100 values1=FREQUENCY values2=FREQUENCY values3=FREQUENCY out=freq_coincidence.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find groups of objects across three tables, then in the output table, only keep the ID and RA columns from each input table.",
+        "response": "stilts tmatchn nin=3 in1=t1.fits in2=t2.fits in3=t3.fits multimode=group matcher=sky params=1 values1='ra dec' values2='ra dec' values3='ra dec' fixcols=all suffix1=_1 suffix2=_2 suffix3=_3 ocmd='keepcols \"ID_1 RA_1 ID_2 RA_2 ID_3 RA_3\"' out=minimal_groups.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "What does `multimode=group` mean for a 3-table match?",
+        "response": "`multimode=group` finds groups where each member is linked to at least one other member by a pairwise match. For three tables A, B, and C, a group could be (a1, b1), or (b2, c2), or (a3, b3, c3), or even (a4, b4) and (b4, c4) which would group a4, b4, and c4 together, even if a4 and c4 do not directly match [1, 4].",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: Syntax error: \"(\" unexpected\n"
+    },
+    {
+        "prompt": "Match `cat1.fits`, `cat2.fits`, and `cat3.fits` using `cat2.fits` as the reference table.",
+        "response": "stilts tmatchn nin=3 in1=cat1.fits in2=cat2.fits in3=cat3.fits multimode=pairs iref=2 matcher=sky params=2 values1='ra dec' values2='ra dec' values3='ra dec' out=cat2_reference_match.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I want to match four tables. After finding the groups, I only want to see groups that have exactly four members (one from each table).",
+        "response": "stilts tmatchn nin=4 in1=t1.fits in2=t2.fits in3=t3.fits in4=t4.fits multimode=group matcher=sky params=1 values1='ra dec' values2='ra dec' values3='ra dec' values4='ra dec' fixcols=all suffix1=_1 suffix2=_2 suffix3=_3 suffix4=_4 ocmd='select !NULL_ID_1&&!NULL_ID_2&&!NULL_ID_3&&!NULL_ID_4' out=complete_quartets.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Can `tmatchn` handle a mix of FITS, VOTable, and CSV inputs?",
+        "response": "Yes, you can specify the format for each input table individually using the `ifmtN` parameter, for example `ifmt2=csv`. Formats like FITS and VOTable are often auto-detected, so you may not need to specify them [2, B.41.1].",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: ifmtN: not found\n\nNo such task: Yes,\n\nUsage:\n   stilts [-help] [-version] [-verbose] [-allowunused] [-prompt] [-bench]\n          [-debug] [-batch] [-memory] [-disk] [-memgui]\n          [-checkversion <vers>] [-stdout <file>] [-stderr <file>]\n          <task-name> <task-args>\n\n   stilts <task-name> help[=<param-name>|*]\n\n   Known tasks:\n      arrayjoin\n      calc\n      cdsskymatch\n      cone\n      coneskymatch\n      datalinklint\n      funcs\n      mocshape\n      parqlint\n      parqlook\n      pixfoot\n      pixsample\n      plot2d\n      plot3d\n      plothist\n      regquery\n      server\n      sqlclient\n      sqlskymatch\n      sqlupdate\n      taplint\n      tapquery\n      tapresume\n      tapskymatch\n      tcat\n      tcatn\n      tcopy\n      tcube\n      tgridmap\n      tgroup\n      tjoin\n      tloop\n      tmatch1\n      tmatch2\n      tmatchn\n      tmulti\n      tmultin\n      tpipe\n      tskymap\n      tskymatch2\n      votcopy\n      votlint\n      xsdvalidate\n      plot2plane\n      plot2sky\n      plot2cube\n      plot2sphere\n      plot2corner\n      plot2time\n\n"
+    },
+    {
+        "prompt": "Match four catalogs (`a.fits`, `b.fits`, `c.fits`, `d.fits`) with `a.fits` as reference. Include all rows from `a.fits`, and indicate which of the other catalogs it has a match in.",
+        "response": "stilts tmatchn nin=4 multimode=pairs iref=1 in1=a.fits in2=b.fits in3=c.fits in4=d.fits matcher=sky params=2 values1='ra dec' values2='ra dec' values3='ra dec' values4='ra dec' join1=always out=a_with_match_flags.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find all objects from my three catalogs that did NOT participate in any match group.",
+        "response": "This is a multi-step process. First, run `tmatchn` to find all the groups and get the unique IDs of matched objects from each catalog. Then, for each input catalog, use `tmatch2` with `join=1not2` to select the rows from the original catalog that are not in the list of matched IDs.",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: tmatchn: not found\n/bin/sh: 1: tmatch2: not found\n\nNo such task: This\n\nUsage:\n   stilts [-help] [-version] [-verbose] [-allowunused] [-prompt] [-bench]\n          [-debug] [-batch] [-memory] [-disk] [-memgui]\n          [-checkversion <vers>] [-stdout <file>] [-stderr <file>]\n          <task-name> <task-args>\n\n   stilts <task-name> help[=<param-name>|*]\n\n   Known tasks:\n      arrayjoin\n      calc\n      cdsskymatch\n      cone\n      coneskymatch\n      datalinklint\n      funcs\n      mocshape\n      parqlint\n      parqlook\n      pixfoot\n      pixsample\n      plot2d\n      plot3d\n      plothist\n      regquery\n      server\n      sqlclient\n      sqlskymatch\n      sqlupdate\n      taplint\n      tapquery\n      tapresume\n      tapskymatch\n      tcat\n      tcatn\n      tcopy\n      tcube\n      tgridmap\n      tgroup\n      tjoin\n      tloop\n      tmatch1\n      tmatch2\n      tmatchn\n      tmulti\n      tmultin\n      tpipe\n      tskymap\n      tskymatch2\n      votcopy\n      votlint\n      xsdvalidate\n      plot2plane\n      plot2sky\n      plot2cube\n      plot2sphere\n      plot2corner\n      plot2time\n\n"
+    },
+    {
+        "prompt": "I have three tables with proper motions. Find groups of objects that are within 1 arcsec and have a `PMRA` difference of less than 5 mas/yr.",
+        "response": "stilts tmatchn nin=3 in1=pm1.fits in2=pm2.fits in3=pm3.fits multimode=group matcher=sky+1d params='1 5' values1='RA DEC PMRA' values2='RA DEC PMRA' values3='RA DEC PMRA' out=kinematic_groups.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "How do the `joinN` parameters work in `multimode=pairs`?",
+        "response": "In `pairs` mode, the `joinN` parameters act as filters on the output rows based on whether a match was found for the reference row in table N. For example, `join1=match join2=match join3=nomatch` would return rows from the reference table (`iref=1`) that have a match in table 2 but do not have a match in table 3 [2, B.41.1, 1976].",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: Syntax error: \"(\" unexpected\n"
+    },
+    {
+        "prompt": "What's the best way to match a small list of targets against 10 large survey catalogs?",
+        "response": "stilts tmatchn nin=11 multimode=pairs iref=1 in1=targets.fits in2=s1.fits ... in11=s10.fits matcher=sky params=2 ... join1=always out=targets_vs_10_surveys.fits",
+        "chat.jar": "failed",
+        "error": "Error: Bad value for parameter in3: null value not allowed\nUsage: in3=<table3>\n\n"
+    },
+    {
+        "prompt": "Match `cat1.fits` and `cat2.fits` against `ref.fits`. After matching, add a column `IS_PAIRED` that is true if a row from `cat1` was matched, and false otherwise.",
+        "response": "stilts tmatchn nin=3 multimode=pairs iref=3 in1=cat1.fits in2=cat2.fits in3=ref.fits matcher=sky params=2 values1='ra dec' values2='ra dec' values3='ra dec' fixcols=all suffix1=_1 suffix2=_2 suffix3=_3 join3=always ocmd='addcol IS_PAIRED !NULL_ID_1' out=ref_with_pair_flag.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Combine `epoch1.fits`, `epoch2.fits`, `epoch3.fits`. Before matching, for each table, select only rows with a `FLUX_ERROR < 0.1`.",
+        "response": "stilts tmatchn nin=3 in1=epoch1.fits in2=epoch2.fits in3=epoch3.fits icmd1='select FLUX_ERROR < 0.1' icmd2='select FLUX_ERROR < 0.1' icmd3='select FLUX_ERROR < 0.1' multimode=group matcher=sky params=1 values1='ra dec' values2='ra dec' values3='ra dec' out=clean_epoch_groups.fits",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '<' '0.1'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: select FLUX_ERROR < 0.1\n\nUsage: select <expr>\n    (Unused arguments: '<' '0.1'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "Find groups of objects across three catalogs. The output table should only contain the columns from the first table.",
+        "response": "stilts tmatchn nin=3 in1=t1.fits in2=t2.fits in3=t3.fits multimode=group matcher=sky params=2 values1='ra dec' values2='ra dec' values3='ra dec' fixcols=all suffix1=_1 suffix2=_2 suffix3=_3 join1=match ocmd='keepcols \"*_1\"' out=t1_only_groups.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Match three catalogs where position errors are `e_pos1`, `e_pos2`, `e_pos3` and combine them in quadrature.",
+        "response": "stilts tmatchn nin=3 in1=c1.fits in2=c2.fits in3=c3.fits multimode=group matcher=skyerr_q params=3 values1='ra dec e_pos1' values2='ra dec e_pos2' values3='ra dec e_pos3' out=quadrature_error_groups.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I have three tables `a.fits`, `b.fits`, `c.fits`. I want to find all rows in `a.fits` that have a match in `b.fits`, irrespective of whether they match `c.fits`.",
+        "response": "stilts tmatchn nin=3 multimode=pairs iref=1 in1=a.fits in2=b.fits in3=c.fits matcher=sky params=1 values1='ra dec' values2='ra dec' values3='ra dec' join1=match join2=match out=a_b_matches.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Match four catalogs and output the result to a text file.",
+        "response": "stilts tmatchn nin=4 in1=t1.fits in2=t2.fits in3=t3.fits in4=t4.fits multimode=group matcher=sky params=2 values1='ra dec' values2='ra dec' values3='ra dec' values4='ra dec' ofmt=text out=4way_match.txt",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Can I use different match radii for different pairs in `tmatchn`?",
+        "response": "No, `tmatchn` uses a single `matcher` with a single set of `params` that applies to all pairwise comparisons between tables. To use different radii, you would need to perform multiple `tmatch2` commands and then combine the results.",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: tmatchn: not found\n/bin/sh: 1: matcher: not found\n/bin/sh: 1: params: not found\n/bin/sh: 1: tmatch2: not found\n\nNo such task: No,\n\nUsage:\n   stilts [-help] [-version] [-verbose] [-allowunused] [-prompt] [-bench]\n          [-debug] [-batch] [-memory] [-disk] [-memgui]\n          [-checkversion <vers>] [-stdout <file>] [-stderr <file>]\n          <task-name> <task-args>\n\n   stilts <task-name> help[=<param-name>|*]\n\n   Known tasks:\n      arrayjoin\n      calc\n      cdsskymatch\n      cone\n      coneskymatch\n      datalinklint\n      funcs\n      mocshape\n      parqlint\n      parqlook\n      pixfoot\n      pixsample\n      plot2d\n      plot3d\n      plothist\n      regquery\n      server\n      sqlclient\n      sqlskymatch\n      sqlupdate\n      taplint\n      tapquery\n      tapresume\n      tapskymatch\n      tcat\n      tcatn\n      tcopy\n      tcube\n      tgridmap\n      tgroup\n      tjoin\n      tloop\n      tmatch1\n      tmatch2\n      tmatchn\n      tmulti\n      tmultin\n      tpipe\n      tskymap\n      tskymatch2\n      votcopy\n      votlint\n      xsdvalidate\n      plot2plane\n      plot2sky\n      plot2cube\n      plot2sphere\n      plot2corner\n      plot2time\n\n"
+    },
+    {
+        "prompt": "Find groups of objects across `spec.fits`, `phot.fits`, and `xray.fits`, and for each group, report the mean redshift from the `spec.fits` table.",
+        "response": "This is a two-step process. First, run `tmatchn` to identify the groups and get the IDs. Then, join the `spec.fits` table with the `tmatchn` output on ID and use `tgroup` to calculate the mean redshift per group.",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: tmatchn: not found\n/bin/sh: 1: spec.fits: not found\n/bin/sh: 1: tmatchn: not found\n/bin/sh: 1: tgroup: not found\n\nNo such task: This\n\nUsage:\n   stilts [-help] [-version] [-verbose] [-allowunused] [-prompt] [-bench]\n          [-debug] [-batch] [-memory] [-disk] [-memgui]\n          [-checkversion <vers>] [-stdout <file>] [-stderr <file>]\n          <task-name> <task-args>\n\n   stilts <task-name> help[=<param-name>|*]\n\n   Known tasks:\n      arrayjoin\n      calc\n      cdsskymatch\n      cone\n      coneskymatch\n      datalinklint\n      funcs\n      mocshape\n      parqlint\n      parqlook\n      pixfoot\n      pixsample\n      plot2d\n      plot3d\n      plothist\n      regquery\n      server\n      sqlclient\n      sqlskymatch\n      sqlupdate\n      taplint\n      tapquery\n      tapresume\n      tapskymatch\n      tcat\n      tcatn\n      tcopy\n      tcube\n      tgridmap\n      tgroup\n      tjoin\n      tloop\n      tmatch1\n      tmatch2\n      tmatchn\n      tmulti\n      tmultin\n      tpipe\n      tskymap\n      tskymatch2\n      votcopy\n      votlint\n      xsdvalidate\n      plot2plane\n      plot2sky\n      plot2cube\n      plot2sphere\n      plot2corner\n      plot2time\n\n"
+    },
+    {
+        "prompt": "Match four tables `t1, t2, t3, t4` using `t4` as the reference.",
+        "response": "stilts tmatchn nin=4 in1=t1.fits in2=t2.fits in3=t3.fits in4=t4.fits multimode=pairs iref=4 matcher=sky params=2 values1='ra dec' values2='ra dec' values3='ra dec' values4='ra dec' out=t4_ref_match.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "What is the role of the `tuning` parameter in `tmatchn`?",
+        "response": "The `tuning` parameter provides values to adjust the internal algorithms of the chosen `matcher`. For example, for the `sky` matcher, it controls the HEALPix level used for spatial indexing. Adjusting it does not change the result of the match, but can affect performance in terms of CPU time and memory usage [1, 5].",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: tuning: not found\n/bin/sh: 1: matcher: not found\n/bin/sh: 1: sky: not found\n\nNo such task: The\n\nUsage:\n   stilts [-help] [-version] [-verbose] [-allowunused] [-prompt] [-bench]\n          [-debug] [-batch] [-memory] [-disk] [-memgui]\n          [-checkversion <vers>] [-stdout <file>] [-stderr <file>]\n          <task-name> <task-args>\n\n   stilts <task-name> help[=<param-name>|*]\n\n   Known tasks:\n      arrayjoin\n      calc\n      cdsskymatch\n      cone\n      coneskymatch\n      datalinklint\n      funcs\n      mocshape\n      parqlint\n      parqlook\n      pixfoot\n      pixsample\n      plot2d\n      plot3d\n      plothist\n      regquery\n      server\n      sqlclient\n      sqlskymatch\n      sqlupdate\n      taplint\n      tapquery\n      tapresume\n      tapskymatch\n      tcat\n      tcatn\n      tcopy\n      tcube\n      tgridmap\n      tgroup\n      tjoin\n      tloop\n      tmatch1\n      tmatch2\n      tmatchn\n      tmulti\n      tmultin\n      tpipe\n      tskymap\n      tskymatch2\n      votcopy\n      votlint\n      xsdvalidate\n      plot2plane\n      plot2sky\n      plot2cube\n      plot2sphere\n      plot2corner\n      plot2time\n\n"
+    },
+    {
+        "prompt": "Join three tables on `OBJECT_ID`. Before joining, for each table, remove rows where `MAG_ERR > 0.2`.",
+        "response": "stilts tmatchn nin=3 in1=t1.fits in2=t2.fits in3=t3.fits icmd1='select MAG_ERR <= 0.2' icmd2='select MAG_ERR <= 0.2' icmd3='select MAG_ERR <= 0.2' multimode=group matcher=exact values1=OBJECT_ID values2=OBJECT_ID values3=OBJECT_ID out=clean_id_groups.fits",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '<=' '0.2'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: select MAG_ERR <= 0.2\n\nUsage: select <expr>\n    (Unused arguments: '<=' '0.2'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "I want to match three lists of stars, but only keep the groups where at least two of the stars are present.",
+        "response": "The default behavior of `multimode=group` is to output groups of size two or more, so no special parameters are needed. A command like `stilts tmatchn nin=3 ... multimode=group` will achieve this.",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: tmatchn: not found\n\nNo such task: The\n\nUsage:\n   stilts [-help] [-version] [-verbose] [-allowunused] [-prompt] [-bench]\n          [-debug] [-batch] [-memory] [-disk] [-memgui]\n          [-checkversion <vers>] [-stdout <file>] [-stderr <file>]\n          <task-name> <task-args>\n\n   stilts <task-name> help[=<param-name>|*]\n\n   Known tasks:\n      arrayjoin\n      calc\n      cdsskymatch\n      cone\n      coneskymatch\n      datalinklint\n      funcs\n      mocshape\n      parqlint\n      parqlook\n      pixfoot\n      pixsample\n      plot2d\n      plot3d\n      plothist\n      regquery\n      server\n      sqlclient\n      sqlskymatch\n      sqlupdate\n      taplint\n      tapquery\n      tapresume\n      tapskymatch\n      tcat\n      tcatn\n      tcopy\n      tcube\n      tgridmap\n      tgroup\n      tjoin\n      tloop\n      tmatch1\n      tmatch2\n      tmatchn\n      tmulti\n      tmultin\n      tpipe\n      tskymap\n      tskymatch2\n      votcopy\n      votlint\n      xsdvalidate\n      plot2plane\n      plot2sky\n      plot2cube\n      plot2sphere\n      plot2corner\n      plot2time\n\n"
+    },
+    {
+        "prompt": "Match my reference list `ref.fits` against two very large catalogs `large1.fits` and `large2.fits`. How can I make this faster?",
+        "response": "You can try using the `runner=parallel` parameter to use multiple CPU cores. For sky matches, you can also experiment with the `tuning` parameter to adjust the HEALPix level for potentially better performance [2, B.41.1, 1963].",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: tuning: not found\n\nNo such task: You\n\nUsage:\n   stilts [-help] [-version] [-verbose] [-allowunused] [-prompt] [-bench]\n          [-debug] [-batch] [-memory] [-disk] [-memgui]\n          [-checkversion <vers>] [-stdout <file>] [-stderr <file>]\n          <task-name> <task-args>\n\n   stilts <task-name> help[=<param-name>|*]\n\n   Known tasks:\n      arrayjoin\n      calc\n      cdsskymatch\n      cone\n      coneskymatch\n      datalinklint\n      funcs\n      mocshape\n      parqlint\n      parqlook\n      pixfoot\n      pixsample\n      plot2d\n      plot3d\n      plothist\n      regquery\n      server\n      sqlclient\n      sqlskymatch\n      sqlupdate\n      taplint\n      tapquery\n      tapresume\n      tapskymatch\n      tcat\n      tcatn\n      tcopy\n      tcube\n      tgridmap\n      tgroup\n      tjoin\n      tloop\n      tmatch1\n      tmatch2\n      tmatchn\n      tmulti\n      tmultin\n      tpipe\n      tskymap\n      tskymatch2\n      votcopy\n      votlint\n      xsdvalidate\n      plot2plane\n      plot2sky\n      plot2cube\n      plot2sphere\n      plot2corner\n      plot2time\n\n"
+    },
+    {
+        "prompt": "Find groups across three catalogs, then keep only the `ID` columns and send the result to the GUI.",
+        "response": "stilts tmatchn nin=3 in1=t1.fits in2=t2.fits in3=t3.fits multimode=group matcher=sky params=1 values1='ra dec' values2='ra dec' values3='ra dec' icmd1='keepcols \"ID ra dec\"' icmd2='keepcols \"ID ra dec\"' icmd3='keepcols \"ID ra dec\"' fixcols=all suffix1=_1 suffix2=_2 suffix3=_3 ocmd='keepcols \"ID_1 ID_2 ID_3\"' omode=gui",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Match `main.fits` against `catA.fits` and `catB.fits`. I want to see every entry from `catA`, joined with its match in `main` and `catB` if they exist.",
+        "response": "stilts tmatchn nin=3 in1=main.fits in2=catA.fits in3=catB.fits multimode=pairs iref=2 matcher=sky params=2 values1='ra dec' values2='ra dec' values3='ra dec' join2=always out=catA_centric_match.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Match three tables on their 3D positions `X, Y, Z` with an error of 10 units.",
+        "response": "stilts tmatchn nin=3 in1=pos1.fits in2=pos2.fits in3=pos3.fits multimode=group matcher=3d params=10 values1='X Y Z' values2='X Y Z' values3='X Y Z' out=3d_pos_groups.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Using `t1.fits` as the reference, find all rows that have a match in `t2.fits` and also have a match in `t3.fits`.",
+        "response": "stilts tmatchn nin=3 in1=t1.fits in2=t2.fits in3=t3.fits multimode=pairs iref=1 matcher=sky params=2 values1='ra dec' values2='ra dec' values3='ra dec' join1=match join2=match join3=match out=t1_in_t2_and_t3.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Can `tmatchn` handle input from a pipe?",
+        "response": "Yes, but it's tricky since `tmatchn` requires multiple table inputs. You can pipe one table using `in1=-` and specify the others as files, but you cannot pipe multiple tables into a single `tmatchn` command.",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: Syntax error: Unterminated quoted string\n"
+    },
+    {
+        "prompt": "I'm matching three catalogs of galaxies. For each, I want to filter out objects with `CLASS != 'GALAXY'` before matching.",
+        "response": "stilts tmatchn nin=3 in1=c1.fits in2=c2.fits in3=c3.fits icmd1='select CLASS==\"GALAXY\"' icmd2='select CLASS==\"GALAXY\"' icmd3='select CLASS==\"GALAXY\"' multimode=group matcher=sky params=10 values1='ra dec' values2='ra dec' values3='ra dec' out=galaxy_only_groups.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "What's the simplest `tmatchn` command?",
+        "response": "A simple command would be: `stilts tmatchn nin=3 in1=t1.fits in2=t2.fits in3=t3.fits multimode=group matcher=sky params=5 values1='ra dec' values2='ra dec' values3='ra dec' out=out.fits`",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: tmatchn: not found\n\nNo such task: A\n\nUsage:\n   stilts [-help] [-version] [-verbose] [-allowunused] [-prompt] [-bench]\n          [-debug] [-batch] [-memory] [-disk] [-memgui]\n          [-checkversion <vers>] [-stdout <file>] [-stderr <file>]\n          <task-name> <task-args>\n\n   stilts <task-name> help[=<param-name>|*]\n\n   Known tasks:\n      arrayjoin\n      calc\n      cdsskymatch\n      cone\n      coneskymatch\n      datalinklint\n      funcs\n      mocshape\n      parqlint\n      parqlook\n      pixfoot\n      pixsample\n      plot2d\n      plot3d\n      plothist\n      regquery\n      server\n      sqlclient\n      sqlskymatch\n      sqlupdate\n      taplint\n      tapquery\n      tapresume\n      tapskymatch\n      tcat\n      tcatn\n      tcopy\n      tcube\n      tgridmap\n      tgroup\n      tjoin\n      tloop\n      tmatch1\n      tmatch2\n      tmatchn\n      tmulti\n      tmultin\n      tpipe\n      tskymap\n      tskymatch2\n      votcopy\n      votlint\n      xsdvalidate\n      plot2plane\n      plot2sky\n      plot2cube\n      plot2sphere\n      plot2corner\n      plot2time\n\n"
+    },
+    {
+        "prompt": "After a 3-way match, I want to see which groups have members from `table1` and `table3` but not `table2`.",
+        "response": "stilts tmatchn nin=3 in1=t1.fits in2=t2.fits in3=t3.fits multimode=group matcher=sky params=2 values1='ra dec' values2='ra dec' values3='ra dec' fixcols=all suffix1=_1 suffix2=_2 suffix3=_3 ocmd='select !NULL_ID_1 && NULL_ID_2 && !NULL_ID_3' out=groups_1_and_3_only.fits",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '&&' 'NULL_ID_2' '&&' '!NULL_ID_3'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: select !NULL_ID_1 && NULL_ID_2 && !NULL_ID_3\n\nUsage: select <expr>\n    (Unused arguments: '&&' 'NULL_ID_2' '&&' '!NULL_ID_3'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "I want to match three tables, and then only keep rows from the second input table that were part of a match.",
+        "response": "stilts tmatchn nin=3 in1=t1.fits in2=t2.fits in3=t3.fits multimode=group matcher=sky params=2 values1='ra dec' values2='ra dec' values3='ra dec' fixcols=all suffix1=_1 suffix2=_2 suffix3=_3 join2=match ocmd='keepcols \"*_2\"' out=t2_matched_rows.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Match four catalogs and output the results as a LaTeX table.",
+        "response": "stilts tmatchn nin=4 in1=t1.fits in2=t2.fits in3=t3.fits in4=t4.fits multimode=group matcher=sky params=5 values1='ra dec' values2='ra dec' values3='ra dec' values4='ra dec' ofmt=latex out=4way_match.tex",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Match `ref.fits` against `catA.fits`, `catB.fits`, `catC.fits`, keeping all rows from `ref.fits` and only matched rows from the others.",
+        "response": "stilts tmatchn nin=4 in1=ref.fits in2=catA.fits in3=catB.fits in4=catC.fits multimode=pairs iref=1 matcher=sky params=2 values1='ra dec' values2='ra dec' values3='ra dec' values4='ra dec' join1=always out=ref_left_join_3.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Find all groups across my three tables (`t1, t2, t3`) and then, for each group, calculate the mean separation between members and the reference object in `t1`.",
+        "response": "This is not a direct output. You would run `tmatchn` with `multimode=group` to get the groups. Then, in a separate step, you would need to join this result with the original tables and use `tpipe` with expressions like `skyDistanceDegrees` to calculate separations.",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: tmatchn: not found\n/bin/sh: 1: tpipe: not found\n/bin/sh: 1: skyDistanceDegrees: not found\n\nNo such task: This\n\nUsage:\n   stilts [-help] [-version] [-verbose] [-allowunused] [-prompt] [-bench]\n          [-debug] [-batch] [-memory] [-disk] [-memgui]\n          [-checkversion <vers>] [-stdout <file>] [-stderr <file>]\n          <task-name> <task-args>\n\n   stilts <task-name> help[=<param-name>|*]\n\n   Known tasks:\n      arrayjoin\n      calc\n      cdsskymatch\n      cone\n      coneskymatch\n      datalinklint\n      funcs\n      mocshape\n      parqlint\n      parqlook\n      pixfoot\n      pixsample\n      plot2d\n      plot3d\n      plothist\n      regquery\n      server\n      sqlclient\n      sqlskymatch\n      sqlupdate\n      taplint\n      tapquery\n      tapresume\n      tapskymatch\n      tcat\n      tcatn\n      tcopy\n      tcube\n      tgridmap\n      tgroup\n      tjoin\n      tloop\n      tmatch1\n      tmatch2\n      tmatchn\n      tmulti\n      tmultin\n      tpipe\n      tskymap\n      tskymatch2\n      votcopy\n      votlint\n      xsdvalidate\n      plot2plane\n      plot2sky\n      plot2cube\n      plot2sphere\n      plot2corner\n      plot2time\n\n"
+    },
+    {
+        "prompt": "Can I use different coordinate systems (e.g., galactic for one table, ICRS for others) in `tmatchn`?",
+        "response": "Yes, but you must use the `icmdN` filter with the `addskycoords` command to convert all tables to a common coordinate system *before* the matching stage. For example: `icmd2='addskycoords galactic icrs GLON GLAT RA_ICRS DEC_ICRS'`.",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: icmdN: not found\n/bin/sh: 1: addskycoords: not found\n\nNo such task: Yes,\n\nUsage:\n   stilts [-help] [-version] [-verbose] [-allowunused] [-prompt] [-bench]\n          [-debug] [-batch] [-memory] [-disk] [-memgui]\n          [-checkversion <vers>] [-stdout <file>] [-stderr <file>]\n          <task-name> <task-args>\n\n   stilts <task-name> help[=<param-name>|*]\n\n   Known tasks:\n      arrayjoin\n      calc\n      cdsskymatch\n      cone\n      coneskymatch\n      datalinklint\n      funcs\n      mocshape\n      parqlint\n      parqlook\n      pixfoot\n      pixsample\n      plot2d\n      plot3d\n      plothist\n      regquery\n      server\n      sqlclient\n      sqlskymatch\n      sqlupdate\n      taplint\n      tapquery\n      tapresume\n      tapskymatch\n      tcat\n      tcatn\n      tcopy\n      tcube\n      tgridmap\n      tgroup\n      tjoin\n      tloop\n      tmatch1\n      tmatch2\n      tmatchn\n      tmulti\n      tmultin\n      tpipe\n      tskymap\n      tskymatch2\n      votcopy\n      votlint\n      xsdvalidate\n      plot2plane\n      plot2sky\n      plot2cube\n      plot2sphere\n      plot2corner\n      plot2time\n\n"
+    },
+    {
+        "prompt": "Match three catalogs where the coordinates for table 3 are in columns `pos_ra` and `pos_dec`.",
+        "response": "stilts tmatchn nin=3 in1=c1.fits in2=c2.fits in3=c3.fits multimode=group matcher=sky params=3 values1='ra dec' values2='ra dec' values3='pos_ra pos_dec' out=custom_col_names.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I want all rows from `table1`, `table2`, and `table3` in the output, with matched groups joined together and unmatched rows having nulls for the other tables' columns.",
+        "response": "stilts tmatchn nin=3 in1=t1.fits in2=t2.fits in3=t3.fits multimode=group matcher=sky params=2 values1='ra dec' values2='ra dec' values3='ra dec' join1=always join2=always join3=always out=full_outer_3way_join.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I have three observation logs. Find groups of observations that happened within 60 seconds of each other.",
+        "response": "stilts tmatchn nin=3 in1=log1.fits in2=log2.fits in3=log3.fits multimode=group matcher=1d params=60 values1=OBS_TIME_UNIX values2=OBS_TIME_UNIX values3=OBS_TIME_UNIX out=time_clustered_obs.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Match my `main.fits` against `survey1.fits` and `survey2.fits`, but only for sources in `main.fits` brighter than magnitude 15.",
+        "response": "stilts tmatchn nin=3 in1=main.fits in2=survey1.fits in3=survey2.fits multimode=pairs iref=1 icmd1='select MAG < 15' matcher=sky params=2 values1='ra dec' values2='ra dec' values3='ra dec' out=bright_source_matches.fits",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '<' '15'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: select MAG < 15\n\nUsage: select <expr>\n    (Unused arguments: '<' '15'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "Find all groups across three catalogs, then take a random sample of 100 groups from the result.",
+        "response": "stilts tmatchn nin=3 in1=t1.fits in2=t2.fits in3=t3.fits multimode=group matcher=sky params=2 values1='ra dec' values2='ra dec' values3='ra dec' ocmd='random 100' out=random_group_sample.fits",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '100'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: random 100\n\nUsage: random\n    (Unused arguments: '100'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "I want to find objects that are in `cat1` and `cat3`, but not `cat2`, using `cat1` as the reference.",
+        "response": "stilts tmatchn nin=3 in1=cat1.fits in2=cat2.fits in3=cat3.fits multimode=pairs iref=1 matcher=sky params=2 values1='ra dec' values2='ra dec' values3='ra dec' join1=match join2=nomatch join3=match out=in_1_and_3_not_2.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "After a 4-way group match, I want to create a new column that counts how many of the 4 tables contributed to each group.",
+        "response": "stilts tmatchn nin=4 in1=t1.fits in2=t2.fits in3=t3.fits in4=t4.fits multimode=group matcher=sky params=1 values1='ra dec' values2='ra dec' values3='ra dec' values4='ra dec' fixcols=all suffix1=_1 suffix2=_2 suffix3=_3 suffix4=_4 ocmd='addcol N_Match countTrue(!NULL_ID_1,!NULL_ID_2,!NULL_ID_3,!NULL_ID_4)' out=groups_with_counts.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Is it possible to do a symmetric best match with `tmatchn` like `find=best` in `tmatch2`?",
+        "response": "No, the `find=best` option is specific to `tmatch2` for symmetric pair matching. For more than two tables, the logic becomes more complex. `tmatchn`'s `multimode=group` identifies all linked members, and `multimode=pairs` finds the best match relative to a single reference table [1, 2, 6].",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: Syntax error: Unterminated quoted string\n"
+    },
+    {
+        "prompt": "How can I find triplets of stars from `cat_R.fits`, `cat_G.fits`, and `cat_B.fits` that are aligned on the sky within a certain tolerance?",
+        "response": "This is a complex geometric problem, not a simple proximity match. `tmatchn` can find groups of three nearby stars, but you would need to use `tpipe` on the output to apply an additional geometric filter (e.g., calculating angles between the three points) to test for alignment.",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: Syntax error: \"(\" unexpected\n"
+    },
+    {
+        "prompt": "Match `t1.fits`, `t2.fits`, `t3.fits`, `t4.fits`, and `t5.fits` in group mode, and use a HEALPix level of 12 for the internal sky binning.",
+        "response": "stilts tmatchn nin=5 in1=t1.fits in2=t2.fits in3=t3.fits in4=t4.fits in5=t5.fits multimode=group matcher=sky params=2 values1='ra dec' values2='ra dec' values3='ra dec' values4='ra dec' values5='ra dec' tuning=12 out=5way_tuned_match.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Show me all objects from `catalog_A.fits` that appear in a group with at least one object from `catalog_B.fits` OR `catalog_C.fits`.",
+        "response": "stilts tmatchn nin=3 in1=catalog_A.fits in2=catalog_B.fits in3=catalog_C.fits multimode=group matcher=sky params=2 values1='ra dec' values2='ra dec' values3='ra dec' fixcols=all suffix1=_A suffix2=_B suffix3=_C join1=match ocmd='keepcols \"*_A\"' out=A_with_B_or_C_match.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Perform a 3-way match, but for the third table, the RA values are in hours. How do I convert them?",
+        "response": "stilts tmatchn nin=3 in1=t1.fits in2=t2.fits in3=t3.fits multimode=group matcher=sky params=2 values1='RA DEC' values2='RA DEC' values3='hmsToDegrees(RA_HRS) DEC' out=hours_to_deg_match.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I want to match three tables and then output the result in ECSV format.",
+        "response": "stilts tmatchn nin=3 in1=t1.fits in2=t2.fits in3=t3.fits multimode=group matcher=sky params=2 values1='ra dec' values2='ra dec' values3='ra dec' ofmt=ecsv out=3way_match.ecsv",
+        "chat.jar": "executed successfully"
+    }
+]

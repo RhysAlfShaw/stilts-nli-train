@@ -1,0 +1,1046 @@
+[
+    {
+        "prompt": "Create a default-resolution FITS MOC from the sky positions in `survey_catalog.fits`.",
+        "response": "stilts pixfoot in=survey_catalog.fits out=survey_footprint.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Generate a MOC for my CSV file `targets.csv`, assuming RA and Dec columns are named 'RA_DEG' and 'DEC_DEG'. Save it as a JSON MOC.",
+        "response": "stilts pixfoot in=targets.csv ifmt=csv ra=RA_DEG dec=DEC_DEG mocfmt=json out=targets_coverage.json",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need a low-resolution MOC (order 5) for all the sources in `deep_field.vot`. Please output it in ASCII format.",
+        "response": "stilts pixfoot in=deep_field.vot order=5 mocfmt=ascii out=deep_field_lowres.moc.txt",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "How can I generate the footprint for circular regions of 30 arcseconds around each object in my `clusters_list.fits` catalog?",
+        "response": "stilts pixfoot in=clusters_list.fits radius=30./3600. out=cluster_regions.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "My catalog `old_survey.dat` is in ASCII format and uses B1950 coordinates (`RA_1950`, `DEC_1950`). Can I still generate a J2000 MOC from it?",
+        "response": "stilts pixfoot in=old_survey.dat ifmt=ascii icmd='addskycoords fk4 fk5 RA_1950 DEC_1950 RA_J2000 DEC_J2000' ra=RA_J2000 dec=DEC_J2000 out=old_survey_j2000_footprint.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Create a high-resolution MOC (order 15) from a simulated all-sky catalog of 100,000 stars and output it to standard output.",
+        "response": "stilts pixfoot in=:skysim:100000 ra=ra dec=dec order=15 out=-",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Generate a MOC from my `bright_stars.vot` table, but only for stars with a V magnitude brighter than 10.",
+        "response": "stilts pixfoot in=bright_stars.vot icmd='select VMAG < 10' out=vmag_lt_10.moc.fits",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '<' '10'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: select VMAG < 10\n\nUsage: select <expr>\n    (Unused arguments: '<' '10'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "I have a catalog where each object has a positional error `pos_err_arcsec`. How do I create a MOC representing the 3-sigma error circles?",
+        "response": "stilts pixfoot in=catalog_with_errors.fits radius='pos_err_arcsec * 3 / 3600.' out=3sigma_coverage.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Convert the galactic coordinates `GLON`, `GLAT` in `bulge_stars.fits` to ICRS and then create a MOC at order 9.",
+        "response": "stilts pixfoot in=bulge_stars.fits icmd='addskycoords galactic icrs GLON GLAT RA_ICRS DEC_ICRS' ra=RA_ICRS dec=DEC_ICRS order=9 out=bulge_icrs_footprint.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "What's the command to get a JSON MOC for the first 1000 objects in my `large_survey.colfits` file?",
+        "response": "stilts pixfoot in=large_survey.colfits icmd='head 1000' mocfmt=json out=survey_sample.moc.json",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Generate a MOC from a piped ASCII stream. The RA is column 3 and Dec is column 4.",
+        "response": "cat data.txt | stilts pixfoot in=- ifmt=ascii ra=$3 dec=$4 out=piped_footprint.moc.fits",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: pixfoot: not found\n\nNo such task: cat\n\nUsage:\n   stilts [-help] [-version] [-verbose] [-allowunused] [-prompt] [-bench]\n          [-debug] [-batch] [-memory] [-disk] [-memgui]\n          [-checkversion <vers>] [-stdout <file>] [-stderr <file>]\n          <task-name> <task-args>\n\n   stilts <task-name> help[=<param-name>|*]\n\n   Known tasks:\n      arrayjoin\n      calc\n      cdsskymatch\n      cone\n      coneskymatch\n      datalinklint\n      funcs\n      mocshape\n      parqlint\n      parqlook\n      pixfoot\n      pixsample\n      plot2d\n      plot3d\n      plothist\n      regquery\n      server\n      sqlclient\n      sqlskymatch\n      sqlupdate\n      taplint\n      tapquery\n      tapresume\n      tapskymatch\n      tcat\n      tcatn\n      tcopy\n      tcube\n      tgridmap\n      tgroup\n      tjoin\n      tloop\n      tmatch1\n      tmatch2\n      tmatchn\n      tmulti\n      tmultin\n      tpipe\n      tskymap\n      tskymatch2\n      votcopy\n      votlint\n      xsdvalidate\n      plot2plane\n      plot2sky\n      plot2cube\n      plot2sphere\n      plot2corner\n      plot2time\n\n"
+    },
+    {
+        "prompt": "Create a MOC representing a 1-degree radius around every source in `radio_sources.fits`.",
+        "response": "stilts pixfoot in=radio_sources.fits radius=1.0 out=radio_source_areas.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need the footprint of all objects classified as 'GALAXY' in `object_list.ecsv`.",
+        "response": "stilts pixfoot in=object_list.ecsv ifmt=ecsv icmd='select CLASS==\"GALAXY\"' out=galaxy_footprint.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Generate a very high-resolution MOC (order 16) for a small patch of sky defined by `RA > 180 AND RA < 181 AND DEC > 20 AND DEC < 21`.",
+        "response": "stilts pixfoot in=all_sky.fits icmd='select RA > 180 && RA < 181 && DEC > 20 && DEC < 21' order=16 out=small_patch_hires.moc.fits",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '>' '180' '&&' 'RA' '<' '181' '&&' 'DEC' '>' '20' '&&' 'DEC' '<' '21'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: select RA > 180 && RA < 181 && DEC > 20 && DEC < 21\n\nUsage: select <expr>\n    (Unused arguments: '>' '180' '&&' 'RA' '<' '181' '&&' 'DEC' '>' '20' '&&' 'DEC' '<' '21'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "How can I create an ASCII MOC at order 7 from `instrument_fov.dat`?",
+        "response": "stilts pixfoot in=instrument_fov.dat ifmt=ascii order=7 mocfmt=ascii out=instrument_coverage.moc.txt",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "My RA coordinates are in hours in column `RA_HMS`. Convert them to degrees before creating the footprint.",
+        "response": "stilts pixfoot in=my_catalog.fits ra='hmsToDegrees(RA_HMS)' dec=DEC out=hms_converted_footprint.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Create a footprint for every 100th object in `dense_catalog.fits` to get a quick idea of the coverage.",
+        "response": "stilts pixfoot in=dense_catalog.fits icmd='every 100' out=sparse_coverage_map.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need a MOC for a table with a varying search radius, specified by the `SEARCH_RAD_DEG` column.",
+        "response": "stilts pixfoot in=variable_radius.fits radius=SEARCH_RAD_DEG out=dynamic_radius_footprint.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Generate a JSON MOC from a simulated catalog of 500,000 stars.",
+        "response": "stilts pixfoot in=:skysim:500000 ra=ra dec=dec mocfmt=json out=simulated_sky.moc.json",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "What is the command to create a MOC from `data.parquet` at order 11?",
+        "response": "stilts pixfoot in=data.parquet order=11 out=parquet_coverage.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Generate the footprint for all sources where `FLAG` bit 3 is set.",
+        "response": "stilts pixfoot in=flagged_sources.fits icmd='select hasBit(FLAG,3)' out=flagged_footprint.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Create a MOC from my `pds4_data.xml` file, which is in PDS4 format.",
+        "response": "stilts pixfoot in=pds4_data.xml ifmt=pds4 out=pds4_coverage.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "How to create a MOC for circles whose radius is `sqrt(AREA/PI)` from the `AREA` column?",
+        "response": "stilts pixfoot in=source_areas.fits radius='sqrt(AREA/PI)' out=area_derived_radius.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I want the combined footprint of two catalogs, `cat1.fits` and `cat2.fits`.",
+        "response": "stilts tcat in=cat1.fits in=cat2.fits | stilts pixfoot in=- out=combined_footprint.moc.fits",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: pixfoot: not found\n"
+    },
+    {
+        "prompt": "Generate an ASCII MOC at order 4 for a simulated catalog of 1000 stars and display it on the terminal.",
+        "response": "stilts pixfoot in=:skysim:1000 ra=ra dec=dec order=4 mocfmt=ascii out=-",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Create a MOC where the radius for each object is 5 times its `pos_error` in arcsec.",
+        "response": "stilts pixfoot in=err_cat.fits radius='5 * pos_error / 3600.0' out=scaled_error_moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "My catalog has ecliptic coordinates `ELON` and `ELAT`. How do I generate a standard ICRS MOC?",
+        "response": "stilts pixfoot in=ecliptic_cat.fits icmd='addskycoords ecliptic icrs ELON ELAT RA_ICRS DEC_ICRS' ra=RA_ICRS dec=DEC_ICRS out=ecliptic_to_icrs.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Generate a MOC from a `gbin` file at order 12.",
+        "response": "stilts pixfoot in=mydata.gbin ifmt=gbin order=12 out=gbin_footprint.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need a very coarse MOC (order 2) of my all-sky survey.",
+        "response": "stilts pixfoot in=all_sky_survey.fits order=2 out=coarse_allsky.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Create a FITS MOC for objects with `REDSHIFT > 2` from my quasar catalog.",
+        "response": "stilts pixfoot in=quasar_catalog.fits icmd='select REDSHIFT > 2' out=high_z_qso.moc.fits",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '>' '2'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: select REDSHIFT > 2\n\nUsage: select <expr>\n    (Unused arguments: '>' '2'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "How to generate a MOC with a fixed 1 arcminute radius for every point in `points.csv`?",
+        "response": "stilts pixfoot in=points.csv ifmt=csv radius=1.0/60.0 mocfmt=fits out=arcmin_radius_points.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "My coordinates are in separate columns for degrees, minutes, and seconds. Can I combine them for `pixfoot`?",
+        "response": "stilts pixfoot in=dms_coords.fits icmd='addcol RA_DEG dmsToDegrees(RA_D,RA_M,RA_S)' icmd='addcol DEC_DEG dmsToDegrees(DEC_D,DEC_M,DEC_S)' ra=RA_DEG dec=DEC_DEG out=combined_dms.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Generate a MOC from `ipac_table.tbl` at order 9.",
+        "response": "stilts pixfoot in=ipac_table.tbl ifmt=ipac order=9 out=ipac_coverage.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need the footprint for every source that is NOT flagged as an artifact (`ARTIFACT_FLAG == 0`).",
+        "response": "stilts pixfoot in=sources.fits icmd='select ARTIFACT_FLAG == 0' out=clean_sources.moc.fits",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '==' '0'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: select ARTIFACT_FLAG == 0\n\nUsage: select <expr>\n    (Unused arguments: '==' '0'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "Create a MOC with a radius of 0.1 degrees for the last 500 entries in `event_stream.fits`.",
+        "response": "stilts pixfoot in=event_stream.fits icmd='tail 500' radius=0.1 out=last_500_events.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Generate a JSON MOC for a 2-degree radius around a small list of superclusters.",
+        "response": "stilts pixfoot in=superclusters.vot radius=2.0 mocfmt=json out=supercluster_areas.moc.json",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "My input table `survey_radians.fits` has coordinates in radians. How do I use `pixfoot`?",
+        "response": "stilts pixfoot in=survey_radians.fits ra='radiansToDegrees(RA_RAD)' dec='radiansToDegrees(DEC_RAD)' out=radians_converted.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Create a MOC from the positions in `mrt_table.txt`, which is in MRT format.",
+        "response": "stilts pixfoot in=mrt_table.txt ifmt=mrt out=mrt_footprint.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Generate the footprint for all objects whose name starts with 'NGC'.",
+        "response": "stilts pixfoot in=object_names.fits icmd='select startsWith(NAME, \"NGC\")' out=ngc_footprint.moc.fits",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: 'NGC' ')'\n\nCommand was: select startsWith(NAME, \"NGC\")\n\nUsage: select <expr>\n    (Unused arguments: 'NGC' ')')\n"
+    },
+    {
+        "prompt": "I have an `image_centers.fits` table. Generate a MOC for a 0.25 degree radius around each center point, at order 8.",
+        "response": "stilts pixfoot in=image_centers.fits radius=0.25 order=8 out=image_footprints.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "What is the command to create an order-10 ASCII MOC from a simulated catalog?",
+        "response": "stilts pixfoot in=:skysim:10000 ra=ra dec=dec order=10 mocfmt=ascii out=sim_ascii.moc.txt",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Create a MOC for sources with a signal-to-noise ratio > 10.",
+        "response": "stilts pixfoot in=detections.fits icmd='select SNR > 10' out=high_snr_coverage.moc.fits",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '>' '10'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: select SNR > 10\n\nUsage: select <expr>\n    (Unused arguments: '>' '10'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "How do I specify a radius of 2.5 arcminutes for my MOC generation?",
+        "response": "stilts pixfoot in=my_table.fits radius=2.5/60.0 out=my_moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "My table has supergalactic coordinates `SGL`, `SGB`. Create a MOC.",
+        "response": "stilts pixfoot in=supergalactic_data.fits icmd='addskycoords supergalactic icrs SGL SGB RA_ICRS DEC_ICRS' ra=RA_ICRS dec=DEC_ICRS out=supergalactic_to_icrs.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Generate a JSON MOC from every 10th row of a 1 million star simulation.",
+        "response": "stilts pixfoot in=:skysim:1e6 icmd='every 10' ra=ra dec=dec mocfmt=json out=sim_subsample.moc.json",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Create a footprint for a feather file `data.feather`.",
+        "response": "stilts pixfoot in=data.feather order=9 out=feather_coverage.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need to generate a MOC for all objects, but the `RADIUS_COL` is in arcseconds. How do I use it?",
+        "response": "stilts pixfoot in=data.fits radius='RADIUS_COL/3600.0' out=arcsec_radius.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Generate a MOC for all entries in a catalog except those at the celestial poles (`abs(DEC) > 89`).",
+        "response": "stilts pixfoot in=allsky.fits icmd='select abs(DEC) <= 89' out=no_poles_footprint.moc.fits",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '<=' '89'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: select abs(DEC) <= 89\n\nUsage: select <expr>\n    (Unused arguments: '<=' '89'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "What's the simplest `pixfoot` command to check if my table `test.fits` has readable coordinates?",
+        "response": "stilts pixfoot in=test.fits omode=count",
+        "chat.jar": "failed",
+        "error": "\nUnused arguments: omode=count\n\nUsage: pixfoot ifmt=<in-format> istream=true|false icmd=<cmds> order=0..29\n               ra=<expr> dec=<expr> radius=<expr> mocfmt=fits|json|ascii\n               out=<out-file>\n               [in=]<table>\n\n"
+    },
+    {
+        "prompt": "Generate a FITS MOC from `catalog.dat`, reading it as a stream to save memory.",
+        "response": "stilts pixfoot in=catalog.dat ifmt=ascii istream=true out=streamed_footprint.moc.fits",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"catalog.dat\"\n"
+    },
+    {
+        "prompt": "Create a footprint of the northern celestial hemisphere from a simulated all-sky catalog.",
+        "response": "stilts pixfoot in=:skysim:1e6 icmd='select dec>=0' ra=ra dec=dec out=north_hemi.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Generate a very fine-grained MOC (order 18) for a tiny area around a specific target.",
+        "response": "stilts pixfoot in=target_area.fits order=18 out=target_fine_moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "My catalog has a `COVERAGE` column in degrees-squared. Create a MOC using a circular approximation.",
+        "response": "stilts pixfoot in=coverage_areas.fits radius='sqrt(COVERAGE/PI)' out=coverage_approx.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Take a random sample of 5000 objects from `big_survey.fits` and generate a MOC from them.",
+        "response": "stilts pixfoot in=big_survey.fits icmd='random 5000' out=big_survey_sample.moc.fits",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '5000'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: random 5000\n\nUsage: random\n    (Unused arguments: '5000'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "What is the maximum order `pixfoot` supports?",
+        "response": "The `order` parameter for `pixfoot` supports values up to 29.",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: order: not found\n/bin/sh: 1: pixfoot: not found\n\nNo such task: The\n\nUsage:\n   stilts [-help] [-version] [-verbose] [-allowunused] [-prompt] [-bench]\n          [-debug] [-batch] [-memory] [-disk] [-memgui]\n          [-checkversion <vers>] [-stdout <file>] [-stderr <file>]\n          <task-name> <task-args>\n\n   stilts <task-name> help[=<param-name>|*]\n\n   Known tasks:\n      arrayjoin\n      calc\n      cdsskymatch\n      cone\n      coneskymatch\n      datalinklint\n      funcs\n      mocshape\n      parqlint\n      parqlook\n      pixfoot\n      pixsample\n      plot2d\n      plot3d\n      plothist\n      regquery\n      server\n      sqlclient\n      sqlskymatch\n      sqlupdate\n      taplint\n      tapquery\n      tapresume\n      tapskymatch\n      tcat\n      tcatn\n      tcopy\n      tcube\n      tgridmap\n      tgroup\n      tjoin\n      tloop\n      tmatch1\n      tmatch2\n      tmatchn\n      tmulti\n      tmultin\n      tpipe\n      tskymap\n      tskymatch2\n      votcopy\n      votlint\n      xsdvalidate\n      plot2plane\n      plot2sky\n      plot2cube\n      plot2sphere\n      plot2corner\n      plot2time\n\n"
+    },
+    {
+        "prompt": "Create a MOC at order 0. What does that mean?",
+        "response": "stilts pixfoot in=one_point.fits order=0 out=order0.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Generate a JSON MOC from the positions in a `tst` file.",
+        "response": "stilts pixfoot in=legacy_data.tst ifmt=tst mocfmt=json out=legacy_coverage.json",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I want the footprint for sources that are not null in the `FLUX` column.",
+        "response": "stilts pixfoot in=flux_data.fits icmd='select !NULL_FLUX' out=valid_flux_footprint.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Create a MOC at order 13, which is the default.",
+        "response": "stilts pixfoot in=my_sources.fits order=13 out=my_sources_moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Generate a footprint for all objects that have a proper motion greater than 1000 mas/yr.",
+        "response": "stilts pixfoot in=proper_motions.fits icmd='select hypot(PMRA,PMDEC) > 1000' out=high_pm_footprint.moc.fits",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '>' '1000'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: select hypot(PMRA,PMDEC) > 1000\n\nUsage: select <expr>\n    (Unused arguments: '>' '1000'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "How do I create a MOC from an ECSV file and output it in ASCII format?",
+        "response": "stilts pixfoot in=my_cat.ecsv ifmt=ecsv mocfmt=ascii out=my_cat_coverage.txt",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Create a MOC from the first half of my catalog.",
+        "response": "stilts pixfoot in=full_cat.fits icmd='select $0 <= ($nrow/2)' out=first_half.moc.fits",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '<=' '($nrow/2)'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: select $0 <= ($nrow/2)\n\nUsage: select <expr>\n    (Unused arguments: '<=' '($nrow/2)'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "Generate a footprint for sources where the `ID` string contains 'XMM'.",
+        "response": "stilts pixfoot in=ids.fits icmd='select contains(ID, \"XMM\")' out=xmm_sources.moc.fits",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: 'XMM' ')'\n\nCommand was: select contains(ID, \"XMM\")\n\nUsage: select <expr>\n    (Unused arguments: 'XMM' ')')\n"
+    },
+    {
+        "prompt": "My file has sexagesimal coordinates. Create a MOC.",
+        "response": "stilts pixfoot in=sexagesimal.txt ifmt=ascii ra='hmsToDegrees(RA_SEX)' dec='dmsToDegrees(DEC_SEX)' out=sexagesimal_footprint.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Create a MOC from a simulated catalog where the radius of each point is a random number between 0 and 0.1 degrees.",
+        "response": "stilts pixfoot in=:skysim:10000 icmd='addcol rand_rad random()*0.1' ra=ra dec=dec radius=rand_rad out=random_radius_sim.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Generate a JSON MOC at order 14.",
+        "response": "stilts pixfoot in=data.fits order=14 mocfmt=json out=data_o14.json",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need a MOC representing the coverage of a 5 arcsec radius around every source.",
+        "response": "stilts pixfoot in=source_list.fits radius=5.0/3600.0 out=coverage_5arcsec.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Filter my table to keep only rows with `GOOD_QUALITY=true`, then generate the footprint.",
+        "response": "stilts pixfoot in=quality.fits icmd='select GOOD_QUALITY' out=good_quality_coverage.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Create a MOC for the galactic anti-center region from a simulated all-sky catalog.",
+        "response": "stilts pixfoot in=:skysim:1e6 icmd='addskycoords icrs galactic ra dec l b' icmd='select skyDistance(l,b,180,0)<10' ra=ra dec=dec out=anti_center.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Generate an ASCII MOC with a 0.01 degree radius for each point.",
+        "response": "stilts pixfoot in=points.vot radius=0.01 mocfmt=ascii out=points_coverage.txt",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "How do I make a MOC from the tail end (last 10%) of my catalog?",
+        "response": "stilts pixfoot in=long_catalog.fits icmd='select $0 > ($nrow * 0.9)' out=tail_end_coverage.moc.fits",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '>' '($nrow' '*' '0.9)'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: select $0 > ($nrow * 0.9)\n\nUsage: select <expr>\n    (Unused arguments: '>' '($nrow' '*' '0.9)'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "Generate the MOC of all objects between declination -10 and +10.",
+        "response": "stilts pixfoot in=all_sky.fits icmd='select DEC > -10 && DEC < 10' out=equatorial_strip.moc.fits",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '>' '-10' '&&' 'DEC' '<' '10'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: select DEC > -10 && DEC < 10\n\nUsage: select <expr>\n    (Unused arguments: '>' '-10' '&&' 'DEC' '<' '10'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "My radius is in arcminutes in the `RAD_MIN` column. How do I use that?",
+        "response": "stilts pixfoot in=data.fits radius='RAD_MIN/60.0' out=arcmin_radius_moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Create a MOC from every 1000th point of a 2 million star simulation.",
+        "response": "stilts pixfoot in=:skysim:2e6 icmd='every 1000' ra=ra dec=dec out=sim_2M_sparse.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need to get the footprint from `pointing_log.fits`, but the coordinates are named `L` and `B`.",
+        "response": "stilts pixfoot in=pointing_log.fits ra=L dec=B out=log_footprint.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Generate a JSON MOC for the footprint of objects in `object_cat.fits` that have a non-zero parallax.",
+        "response": "stilts pixfoot in=object_cat.fits icmd='select PARALLAX != 0' mocfmt=json out=parallax_objects.moc.json",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '!=' '0'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: select PARALLAX != 0\n\nUsage: select <expr>\n    (Unused arguments: '!=' '0'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "What's the command to create an ASCII MOC for circles of 15 arcsec around each source in `source_list.txt`?",
+        "response": "stilts pixfoot in=source_list.txt ifmt=ascii radius=15.0/3600.0 mocfmt=ascii out=source_circles.moc.txt",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I have `file_a.fits` and `file_b.fits`. Can you create a single MOC that covers the combined sky area of both?",
+        "response": "stilts tcat in=file_a.fits in=file_b.fits | stilts pixfoot in=- out=combined_coverage.moc.fits",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: pixfoot: not found\n"
+    },
+    {
+        "prompt": "How do I get a MOC for all sources in `survey.fits` that lie on a specific HEALPix pixel, say index 1234 at order 5?",
+        "response": "stilts pixfoot in=survey.fits icmd='select healpixRingIndex(5,RA,DEC)==1234' order=10 out=single_pixel_sources.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "My `radius` column is in radians. How do I make a MOC from it?",
+        "response": "stilts pixfoot in=radian_radii.fits radius='radiansToDegrees(radius)' out=radian_radius_footprint.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Create a MOC at order 6 from the first 50 rows of my table.",
+        "response": "stilts pixfoot in=my_table.fits icmd='head 50' order=6 out=first50_o6.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Please generate a MOC for all sources in `mycat.vot` with a circular footprint of 0.5 degrees.",
+        "response": "stilts pixfoot in=mycat.vot radius=0.5 out=half_degree_footprint.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "My coordinates are `ALPHA` and `DELTA`. Create a MOC for them from `star_catalog.fits`.",
+        "response": "stilts pixfoot in=star_catalog.fits ra=ALPHA dec=DELTA out=alpha_delta_footprint.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Generate a JSON MOC for objects where `PROBABILITY > 0.99`.",
+        "response": "stilts pixfoot in=candidates.fits icmd='select PROBABILITY > 0.99' mocfmt=json out=high_prob_candidates.moc.json",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '>' '0.99'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: select PROBABILITY > 0.99\n\nUsage: select <expr>\n    (Unused arguments: '>' '0.99'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "How to create a MOC from an ASCII file where RA and Dec are columns 5 and 6?",
+        "response": "stilts pixfoot in=mydata.txt ifmt=ascii ra=$5 dec=$6 out=mydata_footprint.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Create a very high resolution MOC (order 20) for a 1 arcsecond radius around each point in `calibrators.fits`.",
+        "response": "stilts pixfoot in=calibrators.fits radius=1.0/3600.0 order=20 out=calibrator_regions_hires.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "What is the smallest MOC order I can use?",
+        "response": "stilts pixfoot in=:skysim:1 ra=ra dec=dec order=0 out=smallest_order.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Generate a MOC for sources within the galactic plane (abs(b) < 2 degrees).",
+        "response": "stilts pixfoot in=all_sky.fits icmd='addskycoords icrs galactic RA DEC L B' icmd='select abs(B) < 2' out=galactic_plane.moc.fits",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '<' '2'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: select abs(B) < 2\n\nUsage: select <expr>\n    (Unused arguments: '<' '2'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "I need the footprint for my `hapi` stream data.",
+        "response": "stilts pixfoot in=my_stream.hapi ifmt=hapi out=hapi_footprint.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "My table uses `wdc` format. Can you generate a MOC from it?",
+        "response": "stilts pixfoot in=solar_data.wdc ifmt=wdc out=solar_data_coverage.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Create a MOC for circles whose radius is `10**LOG_RADIUS_DEG`.",
+        "response": "stilts pixfoot in=log_radii.fits radius='pow(10,LOG_RADIUS_DEG)' out=log_radii_footprint.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Generate the footprint for all sources in `survey.fits` that fall within the VizieR 2MASS footprint.",
+        "response": "stilts pixfoot in=survey.fits icmd='select inMoc(\"II/246/out\", RA, DEC)' out=in_2mass.moc.fits",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: ',' 'RA,' 'DEC)'\n\nCommand was: select inMoc(\"II/246/out\", RA, DEC)\n\nUsage: select <expr>\n    (Unused arguments: ',' 'RA,' 'DEC)')\n"
+    },
+    {
+        "prompt": "How can I combine three MOCs into one? Say, `moc1.fits`, `moc2.fits`, and `moc3.fits`.",
+        "response": "stilts tcat in=moc1.fits in=moc2.fits in=moc3.fits | stilts pixfoot in=- out=combined_moc.moc.fits",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: pixfoot: not found\n"
+    },
+    {
+        "prompt": "Create a MOC for objects with non-negative flux values.",
+        "response": "stilts pixfoot in=fluxes.fits icmd='select FLUX >= 0' out=non_neg_flux.moc.fits",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '>=' '0'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: select FLUX >= 0\n\nUsage: select <expr>\n    (Unused arguments: '>=' '0'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "Generate an ASCII MOC for the last 10 objects in `transient_alerts.vot`.",
+        "response": "stilts pixfoot in=transient_alerts.vot icmd='tail 10' mocfmt=ascii out=last_10_alerts.moc.txt",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "What does `mocfmt` do in the pixfoot command?",
+        "response": "The `mocfmt` parameter determines the output format for the MOC file. Your options are `fits`, `json`, or `ascii`.",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: mocfmt: not found\n/bin/sh: 1: fits: not found\n/bin/sh: 1: json: not found\n/bin/sh: 1: ascii: not found\n\nNo such task: The\n\nUsage:\n   stilts [-help] [-version] [-verbose] [-allowunused] [-prompt] [-bench]\n          [-debug] [-batch] [-memory] [-disk] [-memgui]\n          [-checkversion <vers>] [-stdout <file>] [-stderr <file>]\n          <task-name> <task-args>\n\n   stilts <task-name> help[=<param-name>|*]\n\n   Known tasks:\n      arrayjoin\n      calc\n      cdsskymatch\n      cone\n      coneskymatch\n      datalinklint\n      funcs\n      mocshape\n      parqlint\n      parqlook\n      pixfoot\n      pixsample\n      plot2d\n      plot3d\n      plothist\n      regquery\n      server\n      sqlclient\n      sqlskymatch\n      sqlupdate\n      taplint\n      tapquery\n      tapresume\n      tapskymatch\n      tcat\n      tcatn\n      tcopy\n      tcube\n      tgridmap\n      tgroup\n      tjoin\n      tloop\n      tmatch1\n      tmatch2\n      tmatchn\n      tmulti\n      tmultin\n      tpipe\n      tskymap\n      tskymatch2\n      votcopy\n      votlint\n      xsdvalidate\n      plot2plane\n      plot2sky\n      plot2cube\n      plot2sphere\n      plot2corner\n      plot2time\n\n"
+    },
+    {
+        "prompt": "I want a MOC for all objects in `catalog.fits` with a radius of 0.05 degrees, but at order 10.",
+        "response": "stilts pixfoot in=catalog.fits radius=0.05 order=10 out=catalog_footprint_o10.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "My RA is column `RA_J2000` and Dec is `DE_J2000`. Create a MOC.",
+        "response": "stilts pixfoot in=data.fits ra=RA_J2000 dec=DE_J2000 out=data_footprint.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Generate a MOC for rows where `EXTENDED_SOURCE` is true.",
+        "response": "stilts pixfoot in=sources.fits icmd='select EXTENDED_SOURCE' out=extended_sources_footprint.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I have sexagesimal RA in `RA_SEX` and decimal Dec in `DEC_DECIMAL`. Can you make a MOC?",
+        "response": "stilts pixfoot in=mixed_coords.fits ra='hmsToDegrees(RA_SEX)' dec=DEC_DECIMAL out=mixed_coords_moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Just count how many pixels at order 8 would be covered by my `survey.fits` catalog.",
+        "response": "stilts pixfoot in=survey.fits order=8 omode=count",
+        "chat.jar": "failed",
+        "error": "\nUnused arguments: omode=count\n\nUsage: pixfoot ifmt=<in-format> istream=true|false icmd=<cmds> order=0..29\n               ra=<expr> dec=<expr> radius=<expr> mocfmt=fits|json|ascii\n               out=<out-file>\n               [in=]<table>\n\n"
+    },
+    {
+        "prompt": "Create a JSON MOC for the southern galactic hemisphere.",
+        "response": "stilts pixfoot in=:skysim:1e6 icmd='addskycoords icrs galactic ra dec l b' icmd='select b < 0' ra=ra dec=dec mocfmt=json out=south_galactic_hemi.moc.json",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '<' '0'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: select b < 0\n\nUsage: select <expr>\n    (Unused arguments: '<' '0'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "The radius of each source is its `FWHM` in arcseconds. Generate the footprint.",
+        "response": "stilts pixfoot in=source_sizes.fits radius='FWHM/3600.0' out=fwhm_footprint.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need the footprint for all sources in `my_data.fits` that are NOT near the Andromeda galaxy (within 1 degree).",
+        "response": "stilts pixfoot in=my_data.fits icmd='select skyDistanceDegrees(RA,DEC,10.6847,41.2690) > 1' out=not_andromeda.moc.fits",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '>' '1'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: select skyDistanceDegrees(RA,DEC,10.6847,41.2690) > 1\n\nUsage: select <expr>\n    (Unused arguments: '>' '1'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "Create a FITS MOC from a simulated catalog of 20 million stars, but use a sparse sample for speed.",
+        "response": "stilts pixfoot in=:skysim:20_000_000 icmd='every 1000' ra=ra dec=dec out=sim_20M_sparse.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Generate a MOC for all sources with `QUALITY = A`.",
+        "response": "stilts pixfoot in=quality_data.fits icmd='select QUALITY==\"A\"' out=quality_A_coverage.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "My radius is `R_PIX` pixels, and my plate scale is `SCALE_AS` arcsec/pixel. How do I make the MOC?",
+        "response": "stilts pixfoot in=plate_data.fits radius='R_PIX * SCALE_AS / 3600.0' out=plate_footprint.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Create a MOC at order 12 from every 5th row of my catalog.",
+        "response": "stilts pixfoot in=mycat.fits icmd='every 5' order=12 out=mycat_every5_o12.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I have `file1.fits`, `file2.fits`, and `file3.fits`. Create a JSON MOC covering all of them.",
+        "response": "stilts tcat in=file1.fits in=file2.fits in=file3.fits | stilts pixfoot in=- mocfmt=json out=three_file_coverage.moc.json",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: pixfoot: not found\n"
+    },
+    {
+        "prompt": "What does a zero radius mean for `pixfoot`?",
+        "response": "A radius of zero (which is the default) means each position is treated as a single point on the sky. The MOC will cover the smallest HEALPix pixel at the given order that contains each point.",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: Syntax error: \"(\" unexpected\n"
+    },
+    {
+        "prompt": "Generate an ASCII MOC for objects where the `OBS_DATE` is after 2020.",
+        "response": "stilts pixfoot in=obs_log.fits icmd='select OBS_DATE > 2020' mocfmt=ascii out=post_2020_obs.moc.txt",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '>' '2020'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: select OBS_DATE > 2020\n\nUsage: select <expr>\n    (Unused arguments: '>' '2020'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "Create a MOC for the positions in `my_data.fits` but exclude any rows that have null RA or Dec values.",
+        "response": "stilts pixfoot in=my_data.fits icmd='select !NULL_RA && !NULL_DEC' out=valid_coords.moc.fits",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '&&' '!NULL_DEC'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: select !NULL_RA && !NULL_DEC\n\nUsage: select <expr>\n    (Unused arguments: '&&' '!NULL_DEC'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "My input file is `strange.fits`, and I want a JSON moc at order 11.",
+        "response": "stilts pixfoot in=strange.fits order=11 mocfmt=json out=strange_coverage.moc.json",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Generate a MOC for circular regions where the radius in degrees is `1/(10*PARALLAX)`.",
+        "response": "stilts pixfoot in=parallax_data.fits radius='1/(10*PARALLAX)' out=parallax_radius_moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Create a MOC from the positions in a `cdf` file.",
+        "response": "stilts pixfoot in=space_data.cdf ifmt=cdf out=spacecraft_path.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "What's the command to get a FITS MOC from a simulated catalog of 1.5 million stars?",
+        "response": "stilts pixfoot in=:skysim:1.5e6 ra=ra dec=dec mocfmt=fits out=sim_1.5M.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Generate a MOC at order 10 covering all sources that are within 5 degrees of the ecliptic plane.",
+        "response": "stilts pixfoot in=all_sky_data.fits icmd='addskycoords icrs ecliptic RA DEC ELON ELAT' icmd='select abs(ELAT) < 5' out=ecliptic_plane_sources.moc.fits",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '<' '5'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: select abs(ELAT) < 5\n\nUsage: select <expr>\n    (Unused arguments: '<' '5'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "I need the footprint for a 0.2 arcmin radius around each source.",
+        "response": "stilts pixfoot in=sources.fits radius=0.2/60.0 out=point_two_arcmin.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Create a MOC from the rows where the error in magnitude is less than 0.05.",
+        "response": "stilts pixfoot in=photometry.fits icmd='select MAG_ERR < 0.05' out=low_error_phot.moc.fits",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '<' '0.05'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: select MAG_ERR < 0.05\n\nUsage: select <expr>\n    (Unused arguments: '<' '0.05'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "Can you generate a MOC for my data and name the RA column `ALPHA` and the Dec column `DELTA`?",
+        "response": "stilts pixfoot in=my_data.fits ra=ALPHA dec=DELTA out=alpha_delta_footprint.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Generate a JSON MOC for the footprint of all objects whose name does not contain the word 'STAR'.",
+        "response": "stilts pixfoot in=object_list.fits icmd='select !contains(NAME, \"STAR\")' mocfmt=json out=non_stellar_objects.moc.json",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: 'STAR' ')'\n\nCommand was: select !contains(NAME, \"STAR\")\n\nUsage: select <expr>\n    (Unused arguments: 'STAR' ')')\n"
+    },
+    {
+        "prompt": "How can I generate a MOC for circles whose radius is `0.1 * log10(FLUX)`?",
+        "response": "stilts pixfoot in=flux_cat.fits radius='0.1 * log10(FLUX)' out=flux_scaled_radius.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Create a MOC from a random sample of 1% of the rows in `huge_catalog.fits`.",
+        "response": "stilts pixfoot in=huge_catalog.fits icmd='random 0.01' out=huge_cat_1percent.moc.fits",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '0.01'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: random 0.01\n\nUsage: random\n    (Unused arguments: '0.01'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "Please generate a MOC at order 9 covering the sources listed in `my_targets.csv`.",
+        "response": "stilts pixfoot in=my_targets.csv ifmt=csv order=9 out=my_targets_o9.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I have `ra_h`, `ra_m`, `ra_s` and `dec_d`, `dec_m`, `dec_s`. How do I make the MOC?",
+        "response": "stilts pixfoot in=sexagesimal_parts.fits ra='hmsToDegrees(ra_h,ra_m,ra_s)' dec='dmsToDegrees(dec_d,dec_m,dec_s)' out=sexagesimal_parts.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Generate the footprint of objects where `FLAG_A` AND `FLAG_B` are both true.",
+        "response": "stilts pixfoot in=flagged_data.fits icmd='select FLAG_A && FLAG_B' out=both_flags_set.moc.fits",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '&&' 'FLAG_B'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: select FLAG_A && FLAG_B\n\nUsage: select <expr>\n    (Unused arguments: '&&' 'FLAG_B'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "My radius is given by column `R_MAS` in milliarcseconds. How do I use that?",
+        "response": "stilts pixfoot in=mas_radii.fits radius='R_MAS/3600000.0' out=mas_radii_footprint.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Create a MOC for all sources in `mycat.fits` that are NOT within the SDSS footprint.",
+        "response": "stilts pixfoot in=mycat.fits icmd='select !inMoc(\"V/139/sdss9\", RA, DEC)' out=not_in_sdss.moc.fits",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: ',' 'RA,' 'DEC)'\n\nCommand was: select !inMoc(\"V/139/sdss9\", RA, DEC)\n\nUsage: select <expr>\n    (Unused arguments: ',' 'RA,' 'DEC)')\n"
+    },
+    {
+        "prompt": "Generate a JSON MOC for the objects in the middle 2000 rows of my catalog.",
+        "response": "stilts pixfoot in=my_catalog.fits icmd='rowrange ($nrow/2 - 1000) +2000' mocfmt=json out=middle_2k.moc.json",
+        "chat.jar": "failed",
+        "error": "Error: Row index ($nrow/2 must be integer >0\n\nCommand was: rowrange ($nrow/2 - 1000) +2000\n\nUsage: rowrange <first> <last>|+<count>\n    (Row index ($nrow/2 must be integer >0)\n"
+    },
+    {
+        "prompt": "What does a negative order mean for `pixfoot`?",
+        "response": "The `order` parameter must be a non-negative integer between 0 and 29. A negative value is not permitted and will result in an error.",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: order: not found\n\nNo such task: The\n\nUsage:\n   stilts [-help] [-version] [-verbose] [-allowunused] [-prompt] [-bench]\n          [-debug] [-batch] [-memory] [-disk] [-memgui]\n          [-checkversion <vers>] [-stdout <file>] [-stderr <file>]\n          <task-name> <task-args>\n\n   stilts <task-name> help[=<param-name>|*]\n\n   Known tasks:\n      arrayjoin\n      calc\n      cdsskymatch\n      cone\n      coneskymatch\n      datalinklint\n      funcs\n      mocshape\n      parqlint\n      parqlook\n      pixfoot\n      pixsample\n      plot2d\n      plot3d\n      plothist\n      regquery\n      server\n      sqlclient\n      sqlskymatch\n      sqlupdate\n      taplint\n      tapquery\n      tapresume\n      tapskymatch\n      tcat\n      tcatn\n      tcopy\n      tcube\n      tgridmap\n      tgroup\n      tjoin\n      tloop\n      tmatch1\n      tmatch2\n      tmatchn\n      tmulti\n      tmultin\n      tpipe\n      tskymap\n      tskymatch2\n      votcopy\n      votlint\n      xsdvalidate\n      plot2plane\n      plot2sky\n      plot2cube\n      plot2sphere\n      plot2corner\n      plot2time\n\n"
+    },
+    {
+        "prompt": "Create a MOC from my `astropy_table.fits` file. The radius of each circle should be 1/parallax.",
+        "response": "stilts pixfoot in=astropy_table.fits radius='1.0/parallax' out=parallax_inverted_radius.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "How do I specify a radius of 0.5 arcseconds?",
+        "response": "stilts pixfoot in=my_table.fits radius=0.5/3600.0 out=half_arcsec_radius.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Generate a MOC for sources with a `CONFIDENCE_LEVEL` of 95% or higher.",
+        "response": "stilts pixfoot in=confident_detections.fits icmd='select CONFIDENCE_LEVEL >= 0.95' out=confident_coverage.moc.fits",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '>=' '0.95'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: select CONFIDENCE_LEVEL >= 0.95\n\nUsage: select <expr>\n    (Unused arguments: '>=' '0.95'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "I need the footprint for the second HDU of my FITS file `multi_data.fits`.",
+        "response": "stilts pixfoot in=multi_data.fits#2 out=hdu2_footprint.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Create a MOC at order 11 from the combined positions of `a.csv`, `b.csv`, and `c.csv`.",
+        "response": "stilts tcat ifmt=csv in=a.csv in=b.csv in=c.csv | stilts pixfoot in=- order=11 out=abc_combined.moc.fits",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: pixfoot: not found\n"
+    },
+    {
+        "prompt": "Can `pixfoot` read a gzipped FITS file?",
+        "response": "Yes, `pixfoot` can read compressed files, including gzipped FITS files, transparently. For example: `stilts pixfoot in=my_data.fits.gz out=my_data_footprint.moc.fits`",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: pixfoot: not found\n/bin/sh: 1: pixfoot: not found\n\nNo such task: Yes,\n\nUsage:\n   stilts [-help] [-version] [-verbose] [-allowunused] [-prompt] [-bench]\n          [-debug] [-batch] [-memory] [-disk] [-memgui]\n          [-checkversion <vers>] [-stdout <file>] [-stderr <file>]\n          <task-name> <task-args>\n\n   stilts <task-name> help[=<param-name>|*]\n\n   Known tasks:\n      arrayjoin\n      calc\n      cdsskymatch\n      cone\n      coneskymatch\n      datalinklint\n      funcs\n      mocshape\n      parqlint\n      parqlook\n      pixfoot\n      pixsample\n      plot2d\n      plot3d\n      plothist\n      regquery\n      server\n      sqlclient\n      sqlskymatch\n      sqlupdate\n      taplint\n      tapquery\n      tapresume\n      tapskymatch\n      tcat\n      tcatn\n      tcopy\n      tcube\n      tgridmap\n      tgroup\n      tjoin\n      tloop\n      tmatch1\n      tmatch2\n      tmatchn\n      tmulti\n      tmultin\n      tpipe\n      tskymap\n      tskymatch2\n      votcopy\n      votlint\n      xsdvalidate\n      plot2plane\n      plot2sky\n      plot2cube\n      plot2sphere\n      plot2corner\n      plot2time\n\n"
+    },
+    {
+        "prompt": "Generate a MOC for objects where `COLOR_INDEX` is between 0.5 and 1.0.",
+        "response": "stilts pixfoot in=colors.fits icmd='select COLOR_INDEX > 0.5 && COLOR_INDEX < 1.0' out=color_selected.moc.fits",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '>' '0.5' '&&' 'COLOR_INDEX' '<' '1.0'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: select COLOR_INDEX > 0.5 && COLOR_INDEX < 1.0\n\nUsage: select <expr>\n    (Unused arguments: '>' '0.5' '&&' 'COLOR_INDEX' '<' '1.0'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "Create a FITS MOC from a HAPI stream file `solar_wind.hapi`.",
+        "response": "stilts pixfoot in=solar_wind.hapi ifmt=hapi out=solar_wind_coverage.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "My RA is column `alpha_j2000` and Dec is `delta_j2000`. Generate a JSON MOC.",
+        "response": "stilts pixfoot in=data.fits ra=alpha_j2000 dec=delta_j2000 mocfmt=json out=custom_coord_names.moc.json",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Generate a footprint for all objects in `survey.fits` that are near the Andromeda galaxy (within 1 degree).",
+        "response": "stilts pixfoot in=survey.fits icmd='select skyDistanceDegrees(RA,DEC,10.6847,41.2690) < 1' out=andromeda_region.moc.fits",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '<' '1'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: select skyDistanceDegrees(RA,DEC,10.6847,41.2690) < 1\n\nUsage: select <expr>\n    (Unused arguments: '<' '1'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "How to create a MOC from an ASCII file with columns `RA_HMS` and `DEC_DMS`?",
+        "response": "stilts pixfoot in=data.txt ifmt=ascii ra='hmsToDegrees(RA_HMS)' dec='dmsToDegrees(DEC_DMS)' out=data_hmsdms.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Create a MOC for sources with a luminosity greater than 1e30.",
+        "response": "stilts pixfoot in=luminosities.fits icmd='select LUMINOSITY > 1e30' out=bright_sources.moc.fits",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '>' '1e30'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: select LUMINOSITY > 1e30\n\nUsage: select <expr>\n    (Unused arguments: '>' '1e30'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "Generate an ASCII MOC at order 8, with a 1 arcmin radius for each point.",
+        "response": "stilts pixfoot in=points.vot radius=1.0/60.0 order=8 mocfmt=ascii out=points_arcmin.moc.txt",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need the footprint of `my_data.fits`, but only keep every 15th row.",
+        "response": "stilts pixfoot in=my_data.fits icmd='every 15' out=data_every15.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Create a MOC for the region covered by a 5 degree radius around the North Galactic Pole.",
+        "response": "stilts pixfoot in=:skysim:100000 icmd='addskycoords icrs galactic ra dec l b' icmd='select skyDistance(l,b,0,90) < 5' ra=ra dec=dec out=ngp_region.moc.fits",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '<' '5'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: select skyDistance(l,b,0,90) < 5\n\nUsage: select <expr>\n    (Unused arguments: '<' '5'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "Can you generate the MOC for my data and save it as a JSON file named `celestial_tapestry.moc.json`?",
+        "response": "stilts pixfoot in=my_data.fits mocfmt=json out=celestial_tapestry.moc.json",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Generate a MOC for objects where the `OBS_TYPE` column is 'SPECTROSCOPY'.",
+        "response": "stilts pixfoot in=obs_log.fits icmd='select OBS_TYPE==\"SPECTROSCOPY\"' out=spectroscopy_footprint.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "The radius of each source is its `PSF_WIDTH` in arcseconds divided by 2. Generate the footprint.",
+        "response": "stilts pixfoot in=psf_data.fits radius='PSF_WIDTH/2.0/3600.0' out=psf_footprint.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Create a MOC for all sources in `mycat.fits` that are NOT within 2 degrees of the galactic center.",
+        "response": "stilts pixfoot in=mycat.fits icmd='addskycoords icrs galactic RA DEC L B' icmd='select skyDistance(L,B,0,0) > 2' out=not_gc.moc.fits",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '>' '2'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: select skyDistance(L,B,0,0) > 2\n\nUsage: select <expr>\n    (Unused arguments: '>' '2'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "Just tell me how many pixels at order 12 would be covered by a 1 degree radius circle around each point in `centers.fits`.",
+        "response": "stilts pixfoot in=centers.fits radius=1.0 order=12 omode=count",
+        "chat.jar": "failed",
+        "error": "\nUnused arguments: omode=count\n\nUsage: pixfoot ifmt=<in-format> istream=true|false icmd=<cmds> order=0..29\n               ra=<expr> dec=<expr> radius=<expr> mocfmt=fits|json|ascii\n               out=<out-file>\n               [in=]<table>\n\n"
+    },
+    {
+        "prompt": "Generate a MOC from a `colfits` file.",
+        "response": "stilts pixfoot in=my_data.colfits out=colfits_coverage.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I have ecliptic coordinates in radians. How do I make the MOC?",
+        "response": "stilts pixfoot in=ecliptic_rad.fits icmd='addskycoords ecliptic icrs radiansToDegrees(ELON_RAD) radiansToDegrees(ELAT_RAD) RA_ICRS DEC_ICRS' ra=RA_ICRS dec=DEC_ICRS out=ecliptic_rad_footprint.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Create a MOC for circles whose radius is `abs(MAGNITUDE)/100` degrees.",
+        "response": "stilts pixfoot in=magnitudes.fits radius='abs(MAGNITUDE)/100.0' out=mag_scaled_radius.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Generate the footprint for all sources in `survey.fits` that fall within the footprint of any VizieR catalog.",
+        "response": "This is not directly possible with a single `pixfoot` command. You would need to obtain the combined MOC for all VizieR catalogs first, then use that in an `icmd` filter with `inMoc()`.",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: Syntax error: end of file unexpected\n"
+    },
+    {
+        "prompt": "Create a MOC at order 1, covering the entire sky.",
+        "response": "stilts pixfoot in=:skysim:1000 ra=ra dec=dec order=1 out=all_sky_o1.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Generate a JSON MOC for the first 10 and last 10 objects in `my_catalog.fits`.",
+        "response": "stilts tcat in=my_catalog.fits icmd='head 10' in=my_catalog.fits icmd='tail 10' | stilts pixfoot in=- mocfmt=json out=head_and_tail.moc.json",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: pixfoot: not found\n"
+    },
+    {
+        "prompt": "What does an `order` of 29 mean?",
+        "response": "An `order` of 29 represents the highest possible resolution in HEALPix, corresponding to roughly 3.4 x 10^18 pixels covering the entire sky. This is an extremely fine grid, suitable only for very small regions of interest.",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: order: not found\n\nNo such task: An\n\nUsage:\n   stilts [-help] [-version] [-verbose] [-allowunused] [-prompt] [-bench]\n          [-debug] [-batch] [-memory] [-disk] [-memgui]\n          [-checkversion <vers>] [-stdout <file>] [-stderr <file>]\n          <task-name> <task-args>\n\n   stilts <task-name> help[=<param-name>|*]\n\n   Known tasks:\n      arrayjoin\n      calc\n      cdsskymatch\n      cone\n      coneskymatch\n      datalinklint\n      funcs\n      mocshape\n      parqlint\n      parqlook\n      pixfoot\n      pixsample\n      plot2d\n      plot3d\n      plothist\n      regquery\n      server\n      sqlclient\n      sqlskymatch\n      sqlupdate\n      taplint\n      tapquery\n      tapresume\n      tapskymatch\n      tcat\n      tcatn\n      tcopy\n      tcube\n      tgridmap\n      tgroup\n      tjoin\n      tloop\n      tmatch1\n      tmatch2\n      tmatchn\n      tmulti\n      tmultin\n      tpipe\n      tskymap\n      tskymatch2\n      votcopy\n      votlint\n      xsdvalidate\n      plot2plane\n      plot2sky\n      plot2cube\n      plot2sphere\n      plot2corner\n      plot2time\n\n"
+    },
+    {
+        "prompt": "Create a MOC from my `data.fits`, using a radius that is the mean of `ERR_MAJ` and `ERR_MIN` columns (in degrees).",
+        "response": "stilts pixfoot in=data.fits radius='(ERR_MAJ+ERR_MIN)/2.0' out=mean_error_radius.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Generate the footprint of objects where `FLAG_A` OR `FLAG_B` is false.",
+        "response": "stilts pixfoot in=flagged_data.fits icmd='select !(FLAG_A || FLAG_B)' out=no_flags_set.moc.fits",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '||' 'FLAG_B)'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: select !(FLAG_A || FLAG_B)\n\nUsage: select <expr>\n    (Unused arguments: '||' 'FLAG_B)'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "My radius is given by `R_UAS` in microarcseconds. How do I use that?",
+        "response": "stilts pixfoot in=uas_radii.fits radius='R_UAS/3600000000.0' out=uas_radii_footprint.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Create a MOC for all sources in `mycat.fits` that are at least 10 arcseconds away from any source in `bright_stars.fits`.",
+        "response": "This is a complex filtering operation not suitable for a single `pixfoot` command. It would require a cross-match (`tmatch2`) first to identify and exclude the nearby sources before generating the MOC with `pixfoot`.",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: Syntax error: \"(\" unexpected\n"
+    },
+    {
+        "prompt": "Can `pixfoot` produce a MOC in XML format?",
+        "response": "No, `pixfoot` does not directly support XML output for MOCs. The available formats are `fits`, `json`, and `ascii`. While VOTable is an XML format, `pixfoot`'s output is a MOC file, not a standard table.",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: Syntax error: Unterminated quoted string\n"
+    },
+    {
+        "prompt": "Generate an ASCII MOC for objects where the `OBSERVER` name is 'Hubble'.",
+        "response": "stilts pixfoot in=obs_log.fits icmd='select OBSERVER==\"Hubble\"' mocfmt=ascii out=hubble_obs.moc.txt",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Create a MOC for the positions in `my_data.fits`, excluding the first 100 rows.",
+        "response": "stilts pixfoot in=my_data.fits icmd='tail ($nrow-100)' out=exclude_first_100.moc.fits",
+        "chat.jar": "failed",
+        "error": "Error: Row count ($nrow-100) not numeric\n\nCommand was: tail ($nrow-100)\n\nUsage: tail <nrows>\n    (Row count ($nrow-100) not numeric)\n"
+    },
+    {
+        "prompt": "My `csv` file has columns ra_sex and dec_sex. Make me a MOC.",
+        "response": "stilts pixfoot in=data.csv ifmt=csv ra='hmsToDegrees(ra_sex)' dec='dmsToDegrees(dec_sex)' out=data_sex.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Generate a MOC for circles whose radius is `1/sqrt(FLUX)`.",
+        "response": "stilts pixfoot in=fluxes.fits radius='1.0/sqrt(FLUX)' out=flux_inv_sqrt.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Create a MOC from the positions in a `tst` file.",
+        "response": "stilts pixfoot in=my_data.tst ifmt=tst out=tst_footprint.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "What's the command to get a JSON MOC from a simulation of exactly 1 star?",
+        "response": "stilts pixfoot in=:skysim:1 ra=ra dec=dec mocfmt=json out=single_star.moc.json",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Generate a MOC at order 10 covering all sources that are more than 170 degrees away from the galactic center.",
+        "response": "stilts pixfoot in=all_sky.fits icmd='addskycoords icrs galactic RA DEC L B' icmd='select skyDistance(L,B,0,0) > 170' out=far_field.moc.fits",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '>' '170'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: select skyDistance(L,B,0,0) > 170\n\nUsage: select <expr>\n    (Unused arguments: '>' '170'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "I need the footprint for a 30 arcsecond radius around each source in my `sources.ecsv` file.",
+        "response": "stilts pixfoot in=sources.ecsv ifmt=ecsv radius=30.0/3600.0 out=thirty_arcsec_regions.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Create a MOC from the rows where the error in position (`POS_ERR_DEG`) is less than 0.01 degrees.",
+        "response": "stilts pixfoot in=positions.fits icmd='select POS_ERR_DEG < 0.01' out=high_precision_positions.moc.fits",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '<' '0.01'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: select POS_ERR_DEG < 0.01\n\nUsage: select <expr>\n    (Unused arguments: '<' '0.01'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "Can you generate a MOC for my data, using FK4 coords `RA_B1950` and `DEC_B1950`?",
+        "response": "stilts pixfoot in=my_data.fits icmd='addskycoords fk4 fk5 RA_B1950 DEC_B1950 RA_J2000 DEC_J2000' ra=RA_J2000 dec=DEC_J2000 out=fk4_converted_footprint.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Generate a JSON MOC for the footprint of all objects whose name is exactly 'M31'.",
+        "response": "stilts pixfoot in=object_list.fits icmd='select NAME==\"M31\"' mocfmt=json out=m31_only.moc.json",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "How can I generate a MOC for circles whose radius is `sin(abs(DEC_DEG)*PI/180)`?",
+        "response": "stilts pixfoot in=special_radii.fits radius='sin(abs(DEC_DEG)*PI/180)' out=sin_dec_radius.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Create a MOC from a sample of rows where the row index is a prime number (up to a limit).",
+        "response": "stilts pixfoot in=huge_catalog.fits icmd='select isPrime($0)' out=prime_rows.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Generate a MOC at order 9 for all the tables in `multi_survey.fits` combined.",
+        "response": "stilts tcat in=multi_survey.fits multi=true | stilts pixfoot in=- order=9 out=multi_survey_combined.moc.fits",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: pixfoot: not found\nError: No file, URL or command \"multi_survey.fits\"\n"
+    },
+    {
+        "prompt": "My DEC column is in radians `DEC_RAD` but RA is in degrees `RA_DEG`. How to make the MOC?",
+        "response": "stilts pixfoot in=mixed_units.fits ra=RA_DEG dec='radiansToDegrees(DEC_RAD)' out=mixed_units_moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Generate the footprint of objects where `CLASSIFICATION` is either 'GALAXY' or 'QSO'.",
+        "response": "stilts pixfoot in=classifications.fits icmd='select CLASS==\"GALAXY\" || CLASS==\"QSO\"' out=galaxy_qso_footprint.moc.fits",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '||' 'CLASS==QSO'\n\nCommand was: select CLASS==\"GALAXY\" || CLASS==\"QSO\"\n\nUsage: select <expr>\n    (Unused arguments: '||' 'CLASS==QSO')\n"
+    },
+    {
+        "prompt": "The radius for my MOC circles is stored in the table parameter `DEFAULT_RADIUS_DEG`. How do I use it?",
+        "response": "stilts pixfoot in=data_with_param.fits radius='param$DEFAULT_RADIUS_DEG' out=param_radius.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Create a MOC for all sources in `mycat.fits` that are near (within 0.1 deg) the celestial equator.",
+        "response": "stilts pixfoot in=mycat.fits icmd='select abs(DEC) < 0.1' out=equator_sources.moc.fits",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '<' '0.1'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: select abs(DEC) < 0.1\n\nUsage: select <expr>\n    (Unused arguments: '<' '0.1'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "Can `pixfoot` output anything other than a MOC?",
+        "response": "No, the primary purpose of `pixfoot` is to generate a Multi-Order Coverage map (MOC). It outputs this MOC in one of three formats: FITS, JSON, or ASCII.",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: Syntax error: \"(\" unexpected\n"
+    },
+    {
+        "prompt": "Generate an ASCII MOC for objects where the year of observation (`OBS_YEAR`) is 2023.",
+        "response": "stilts pixfoot in=obs_log.fits icmd='select OBS_YEAR==2023' mocfmt=ascii out=obs_2023.moc.txt",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Create a MOC from `data.fits`, but only use rows with an even row index.",
+        "response": "stilts pixfoot in=data.fits icmd='select $0 % 2 == 0' out=even_rows.moc.fits",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '%' '2' '==' '0'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: select $0 % 2 == 0\n\nUsage: select <expr>\n    (Unused arguments: '%' '2' '==' '0'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "My input file is `strange.parquet`. Can you make a JSON MOC from it at order 11?",
+        "response": "stilts pixfoot in=strange.parquet order=11 mocfmt=json out=strange_parquet_coverage.moc.json",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Generate a MOC for circles whose radius is `(ERR_A + ERR_B + ERR_C)/3.0`.",
+        "response": "stilts pixfoot in=error_terms.fits radius='(ERR_A+ERR_B+ERR_C)/3.0' out=mean_error_term_radius.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Create a MOC from the positions in `my_data.fits`, but give me an error if any of the coordinates are null.",
+        "response": "stilts pixfoot in=my_data.fits icmd='assert !NULL_RA && !NULL_DEC' out=asserted_coords.moc.fits",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '!NULL_DEC'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: assert !NULL_RA && !NULL_DEC\n\nUsage: assert <test-expr> [<msg-expr>]\n    (Unused arguments: '!NULL_DEC'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "Just show me the count of pixels covered if I use an order of 3.",
+        "response": "stilts pixfoot in=my_cat.fits order=3 omode=count",
+        "chat.jar": "failed",
+        "error": "\nUnused arguments: omode=count\n\nUsage: pixfoot ifmt=<in-format> istream=true|false icmd=<cmds> order=0..29\n               ra=<expr> dec=<expr> radius=<expr> mocfmt=fits|json|ascii\n               out=<out-file>\n               [in=]<table>\n\n"
+    },
+    {
+        "prompt": "Generate a MOC at order 11 covering all sources that are more than 10 degrees from the North Ecliptic Pole.",
+        "response": "stilts pixfoot in=all_sky.fits icmd='addskycoords icrs ecliptic RA DEC ELON ELAT' icmd='select skyDistance(ELON,ELAT,270,90) > 10' out=far_from_nep.moc.fits",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '>' '10'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: select skyDistance(ELON,ELAT,270,90) > 10\n\nUsage: select <expr>\n    (Unused arguments: '>' '10'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "I need the footprint for a 1 pixel radius from my camera, where the plate scale is 0.5 arcsec/pixel.",
+        "response": "stilts pixfoot in=detections.fits radius='1.0 * 0.5 / 3600.0' out=single_pixel_regions.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Create a MOC from the rows where the `MAG_ERROR` is at its minimum value for the whole table.",
+        "response": "stilts pixfoot in=photometry.fits icmd='select MAG_ERROR==minimum(MAG_ERROR)' out=best_photometry.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Can you generate a MOC for my data, with a radius of 2 arcseconds, and save it as `quasar_distribution.moc.fits`?",
+        "response": "stilts pixfoot in=my_data.fits radius=2.0/3600.0 out=quasar_distribution.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Generate a JSON MOC for the footprint of all objects whose ID matches the regex 'SN-....-..'.",
+        "response": "stilts pixfoot in=object_list.fits icmd='select matches(ID, \"SN-....-..\")' mocfmt=json out=supernova_candidates.moc.json",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: 'SN-....-..' ')'\n\nCommand was: select matches(ID, \"SN-....-..\")\n\nUsage: select <expr>\n    (Unused arguments: 'SN-....-..' ')')\n"
+    },
+    {
+        "prompt": "How can I generate a MOC for circles whose radius is determined by a lookup table based on the `TYPE` column?",
+        "response": "stilts pixfoot in=objects.fits radius='(TYPE==1 ? 0.1 : (TYPE==2 ? 0.2 : 0.05))' out=type_dependent_radius.moc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Create a MOC from a random sample of 250 rows from `large_catalog.fits`.",
+        "response": "stilts pixfoot in=large_catalog.fits icmd='random 250' out=large_cat_sample_250.moc.fits",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '250'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: random 250\n\nUsage: random\n    (Unused arguments: '250'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "My coordinate columns are simply named `c1` and `c2`. How do I generate a MOC?",
+        "response": "stilts pixfoot in=generic_coords.fits ra=c1 dec=c2 out=generic_coords_footprint.moc.fits",
+        "chat.jar": "executed successfully"
+    }
+]

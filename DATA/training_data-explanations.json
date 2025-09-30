@@ -140,10 +140,6 @@
         "response": "This command calculates a checksum for the table's data content. It reads `input.fits` and the `omode=checksum` mode processes all the data cells to compute a single checksum value, which is then printed to the terminal. This is used to verify if two tables are identical in their data content, even if their metadata or file structure differs."
     },
     {
-        "prompt": "Break down this selection criteria: `stilts tpipe in=input.vot cmd='select \"!isBlank(ERR_MAG_G) && ERR_MAG_G < 0.1\"' out=output.vot`.",
-        "response": "This command selects rows based on data quality. It reads `input.vot` and the `select` filter applies two conditions: `!isBlank(ERR_MAG_G)` ensures that the 'ERR_MAG_G' column is not null (has a value), and `ERR_MAG_G < 0.1` ensures that this error value is small. This is a common way to select a high-quality subsample with well-measured magnitudes, which is then saved to `output.vot`."
-    },
-    {
         "prompt": "What is the function of this command? `stilts tpipe in=input.fits cmd='constcol SURVEY SDSS' cmd='constcol DR 17' out=output.fits`",
         "response": "This command adds multiple new columns, each with a constant value. It uses the `constcol` filter twice. First, it adds a column named 'SURVEY' with the string 'SDSS' in every row. Second, it adds a column named 'DR' with the number 17 in every row. This is an efficient way to add metadata labels to all rows in a table."
     },

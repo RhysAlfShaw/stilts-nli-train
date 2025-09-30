@@ -57,7 +57,18 @@ def main():
     # get a list of all files in the data directory
 
     data_files = [
-        "training_data-cone.json",
+        # "cone-examples.json",
+        # "mocshape.json",
+        # "pixfoot.json",
+        # "plot2plane.json",
+        # "tapquery2.json",
+        # "tcat.json",
+        # "tcatn.json",
+        # "tcopy.json",
+        # "tmatch2.json",
+        # "tmatchn.json",
+        # "tpipe.json",
+        "training_data-tpipe7.json"
     ]
     print(data_files)
     # iterate over each file and check the commands
