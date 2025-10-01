@@ -54,22 +54,8 @@ def check_docker_command_in_responses(data):
 # main function to read the file and check the commands
 def main():
 
-    # get a list of all files in the data directory
-
-    data_files = [
-        # "cone-examples.json",
-        # "mocshape.json",
-        # "pixfoot.json",
-        # "plot2plane.json",
-        # "tapquery2.json",
-        # "tcat.json",
-        # "tcatn.json",
-        # "tcopy.json",
-        # "tmatch2.json",
-        # "tmatchn.json",
-        # "tpipe.json",
-        "training_data-tpipe7.json"
-    ]
+    # do not re-run some files have been edited since so that will overwrite it.
+    data_files = ["training_data-tpipe10.json"]
     print(data_files)
     # iterate over each file and check the commands
     for data_file in data_files:

@@ -11,7 +11,6 @@ from transformers import (
 )
 import argparse
 
-# expect the following args
 
 argparser = argparse.ArgumentParser()
 argparser.add_argument(
@@ -35,7 +34,7 @@ argparser.add_argument(
 argparser.add_argument(
     "--train_file_dir",
     type=str,
-    default="DATA",
+    default="DATA/",
 )
 
 argparser.add_argument(
@@ -47,7 +46,7 @@ argparser.add_argument(
 argparser.add_argument(
     "--batch_size",
     type=int,
-    default=2,
+    default=4,
 )
 
 argparser.add_argument(
@@ -63,52 +62,39 @@ PLOT_OUTPUT_DIR = argparser.parse_args().plot_output_dir
 limit_mem = argparser.parse_args().mem_red
 
 TRAIN_FILE = f"{TRAINING_DATA_DIR}/training_data.json"
-ADDITIONAL_TRAIN_FILES = [
-    "training_data-tpipe.json",
-    "training_data-tpipe2.json",
-    "training_data-tpipe3.json",
-    "training_data-tpipe4.json",
-    "training_data-tmatch2.json",
-    "training_data-tmatchn.json",
-    "training_data-tmatchn2.json",
-    "training_data-descr.json",
-    "training_data-descr-extr.json",
-    "training_data-explanations.json",
-    "doc-examples-formatted.json",
-    "training_data_tcat-claude.json",
-    "training_data_tcat-gpt-oss.json",
-    "training_data-tcopy.json",
-    "training_data-tpipefunc-artith.json",
-    "training_data-tpipefunc-array.json",
-    "training_data-tpipefunc-bits.json",
-    "training_data-tpipefunc-conversion.json",
-    "training_data-tpipefunc-fluxes.json",
-    "training_data-tpipefunc-gaia.json",
-    "training_data-tpipefunc-format.json",
-    "training_data-tpipefunc-coverage.json",
-    "training_data-tpipefunc-coordsDegrees.json",
-    "training_data-tapquery.json",
-    "training_data-cone.json",
-    "tpipe.json",
-    "tmatchn.json",
-    "tmatch2.json",
-    "tcopy.json",
-    "tcat.json",
-    "tcatn.json",
-    "tapquery.json",
-    "mocshape.json",
-    "pixfoot.json",
-    "plot2plane.json",
-    "cone-examples.json",
-    "training_data-tpipe6.json",
-    "tapquery2.json",
-    "training_data-options-desc.json",
+# all the training data files are in DATA but in only certain directories.
+
+TRAIN_FILE_CMDS_DIR = [
+    # "cone",
+    "descriptions",
+    "mocshape",
+    "other",
+    "pixfoot",
+    "plot2plane",
+    "tapquery",
+    "tcat",
+    "tcopy",
+    "tmatch2",
+    "tmatchn",
+    "tpipe",
 ]
-EVAL_TEST_SPLIT = 0.2
+
+# open all of the dirs and get the locations of the files inside them.
+
+ADDITIONAL_TRAIN_FILES = []
+for directory in TRAIN_FILE_CMDS_DIR:
+    dir_path = os.path.join(TRAINING_DATA_DIR, directory)
+    if os.path.isdir(dir_path):
+        for filename in os.listdir(dir_path):
+            if filename.endswith(".json"):
+                ADDITIONAL_TRAIN_FILES.append(os.path.join(directory, filename))
+
+print(ADDITIONAL_TRAIN_FILES)
+EVAL_TEST_SPLIT = 0.1
 BATCH_SIZE = argparser.parse_args().batch_size
 LEARNING_RATE = 5e-5  # 5e-5 is a common learning rate for fine-tuning large models
 NUM_EPOCHS = 5  # 1 epoch is often sufficient for pre-trained models on specific tasks.
-GRADIENT_ACCUMULATION_STEPS = 1
+GRADIENT_ACCUMULATION_STEPS = 2
 DTYPE = torch.bfloat16  # important to keep memory usage low for large models.
 
 print(f"Using model: {MODEL_NAME}")
@@ -140,13 +126,14 @@ print("Preparing dataset...")
 with open(TRAIN_FILE, "r") as f:
     data = json.load(f)
 
-# Load additional training data if specified
+# # Load additional training data if specified
 if ADDITIONAL_TRAIN_FILES:
     for additional_file in ADDITIONAL_TRAIN_FILES:
-        with open(additional_file, "r") as f:
-            additional_data = json.load(f"{TRAINING_DATA_DIR}/{f}")
+        print(additional_file)
+        with open(f"{TRAINING_DATA_DIR}/{additional_file}", "r") as f:
+            additional_data = json.load(f)
             data.extend(additional_data)
-# remove any data that has "chat.jar" == "failed"
+
 if any("chat.jar" in item for item in data):
     print(f"Total training examples before removing chat.jar fails: {len(data)}")
     data = [item for item in data if item.get("chat.jar") != "failed"]
@@ -169,8 +156,8 @@ gemma_template = (
 )
 
 tokenizer.chat_template = gemma_template
-
 for item in data:
+    print(item)
     chat = [
         {"role": "user", "content": item["prompt"]},
         {"role": "assistant", "content": item["response"]},
@@ -202,7 +189,7 @@ tokenized_dataset = dataset.map(
 )
 # split tokenized_dataset into train and validation sets
 tokenized_dataset = tokenized_dataset.train_test_split(
-    test_size=EVAL_TEST_SPLIT, seed=42
+    test_size=EVAL_TEST_SPLIT, seed=42, shuffle=True
 )
 
 test_dataset = tokenized_dataset["test"]
@@ -211,12 +198,7 @@ tokenized_dataset = tokenized_dataset["train"]
 print(f"\nTokenized dataset size: {len(tokenized_dataset)}")
 print(f"Test dataset size: {len(test_dataset)}")
 
-# print("\nVerifying EOS tokens in dataset:")
-# for i in range(min(2, len(tokenized_dataset))):  # Check first 2 examples
-#     print(f"\nExample {i}:")
-#     print("Input IDs:", tokenized_dataset[i]["input_ids"])
-#     print("Decoded:", tokenizer.decode(tokenized_dataset[i]["input_ids"]))
-
+exit()
 training_args = TrainingArguments(
     output_dir=OUTPUT_DIR,
     num_train_epochs=NUM_EPOCHS,
@@ -234,7 +216,7 @@ training_args = TrainingArguments(
     push_to_hub=False,
     metric_for_best_model="eval_loss",
     eval_strategy="steps",
-    eval_steps=50,  # after how many steps to eval effects training time.
+    eval_steps=100,
 )
 
 data_collator = DataCollatorForLanguageModeling(
@@ -255,10 +237,9 @@ print("\nStarting training...")
 trainer.train()
 
 print("\nSaving model...")
-model.save_pretrained(f"{OUTPUT_DIR}/final_model")
+model.save_pretrained(f"{OUTPUT_DIR}/final_model", overwrite=True)
 tokenizer.save_pretrained(f"{OUTPUT_DIR}/final_model")
 
-# # plot loss
 import matplotlib.pyplot as plt
 
 # Plot loss

@@ -1,194 +1,194 @@
 [
     {
-        "command": "stilts tpipe in=survey_data.fits ofmt=csv out=survey_data.csv",
+        "prompt": "stilts tpipe in=survey_data.fits ofmt=csv out=survey_data.csv",
         "response": "This command performs a simple file format conversion. It reads the input table from a FITS file named `survey_data.fits`, converts it into the Comma-Separated Values (CSV) format, and writes the result to a new file named `survey_data.csv`."
     },
     {
-        "command": "stilts tpipe in=gaia_dr3.fits cmd='keepcols \"RA DEC\"' ofmt=fits out=positions.fits",
+        "prompt": "stilts tpipe in=gaia_dr3.fits cmd='keepcols \"RA DEC\"' ofmt=fits out=positions.fits",
         "response": "This command creates a smaller, more focused table. It reads the FITS file `gaia_dr3.fits` and applies a processing step (`cmd`) to `keepcols \"RA DEC\"`. This filter discards all columns except for `RA` and `DEC`. The resulting two-column table is then written to a new FITS file named `positions.fits`."
     },
     {
-        "command": "stilts tpipe in=cosmo_survey.fits cmd='select \"REDSHIFT > 0.5\"' out=high_z_galaxies.fits",
+        "prompt": "stilts tpipe in=cosmo_survey.fits cmd='select \"REDSHIFT > 0.5\"' out=high_z_galaxies.fits",
         "response": "This command filters a table to create a subset of its rows. It reads `cosmo_survey.fits` and applies a `select` filter. The expression `\"REDSHIFT > 0.5\"` is evaluated for every row, and only the rows for which this condition is true are included in the output. The resulting table, containing only high-redshift galaxies, is saved to `high_z_galaxies.fits`."
     },
     {
-        "command": "stilts tpipe in=photometry.fits cmd='addcol G_MINUS_R \"G_MAG - R_MAG\"' out=photometry_color.fits",
+        "prompt": "stilts tpipe in=photometry.fits cmd='addcol G_MINUS_R \"G_MAG - R_MAG\"' out=photometry_color.fits",
         "response": "This command enriches a table by adding a new column derived from existing ones. It processes the file `photometry.fits` and uses the `addcol` filter to create a new column named `G_MINUS_R`. The value for this column in each row is calculated by subtracting the value in the `R_MAG` column from the value in the `G_MAG` column. The new table, including the new color column, is saved as `photometry_color.fits`."
     },
     {
-        "command": "stilts tpipe in=galaxy_cluster.fits cmd='select \"REDSHIFT > 0.5\"' omode=count",
+        "prompt": "stilts tpipe in=galaxy_cluster.fits cmd='select \"REDSHIFT > 0.5\"' omode=count",
         "response": "This command performs an aggregation instead of creating a new table. It first processes `galaxy_cluster.fits` and filters it to include only rows where the `REDSHIFT` is greater than 0.5. The output mode is set to `omode=count`, which counts the number of rows in the filtered table and prints that number to the console."
     },
     {
-        "command": "stilts tpipe in=deep_survey.fits cmd='select \"skyDistanceDegrees(RA, DEC, 210.802, 54.349) < 5.0/60.0\"' out=cone_search_results.fits",
+        "prompt": "stilts tpipe in=deep_survey.fits cmd='select \"skyDistanceDegrees(RA, DEC, 210.802, 54.349) < 5.0/60.0\"' out=cone_search_results.fits",
         "response": "This command uses a built-in astronomical function to select objects within a specific region of the sky. It filters the `deep_survey.fits` table by evaluating the `skyDistanceDegrees` function for each row. This function calculates the angular separation between the coordinates in the `RA` and `DEC` columns and a fixed point on the sky (RA=210.802, Dec=54.349). The command selects rows where this distance is less than 5 arcminutes (`5.0/60.0` degrees), effectively performing a cone search."
     },
     {
-        "command": "stilts tpipe in=unfiltered_sources.fits cmd='select \"FLAG == 0\"' cmd='keepcols \"ID RA DEC\"' cmd='sort ID' out=clean_sources.fits",
+        "prompt": "stilts tpipe in=unfiltered_sources.fits cmd='select \"FLAG == 0\"' cmd='keepcols \"ID RA DEC\"' cmd='sort ID' out=clean_sources.fits",
         "response": "This demonstrates creating a processing pipeline. The commands are executed sequentially: 1. It reads `unfiltered_sources.fits`. 2. `select \"FLAG == 0\"`: It filters the table, keeping only rows with a quality flag of 0. 3. `keepcols \"ID RA DEC\"`: From the filtered rows, it keeps only the `ID`, `RA`, and `DEC` columns. 4. `sort ID`: It sorts the remaining rows in ascending order based on the `ID` column. The final, cleaned, and sorted table is written to `clean_sources.fits`."
     },
     {
-        "command": "stilts tpipe in=equatorial_coords.fits cmd='addskycoords fk5 gal RA_FK5 DEC_FK5 GAL_LON GAL_LAT' out=galactic_coords.fits",
+        "prompt": "stilts tpipe in=equatorial_coords.fits cmd='addskycoords fk5 gal RA_FK5 DEC_FK5 GAL_LON GAL_LAT' out=galactic_coords.fits",
         "response": "This command uses the specialised `addskycoords` filter to perform a standard astronomical coordinate conversion. It reads `equatorial_coords.fits`, which contains FK5 (equatorial) coordinates in columns named `RA_FK5` and `DEC_FK5`. It then calculates the corresponding Galactic coordinates for each row and adds them to the table in two new columns, `GAL_LON` and `GAL_LAT`."
     },
     {
-        "command": "stilts tpipe in=lightcurves.fits cmd='addcol MEAN_FLUX \"mean(FLUX_ARRAY)\"' out=lightcurves_mean.fits",
+        "prompt": "stilts tpipe in=lightcurves.fits cmd='addcol MEAN_FLUX \"mean(FLUX_ARRAY)\"' out=lightcurves_mean.fits",
         "response": "This command showcases how to work with columns that contain arrays of values. It reads the `lightcurves.fits` table, which has a column named `FLUX_ARRAY`. For each row, it calculates the arithmetic mean of all the numbers in that row's array using the `mean()` function and places the result in a new scalar column named `MEAN_FLUX`."
     },
     {
-        "command": "stilts tpipe in=photometry.fits cmd='addcol MAG_FLAG \"G_MAG < 18 ? 1 : 0\"' out=photometry_flagged.fits",
+        "prompt": "stilts tpipe in=photometry.fits cmd='addcol MAG_FLAG \"G_MAG < 18 ? 1 : 0\"' out=photometry_flagged.fits",
         "response": "This command uses a ternary operator (`?:`) to add a numerical flag to each row. It processes `photometry.fits` and adds a new column `MAG_FLAG`. The expression checks if the `G_MAG` value is less than 18. If it is, the new column's value is set to 1; otherwise, it is set to 0. This is a concise way to create a binary flag based on a condition."
     },
     {
-        "command": "stilts tpipe in=galaxy_redshifts.fits cmd='addcol DL_MPC \"luminosityDistance(Z, 70, 0.3, 0.7)\"' out=galaxy_distances.fits",
+        "prompt": "stilts tpipe in=galaxy_redshifts.fits cmd='addcol DL_MPC \"luminosityDistance(Z, 70, 0.3, 0.7)\"' out=galaxy_distances.fits",
         "response": "This command leverages built-in cosmological functions. It reads a table of galaxies, `galaxy_redshifts.fits`, which has a redshift column named `Z`. It then calculates the luminosity distance for each galaxy using the `luminosityDistance` function, assuming a cosmology with H₀=70 km/s/Mpc, Ωₘ=0.3, and Ωₗ=0.7. The result, in Megaparsecs, is stored in a new column called `DL_MPC`."
     },
     {
-        "command": "stilts tpipe in=quality_flags.fits cmd='select \"hasBit(MASK, 7)\"' out=flagged_objects.fits",
+        "prompt": "stilts tpipe in=quality_flags.fits cmd='select \"hasBit(MASK, 7)\"' out=flagged_objects.fits",
         "response": "This command performs a row selection based on a bitmask. It reads the `quality_flags.fits` file, which contains an integer column named `MASK`. The `hasBit(MASK, 7)` function checks if the 8th bit (with index 7, since indexing starts at 0) is set to '1' in the `MASK` value for each row. Only rows where this specific bit is set are selected and saved to the output file `flagged_objects.fits`."
     },
     {
-        "command": "stilts tpipe in=measurements.fits cmd='addcol rounded_up \"roundUp(VALUE)\"' out=rounded_up.fits",
+        "prompt": "stilts tpipe in=measurements.fits cmd='addcol rounded_up \"roundUp(VALUE)\"' out=rounded_up.fits",
         "response": "Demonstrates the `roundUp` arithmetic function. It reads `measurements.fits` and creates a new column `rounded_up` where each value is the corresponding `VALUE` from the input rounded up to the next highest integer."
     },
     {
-        "command": "stilts tpipe in=measurements.fits cmd='addcol rounded_down \"roundDown(VALUE)\"' out=rounded_down.fits",
+        "prompt": "stilts tpipe in=measurements.fits cmd='addcol rounded_down \"roundDown(VALUE)\"' out=rounded_down.fits",
         "response": "Demonstrates the `roundDown` arithmetic function. It creates a new column `rounded_down` where each value is the corresponding `VALUE` from the input `measurements.fits` rounded down to the next lowest integer."
     },
     {
-        "command": "stilts tpipe in=precision.fits cmd='addcol rounded_4dp \"roundDecimal(PRECISE_VAL, 4)\"' out=rounded_4dp.fits",
+        "prompt": "stilts tpipe in=precision.fits cmd='addcol rounded_4dp \"roundDecimal(PRECISE_VAL, 4)\"' out=rounded_4dp.fits",
         "response": "Demonstrates the `roundDecimal` arithmetic function. It rounds the values in the `PRECISE_VAL` column to exactly 4 decimal places, storing the result in a new column called `rounded_4dp`."
     },
     {
-        "command": "stilts tpipe in=fluxes.fits cmd='addcol max_flux \"maxReal(FLUX_G, FLUX_R)\"' out=max_fluxes.fits",
+        "prompt": "stilts tpipe in=fluxes.fits cmd='addcol max_flux \"maxReal(FLUX_G, FLUX_R)\"' out=max_fluxes.fits",
         "response": "Demonstrates the `maxReal` function. It calculates the maximum value between the `FLUX_G` and `FLUX_R` columns, ignoring any blank (null) values. The result is stored in the `max_flux` column."
     },
     {
-        "command": "stilts tpipe in=fluxes.fits cmd='addcol min_flux \"minReal(FLUX_G, FLUX_R)\"' out=min_fluxes.fits",
+        "prompt": "stilts tpipe in=fluxes.fits cmd='addcol min_flux \"minReal(FLUX_G, FLUX_R)\"' out=min_fluxes.fits",
         "response": "Demonstrates the `minReal` function. It calculates the minimum value between the `FLUX_G` and `FLUX_R` columns, ignoring any blank (null) values, and stores it in the `min_flux` column."
     },
     {
-        "command": "stilts tpipe in=phot_series.fits cmd='addcol total_flux \"sum(FLUX_ARRAY)\"' out=phot_total.fits",
+        "prompt": "stilts tpipe in=phot_series.fits cmd='addcol total_flux \"sum(FLUX_ARRAY)\"' out=phot_total.fits",
         "response": "Demonstrates the `sum` array function. For each row in `phot_series.fits`, it calculates the sum of all elements in the `FLUX_ARRAY` column and stores the scalar result in the `total_flux` column."
     },
     {
-        "command": "stilts tpipe in=phot_series.fits cmd='addcol flux_stdev \"stdev(FLUX_ARRAY)\"' out=phot_stdev.fits",
+        "prompt": "stilts tpipe in=phot_series.fits cmd='addcol flux_stdev \"stdev(FLUX_ARRAY)\"' out=phot_stdev.fits",
         "response": "Demonstrates the `stdev` array function. It computes the population standard deviation of the elements in the `FLUX_ARRAY` column for each row, saving the result to the `flux_stdev` column."
     },
     {
-        "command": "stilts tpipe in=phot_series.fits cmd='addcol peak_flux \"maximum(FLUX_ARRAY)\"' out=phot_peak.fits",
+        "prompt": "stilts tpipe in=phot_series.fits cmd='addcol peak_flux \"maximum(FLUX_ARRAY)\"' out=phot_peak.fits",
         "response": "Demonstrates the `maximum` array function. It finds the largest value within the `FLUX_ARRAY` for each row and stores it in the `peak_flux` column."
     },
     {
-        "command": "stilts tpipe in=phot_series.fits cmd='addcol p95_flux \"quantile(FLUX_ARRAY, 0.95)\"' out=phot_quantile.fits",
+        "prompt": "stilts tpipe in=phot_series.fits cmd='addcol p95_flux \"quantile(FLUX_ARRAY, 0.95)\"' out=phot_quantile.fits",
         "response": "Demonstrates the `quantile` array function. It calculates the 95th percentile for the values in each `FLUX_ARRAY` and stores this statistical measure in the `p95_flux` column."
     },
     {
-        "command": "stilts tpipe in=flags.fits cmd='addcol num_good_flags \"countTrue(FLAG_ARRAY)\"' out=flags_counted.fits",
+        "prompt": "stilts tpipe in=flags.fits cmd='addcol num_good_flags \"countTrue(FLAG_ARRAY)\"' out=flags_counted.fits",
         "response": "Demonstrates the `countTrue` array function. Assuming `FLAG_ARRAY` is an array of booleans, this command counts the number of `true` values in the array for each row and saves the count to `num_good_flags`."
     },
     {
-        "command": "stilts tpipe in=calibrated.fits cmd='addcol corrected_flux \"subtract(RAW_FLUX_ARRAY, SKY_OFFSET)\"' out=corrected.fits",
+        "prompt": "stilts tpipe in=calibrated.fits cmd='addcol corrected_flux \"subtract(RAW_FLUX_ARRAY, SKY_OFFSET)\"' out=corrected.fits",
         "response": "Demonstrates the `subtract` array function. It subtracts a scalar value (`SKY_OFFSET`) from every element of the `RAW_FLUX_ARRAY`, creating a new corrected array named `corrected_flux`."
     },
     {
-        "command": "stilts tpipe in=calibrated.fits cmd='addcol gain_corrected \"multiply(RAW_FLUX_ARRAY, GAIN_FACTOR)\"' out=gain_corrected.fits",
+        "prompt": "stilts tpipe in=calibrated.fits cmd='addcol gain_corrected \"multiply(RAW_FLUX_ARRAY, GAIN_FACTOR)\"' out=gain_corrected.fits",
         "response": "Demonstrates the `multiply` array function. It multiplies every element of the `RAW_FLUX_ARRAY` by a scalar value from the `GAIN_FACTOR` column."
     },
     {
-        "command": "stilts tpipe in=fluxes.fits cmd='addcol flux_inv \"reciprocal(FLUX_ARRAY)\"' out=flux_inv.fits",
+        "prompt": "stilts tpipe in=fluxes.fits cmd='addcol flux_inv \"reciprocal(FLUX_ARRAY)\"' out=flux_inv.fits",
         "response": "Demonstrates the `reciprocal` array function. It creates a new array `flux_inv` where each element is the reciprocal (1/x) of the corresponding element in the input `FLUX_ARRAY`."
     },
     {
-        "command": "stilts tpipe in=spectra.fits cmd='addcol selected_bins \"pick(FLUX_BINS, 0, 10, 20)\"' out=spectra_picked.fits",
+        "prompt": "stilts tpipe in=spectra.fits cmd='addcol selected_bins \"pick(FLUX_BINS, 0, 10, 20)\"' out=spectra_picked.fits",
         "response": "Demonstrates the `pick` array function. From the `FLUX_BINS` array, it creates a new, smaller array `selected_bins` containing only the elements at indices 0, 10, and 20."
     },
     {
-        "command": "stilts tpipe in=names.fits cmd='addcol name_index \"indexOf(NAME_ARRAY, \\'Sirius\\')\"' out=names_indexed.fits",
+        "prompt": "stilts tpipe in=names.fits cmd='addcol name_index \"indexOf(NAME_ARRAY, \\'Sirius\\')\"' out=names_indexed.fits",
         "response": "Demonstrates the `indexOf` array function. It searches for the string 'Sirius' within the `NAME_ARRAY` column and returns the index of its first occurrence, or -1 if not found. The result is stored in `name_index`."
     },
     {
-        "command": "stilts tpipe in=binary_codes.fits cmd='addcol int_val \"fromBinary(BINARY_STRING)\"' out=int_values.fits",
+        "prompt": "stilts tpipe in=binary_codes.fits cmd='addcol int_val \"fromBinary(BINARY_STRING)\"' out=int_values.fits",
         "response": "Demonstrates the `fromBinary` bits function. It reads the `BINARY_STRING` column, which contains string representations of binary numbers (e.g., '101010'), and converts them into their integer equivalents in the `int_val` column."
     },
     {
-        "command": "stilts tpipe in=strings.csv cmd='addcol val_long \"parseLong(LONG_STR)\"' out=longs.fits",
+        "prompt": "stilts tpipe in=strings.csv cmd='addcol val_long \"parseLong(LONG_STR)\"' out=longs.fits",
         "response": "Demonstrates the `parseLong` conversion function. It parses the `LONG_STR` text column from `strings.csv` into 64-bit integer values, storing them in the `val_long` column of the output FITS file."
     },
     {
-        "command": "stilts tpipe in=text_data.txt cmd='addcol val_float \"parseFloat(FLOAT_STR)\"' out=floats.fits",
+        "prompt": "stilts tpipe in=text_data.txt cmd='addcol val_float \"parseFloat(FLOAT_STR)\"' out=floats.fits",
         "response": "Demonstrates the `parseFloat` conversion function. It converts a string column `FLOAT_STR` into a 32-bit floating-point number column `val_float`."
     },
     {
-        "command": "stilts tpipe in=raw_stcs.vot cmd='addcol coords \"parseDoubles(S_REGION)\"' out=parsed_stcs.vot",
+        "prompt": "stilts tpipe in=raw_stcs.vot cmd='addcol coords \"parseDoubles(S_REGION)\"' out=parsed_stcs.vot",
         "response": "Demonstrates the `parseDoubles` conversion function. It parses an STC-S string (e.g., 'Polygon ICRS 0.8 2.1 ...') from the `S_REGION` column into an array of doubles named `coords`."
     },
     {
-        "command": "stilts tpipe in=numbers.fits cmd='addcol val_long \"toLong(NUMERIC_VAL)\"' out=longs.fits",
+        "prompt": "stilts tpipe in=numbers.fits cmd='addcol val_long \"toLong(NUMERIC_VAL)\"' out=longs.fits",
         "response": "Demonstrates the `toLong` conversion function. It converts a numeric column `NUMERIC_VAL` (which could be float or integer) into a 64-bit integer column `val_long`, truncating if necessary."
     },
     {
-        "command": "stilts tpipe in=hex_strings.fits cmd='addcol int_val \"fromHex(HEX_ID)\"' out=int_ids.fits",
+        "prompt": "stilts tpipe in=hex_strings.fits cmd='addcol int_val \"fromHex(HEX_ID)\"' out=int_ids.fits",
         "response": "Demonstrates the `fromHex` conversion function. It converts a hexadecimal string representation from the `HEX_ID` column into its standard integer equivalent in the `int_val` column."
     },
     {
-        "command": "stilts tpipe in=coords_deg.fits cmd='addcol dec_dms \"degreesToDms(DEC, 2)\"' out=coords_dms.fits",
+        "prompt": "stilts tpipe in=coords_deg.fits cmd='addcol dec_dms \"degreesToDms(DEC, 2)\"' out=coords_dms.fits",
         "response": "Demonstrates the `degreesToDms` coordinate function. It converts a declination value in decimal degrees from the `DEC` column into a formatted 'DDD:MM:SS.S' string with 2 decimal places for the seconds, stored in the `dec_dms` column."
     },
     {
-        "command": "stilts tpipe in=coords_str.fits cmd='addcol dec_deg \"dmsToDegrees(DEC_STR)\"' out=coords_deg.fits",
+        "prompt": "stilts tpipe in=coords_str.fits cmd='addcol dec_deg \"dmsToDegrees(DEC_STR)\"' out=coords_deg.fits",
         "response": "Demonstrates the `dmsToDegrees` coordinate function. It parses a declination string in 'DDD:MM:SS.S' format from the `DEC_STR` column and converts it to a decimal degree value in the `dec_deg` column."
     },
     {
-        "command": "stilts tpipe in=pairs_3d.fits cmd='addcol dist_3d \"polarDistanceDegrees(RA1, DEC1, R1, RA2, DEC2, R2)\"' out=distances_3d.fits",
+        "prompt": "stilts tpipe in=pairs_3d.fits cmd='addcol dist_3d \"polarDistanceDegrees(RA1, DEC1, R1, RA2, DEC2, R2)\"' out=distances_3d.fits",
         "response": "Demonstrates the `polarDistanceDegrees` function. It calculates the true 3D Euclidean distance between two points defined by spherical coordinates (`RA1`, `DEC1`, `R1`) and (`RA2`, `DEC2`, `R2`), where R is the radial distance from the origin."
     },
     {
-        "command": "stilts tpipe in=coords_rad.fits cmd='addcol angle_deg \"radiansToDegrees(ANGLE_RAD)\"' out=coords_deg.fits",
+        "prompt": "stilts tpipe in=coords_rad.fits cmd='addcol angle_deg \"radiansToDegrees(ANGLE_RAD)\"' out=coords_deg.fits",
         "response": "Demonstrates the `radiansToDegrees` coordinate function. It converts an angle from radians, stored in the `ANGLE_RAD` column, to degrees in a new column named `angle_deg`."
     },
     {
-        "command": "stilts tpipe in=pairs_rad.fits cmd='addcol pa_rad \"posAngRadians(RA1_RAD, DEC1_RAD, RA2_RAD, DEC2_RAD)\"' out=pa_rad.fits",
+        "prompt": "stilts tpipe in=pairs_rad.fits cmd='addcol pa_rad \"posAngRadians(RA1_RAD, DEC1_RAD, RA2_RAD, DEC2_RAD)\"' out=pa_rad.fits",
         "response": "Demonstrates the `posAngRadians` function. It calculates the position angle in radians between two points on the sky, with all inputs and outputs in radians."
     },
     {
-        "command": "stilts tpipe in=fk4_rad.fits cmd='addcol DEC_FK5_RAD \"decFK4toFK5radians(RA_FK4_RAD, DEC_FK4_RAD)\"' out=fk5_rad.fits",
+        "prompt": "stilts tpipe in=fk4_rad.fits cmd='addcol DEC_FK5_RAD \"decFK4toFK5radians(RA_FK4_RAD, DEC_FK4_RAD)\"' out=fk5_rad.fits",
         "response": "Demonstrates a specific coordinate system conversion. It converts an FK4 (B1950.0) declination to an FK5 (J2000.0) declination, with inputs and outputs in radians."
     },
     {
-        "command": "stilts tpipe in=moc_list.fits cmd='addcol tile_count \"mocTileCount(MOC_ID)\"' out=moc_counts.fits",
+        "prompt": "stilts tpipe in=moc_list.fits cmd='addcol tile_count \"mocTileCount(MOC_ID)\"' out=moc_counts.fits",
         "response": "Demonstrates the `mocTileCount` coverage function. For each MOC identifier in the `MOC_ID` column, it counts the number of unique HEALPix tiles it contains and stores the result in `tile_count`."
     },
     {
-        "command": "stilts tpipe in=pixel_list.fits cmd='addcol uniq_val \"mocUniq(ORDER, INDEX)\"' out=uniq_values.fits",
+        "prompt": "stilts tpipe in=pixel_list.fits cmd='addcol uniq_val \"mocUniq(ORDER, INDEX)\"' out=uniq_values.fits",
         "response": "Demonstrates the `mocUniq` coverage function. It takes a HEALPix order and index from the `ORDER` and `INDEX` columns and combines them into a single `UNIQ` integer value as used in the MOC standard."
     },
     {
-        "command": "stilts tpipe in=uniq_values.fits cmd='addcol order_val \"uniqToOrder(UNIQ_VAL)\"' out=order_values.fits",
+        "prompt": "stilts tpipe in=uniq_values.fits cmd='addcol order_val \"uniqToOrder(UNIQ_VAL)\"' out=order_values.fits",
         "response": "Demonstrates the `uniqToOrder` coverage function. It takes a MOC `UNIQ` integer value from the `UNIQ_VAL` column and extracts the HEALPix order from it."
     },
     {
-        "command": "stilts tpipe in=distances_mpc.fits cmd='addcol dist_m \"MpcToM(DIST_MPC)\"' out=distances_m.fits",
+        "prompt": "stilts tpipe in=distances_mpc.fits cmd='addcol dist_m \"MpcToM(DIST_MPC)\"' out=distances_m.fits",
         "response": "Demonstrates the `MpcToM` distance conversion function. It converts a distance value from Megaparsecs (`DIST_MPC`) to metres (`dist_m`)."
     },
     {
-        "command": "stilts tpipe in=redshifts.fits cmd='addcol dist_approx \"zToDist(Z)\"' out=distances_approx.fits",
+        "prompt": "stilts tpipe in=redshifts.fits cmd='addcol dist_approx \"zToDist(Z)\"' out=distances_approx.fits",
         "response": "Demonstrates the `zToDist` function. This provides a quick and approximate conversion from redshift (`Z`) to luminosity distance in Mpc, using a standard built-in cosmology."
     },
     {
-        "command": "stilts tpipe in=redshifts.fits cmd='addcol ang_diam_dist \"angularDiameterDistance(Z, 70, 0.3, 0.7)\"' out=distances_ang.fits",
+        "prompt": "stilts tpipe in=redshifts.fits cmd='addcol ang_diam_dist \"angularDiameterDistance(Z, 70, 0.3, 0.7)\"' out=distances_ang.fits",
         "response": "Demonstrates the `angularDiameterDistance` function. It calculates the angular diameter distance in Mpc based on the redshift `Z` and an explicitly defined cosmology."
     },
     {
-        "command": "stilts tpipe in=redshifts.fits cmd='addcol comov_dist_t \"comovingDistanceT(Z, 70, 0.3, 0.7)\"' out=distances_comov.fits",
+        "prompt": "stilts tpipe in=redshifts.fits cmd='addcol comov_dist_t \"comovingDistanceT(Z, 70, 0.3, 0.7)\"' out=distances_comov.fits",
         "response": "Demonstrates the `comovingDistanceT` function. It calculates the transverse comoving distance ('distance between two events at the same redshift but separated by some angle on the sky') for a given redshift `Z`."
     },
     {
-        "command": "stilts tpipe in=phot_2mass.fits cmd='addcol J_AB \"J_VEGA - VEGA_AB_J\"' out=phot_ab.fits",
+        "prompt": "stilts tpipe in=phot_2mass.fits cmd='addcol J_AB \"J_VEGA - VEGA_AB_J\"' out=phot_ab.fits",
         "response": "Demonstrates the use of a flux/magnitude constant. It converts a 2MASS J-band magnitude from the Vega system (`J_VEGA`) to the AB system (`J_AB`) by subtracting the predefined `VEGA_AB_J` constant."
     },
     {
-        "command": "stilts tpipe in=data.fits cmd='addcol val_fr \"formatDecimalLocal(VALUE, 2)\"' out=data_fr.fits",
+        "prompt": "stilts tpipe in=data.fits cmd='addcol val_fr \"formatDecimalLocal(VALUE, 2)\"' out=data_fr.fits",
         "response": "Demonstrates the `formatDecimalLocal` function. It formats the `VALUE` column as a string with 2 decimal places, but uses the system's local settings for the decimal separator (e.g., a comma ',' in a French locale instead of a period '.')."
     }
 ]

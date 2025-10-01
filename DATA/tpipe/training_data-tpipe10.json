@@ -1,0 +1,509 @@
+[
+    {
+        "prompt": "I have a file called 'raw_obs.fits'. Can you filter it to only show the good quality rows (where 'QUALITY' is 0), then make a new column called 'G_MINUS_R' by subtracting 'R_MAG' from 'G_MAG', and sort everything by that new color column?",
+        "response": "stilts tpipe in=raw_obs.fits cmd='select \"QUALITY == 0\"' cmd='addcol G_MINUS_R \"G_MAG - R_MAG\"' cmd='sort G_MINUS_R' out=color_sorted.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Could you take my 'data.csv' file, get rid of all columns except for 'ID', 'FLUX', and 'FLUX_ERR', then only keep the rows where the 'FLUX' is over 100? Please save the result as a VOTable called 'bright_sources.vot'.",
+        "response": "stilts tpipe in=data.csv ifmt=csv cmd='keepcols \"ID FLUX FLUX_ERR\"' cmd='select \"FLUX > 100\"' out=bright_sources.vot ofmt=votable",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I've got a VOTable 'catalog.vot'. I need to convert the 'RA_SEX' and 'DEC_SEX' columns into decimal degrees, naming them 'RA_DEC' and 'DEC_DEC'. After that, can you tell me how many objects are in the northern hemisphere (where 'DEC_DEC' is positive)?",
+        "response": "stilts tpipe in=catalog.vot cmd='addcol RA_DEC \"hmsToDegrees(RA_SEX)\"' cmd='addcol DEC_DEC \"dmsToDegrees(DEC_SEX)\"' cmd='select \"DEC_DEC > 0\"' omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Can you show me a sample from my 'survey_data.fits.gz' file? Just take every 100th row and only show me the 'RA', 'DEC', and 'Z' columns right here in the terminal.",
+        "response": "stilts tpipe in=survey_data.fits.gz cmd='every 100' cmd='keepcols \"RA DEC Z\"'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I have a text file called 'measurements.txt'. Please add a new column to it named 'INSTRUMENT' where every row has the value 'VLT'. Then, sort the whole thing by the 'TIMESTAMP' and just show me the first 10 lines.",
+        "response": "stilts tpipe in=measurements.txt ifmt=ascii cmd='constcol INSTRUMENT \"VLT\"' cmd='sort TIMESTAMP' cmd='head 10'",
+        "chat.jar": "failed",
+        "error": "Error: Multiple column lists\n\nCommand was: constcol INSTRUMENT \"VLT\"\n\nUsage: constcol [-noparam] [-acceptnull] [-[no]parallel] [<colid-list>]\n    (Multiple column lists)\n"
+    },
+    {
+        "prompt": "In my 'photometry.fits' file, can you find any blank values in the 'MAG_G' column and fill them in with -99? After that, filter for rows where 'MAG_G_ERR' is less than 0.1 and then run the stats on what's left.",
+        "response": "stilts tpipe in=photometry.fits cmd='replaceval null -99 MAG_G' cmd='select \"MAG_G_ERR < 0.1\"' omode=stats",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "My file 'messy_headers.csv' has messy column names. Can you make them all lowercase, change the 'id' column to be called 'SOURCE_ID', and then save it as a new FITS file named 'clean.fits'?",
+        "response": "stilts tpipe in=messy_headers.csv ifmt=csv cmd='fixcolnames -case lower' cmd='colmeta -name id SOURCE_ID' out=clean.fits",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '-case' 'lower'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: fixcolnames -case lower\n\nUsage: fixcolnames \n    (Unused arguments: '-case' 'lower'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "I have 'array_data.vot' where 'FLUX_POINTS' has multiple values in each cell. Can you split that column into separate columns, calculate the average of those new columns into a single 'AVG_FLUX' column, and then just show me the 'ID' and the 'AVG_FLUX'?",
+        "response": "stilts tpipe in=array_data.vot cmd='explodecols FLUX_POINTS' cmd='addcol AVG_FLUX \"(FLUX_POINTS_1+FLUX_POINTS_2+FLUX_POINTS_3)/3.0\"' cmd='keepcols \"ID AVG_FLUX\"' out=avg_flux.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Please take 'star_list.fits', figure out the galactic coordinates ('GLON' and 'GLAT'), and then show me only the stars that are far from the galactic plane (where 'GLAT' is more than 20 or less than -20). Send the final table to TOPCAT.",
+        "response": "stilts tpipe in=star_list.fits cmd='addskycoords fk5 gal RA DEC GLON GLAT' cmd='select \"abs(GLAT) > 20\"' omode=topcat",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Can you grab 1000 random objects from my 'full_sky.fits' file, sort that random sample by their 'PROPER_MOTION', and then just show me the column info for the result?",
+        "response": "stilts tpipe in=full_sky.fits cmd='random 1000' cmd='sort PROPER_MOTION' omode=meta",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '1000'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: random 1000\n\nUsage: random\n    (Unused arguments: '1000'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "I want a piece of my 'timeseries.csv' file, specifically from line 500 to 1000. For that piece, can you make everything in the 'STATUS' column uppercase and save it as a new file called 'subset.csv'?",
+        "response": "stilts tpipe in=timeseries.csv ifmt=csv cmd='rowrange 500 1000' cmd='replacecol STATUS \"toUpperCase(STATUS)\"' out=subset.csv ofmt=csv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Please take my 'data.ipac' file, remove the 3rd and 7th columns, and then only keep the rows where the value in the first column is bigger than 150.5. Save the result as 'filtered.fits'.",
+        "response": "stilts tpipe in=data.ipac ifmt=ipac cmd='delcols \"3 7\"' cmd='select \"$1 > 150.5\"' out=filtered.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Can you work with 'catalog.fits'? First, create a new column called 'LOG_MASS' by taking the log of the 'MASS' column. Then, find the 50 objects that have the biggest 'LOG_MASS' and show me just their 'ID', 'REDSHIFT', and 'LOG_MASS'.",
+        "response": "stilts tpipe in=catalog.fits cmd='addcol LOG_MASS \"log10(MASS)\"' cmd='sorthead -down 50 LOG_MASS' cmd='keepcols \"ID REDSHIFT LOG_MASS\"'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I have a file called 'input.tsv'. Can you find all the rows that have the word 'galaxy' in their 'NAME', mix them up randomly, and then show me the first 20 from the shuffled list?",
+        "response": "stilts tpipe in=input.tsv ifmt=tsv cmd='select \"contains(NAME, \\'galaxy\\')\"' cmd='shuffle' cmd='head 20'",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: Syntax error: \")\" unexpected\n"
+    },
+    {
+        "prompt": "There's a VOTable online. Can you get it, throw out any rows where 'Parallax' is empty, then calculate a new 'DIST_PC' column (it's 1000 divided by 'Parallax')? Finally, just give me the stats for that new distance column.",
+        "response": "stilts tpipe in='http://example.com/data.vot' cmd='select \"!isBlank(Parallax)\"' cmd='addcol DIST_PC \"1000/Parallax\"' cmd='keepcols DIST_PC' omode=stats",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "With my 'raw.fits' file, please rename the 'RA_DEGREES' and 'DEC_DEGREES' columns to just 'RA' and 'DEC'. Then, tell me how many objects are within 10 degrees of the sky's origin point (RA=0, Dec=0).",
+        "response": "stilts tpipe in=raw.fits cmd='colmeta -name RA_DEGREES RA' cmd='colmeta -name DEC_DEGREES DEC' cmd='select \"skyDistanceDegrees(RA,DEC,0,0) < 10\"' omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I'm going to pipe a FITS file to the command. Please take that data, add a new column 'SIN_DEC' which is the sine of the 'DEC' column, sort by that new column, and then output the resulting FITS data.",
+        "response": "stilts tpipe in=- ifmt=fits cmd='addcol SIN_DEC \"sin(toRadians(DEC))\"' cmd='sort SIN_DEC' out=- ofmt=fits",
+        "chat.jar": "failed",
+        "error": "Error: FITS ended before header\n"
+    },
+    {
+        "prompt": "In 'multi_col.fits', I only want to work with the first 10 columns. Please add a new column called 'SUM_COLS' that adds up the values from the first and second columns. Then just show me the last 5 rows of the result.",
+        "response": "stilts tpipe in=multi_col.fits cmd='keepcols \"1-10\"' cmd='addcol SUM_COLS \"$1+$2\"' cmd='tail 5'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "My 'strings.csv' file has extra spaces in the 'IDENTIFIER' column. Can you clean those up, then find only the rows where the identifier is exactly 10 characters long, and save that to a file called 'trimmed.csv'?",
+        "response": "stilts tpipe in=strings.csv ifmt=csv cmd='replacecol IDENTIFIER \"trim(IDENTIFIER)\"' cmd='select \"length(IDENTIFIER) == 10\"' out=trimmed.csv ofmt=csv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Let's take a sample from 'data.fits'. First grab the top 1000 rows, and from that group, take a random 10 percent. Then, run the stats on that final small sample.",
+        "response": "stilts tpipe in=data.fits cmd='head 1000' cmd='randomview 0.1' omode=stats",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '0.1'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: randomview 0.1\n\nUsage: randomview\n    (Unused arguments: '0.1'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "In 'flags.fits', I need to find rows where a specific 'MASK' value is set - specifically where the first and third bits are on. For those rows, add a new 'DATE' column with today's date and just show me the 'ID' and 'DATE' columns.",
+        "response": "stilts tpipe in=flags.fits cmd='select \"(MASK & 5) == 5\"' cmd='addcol DATE \"iso8601ToDate(now())\"' cmd='keepcols \"ID DATE\"'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I want to clean up 'input.vot'. First, if any 'MAG' is greater than 25, just blank it out. Then, only look at rows with a 'MAG_ERR' less than 0.05. From that cleaned list, find the 10 brightest things and send them to TOPCAT.",
+        "response": "stilts tpipe in=input.vot cmd='replacecol MAG \"MAG > 25 ? NaN : MAG\"' cmd='select \"MAG_ERR < 0.05\"' cmd='sorthead 10 MAG' omode=topcat",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I have a text file 'coords.txt' with 'ra' and 'dec' columns. Can you calculate the Ecliptic Longitude for each row, and then tell me how many rows have a longitude between 180 and 270 degrees?",
+        "response": "stilts tpipe in=coords.txt ifmt=ascii cmd='addskycoords fk5 ecliptic ra dec ELON ELAT' cmd='select \"ELON > 180 && ELON < 270\"' omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Using 'data.fits', make a new 'V_MINUS_I' color column. Then, filter for stars where this color is between 0.5 and 1.0. For just those stars, can you calculate the stats of their 'V_MAG'?",
+        "response": "stilts tpipe in=data.fits cmd='addcol V_MINUS_I \"V_MAG - I_MAG\"' cmd='select \"V_MINUS_I > 0.5 && V_MINUS_I < 1.0\"' cmd='keepcols V_MAG' omode=stats",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I have a huge file, 'big_table.fits'. Can you sort it by the 'FLUX_G' column without using too much memory, then just take the top 1000 rows and save them to a new file called 'top_flux.fits'?",
+        "response": "stilts -disk tpipe in=big_table.fits cmd='sort -down FLUX_G' cmd='head 1000' out=top_flux.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "My file 'spectra.fits' has columns with arrays of data in them. Can you unpack the 'WAVELENGTH' and 'FLUX' columns into normal rows, and then show me only the data points where the wavelength is between 4000 and 5000?",
+        "response": "stilts tpipe in=spectra.fits cmd='explodeall' cmd='select \"WAVELENGTH > 4000 && WAVELENGTH < 5000\"'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "In 'candidates.vot', find all the rows with a 'SCORE' higher than 0.95. For these, add a new column 'IS_CANDIDATE' and set it to 'true', then get rid of the old 'SCORE' column and save as 'confirmed.vot'.",
+        "response": "stilts tpipe in=candidates.vot cmd='select \"SCORE > 0.95\"' cmd='constcol IS_CANDIDATE true' cmd='delcols SCORE' out=confirmed.vot",
+        "chat.jar": "failed",
+        "error": "Error: Multiple column lists\n\nCommand was: constcol IS_CANDIDATE true\n\nUsage: constcol [-noparam] [-acceptnull] [-[no]parallel] [<colid-list>]\n    (Multiple column lists)\n"
+    },
+    {
+        "prompt": "My 'log.csv' file has a 'TIMESTAMP' in seconds. Can you convert it to a normal date format? Then, tell me how many entries are from the year 2023.",
+        "response": "stilts tpipe in=log.csv ifmt=csv cmd='replacecol TIMESTAMP \"unixToIso(TIMESTAMP)\"' cmd='select \"startsWith(TIMESTAMP, \\'2023\\')\"' omode=count",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: Syntax error: \")\" unexpected\n"
+    },
+    {
+        "prompt": "With 'data.fits', I only need the 'ID', 'X', and 'Y' columns. Can you calculate a new column 'R' which is the distance from the center (sqrt(X^2 + Y^2)), and then show me the 20 rows that are farthest from the center?",
+        "response": "stilts tpipe in=data.fits cmd='keepcols \"ID X Y\"' cmd='addcol R \"sqrt(X*X+Y*Y)\"' cmd='sorthead -down 20 R'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I'm looking at 'planets.fits'. Please filter it to show only planets bigger than Jupiter (where 'MASS' is > 1). For those big planets, make a new column that's the logarithm of the 'ORBIT_PERIOD' and give me the statistics for it.",
+        "response": "stilts tpipe in=planets.fits cmd='select \"MASS > 1\"' cmd='addcol LOG_PERIOD \"log10(ORBIT_PERIOD)\"' cmd='keepcols LOG_PERIOD' omode=stats",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Can you sample my 'source_list.ipac' file by taking every 5th row? For that sample, please add a 'ROW_NUM' column showing the line number, and save it all as a CSV file.",
+        "response": "stilts tpipe in=source_list.ipac ifmt=ipac cmd='every 5' cmd='addcol ROW_NUM \"ID\"' out=sampled.csv ofmt=csv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Please check if 'input.fits' has exactly 1000 rows. If it does, add a new column to it called 'RAND_VAL' filled with random numbers, and then just show me the info about the columns.",
+        "response": "stilts tpipe in=input.fits cmd='assert \"count(*) == 1000\"' cmd='addcol RAND_VAL \"random()\"' omode=meta",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "In my 'data.vot' file, ignore any rows that have a blank 'NAME'. For the rest, make all the names uppercase and then show me a list of the unique names.",
+        "response": "stilts tpipe in=data.vot cmd='select \"!isBlank(NAME)\"' cmd='replacecol NAME \"toUpperCase(NAME)\"' cmd='uniq NAME'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "My file 'points.csv' has coordinates for two points in each row ('x1','y1' and 'x2','y2'). Can you calculate the distance between them, put it in a new 'DISTANCE' column, and then sort the file by that distance? Save it as 'sorted_dist.csv'.",
+        "response": "stilts tpipe in=points.csv ifmt=csv cmd='addcol DISTANCE \"sqrt(pow(x2-x1,2) + pow(y2-y1,2))\"' cmd='sort DISTANCE' out=sorted_dist.csv ofmt=csv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need a specific part of 'catalog.fits'. Please keep the first column, columns 5 through 10, and the very last column. From that, only keep rows where the value in the first column is an odd number. Save this as 'subset.fits'.",
+        "response": "stilts tpipe in=catalog.fits cmd='keepcols \"1 5-10 $-1\"' cmd='select \"($1 % 2) != 0\"' out=subset.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I have a compressed file, 'data.tsv.gz'. Can you clean it up by changing all the -99 values in the 'FLUX' column to be blank? Then, create a 'SNR' column by dividing 'FLUX' by 'FLUX_ERR', and only show me rows where 'SNR' is more than 5.",
+        "response": "stilts tpipe in=data.tsv.gz ifmt=tsv cmd='replaceval -99 null FLUX' cmd='addcol SNR \"FLUX/FLUX_ERR\"' cmd='select \"SNR > 5\"'",
+        "chat.jar": "failed",
+        "error": "Error: Bad value for parameter ifmt: Unknown format tsv\n    (No table handler available for tsv)\nUsage: ifmt=<in-format>\n\n"
+    },
+    {
+        "prompt": "Let's just look at the first 10% of 'data.fits'. Take that part, sort it by the 'VALUE' column, and then show me the last 5 rows from that sorted section.",
+        "response": "stilts tpipe in=data.fits cmd='seqview 0.1' cmd='sort VALUE' cmd='tail 5'",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '0.1'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: seqview 0.1\n\nUsage: seqview\n    (Unused arguments: '0.1'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "Can you categorize the objects in 'sources.fits'? Create a new 'TYPE' column. If 'MAG' is less than 15, call it 'BRIGHT'. If it's between 15 and 20, call it 'MEDIUM'. Otherwise, call it 'FAINT'. Then tell me how many objects are in each category.",
+        "response": "stilts tpipe in=sources.fits cmd='addcol TYPE \"MAG < 15 ? \\'BRIGHT\\' : (MAG < 20 ? \\'MEDIUM\\' : \\'FAINT\\')\"' cmd='uniq TYPE' omode=stats",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: Syntax error: \"(\" unexpected\n"
+    },
+    {
+        "prompt": "Please process 'input.fits'. I want the final table to be named 'Processed Data'. Also, add a 'PROCESSING_DATE' column with the current timestamp. Save the result as 'output.vot'.",
+        "response": "stilts tpipe in=input.fits cmd='tablename \"Processed Data\"' cmd='addcol PROCESSING_DATE \"now()\"' out=output.vot ofmt=votable",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "In 'observations.fits', I'm only interested in the 'g' and 'r' filters. Can you separate them and tell me the average 'AIRMASS' for the 'g' filter observations and the average for the 'r' filter observations?",
+        "response": "stilts tpipe in=observations.fits cmd='select \"FILTER==\\'g\\' || FILTER==\\'r\\'\"' cmd='sort FILTER' cmd='group -mean AIRMASS FILTER'",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: Syntax error: Unterminated quoted string\n"
+    },
+    {
+        "prompt": "The UCDs in my 'bad_ucds.vot' file are all wrong. Please erase all of them, then assign the correct UCD 'phot.mag;em.opt.V' to the 'Vmag' column. Just check if it works, don't save the file.",
+        "response": "stilts tpipe in=bad_ucds.vot cmd='colmeta -ucd * \"\"' cmd='colmeta -ucd Vmag \"phot.mag;em.opt.V\"' omode=discard",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From 'data.csv', find all the rows where the 'ID' begins with 'NGC'. For those rows, add '_catalog' to the end of the 'ID'. Then just show me the first 10 of them.",
+        "response": "stilts tpipe in=data.csv ifmt=csv cmd='select \"startsWith(ID, \\'NGC\\')\"' cmd='replacecol ID \"ID + \\'_catalog\\'\"' cmd='head 10'",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: Syntax error: \")\" unexpected\n"
+    },
+    {
+        "prompt": "Using my 'sky_data.fits' file, can you calculate a Healpix index for each row? Use nside=4096, get the coordinates from the 'RA' and 'DEC' columns, and put the result in a new column called 'HEALPIX_12'. Then just show me the 'ID' and this new column.",
+        "response": "stilts tpipe in=sky_data.fits cmd='addpixsample -nside 4096 -pixcol HEALPIX_12 -loncol RA -latcol DEC' cmd='keepcols \"ID HEALPIX_12\"'",
+        "chat.jar": "failed",
+        "error": "Error: Error using pixel data file -pixcol\n\nCommand was: addpixsample -nside 4096 -pixcol HEALPIX_12 -loncol RA -latcol DEC\n\nUsage: addpixsample [-radius <expr-rad>] [-systems <in-sys> <pix-sys>]\n                    <expr-lon> <expr-lat> <healpix-file>\n    (Error using pixel data file -pixcol\n        (No file, URL or command \"-pixcol\"))\n"
+    },
+    {
+        "prompt": "There's a FITS file on a website. Can you grab it, take only the last 500 entries, flip them so the newest is first, and save that as 'last_obs.fits'?",
+        "response": "stilts tpipe in='http://archive.com/data.fits' cmd='tail 500' cmd='sort -down ID' out=last_obs.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "The 'VALUE_STR' column in 'data.fits' is text, but it should be a number. Please create a new number column from it called 'VALUE_NUM'. Then, for rows where that new number is positive, calculate the statistics.",
+        "response": "stilts tpipe in=data.fits cmd='addcol VALUE_NUM \"(double)VALUE_STR\"' cmd='select \"VALUE_NUM > 0\"' cmd='keepcols VALUE_NUM' omode=stats",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "For 'multi_wave.fits', make a new 'FUV_MINUS_NUV' color column. Then, find all the sources where this color is greater than 1.0, sort them by their 'REDSHIFT', and open the result in TOPCAT.",
+        "response": "stilts tpipe in=multi_wave.fits cmd='addcol FUV_MINUS_NUV \"FUV_MAG - NUV_MAG\"' cmd='select \"FUV_MINUS_NUV > 1.0\"' cmd='sort REDSHIFT' omode=topcat",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "In 'events.fits', the 'TIME' is in seconds. Can you change it to be in hours instead? After that, tell me how many events happened within the first 24 hours.",
+        "response": "stilts tpipe in=events.fits cmd='replacecol TIME \"TIME/3600.0\"' cmd='select \"TIME <= 24\"' omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Please take 'catalog.vot' and get rid of everything except the 'RA' and 'DEC' columns. Add a new column called 'IS_NORTH' that's true if 'DEC' is positive. Then, just show me 10 random rows from the result.",
+        "response": "stilts tpipe in=catalog.vot cmd='keepcols \"RA DEC\"' cmd='addcol IS_NORTH \"DEC > 0\"' cmd='random 10'",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '10'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: random 10\n\nUsage: random\n    (Unused arguments: '10'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "I've got a messy file, 'unclean.tsv'. If the 'NOTES' column is empty, can you put 'N/A' in it? Then, find all the rows that have a 'FLAG' that isn't zero and save them to a new file 'flagged.csv'.",
+        "response": "stilts tpipe in=unclean.tsv ifmt=tsv cmd='replaceval \"\" \"N/A\" NOTES' cmd='select \"FLAG != 0\"' out=flagged.csv ofmt=csv",
+        "chat.jar": "failed",
+        "error": "Error: Bad value for parameter ifmt: Unknown format tsv\n    (No table handler available for tsv)\nUsage: ifmt=<in-format>\n\n"
+    },
+    {
+        "prompt": "Can you grab a slice of 'data.fits' from row 101 to 200? From that slice, remove the 'TEMP_A' and 'TEMP_B' columns. Then, just show me the column information for what's left.",
+        "response": "stilts tpipe in=data.fits cmd='rowrange 101 200' cmd='delcols \"TEMP_A TEMP_B\"' omode=meta",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "In 'measurements.fits', can you calculate the signal-to-noise ratio in a new column called 'SNR' (just divide 'FLUX' by 'ERROR')? Then find the 100 sources with the best SNR and save just their 'ID's to a text file named 'best_ids.txt'.",
+        "response": "stilts tpipe in=measurements.fits cmd='addcol SNR \"FLUX/ERROR\"' cmd='sorthead -down 100 SNR' cmd='keepcols ID' out=best_ids.txt ofmt=ascii",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "My 'wide_table.fits' has lots of columns. Can you get rid of all of them except for the ones that start with 'FLUX_'? Then, flip the table so the rows become columns and show me the result.",
+        "response": "stilts tpipe in=wide_table.fits cmd='keepcols \"FLUX_*\"' cmd='transpose'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need to find good quality nearby stars in 'gaia.fits'. Please select stars where the parallax is over 20 and the parallax error is less than 10%. For these stars, calculate their absolute G magnitude and then sort the list by how bright they are.",
+        "response": "stilts tpipe in=gaia.fits cmd='select \"parallax > 20 && parallax_error/parallax < 0.1\"' cmd='addcol ABS_G \"phot_g_mean_mag - 5 * (log10(1000/parallax) - 1)\"' cmd='sort ABS_G'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Can you process 'data.csv' for me? Skip the first line, then add a 'ROW_NUM' column. After that, just show me rows 10 through 20.",
+        "response": "stilts tpipe in=data.csv ifmt=csv cmd='tail -1' cmd='addcol ROW_NUM \"ID\"' cmd='rowrange 10 20'",
+        "chat.jar": "failed",
+        "error": "Error: Row count -1 not numeric\n\nCommand was: tail -1\n\nUsage: tail <nrows>\n    (Row count -1 not numeric)\n"
+    },
+    {
+        "prompt": "In 'input.vot', can you make all the text in the 'DESCRIPTION' column lowercase? Then, tell me what all the unique descriptions are and how many times each one appears.",
+        "response": "stilts tpipe in=input.vot cmd='replacecol DESCRIPTION \"toLowerCase(DESCRIPTION)\"' cmd='sort DESCRIPTION' cmd='group DESCRIPTION'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need to process 'flux_data.fits'. First, make a new 'RATIO' column by dividing 'FLUX_A' by 'FLUX_B'. This might create some weird numbers, so clean up the 'RATIO' column by blanking out any infinite values or NaNs. Lastly, run stats on the clean 'RATIO' column.",
+        "response": "stilts tpipe in=flux_data.fits cmd='addcol RATIO \"FLUX_A / FLUX_B\"' cmd='replacecol RATIO \"isFinite(RATIO) ? RATIO : null\"' cmd='keepcols RATIO' omode=stats",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "In 'events.fits', the 'TIME' column is a unix timestamp. Can you convert it to a day number in a new column called 'EVENT_DAY'? Then, tell me how many events happened on day 18350.",
+        "response": "stilts tpipe in=events.fits cmd='addcol EVENT_DAY \"(int)(TIME / 86400)\"' cmd='select \"EVENT_DAY == 18350\"' omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I want a sorted random sample from 'table.fits'. Can you mix up all the rows, grab the first 50, sort those 50 rows by their 'VALUE', and then save that to a new file called 'sample.fits'?",
+        "response": "stilts tpipe in=table.fits cmd='shuffle' cmd='head 50' cmd='sort VALUE' out=sample.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "My 'data.fits' file has a 'DEG' column in degrees. Please convert it to radians in a new 'RAD' column. Then, calculate the sine and cosine of 'RAD' in two more columns, 'SIN_RAD' and 'COS_RAD'. Finally, just show me those two new sine and cosine columns.",
+        "response": "stilts tpipe in=data.fits cmd='addcol RAD \"toRadians(DEG)\"' cmd='addcol SIN_RAD \"sin(RAD)\"' cmd='addcol COS_RAD \"cos(RAD)\"' cmd='keepcols \"SIN_RAD COS_RAD\"'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "In 'catalog.vot', I only care about objects with 'OBJ_TYPE' equal to 3. For just those objects, find the 10 that have the best fit (lowest 'CHI2' value) and show me their 'ID' and 'CHI2'.",
+        "response": "stilts tpipe in=catalog.vot cmd='select \"OBJ_TYPE == 3\"' cmd='sorthead 10 CHI2' cmd='keepcols \"ID CHI2\"'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Can you clean up 'bad_data.csv'? The column names have '#' in them, please change that to 'num'. Also, wherever you see the text 'N/A' in any column, just make it a blank value. Save the cleaned-up table as 'clean_data.vot'.",
+        "response": "stilts tpipe in=bad_data.csv ifmt=csv cmd='fixcolnames -wordsub \"#\" \"num\"' cmd='replaceval \"N/A\" null *' out=clean_data.vot ofmt=votable",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '-wordsub' '#' 'num'\n\nCommand was: fixcolnames -wordsub \"#\" \"num\"\n\nUsage: fixcolnames \n    (Unused arguments: '-wordsub' '#' 'num')\n"
+    },
+    {
+        "prompt": "I need to test something. Can you take a random 20% of the rows from 'input.fits', add a column called 'SAMPLE_ID' with 'A' in it, and then just throw the result away? I just want to see how long it takes.",
+        "response": "stilts tpipe in=input.fits cmd='randomview 0.2' cmd='constcol SAMPLE_ID \"A\"' omode=discard",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '0.2'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: randomview 0.2\n\nUsage: randomview\n    (Unused arguments: '0.2'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "Using 'coordinates.fits', can you convert the RA/DEC coordinates to Supergalactic ones ('SGL' and 'SGB')? Then, tell me how many of the objects lie close to the Supergalactic plane (where the absolute value of SGB is less than 5 degrees).",
+        "response": "stilts tpipe in=coordinates.fits cmd='addskycoords icrs supergalactic RA DEC SGL SGB' cmd='select \"abs(SGB) < 5\"' omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "From 'input.fits', I'm only interested in magnitude columns. Please get rid of any column that doesn't have 'MAG' in its name. Then, for the remaining columns, filter out rows where the first magnitude column has a bad value (is not less than 99). Finally, run stats on what's left.",
+        "response": "stilts tpipe in=input.fits cmd='keepcols \"*MAG*\"' cmd='select \"$1 < 99\"' omode=stats",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I have a TSV file, 'data.tsv'. Please only keep rows where the third column isn't empty. Then, add a new column called 'col_sum' that's the sum of the first two columns. Save the final result as 'result.fits'.",
+        "response": "stilts tpipe in=data.tsv ifmt=tsv cmd='select \"col3 != \\'\\'\"' cmd='addcol col_sum \"col1+col2\"' out=result.fits",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: Syntax error: Unterminated quoted string\n"
+    },
+    {
+        "prompt": "I want to find things near the galactic center in 'big_table.fits'. First, take a sample of every 1000th row to make it manageable. For that sample, calculate the galactic coordinates. Then, find the objects that are close to the center (GLON and GLAT both between -10 and 10) and show them to me in TOPCAT.",
+        "response": "stilts tpipe in=big_table.fits cmd='every 1000' cmd='addskycoords fk5 gal RA DEC GLON GLAT' cmd='select \"abs(GLON)<10 && abs(GLAT)<10\"' omode=topcat",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I'm going to stream a CSV file to you. As the data comes in, please only consider rows where 'VALUE' is positive. Sort those positive rows by 'TIMESTAMP', and save just the first 100 of them to a file called 'positive.fits'.",
+        "response": "stilts tpipe in=- ifmt=csv istream=true cmd='select \"VALUE > 0\"' cmd='sort TIMESTAMP' cmd='head 100' out=positive.fits",
+        "chat.jar": "failed",
+        "error": "Error: Can't stream CSV format tables\n"
+    },
+    {
+        "prompt": "Please filter 'obs.fits' to only include observations with an 'AIRMASS' less than 1.5. Then, convert the 'DATE_OBS' column into MJD (put it in a new 'MJD' column) and sort the whole table by that MJD.",
+        "response": "stilts tpipe in=obs.fits cmd='select \"AIRMASS < 1.5\"' cmd='addcol MJD \"isoToMjd(DATE_OBS)\"' cmd='sort MJD'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "In 'data.fits', can you make a new 'WEIGHT' column? It should be calculated as 1 divided by the 'ERROR' squared. After that, tell me how many rows have a 'WEIGHT' greater than 10.",
+        "response": "stilts tpipe in=data.fits cmd='addcol WEIGHT \"1.0/pow(ERROR,2)\"' cmd='select \"WEIGHT > 10\"' omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need to create a unique ID in 'input.fits'. Please make a new 'CAT_ID' column by joining the 'SURVEY' column and the 'ID' column with an underscore in between. Then, save a new file 'output.fits' with just the 'CAT_ID', 'RA', and 'DEC'.",
+        "response": "stilts tpipe in=input.fits cmd='addcol CAT_ID \"SURVEY+\\'_\\'+ID\"' cmd='keepcols \"CAT_ID RA DEC\"' out=output.fits",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: Syntax error: Unterminated quoted string\n"
+    },
+    {
+        "prompt": "In 'catalog.vot', I want to see how many bright objects there are for each filter type. Can you go through, and for each unique value in the 'FILTER' column, count how many rows also have a 'MAG' less than 18?",
+        "response": "stilts tpipe in=catalog.vot cmd='addcol BRIGHT \"MAG < 18 ? 1 : 0\"' cmd='sort FILTER' cmd='group -sum BRIGHT FILTER'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I have a really big file 'data.fits'. Can you just look at the first million rows, sort them by 'VALUE' without using too much memory, grab the top 100, and save them to 'top100.fits'?",
+        "response": "stilts -disk tpipe in=data.fits cmd='seqview 1000000' cmd='sort -down VALUE' cmd='head 100' out=top100.fits",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '1000000'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: seqview 1000000\n\nUsage: seqview\n    (Unused arguments: '1000000'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "In 'input.csv', I have a column 'DEC_ID' with regular numbers. Can you add a new column 'HEX_ID' that shows the same number in hexadecimal? Then, only show me the rows where the original 'DEC_ID' is bigger than 4096.",
+        "response": "stilts tpipe in=input.csv ifmt=csv cmd='addcol HEX_ID \"toHex(DEC_ID)\"' cmd='select \"DEC_ID > 4096\"'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Can you do some math on 'table.fits'? Please change column 'A' to be its base-10 log, and change column 'B' to be its natural log. After that, calculate the stats for the whole modified table.",
+        "response": "stilts tpipe in=table.fits cmd='replacecol A \"log10(A)\"' cmd='replacecol B \"ln(B)\"' omode=stats",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need to classify the data in 'data.fits'. Please add a 'CLASS' column. If the 'VALUE' is over 1000, the class should be 'high', otherwise it's 'low'. Then just show me the 'ID' and this new 'CLASS' for the first 20 rows.",
+        "response": "stilts tpipe in=data.fits cmd='addcol CLASS \"VALUE > 1000 ? \\'high\\' : \\'low\\'\"' cmd='keepcols \"ID CLASS\"' cmd='head 20'",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: Syntax error: Unterminated quoted string\n"
+    },
+    {
+        "prompt": "Can you sample 'input.fits' for me? I want to keep only every 5th row, starting with the first one. A way to do this might be to add a column that's the row number modulo 5 and filter for where that is 0.",
+        "response": "stilts tpipe in=input.fits cmd='addcol ROW_MOD_5 \"(ID-1)%5\"' cmd='select \"ROW_MOD_5 == 0\"'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "In 'data.vot', first get rid of any rows with a 'CONF' of 0.5 or less. Then, for what's left, create a 'CONF_CATEGORY' column. If 'CONF' is over 0.9, it's 'high', otherwise it's 'medium'. Please save this as 'classified.csv'.",
+        "response": "stilts tpipe in=data.vot cmd='select \"CONF > 0.5\"' cmd='addcol CONF_CATEGORY \"CONF > 0.9 ? \\'high\\' : \\'medium\\'\"' out=classified.csv ofmt=csv",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: Syntax error: Unterminated quoted string\n"
+    },
+    {
+        "prompt": "My 'spectra.fits' file has a 'FLUX' column with a list of numbers in each row. Can you find the median of the list for each row, put that into a new 'MEDIAN_FLUX' column, and then sort the file by that median flux?",
+        "response": "stilts tpipe in=spectra.fits cmd='collapsecols -median FLUX' cmd='colmeta -name FLUX MEDIAN_FLUX' cmd='sort MEDIAN_FLUX'",
+        "chat.jar": "failed",
+        "error": "Error: Bad collapsecols specification\n\nCommand was: collapsecols -median FLUX\n\nUsage: collapsecols [-[no]keepscalars] <array-colname> <col-id0> <ncol>\n    (Bad collapsecols specification)\n"
+    },
+    {
+        "prompt": "From 'input.fits', take a random 1% of the data. In that sample, calculate how far each object is from the point (RA=180, DEC=0). Then, show me the single object that is closest to that point.",
+        "response": "stilts tpipe in=input.fits cmd='randomview 0.01' cmd='addcol DIST \"skyDistanceDegrees(RA,DEC,180,0)\"' cmd='sorthead 1 DIST'",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '0.01'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: randomview 0.01\n\nUsage: randomview\n    (Unused arguments: '0.01'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "Can you look at my 'log.txt' file? Specifically between lines 100 and 199, can you tell me how many lines have the word 'WARNING' in them?",
+        "response": "stilts tpipe in=log.txt ifmt=ascii cmd='rowrange 100 199' cmd='select \"contains(COL1, \\'WARNING\\')\"' omode=count",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: Syntax error: \")\" unexpected\n"
+    },
+    {
+        "prompt": "I need to convert coordinates in 'data.fits'. Please change the 'RA_HMS' and 'DEC_DMS' columns from sexagesimal to decimal degrees, putting them in new 'RA' and 'DEC' columns. Then get rid of the old coordinate columns and save the result as 'decimal_coords.fits'.",
+        "response": "stilts tpipe in=data.fits cmd='addcol RA \"hmsToDegrees(RA_HMS)\"' cmd='addcol DEC \"dmsToDegrees(DEC_DMS)\"' cmd='delcols \"RA_HMS DEC_DMS\"' out=decimal_coords.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "In 'data.fits', I need to check a specific bit in the 'FLAGS' column. Can you add a new column 'FLAG_BIT_4' that's true if the fourth bit is turned on? Then just show me the rows where that's the case.",
+        "response": "stilts tpipe in=data.fits cmd='addcol FLAG_BIT_4 \"(FLAGS & 8) != 0\"' cmd='select \"FLAG_BIT_4\"'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I want to find the brightest red objects in 'phot.fits'. First, just look at the 'ID', 'G_MAG', and 'R_MAG' columns. Create a 'G_R_COLOR' column. Find all objects where that color is greater than 1.5. From that list of red objects, sort them by 'G_MAG' and give me the top 100.",
+        "response": "stilts tpipe in=phot.fits cmd='keepcols \"ID G_MAG R_MAG\"' cmd='addcol G_R_COLOR \"G_MAG - R_MAG\"' cmd='select \"G_R_COLOR > 1.5\"' cmd='sort G_MAG' cmd='head 100'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I have a compressed CSV file, 'input.csv.gz'. In the 'STATUS' column, can you change every instance of 'ERROR' to 'FAIL'? Then, show me a list of all the unique statuses in that column.",
+        "response": "stilts tpipe in=input.csv.gz ifmt=csv cmd='replacecol STATUS \"replaceAll(STATUS, \\'ERROR\\', \\'FAIL\\')\"' cmd='uniq STATUS'",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: Syntax error: \")\" unexpected\n"
+    },
+    {
+        "prompt": "To speed things up, can you load 'data.fits' into memory? Once it's loaded, filter it twice: first keep only rows with 'FLAG' equal to 0, and then from that result, keep only rows where 'VALUE' is greater than 10. Finally, run stats on the result.",
+        "response": "stilts tpipe in=data.fits cmd=cache cmd='select \"FLAG==0\"' cmd='select \"VALUE > 10\"' omode=stats",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need to find very luminous stars in 'stars.fits'. Can you calculate a new 'ABS_MAG' column using the 'APPARENT_MAG' and 'DISTANCE_MPC'? Then, tell me how many stars have an absolute magnitude brighter than -5.",
+        "response": "stilts tpipe in=stars.fits cmd='addcol ABS_MAG \"APPARENT_MAG - 5 * (log10(DISTANCE_MPC * 1e6) - 1)\"' cmd='select \"ABS_MAG < -5\"' omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Can you run a quick test on 'table.fits'? I want you to show a progress bar while you read through it and pick out every 10th row. You don't need to save or show the result, just do the operation.",
+        "response": "stilts tpipe in=table.fits cmd=progress cmd='every 10' omode=discard",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I have a multi-step request for 'input.vot'. First, clean it by replacing all -999s with blanks. Then, make a 'G-R' color column. Filter to find the 'red' objects where 'G-R' is over 1.2. From that red object list, find the 10 with the highest 'G_MAG' (the faintest ones) and show them to me.",
+        "response": "stilts tpipe in=input.vot cmd='replaceval -999 null *' cmd='addcol G_R \"G_MAG - R_MAG\"' cmd='select \"G_R > 1.2\"' cmd='sorthead -down 10 G_MAG'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "In 'data.fits', first find all the rows where the 'NAME' ends with the letter 'A'. For those rows, I want to create a new column called 'BASE_NAME' that contains everything in the 'NAME' before the final underscore.",
+        "response": "stilts tpipe in=data.fits cmd='select \"endsWith(NAME, \\'A\\')\"' cmd='addcol BASE_NAME \"substring(NAME, 0, lastIndexOf(NAME, \\'_\\'))\"'",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: Syntax error: \")\" unexpected\n"
+    },
+    {
+        "prompt": "I have 'coords.csv' with RA and DEC. Can you calculate two different Healpix indexes for each row? One for Nside=64 (call it 'HPX64') and one for Nside=256 (call it 'HPX256'). Then, just give me a table with the 'ID', 'HPX64', and 'HPX256' columns.",
+        "response": "stilts tpipe in=coords.csv ifmt=csv cmd='addpixsample -nside 64 -pixcol HPX64 -loncol RA -latcol DEC' cmd='addpixsample -nside 256 -pixcol HPX256 -loncol RA -latcol DEC' cmd='keepcols \"ID HPX64 HPX256\"'",
+        "chat.jar": "failed",
+        "error": "Error: Error using pixel data file -pixcol\n\nCommand was: addpixsample -nside 64 -pixcol HPX64 -loncol RA -latcol DEC\n\nUsage: addpixsample [-radius <expr-rad>] [-systems <in-sys> <pix-sys>]\n                    <expr-lon> <expr-lat> <healpix-file>\n    (Error using pixel data file -pixcol\n        (No file, URL or command \"-pixcol\"))\n"
+    },
+    {
+        "prompt": "Can you take my 'small_table.fits', duplicate all its rows so the table is 5 times bigger, then add a 'RAND_ID' column with a random number from 0 to 1000, and finally sort the whole big table by that random number?",
+        "response": "stilts tpipe in=small_table.fits cmd='repeat 5' cmd='addcol RAND_ID \"(int)(random()*1000)\"' cmd='sort RAND_ID'",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need to filter 'data.fits' for good data. Please add a column 'IS_VALID' that's true only if 'FLAG' is 0 and 'ERROR' is less than 1. Then, throw away all the non-valid rows and run stats on the 'VALUE' column of the good data.",
+        "response": "stilts tpipe in=data.fits cmd='addcol IS_VALID \"FLAG == 0 && ERROR < 1\"' cmd='select \"IS_VALID\"' cmd='keepcols VALUE' omode=stats",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I'm going to pipe a VOTable into this command. Please take that stream, only process rows with 'SNR' over 10, add a new 'LN_FLUX' column with the natural log of the 'FLUX', and save the result as 'output.fits'.",
+        "response": "stilts tpipe in='<votable_generator' ifmt=votable cmd='select \"SNR>10\"' cmd='addcol LN_FLUX \"ln(FLUX)\"' out=output.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need to do a few things to 'input.fits'. First, take just the first 1000 rows. Then, remove columns 5 through 10. Then, sort what's left by the second column. Finally, just show me the column info of the result.",
+        "response": "stilts tpipe in=input.fits cmd='head 1000' cmd='delcols \"5-10\"' cmd='sort $2' omode=meta",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Please double-check my 'final_catalog.fits' file to make sure it contains a 'FINAL_ID' column. If it does, then tell me how many rows have a 'CONFIDENCE' of exactly 1.0.",
+        "response": "stilts tpipe in=final_catalog.fits cmd='check \"colnames.contains(\\'FINAL_ID\\')\"' cmd='select \"CONFIDENCE == 1.0\"' omode=count",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: Syntax error: \")\" unexpected\n"
+    }
+]

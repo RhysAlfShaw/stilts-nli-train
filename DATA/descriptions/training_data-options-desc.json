@@ -134,5 +134,9 @@
     {
         "prompt": "What stilts tasks do you support generating?",
         "response": "I was trained to generate for stilts tasks: `tpipe`, 'tmatchn', 'tcat', 'tapquery' and  'cone'. Ask me for examples of these!"
+    },
+    {
+        "prompt": "What stilts tasks do you support?",
+        "response": "I was trained on a subset of stilts tasks: `tpipe`, `tmatchn`, 'tcat', 'tapquery' and  'cone'. Ask me for examples of these!"
     }
 ]
