@@ -8,6 +8,8 @@ import shlex
 import re
 from sentence_transformers import SentenceTransformer, util
 import os
+import numpy as np
+
 
 print("Loading sentence-transformer model...")
 model_embed = SentenceTransformer("all-MiniLM-L6-v2")
@@ -142,7 +144,7 @@ def evaluate_command_similarity(generated: str, expected: str) -> float:
 def main():
     """Runs all tests and generates a final report."""
     print(
-        "\n🚀 Starting STILTS Command Generation Test Suite (Embedding Similarity Mode)..."
+        "\nStarting STILTS Command Generation Test Suite (Embedding Similarity Mode)..."
     )
     results = []
 
@@ -152,12 +154,12 @@ def main():
         results.append({**case, "generated": generated_command, "score": score})
 
     print("\n" + "=" * 80)
-    print("📊 TEST REPORT")
+    print("TEST REPORT")
     print("=" * 80)
 
     low_scoring = [res for res in results if res["score"] < 0.95]
     if low_scoring:
-        print("\n⚠️  CASES WITH SIMILARITY SCORE < 95%:\n")
+        print("\n CASES WITH SIMILARITY SCORE < 95%:\n")
         for res in sorted(low_scoring, key=lambda x: x["score"]):
             print(f"  Score:     {res['score']:.2f}")
             print(f"  Category:  {res['category']}")
@@ -166,7 +168,7 @@ def main():
             print(f"  Generated: `{res['generated']}`\n")
         print("-" * 80)
     else:
-        print("\n✅ All generated commands had a similarity score of 95% or higher!\n")
+        print("\n All generated commands had a similarity score of 95% or higher!\n")
         print("-" * 80)
 
     category_scores = {}
@@ -177,19 +179,23 @@ def main():
         category_scores[cat]["scores"].append(res["score"])
         category_scores[cat]["total"] += 1
 
-    print("\n📈 PERFORMANCE SUMMARY:\n")
+    print("\n PERFORMANCE SUMMARY:\n")
     total_scores = []
+    total_std = []
     for category, data in sorted(category_scores.items()):
         avg_score = (sum(data["scores"]) / data["total"]) * 100
+        std_of_score = np.std(data["scores"])
+        total_std.append(std_of_score)
         total_scores.extend(data["scores"])
         print(
-            f"  - {category:<25} | Cases: {data['total']:<2} | Avg. Similarity: {avg_score:6.2f}%"
+            f"  - {category:<25} | Cases: {data['total']:<2} | Avg. Similarity: ({avg_score:6.2f} ± {std_of_score:.2f}) %"
         )
 
     print("-" * 80)
     overall_avg = (sum(total_scores) / len(total_scores)) * 100
+    overall_std = np.std(total_scores)
     print(
-        f"  OVERALL AVERAGE SIMILARITY:{'':<8} | Cases: {len(total_scores):<2} | Avg. Similarity: {overall_avg:6.2f}%\n"
+        f"  OVERALL AVERAGE SIMILARITY:{'':<8} | Cases: {len(total_scores):<2} | Avg. Similarity: ({overall_avg:6.2f}±{overall_std:6.2f})%\n"
     )
 
 
