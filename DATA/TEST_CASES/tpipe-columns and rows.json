@@ -1,0 +1,164 @@
+[
+    {
+        "category": "tpipe - Row/Column",
+        "prompt": "From catalog.fits, select only the RA, DEC, and MAG_G columns.",
+        "expected": "stilts tpipe in=catalog.fits cmd='keepcols \"RA DEC MAG_G\"'"
+    },
+    {
+        "category": "tpipe - Row/Column",
+        "prompt": "In the file sources.csv, find all rows where the parallax column is greater than 10 and the parallax_error is less than 0.5.",
+        "expected": "stilts tpipe in=sources.csv cmd='select \"parallax > 10 && parallax_error < 0.5\"'"
+    },
+    {
+        "category": "tpipe - Row/Column",
+        "prompt": "Sort the table stars.fits in descending order based on the phot_g_mean_mag column.",
+        "expected": "stilts tpipe in=stars.fits cmd='sortdesc phot_g_mean_mag'"
+    },
+    {
+        "category": "tpipe - Row/Column",
+        "prompt": "Remove any rows from observations.fits where the quality_flag column is not equal to 0.",
+        "expected": "stilts tpipe in=observations.fits cmd='select \"quality_flag == 0\"'"
+    },
+    {
+        "category": "tpipe - Row/Column",
+        "prompt": "Select a random 10% sample of rows from the very large file big_survey.fits.",
+        "expected": "stilts tpipe in=big_survey.fits cmd='every 10'"
+    },
+    {
+        "category": "tpipe - Row/Column",
+        "prompt": "In data.fits, create a new column called g_minus_r that is the difference between the gmag and rmag columns.",
+        "expected": "stilts tpipe in=data.fits cmd='addcol g_minus_r \"gmag - rmag\"' out=data_new_col.fits"
+    },
+    {
+        "category": "tpipe - Row/Column",
+        "prompt": "Calculate the absolute G magnitude for gaia_stars.fits. The new column should be named abs_mag_g. The parallax is in a column named parallax (in milliarcseconds) and the apparent magnitude is in phot_g_mean_mag.",
+        "expected": "stilts tpipe in=gaia_stars.fits cmd='addcol abs_mag_g \"phot_g_mean_mag - 5 * (log10(1000 / parallax) - 1)\"' out=gaia_stars_new_col.fits"
+    },
+    {
+        "category": "tpipe - Row/Column",
+        "prompt": "Convert the RA and DEC columns in my_data.fits, which are in degrees, to Galactic coordinates l and b. Add them as new columns.",
+        "expected": "stilts tpipe in=my_data.fits cmd='addcol l skyToGalacticL(RA,DEC)' cmd='addcol b skyToGalacticB(RA,DEC)' out=my_data_gal_coords.fits"
+    },
+    {
+
+        "category": "tpipe - Row/Column",
+
+        "prompt": "Convert my CSV file named 'input_data.csv' into a FITS file called 'output_data.fits'.",
+        "expected": "stilts tpipe in=input_data.csv ifmt=csv out=output_data.fits ofmt=fits"
+    },
+    {
+        "category": "tpipe - Row/Column",
+
+        "prompt": "From the table 'catalog.fits', I only need the 'RA', 'DEC', and 'MAG_G' columns. Save the result as 'subset.fits'.",
+        "expected": "stilts tpipe in=catalog.fits cmd='keepcols \"RA DEC MAG_G\"' out=subset.fits"
+    },
+    {
+        "category": "tpipe - Row/Column",
+
+        "prompt": "Calculate the summary statistics for all columns in 'survey_data.vot'.",
+        "expected": "stilts tpipe in=survey_data.vot omode=stats"
+    },
+    {
+        "category": "tpipe - Row/Column",
+
+        "prompt": "In 'stars.fits', create a new column called 'B_MINUS_V' that is the difference between the 'B_MAG' and 'V_MAG' columns.",
+        "expected": "stilts tpipe in=stars.fits cmd='addcol B_MINUS_V \"(B_MAG - V_MAG)\"' out=stars_with_color.fits"
+    },
+    {
+        "category": "tpipe - Row/Column",
+
+        "prompt": "Filter the table 'galaxies.csv' to only include rows where the 'REDSHIFT' column is greater than 0.5.",
+        "expected": "stilts tpipe in=galaxies.csv ifmt=csv cmd='select \"REDSHIFT > 0.5\"' out=high_z_galaxies.csv"
+    },
+    {
+        "category": "tpipe - Row/Column",
+
+        "prompt": "Count the total number of rows in the table located at 'http://archive.org/data/some_table.vot'.",
+        "expected": "stilts tpipe in=http://archive.org/data/some_table.vot omode=count"
+    },
+    {
+        "category": "tpipe - Row/Column",
+
+        "prompt": "From 'full_survey.fits', find the 20 brightest objects based on the 'FLUX_I' column and save them to 'top20.fits'. The brightest objects have the largest flux values.",
+        "expected": "stilts tpipe in=full_survey.fits cmd='sorthead -down 20 FLUX_I' out=top20.fits"
+    },
+    {
+        "category": "tpipe - Row/Column",
+
+        "prompt": "I have a file 'observations.fits'. Remove the 'NOTES' and 'OBSERVER' columns and then sort the remaining data by the 'MJD' column in ascending order.",
+        "expected": "stilts tpipe in=observations.fits cmd='delcols \"NOTES OBSERVER\"' cmd='sort MJD' out=cleaned_observations.fits"
+    },
+    {
+        "category": "tpipe - Row/Column",
+
+        "prompt": "In my table 'data.fits', the 'QUALITY' column uses -999 for bad values. Replace all -999s in that column with a blank value.",
+        "expected": "stilts tpipe in=data.fits cmd='replaceval -999 \"\" QUALITY' out=data_clean.fits"
+    },
+    {
+        "category": "tpipe - Row/Column",
+
+        "prompt": "Select all objects from 'catalog.fits' where 'MAG_R' is less than 19.5 and the 'CLASS' is equal to 1.",
+        "expected": "stilts tpipe in=catalog.fits cmd='select \"MAG_R < 19.5 && CLASS == 1\"' out=filtered_objects.fits"
+    },
+    {
+        "category": "tpipe - Row/Column",
+
+        "prompt": "Show me just the metadata (column names, UCDs, etc.) for the table 'remote_data.fits.gz'.",
+        "expected": "stilts tpipe in=remote_data.fits.gz omode=meta"
+    },
+    {
+        "category": "tpipe - Row/Column",
+
+        "prompt": "Take 'big_table.fits' and create a smaller sample by selecting every 500th row. Output the result to 'sampled_table.fits'.",
+        "expected": "stilts tpipe in=big_table.fits cmd='every 500' out=sampled_table.fits"
+    },
+    {
+        "category": "tpipe - Row/Column",
+
+        "prompt": "In 'source_list.fits', convert the columns 'RA_H' 'RA_M' 'RA_S' and 'DEC_D' 'DEC_M' 'DEC_S' to new decimal degree columns called 'RA_DEG' and 'DEC_DEG'.",
+        "expected": "stilts tpipe in=source_list.fits cmd='addcol RA_DEG \"hmsToDegrees(RA_H, RA_M, RA_S)\"' cmd='addcol DEC_DEG \"dmsToDegrees(DEC_D, DEC_M, DEC_S)\"' out=source_list_deg.fits"
+    },
+    {
+        "category": "tpipe - Row/Column",
+
+        "prompt": "My table 'events.csv' has a string column 'EVENT_ID'. I need to convert it to an integer in a new column called 'EVENT_NUM'.",
+        "expected": "stilts tpipe in=events.csv ifmt=csv cmd='addcol EVENT_NUM \"parseInt(EVENT_ID)\"' out=events_numeric.csv"
+    },
+    {
+        "category": "tpipe - Row/Column",
+
+        "prompt": "From the table 'detections.fits', I want to keep only the rows with a unique 'SOURCE_ID'. If there are duplicates, just keep the first one.",
+        "expected": "stilts tpipe in=detections.fits cmd='uniq SOURCE_ID' out=unique_detections.fits"
+    },
+    {
+        "category": "tpipe - Row/Column",
+
+        "prompt": "Take the last 100 rows from the table 'log.dat' and write them to a new file 'latest_log.dat'.",
+        
+        "expected": "stilts tpipe in=log.dat ifmt=ascii cmd='tail 100' out=latest_log.dat"
+    },
+    {
+        "category": "tpipe - Row/Column",
+
+        "prompt": "In 'data.fits', create a new string column called 'CATEGORY' which is 'Bright' if 'MAG' < 15, 'Faint' if 'MAG' >= 15 and 'MAG' < 20, and 'VeryFaint' otherwise.",
+        "expected": "stilts tpipe in=data.fits cmd='addcol CATEGORY \"MAG < 15 ? \\\"Bright\\\" : (MAG < 20 ? \\\"Faint\\\" : \\\"VeryFaint\\\")\"' out=data_categorized.fits"
+    },
+    {
+        "category": "tpipe - Row/Column",
+
+        "prompt": "Convert the 'STATUS_FLAG' integer column in 'telemetry.fits' to its hexadecimal representation in a new column called 'STATUS_HEX'.",
+        "expected": "stilts tpipe in=telemetry.fits cmd='addcol STATUS_HEX \"toHex(STATUS_FLAG)\"' out=telemetry_hex.fits"
+    },
+    {
+        "category": "tpipe - Row/Column",
+
+        "prompt": "I want a random sample of approximately 1000 rows from 'massive_catalog.fits'.",
+        "expected": "stilts tpipe in=massive_catalog.fits cmd='random 1000' out=random_sample.fits"
+    },
+    {
+        "category": "tpipe - Row/Column",
+
+        "prompt": "For the table 'sky_coords.fits' with columns 'RA' and 'DEC' in degrees, add new columns 'GAL_LON' and 'GAL_LAT' with the corresponding galactic coordinates.",
+        "expected": "stilts tpipe in=sky_coords.fits cmd='addskycoords fk5 gal RA DEC GAL_LON GAL_LAT' out=sky_coords_galactic.fits"
+    }
+]

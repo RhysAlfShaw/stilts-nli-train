@@ -1,0 +1,12 @@
+[
+    {
+        "category": "tcopy",
+        "prompt": "Convert my_table.csv to a FITS file called my_table.fits.",
+        "expected": "stilts tcopy in=my_table.csv out=my_table.fits"
+    },
+    {
+        "category": "tcopy",
+        "prompt": "Convert my fits file into a parquet. The file is called `large_data.fits`.",
+        "expected": "stilts tcopy in=large_data.fits out=large_data.parquet"
+    }
+]

@@ -1,0 +1,1184 @@
+[
+    {
+        "prompt": " Concatenate 2 VOTABLE tables, applying input command `keepcols \"RA DEC FLUX\"`, then applying output command `sort FLUX`, using lazy evaluation, adding a location column, and outputting in count mode.",
+        "response": "stilts tcat ifmt=votable in='input1.votable input2.votable' icmd='keepcols \"RA DEC FLUX\"' ocmd='sort FLUX' omode=count out=output.txt lazy=true loccol=SRC0",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 3 CSV tables, applying input command `keepcols \"RA DEC FLUX\"`, then applying output command `sort FLUX`, adding a location column, and outputting in stats mode.",
+        "response": "stilts tcat ifmt=csv in='input1.csv input2.csv input3.csv' icmd='keepcols \"RA DEC FLUX\"' ocmd='sort FLUX' omode=stats out=output.txt loccol=SRC1",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 3 FITS tables, applying input command `addcol SNR 'FLUX/ERR'`, then applying output command `uniq`, with row counting enabled, reading as a stream, and outputting in stats mode.",
+        "response": "stilts tcat ifmt=fits in='input1.fits input2.fits input3.fits' icmd='addcol SNR 'FLUX/ERR'' ocmd='uniq' omode=stats out=output.txt countrows=true istream=true",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 4 ASCII tables, applying input command `keepcols \"RA DEC FLUX\"`, adding a location column, and outputting in gui mode.",
+        "response": "stilts tcat ifmt=ascii in='input1.ascii input2.ascii input3.ascii input4.ascii' icmd='keepcols \"RA DEC FLUX\"' omode=gui out=output.txt loccol=SRC3",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 3 ASCII tables, applying input command `keepcols \"RA DEC FLUX\"`, and outputting in meta mode.",
+        "response": "stilts tcat ifmt=ascii in='input1.ascii input2.ascii input3.ascii' icmd='keepcols \"RA DEC FLUX\"' omode=meta out=output.txt",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 3 CSV tables, applying input command `sorthead 10 FLUX`, then applying output command `uniq`, using lazy evaluation, adding a unique location column, and outputting in stats mode.",
+        "response": "stilts tcat ifmt=csv in='input1.csv input2.csv input3.csv' icmd='sorthead 10 FLUX' ocmd='uniq' omode=stats out=output.txt lazy=true uloccol=UID5",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 3 CSV tables, applying input command `addcol SNR 'FLUX/ERR'`, then applying output command `sort FLUX`, adding a unique location column, and writing to an output file.",
+        "response": "stilts tcat ifmt=csv in='input1.csv input2.csv input3.csv' icmd='addcol SNR 'FLUX/ERR'' ocmd='sort FLUX' out=output.csv uloccol=UID6",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Concatenate 2 FITS tables, applying input command `sorthead 10 FLUX`, adding a sequence column, and outputting in tosql mode.",
+        "response": "stilts tcat ifmt=fits in='input1.fits input2.fits' icmd='sorthead 10 FLUX' omode=tosql out=output.txt seqcol=SEQ7",
+        "chat.jar": "failed",
+        "error": "Error: Bad value for parameter protocol: null value not allowed\nUsage: protocol=<jdbc-protocol>\n\n"
+    },
+    {
+        "prompt": "Concatenate 3 VOTABLE tables, applying input command `keepcols \"RA DEC FLUX\"`, and outputting in checksum mode.",
+        "response": "stilts tcat ifmt=votable in='input1.votable input2.votable input3.votable' icmd='keepcols \"RA DEC FLUX\"' omode=checksum out=output.txt",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 2 CSV tables, applying input command `keepcols \"RA DEC FLUX\"`, then applying output command `uniq`, including all tables from each file, and outputting in checksum mode.",
+        "response": "stilts tcat ifmt=csv in='input1.csv input2.csv' icmd='keepcols \"RA DEC FLUX\"' ocmd='uniq' omode=checksum out=output.txt multi=true",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"input1.csv\"\n"
+    },
+    {
+        "prompt": "Concatenate 3 FITS tables, applying input command `keepcols \"RA DEC FLUX\"`, including all tables from each file, with row counting enabled, adding a location column, and outputting in topcat mode.",
+        "response": "stilts tcat ifmt=fits in='input1.fits input2.fits input3.fits' icmd='keepcols \"RA DEC FLUX\"' omode=topcat out=output.txt multi=true countrows=true loccol=SRC10",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"input1.fits\"\n"
+    },
+    {
+        "prompt": "Concatenate 2 VOTABLE tables, applying input command `keepcols \"RA DEC FLUX\"`, then applying output command `uniq`, including all tables from each file, with row counting enabled, adding a sequence column, and outputting in gui mode.",
+        "response": "stilts tcat ifmt=votable in='input1.votable input2.votable' icmd='keepcols \"RA DEC FLUX\"' ocmd='uniq' omode=gui out=output.txt multi=true countrows=true seqcol=SEQ11",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"input1.votable\"\n"
+    },
+    {
+        "prompt": "Concatenate 4 ASCII tables, applying input command `progress`, using lazy evaluation, adding a sequence column, adding a unique location column, and outputting in stats mode.",
+        "response": "stilts tcat ifmt=ascii in='input1.ascii input2.ascii input3.ascii input4.ascii' icmd='progress' omode=stats out=output.txt lazy=true seqcol=SEQ12 uloccol=UID12",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 3 CSV tables, applying input command `sorthead 10 FLUX`, then applying output command `head 100`, with row counting enabled, and outputting in topcat mode.",
+        "response": "stilts tcat ifmt=csv in='input1.csv input2.csv input3.csv' icmd='sorthead 10 FLUX' ocmd='head 100' omode=topcat out=output.txt countrows=true",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 3 VOTABLE tables, then applying output command `uniq`, adding a unique location column, and outputting in discard mode.",
+        "response": "stilts tcat ifmt=votable in='input1.votable input2.votable input3.votable' ocmd='uniq' omode=discard out=output.txt uloccol=UID14",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 4 VOTABLE tables, applying input command `addcol SNR 'FLUX/ERR'`, then applying output command `sort FLUX`, and outputting in discard mode.",
+        "response": "stilts tcat ifmt=votable in='input1.votable input2.votable input3.votable input4.votable' icmd='addcol SNR 'FLUX/ERR'' ocmd='sort FLUX' omode=discard out=output.txt",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 3 CSV tables, applying input command `keepcols \"RA DEC FLUX\"`, then applying output command `sort FLUX`, and outputting in checksum mode.",
+        "response": "stilts tcat ifmt=csv in='input1.csv input2.csv input3.csv' icmd='keepcols \"RA DEC FLUX\"' ocmd='sort FLUX' omode=checksum out=output.txt",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 4 VOTABLE tables, applying input command `addcol SNR 'FLUX/ERR'`, then applying output command `sort FLUX`, and outputting in meta mode.",
+        "response": "stilts tcat ifmt=votable in='input1.votable input2.votable input3.votable input4.votable' icmd='addcol SNR 'FLUX/ERR'' ocmd='sort FLUX' omode=meta out=output.txt",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 4 FITS tables, applying input command `keepcols \"RA DEC FLUX\"`, then applying output command `shuffle`, adding a unique location column, and outputting in discard mode.",
+        "response": "stilts tcat ifmt=fits in='input1.fits input2.fits input3.fits input4.fits' icmd='keepcols \"RA DEC FLUX\"' ocmd='shuffle' omode=discard out=output.txt uloccol=UID18",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 4 ASCII tables, applying input command `addcol SNR 'FLUX/ERR'`, then applying output command `sort FLUX`, including all tables from each file, and outputting in topcat mode.",
+        "response": "stilts tcat ifmt=ascii in='input1.ascii input2.ascii input3.ascii input4.ascii' icmd='addcol SNR 'FLUX/ERR'' ocmd='sort FLUX' omode=topcat out=output.txt multi=true",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"input1.ascii\"\n"
+    },
+    {
+        "prompt": "Concatenate 3 VOTABLE tables, applying input command `keepcols \"RA DEC FLUX\"`, then applying output command `head 100`, with row counting enabled, reading as a stream, and outputting in topcat mode.",
+        "response": "stilts tcat ifmt=votable in='input1.votable input2.votable input3.votable' icmd='keepcols \"RA DEC FLUX\"' ocmd='head 100' omode=topcat out=output.txt countrows=true istream=true",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 3 ASCII tables, applying input command `sorthead 10 FLUX`, then applying output command `shuffle`, and outputting in stats mode.",
+        "response": "stilts tcat ifmt=ascii in='input1.ascii input2.ascii input3.ascii' icmd='sorthead 10 FLUX' ocmd='shuffle' omode=stats out=output.txt",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 3 ASCII tables, applying input command `progress`, then applying output command `shuffle`, using lazy evaluation, with row counting enabled, reading as a stream, adding a unique location column, and outputting in checksum mode.",
+        "response": "stilts tcat ifmt=ascii in='input1.ascii input2.ascii input3.ascii' icmd='progress' ocmd='shuffle' omode=checksum out=output.txt lazy=true countrows=true istream=true uloccol=UID22",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 3 CSV tables, applying input command `keepcols \"RA DEC FLUX\"`, then applying output command `head 100`, including all tables from each file, adding a unique location column, and writing to an output file.",
+        "response": "stilts tcat ifmt=csv in='input1.csv input2.csv input3.csv' icmd='keepcols \"RA DEC FLUX\"' ocmd='head 100' out=output.csv multi=true uloccol=UID23",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"input1.csv\"\n"
+    },
+    {
+        "prompt": "Concatenate 4 VOTABLE tables, applying input command `keepcols \"RA DEC FLUX\"`, then applying output command `sort FLUX`, using lazy evaluation, and writing to an output file.",
+        "response": "stilts tcat ifmt=votable in='input1.votable input2.votable input3.votable input4.votable' icmd='keepcols \"RA DEC FLUX\"' ocmd='sort FLUX' out=output.votable lazy=true",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Concatenate 2 FITS tables, applying input command `progress`, then applying output command `head 100`, and outputting in topcat mode.",
+        "response": "stilts tcat ifmt=fits in='input1.fits input2.fits' icmd='progress' ocmd='head 100' omode=topcat out=output.txt",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 3 VOTABLE tables, and outputting in count mode.",
+        "response": "stilts tcat ifmt=votable in='input1.votable input2.votable input3.votable' omode=count out=output.txt",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 3 FITS tables, then applying output command `uniq`, including all tables from each file, and outputting in tosql mode.",
+        "response": "stilts tcat ifmt=fits in='input1.fits input2.fits input3.fits' ocmd='uniq' omode=tosql out=output.txt multi=true",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"input1.fits\"\n"
+    },
+    {
+        "prompt": "Concatenate 3 CSV tables, applying input command `keepcols \"RA DEC FLUX\"`, then applying output command `uniq`, including all tables from each file, reading as a stream, and writing to an output file.",
+        "response": "stilts tcat ifmt=csv in='input1.csv input2.csv input3.csv' icmd='keepcols \"RA DEC FLUX\"' ocmd='uniq' out=output.csv multi=true istream=true",
+        "chat.jar": "failed",
+        "error": "WARNING: Can't currently stream multiple tables (would need MultiTableBuilder.streamTables method)\nError: No file, URL or command \"input1.csv\"\n"
+    },
+    {
+        "prompt": "Concatenate 3 FITS tables, then applying output command `shuffle`, using lazy evaluation, adding a location column, adding a unique location column, and outputting in count mode.",
+        "response": "stilts tcat ifmt=fits in='input1.fits input2.fits input3.fits' ocmd='shuffle' omode=count out=output.txt lazy=true loccol=SRC29 uloccol=UID29",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 4 ASCII tables, then applying output command `shuffle`, adding a unique location column, and outputting in gui mode.",
+        "response": "stilts tcat ifmt=ascii in='input1.ascii input2.ascii input3.ascii input4.ascii' ocmd='shuffle' omode=gui out=output.txt uloccol=UID30",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 3 ASCII tables, applying input command `addcol SNR 'FLUX/ERR'`, then applying output command `uniq`, with row counting enabled, adding a location column, adding a unique location column, and outputting in gui mode.",
+        "response": "stilts tcat ifmt=ascii in='input1.ascii input2.ascii input3.ascii' icmd='addcol SNR 'FLUX/ERR'' ocmd='uniq' omode=gui out=output.txt countrows=true loccol=SRC31 uloccol=UID31",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 2 VOTABLE tables, applying input command `sorthead 10 FLUX`, then applying output command `uniq`, and writing to an output file.",
+        "response": "stilts tcat ifmt=votable in='input1.votable input2.votable' icmd='sorthead 10 FLUX' ocmd='uniq' out=output.votable",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Concatenate 3 VOTABLE tables, applying input command `progress`, using lazy evaluation, and outputting in discard mode.",
+        "response": "stilts tcat ifmt=votable in='input1.votable input2.votable input3.votable' icmd='progress' omode=discard out=output.txt lazy=true",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 3 CSV tables, applying input command `sorthead 10 FLUX`, adding a sequence column, adding a location column, and outputting in checksum mode.",
+        "response": "stilts tcat ifmt=csv in='input1.csv input2.csv input3.csv' icmd='sorthead 10 FLUX' omode=checksum out=output.txt seqcol=SEQ34 loccol=SRC34",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 4 VOTABLE tables, applying input command `progress`, then applying output command `uniq`, and outputting in checksum mode.",
+        "response": "stilts tcat ifmt=votable in='input1.votable input2.votable input3.votable input4.votable' icmd='progress' ocmd='uniq' omode=checksum out=output.txt",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 2 FITS tables, applying input command `progress`, then applying output command `uniq`, and writing to an output file.",
+        "response": "stilts tcat ifmt=fits in='input1.fits input2.fits' icmd='progress' ocmd='uniq' out=output.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Concatenate 3 VOTABLE tables, applying input command `sorthead 10 FLUX`, and outputting in tosql mode.",
+        "response": "stilts tcat ifmt=votable in='input1.votable input2.votable input3.votable' icmd='sorthead 10 FLUX' omode=tosql out=output.txt",
+        "chat.jar": "failed",
+        "error": "Error: Bad value for parameter protocol: null value not allowed\nUsage: protocol=<jdbc-protocol>\n\n"
+    },
+    {
+        "prompt": "Concatenate 2 FITS tables, applying input command `addcol SNR 'FLUX/ERR'`, then applying output command `uniq`, including all tables from each file, with row counting enabled, adding a sequence column, and outputting in tosql mode.",
+        "response": "stilts tcat ifmt=fits in='input1.fits input2.fits' icmd='addcol SNR 'FLUX/ERR'' ocmd='uniq' omode=tosql out=output.txt multi=true countrows=true seqcol=SEQ38",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"input1.fits\"\n"
+    },
+    {
+        "prompt": "Concatenate 3 ASCII tables, applying input command `addcol SNR 'FLUX/ERR'`, then applying output command `shuffle`, adding a unique location column, and outputting in stats mode.",
+        "response": "stilts tcat ifmt=ascii in='input1.ascii input2.ascii input3.ascii' icmd='addcol SNR 'FLUX/ERR'' ocmd='shuffle' omode=stats out=output.txt uloccol=UID39",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 3 FITS tables, applying input command `addcol SNR 'FLUX/ERR'`, then applying output command `shuffle`, and writing to an output file.",
+        "response": "stilts tcat ifmt=fits in='input1.fits input2.fits input3.fits' icmd='addcol SNR 'FLUX/ERR'' ocmd='shuffle' out=output.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Concatenate 3 VOTABLE tables, applying input command `keepcols \"RA DEC FLUX\"`, then applying output command `shuffle`, using lazy evaluation, with row counting enabled, and outputting in stats mode.",
+        "response": "stilts tcat ifmt=votable in='input1.votable input2.votable input3.votable' icmd='keepcols \"RA DEC FLUX\"' ocmd='shuffle' omode=stats out=output.txt lazy=true countrows=true",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 3 VOTABLE tables, applying input command `sorthead 10 FLUX`, then applying output command `shuffle`, including all tables from each file, adding a location column, adding a unique location column, and outputting in count mode.",
+        "response": "stilts tcat ifmt=votable in='input1.votable input2.votable input3.votable' icmd='sorthead 10 FLUX' ocmd='shuffle' omode=count out=output.txt multi=true loccol=SRC42 uloccol=UID42",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"input1.votable\"\n"
+    },
+    {
+        "prompt": "Concatenate 4 CSV tables, applying input command `progress`, then applying output command `head 100`, including all tables from each file, using lazy evaluation, and writing to an output file.",
+        "response": "stilts tcat ifmt=csv in='input1.csv input2.csv input3.csv input4.csv' icmd='progress' ocmd='head 100' out=output.csv multi=true lazy=true",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"input1.csv\"\n"
+    },
+    {
+        "prompt": "Concatenate 2 CSV tables, applying input command `addcol SNR 'FLUX/ERR'`, then applying output command `uniq`, reading as a stream, adding a sequence column, adding a unique location column, and outputting in meta mode.",
+        "response": "stilts tcat ifmt=csv in='input1.csv input2.csv' icmd='addcol SNR 'FLUX/ERR'' ocmd='uniq' omode=meta out=output.txt istream=true seqcol=SEQ44 uloccol=UID44",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 2 ASCII tables, applying input command `progress`, then applying output command `head 100`, and outputting in stats mode.",
+        "response": "stilts tcat ifmt=ascii in='input1.ascii input2.ascii' icmd='progress' ocmd='head 100' omode=stats out=output.txt",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 2 ASCII tables, applying input command `sorthead 10 FLUX`, then applying output command `shuffle`, adding a unique location column, and outputting in tosql mode.",
+        "response": "stilts tcat ifmt=ascii in='input1.ascii input2.ascii' icmd='sorthead 10 FLUX' ocmd='shuffle' omode=tosql out=output.txt uloccol=UID46",
+        "chat.jar": "failed",
+        "error": "Error: Bad value for parameter protocol: null value not allowed\nUsage: protocol=<jdbc-protocol>\n\n"
+    },
+    {
+        "prompt": "Concatenate 3 CSV tables, applying input command `sorthead 10 FLUX`, then applying output command `shuffle`, and outputting in meta mode.",
+        "response": "stilts tcat ifmt=csv in='input1.csv input2.csv input3.csv' icmd='sorthead 10 FLUX' ocmd='shuffle' omode=meta out=output.txt",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 2 VOTABLE tables, applying input command `progress`, then applying output command `uniq`, using lazy evaluation, and writing to an output file.",
+        "response": "stilts tcat ifmt=votable in='input1.votable input2.votable' icmd='progress' ocmd='uniq' out=output.votable lazy=true",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Concatenate 4 FITS tables, applying input command `progress`, using lazy evaluation, adding a unique location column, and outputting in topcat mode.",
+        "response": "stilts tcat ifmt=fits in='input1.fits input2.fits input3.fits input4.fits' icmd='progress' omode=topcat out=output.txt lazy=true uloccol=UID49",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 3 VOTABLE tables, then applying output command `head 100`, including all tables from each file, using lazy evaluation, and outputting in count mode.",
+        "response": "stilts tcat ifmt=votable in='input1.votable input2.votable input3.votable' ocmd='head 100' omode=count out=output.txt multi=true lazy=true",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"input1.votable\"\n"
+    },
+    {
+        "prompt": "Concatenate 4 ASCII tables, applying input command `progress`, then applying output command `shuffle`, including all tables from each file, and outputting in gui mode.",
+        "response": "stilts tcat ifmt=ascii in='input1.ascii input2.ascii input3.ascii input4.ascii' icmd='progress' ocmd='shuffle' omode=gui out=output.txt multi=true",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"input1.ascii\"\n"
+    },
+    {
+        "prompt": "Concatenate 2 CSV tables, applying input command `sorthead 10 FLUX`, then applying output command `head 100`, with row counting enabled, adding a location column, and outputting in topcat mode.",
+        "response": "stilts tcat ifmt=csv in='input1.csv input2.csv' icmd='sorthead 10 FLUX' ocmd='head 100' omode=topcat out=output.txt countrows=true loccol=SRC52",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 4 CSV tables, applying input command `addcol SNR 'FLUX/ERR'`, then applying output command `sort FLUX`, with row counting enabled, and writing to an output file.",
+        "response": "stilts tcat ifmt=csv in='input1.csv input2.csv input3.csv input4.csv' icmd='addcol SNR 'FLUX/ERR'' ocmd='sort FLUX' out=output.csv countrows=true",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Concatenate 3 VOTABLE tables, applying input command `keepcols \"RA DEC FLUX\"`, with row counting enabled, adding a location column, adding a unique location column, and writing to an output file.",
+        "response": "stilts tcat ifmt=votable in='input1.votable input2.votable input3.votable' icmd='keepcols \"RA DEC FLUX\"' out=output.votable countrows=true loccol=SRC54 uloccol=UID54",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Concatenate 3 ASCII tables, applying input command `addcol SNR 'FLUX/ERR'`, then applying output command `head 100`, and outputting in topcat mode.",
+        "response": "stilts tcat ifmt=ascii in='input1.ascii input2.ascii input3.ascii' icmd='addcol SNR 'FLUX/ERR'' ocmd='head 100' omode=topcat out=output.txt",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 4 FITS tables, adding a sequence column, and outputting in tosql mode.",
+        "response": "stilts tcat ifmt=fits in='input1.fits input2.fits input3.fits input4.fits' omode=tosql out=output.txt seqcol=SEQ56",
+        "chat.jar": "failed",
+        "error": "Error: Bad value for parameter protocol: null value not allowed\nUsage: protocol=<jdbc-protocol>\n\n"
+    },
+    {
+        "prompt": "Concatenate 3 ASCII tables, applying input command `keepcols \"RA DEC FLUX\"`, including all tables from each file, reading as a stream, and writing to an output file.",
+        "response": "stilts tcat ifmt=ascii in='input1.ascii input2.ascii input3.ascii' icmd='keepcols \"RA DEC FLUX\"' out=output.ascii multi=true istream=true",
+        "chat.jar": "failed",
+        "error": "WARNING: Can't currently stream multiple tables (would need MultiTableBuilder.streamTables method)\nError: No file, URL or command \"input1.ascii\"\n"
+    },
+    {
+        "prompt": "Concatenate 4 CSV tables, applying input command `progress`, including all tables from each file, adding a unique location column, and outputting in tosql mode.",
+        "response": "stilts tcat ifmt=csv in='input1.csv input2.csv input3.csv input4.csv' icmd='progress' omode=tosql out=output.txt multi=true uloccol=UID58",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"input1.csv\"\n"
+    },
+    {
+        "prompt": "Concatenate 2 CSV tables, then applying output command `shuffle`, adding a location column, adding a unique location column, and outputting in tosql mode.",
+        "response": "stilts tcat ifmt=csv in='input1.csv input2.csv' ocmd='shuffle' omode=tosql out=output.txt loccol=SRC59 uloccol=UID59",
+        "chat.jar": "failed",
+        "error": "Error: Bad value for parameter protocol: null value not allowed\nUsage: protocol=<jdbc-protocol>\n\n"
+    },
+    {
+        "prompt": "Concatenate 2 VOTABLE tables, applying input command `sorthead 10 FLUX`, then applying output command `uniq`, adding a location column, and outputting in topcat mode.",
+        "response": "stilts tcat ifmt=votable in='input1.votable input2.votable' icmd='sorthead 10 FLUX' ocmd='uniq' omode=topcat out=output.txt loccol=SRC60",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 3 ASCII tables, applying input command `keepcols \"RA DEC FLUX\"`, then applying output command `uniq`, adding a unique location column, and outputting in gui mode.",
+        "response": "stilts tcat ifmt=ascii in='input1.ascii input2.ascii input3.ascii' icmd='keepcols \"RA DEC FLUX\"' ocmd='uniq' omode=gui out=output.txt uloccol=UID61",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 4 CSV tables, applying input command `keepcols \"RA DEC FLUX\"`, then applying output command `sort FLUX`, including all tables from each file, adding a location column, and outputting in topcat mode.",
+        "response": "stilts tcat ifmt=csv in='input1.csv input2.csv input3.csv input4.csv' icmd='keepcols \"RA DEC FLUX\"' ocmd='sort FLUX' omode=topcat out=output.txt multi=true loccol=SRC62",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"input1.csv\"\n"
+    },
+    {
+        "prompt": "Concatenate 4 ASCII tables, applying input command `progress`, then applying output command `head 100`, using lazy evaluation, and outputting in stats mode.",
+        "response": "stilts tcat ifmt=ascii in='input1.ascii input2.ascii input3.ascii input4.ascii' icmd='progress' ocmd='head 100' omode=stats out=output.txt lazy=true",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 4 ASCII tables, applying input command `progress`, then applying output command `head 100`, with row counting enabled, adding a unique location column, and outputting in stats mode.",
+        "response": "stilts tcat ifmt=ascii in='input1.ascii input2.ascii input3.ascii input4.ascii' icmd='progress' ocmd='head 100' omode=stats out=output.txt countrows=true uloccol=UID64",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 4 FITS tables, applying input command `addcol SNR 'FLUX/ERR'`, then applying output command `sort FLUX`, using lazy evaluation, and outputting in stats mode.",
+        "response": "stilts tcat ifmt=fits in='input1.fits input2.fits input3.fits input4.fits' icmd='addcol SNR 'FLUX/ERR'' ocmd='sort FLUX' omode=stats out=output.txt lazy=true",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 4 VOTABLE tables, applying input command `keepcols \"RA DEC FLUX\"`, then applying output command `sort FLUX`, including all tables from each file, adding a location column, and outputting in topcat mode.",
+        "response": "stilts tcat ifmt=votable in='input1.votable input2.votable input3.votable input4.votable' icmd='keepcols \"RA DEC FLUX\"' ocmd='sort FLUX' omode=topcat out=output.txt multi=true loccol=SRC66",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"input1.votable\"\n"
+    },
+    {
+        "prompt": "Concatenate 4 VOTABLE tables, applying input command `progress`, including all tables from each file, reading as a stream, adding a location column, and outputting in count mode.",
+        "response": "stilts tcat ifmt=votable in='input1.votable input2.votable input3.votable input4.votable' icmd='progress' omode=count out=output.txt multi=true istream=true loccol=SRC67",
+        "chat.jar": "failed",
+        "error": "WARNING: Can't currently stream multiple tables (would need MultiTableBuilder.streamTables method)\nError: No file, URL or command \"input1.votable\"\n"
+    },
+    {
+        "prompt": "Concatenate 4 VOTABLE tables, applying input command `keepcols \"RA DEC FLUX\"`, then applying output command `uniq`, using lazy evaluation, adding a location column, and outputting in topcat mode.",
+        "response": "stilts tcat ifmt=votable in='input1.votable input2.votable input3.votable input4.votable' icmd='keepcols \"RA DEC FLUX\"' ocmd='uniq' omode=topcat out=output.txt lazy=true loccol=SRC68",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 2 CSV tables, applying input command `addcol SNR 'FLUX/ERR'`, reading as a stream, and writing to an output file.",
+        "response": "stilts tcat ifmt=csv in='input1.csv input2.csv' icmd='addcol SNR 'FLUX/ERR'' out=output.csv istream=true",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Concatenate 2 ASCII tables, applying input command `keepcols \"RA DEC FLUX\"`, then applying output command `shuffle`, reading as a stream, adding a sequence column, and outputting in meta mode.",
+        "response": "stilts tcat ifmt=ascii in='input1.ascii input2.ascii' icmd='keepcols \"RA DEC FLUX\"' ocmd='shuffle' omode=meta out=output.txt istream=true seqcol=SEQ70",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 4 ASCII tables, applying input command `sorthead 10 FLUX`, then applying output command `uniq`, and outputting in checksum mode.",
+        "response": "stilts tcat ifmt=ascii in='input1.ascii input2.ascii input3.ascii input4.ascii' icmd='sorthead 10 FLUX' ocmd='uniq' omode=checksum out=output.txt",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 3 VOTABLE tables, applying input command `progress`, then applying output command `head 100`, adding a sequence column, and outputting in checksum mode.",
+        "response": "stilts tcat ifmt=votable in='input1.votable input2.votable input3.votable' icmd='progress' ocmd='head 100' omode=checksum out=output.txt seqcol=SEQ72",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 4 CSV tables, then applying output command `shuffle`, with row counting enabled, and outputting in topcat mode.",
+        "response": "stilts tcat ifmt=csv in='input1.csv input2.csv input3.csv input4.csv' ocmd='shuffle' omode=topcat out=output.txt countrows=true",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 4 ASCII tables, applying input command `progress`, then applying output command `sort FLUX`, adding a unique location column, and outputting in tosql mode.",
+        "response": "stilts tcat ifmt=ascii in='input1.ascii input2.ascii input3.ascii input4.ascii' icmd='progress' ocmd='sort FLUX' omode=tosql out=output.txt uloccol=UID74",
+        "chat.jar": "failed",
+        "error": "Error: Bad value for parameter protocol: null value not allowed\nUsage: protocol=<jdbc-protocol>\n\n"
+    },
+    {
+        "prompt": "Concatenate 3 CSV tables, applying input command `progress`, reading as a stream, and outputting in topcat mode.",
+        "response": "stilts tcat ifmt=csv in='input1.csv input2.csv input3.csv' icmd='progress' omode=topcat out=output.txt istream=true",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 3 ASCII tables, applying input command `addcol SNR 'FLUX/ERR'`, then applying output command `sort FLUX`, using lazy evaluation, and outputting in discard mode.",
+        "response": "stilts tcat ifmt=ascii in='input1.ascii input2.ascii input3.ascii' icmd='addcol SNR 'FLUX/ERR'' ocmd='sort FLUX' omode=discard out=output.txt lazy=true",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 2 VOTABLE tables, then applying output command `shuffle`, using lazy evaluation, adding a unique location column, and outputting in checksum mode.",
+        "response": "stilts tcat ifmt=votable in='input1.votable input2.votable' ocmd='shuffle' omode=checksum out=output.txt lazy=true uloccol=UID77",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 2 VOTABLE tables, applying input command `addcol SNR 'FLUX/ERR'`, then applying output command `shuffle`, adding a sequence column, and writing to an output file.",
+        "response": "stilts tcat ifmt=votable in='input1.votable input2.votable' icmd='addcol SNR 'FLUX/ERR'' ocmd='shuffle' out=output.votable seqcol=SEQ78",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Concatenate 4 CSV tables, then applying output command `head 100`, adding a location column, and outputting in meta mode.",
+        "response": "stilts tcat ifmt=csv in='input1.csv input2.csv input3.csv input4.csv' ocmd='head 100' omode=meta out=output.txt loccol=SRC79",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 4 VOTABLE tables, applying input command `keepcols \"RA DEC FLUX\"`, then applying output command `uniq`, using lazy evaluation, adding a sequence column, and outputting in discard mode.",
+        "response": "stilts tcat ifmt=votable in='input1.votable input2.votable input3.votable input4.votable' icmd='keepcols \"RA DEC FLUX\"' ocmd='uniq' omode=discard out=output.txt lazy=true seqcol=SEQ80",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 4 ASCII tables, then applying output command `uniq`, using lazy evaluation, and outputting in count mode.",
+        "response": "stilts tcat ifmt=ascii in='input1.ascii input2.ascii input3.ascii input4.ascii' ocmd='uniq' omode=count out=output.txt lazy=true",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 4 VOTABLE tables, applying input command `progress`, then applying output command `shuffle`, including all tables from each file, using lazy evaluation, with row counting enabled, adding a sequence column, adding a location column, and outputting in meta mode.",
+        "response": "stilts tcat ifmt=votable in='input1.votable input2.votable input3.votable input4.votable' icmd='progress' ocmd='shuffle' omode=meta out=output.txt multi=true lazy=true countrows=true seqcol=SEQ82 loccol=SRC82",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"input1.votable\"\n"
+    },
+    {
+        "prompt": "Concatenate 2 VOTABLE tables, applying input command `sorthead 10 FLUX`, then applying output command `head 100`, including all tables from each file, and outputting in meta mode.",
+        "response": "stilts tcat ifmt=votable in='input1.votable input2.votable' icmd='sorthead 10 FLUX' ocmd='head 100' omode=meta out=output.txt multi=true",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"input1.votable\"\n"
+    },
+    {
+        "prompt": "Concatenate 4 VOTABLE tables, applying input command `keepcols \"RA DEC FLUX\"`, then applying output command `shuffle`, and outputting in topcat mode.",
+        "response": "stilts tcat ifmt=votable in='input1.votable input2.votable input3.votable input4.votable' icmd='keepcols \"RA DEC FLUX\"' ocmd='shuffle' omode=topcat out=output.txt",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 4 VOTABLE tables, then applying output command `sort FLUX`, with row counting enabled, adding a location column, adding a unique location column, and writing to an output file.",
+        "response": "stilts tcat ifmt=votable in='input1.votable input2.votable input3.votable input4.votable' ocmd='sort FLUX' out=output.votable countrows=true loccol=SRC85 uloccol=UID85",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Concatenate 4 VOTABLE tables, applying input command `addcol SNR 'FLUX/ERR'`, then applying output command `uniq`, with row counting enabled, and outputting in tosql mode.",
+        "response": "stilts tcat ifmt=votable in='input1.votable input2.votable input3.votable input4.votable' icmd='addcol SNR 'FLUX/ERR'' ocmd='uniq' omode=tosql out=output.txt countrows=true",
+        "chat.jar": "failed",
+        "error": "Error: Bad value for parameter protocol: null value not allowed\nUsage: protocol=<jdbc-protocol>\n\n"
+    },
+    {
+        "prompt": "Concatenate 4 CSV tables, applying input command `addcol SNR 'FLUX/ERR'`, then applying output command `uniq`, adding a location column, and outputting in meta mode.",
+        "response": "stilts tcat ifmt=csv in='input1.csv input2.csv input3.csv input4.csv' icmd='addcol SNR 'FLUX/ERR'' ocmd='uniq' omode=meta out=output.txt loccol=SRC87",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 3 FITS tables, applying input command `keepcols \"RA DEC FLUX\"`, then applying output command `shuffle`, and outputting in count mode.",
+        "response": "stilts tcat ifmt=fits in='input1.fits input2.fits input3.fits' icmd='keepcols \"RA DEC FLUX\"' ocmd='shuffle' omode=count out=output.txt",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 3 ASCII tables, applying input command `progress`, then applying output command `shuffle`, including all tables from each file, and outputting in discard mode.",
+        "response": "stilts tcat ifmt=ascii in='input1.ascii input2.ascii input3.ascii' icmd='progress' ocmd='shuffle' omode=discard out=output.txt multi=true",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"input1.ascii\"\n"
+    },
+    {
+        "prompt": "Concatenate 4 FITS tables, then applying output command `uniq`, and outputting in topcat mode.",
+        "response": "stilts tcat ifmt=fits in='input1.fits input2.fits input3.fits input4.fits' ocmd='uniq' omode=topcat out=output.txt",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 3 ASCII tables, then applying output command `shuffle`, adding a location column, and outputting in checksum mode.",
+        "response": "stilts tcat ifmt=ascii in='input1.ascii input2.ascii input3.ascii' ocmd='shuffle' omode=checksum out=output.txt loccol=SRC91",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 3 VOTABLE tables, applying input command `addcol SNR 'FLUX/ERR'`, then applying output command `head 100`, with row counting enabled, and outputting in count mode.",
+        "response": "stilts tcat ifmt=votable in='input1.votable input2.votable input3.votable' icmd='addcol SNR 'FLUX/ERR'' ocmd='head 100' omode=count out=output.txt countrows=true",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 4 CSV tables, then applying output command `uniq`, including all tables from each file, and outputting in discard mode.",
+        "response": "stilts tcat ifmt=csv in='input1.csv input2.csv input3.csv input4.csv' ocmd='uniq' omode=discard out=output.txt multi=true",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"input1.csv\"\n"
+    },
+    {
+        "prompt": "Concatenate 3 CSV tables, applying input command `sorthead 10 FLUX`, then applying output command `sort FLUX`, using lazy evaluation, with row counting enabled, adding a location column, and outputting in count mode.",
+        "response": "stilts tcat ifmt=csv in='input1.csv input2.csv input3.csv' icmd='sorthead 10 FLUX' ocmd='sort FLUX' omode=count out=output.txt lazy=true countrows=true loccol=SRC94",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 3 VOTABLE tables, applying input command `progress`, then applying output command `uniq`, and writing to an output file.",
+        "response": "stilts tcat ifmt=votable in='input1.votable input2.votable input3.votable' icmd='progress' ocmd='uniq' out=output.votable",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Concatenate 3 ASCII tables, then applying output command `sort FLUX`, and outputting in discard mode.",
+        "response": "stilts tcat ifmt=ascii in='input1.ascii input2.ascii input3.ascii' ocmd='sort FLUX' omode=discard out=output.txt",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 4 ASCII tables, applying input command `keepcols \"RA DEC FLUX\"`, then applying output command `uniq`, and outputting in topcat mode.",
+        "response": "stilts tcat ifmt=ascii in='input1.ascii input2.ascii input3.ascii input4.ascii' icmd='keepcols \"RA DEC FLUX\"' ocmd='uniq' omode=topcat out=output.txt",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 3 VOTABLE tables, applying input command `addcol SNR 'FLUX/ERR'`, then applying output command `uniq`, and outputting in stats mode.",
+        "response": "stilts tcat ifmt=votable in='input1.votable input2.votable input3.votable' icmd='addcol SNR 'FLUX/ERR'' ocmd='uniq' omode=stats out=output.txt",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 4 ASCII tables, then applying output command `uniq`, including all tables from each file, with row counting enabled, and outputting in topcat mode.",
+        "response": "stilts tcat ifmt=ascii in='input1.ascii input2.ascii input3.ascii input4.ascii' ocmd='uniq' omode=topcat out=output.txt multi=true countrows=true",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"input1.ascii\"\n"
+    },
+    {
+        "prompt": "Concatenate 3 CSV tables, then applying output command `uniq`, with row counting enabled, and outputting in checksum mode.",
+        "response": "stilts tcat ifmt=csv in='input1.csv input2.csv input3.csv' ocmd='uniq' omode=checksum out=output.txt countrows=true",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 3 VOTABLE tables, applying input command `progress`, and outputting in checksum mode.",
+        "response": "stilts tcat ifmt=votable in='input1.votable input2.votable input3.votable' icmd='progress' omode=checksum out=output.txt",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 3 ASCII tables, applying input command `sorthead 10 FLUX`, then applying output command `head 100`, reading as a stream, adding a sequence column, and outputting in stats mode.",
+        "response": "stilts tcat ifmt=ascii in='input1.ascii input2.ascii input3.ascii' icmd='sorthead 10 FLUX' ocmd='head 100' omode=stats out=output.txt istream=true seqcol=SEQ102",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 3 VOTABLE tables, applying input command `progress`, then applying output command `sort FLUX`, including all tables from each file, using lazy evaluation, with row counting enabled, and outputting in count mode.",
+        "response": "stilts tcat ifmt=votable in='input1.votable input2.votable input3.votable' icmd='progress' ocmd='sort FLUX' omode=count out=output.txt multi=true lazy=true countrows=true",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"input1.votable\"\n"
+    },
+    {
+        "prompt": "Concatenate 3 VOTABLE tables, applying input command `sorthead 10 FLUX`, then applying output command `uniq`, adding a sequence column, adding a location column, and outputting in count mode.",
+        "response": "stilts tcat ifmt=votable in='input1.votable input2.votable input3.votable' icmd='sorthead 10 FLUX' ocmd='uniq' omode=count out=output.txt seqcol=SEQ104 loccol=SRC104",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 4 FITS tables, applying input command `sorthead 10 FLUX`, then applying output command `head 100`, reading as a stream, adding a location column, adding a unique location column, and outputting in discard mode.",
+        "response": "stilts tcat ifmt=fits in='input1.fits input2.fits input3.fits input4.fits' icmd='sorthead 10 FLUX' ocmd='head 100' omode=discard out=output.txt istream=true loccol=SRC105 uloccol=UID105",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 3 ASCII tables, applying input command `sorthead 10 FLUX`, then applying output command `head 100`, adding a location column, adding a unique location column, and outputting in checksum mode.",
+        "response": "stilts tcat ifmt=ascii in='input1.ascii input2.ascii input3.ascii' icmd='sorthead 10 FLUX' ocmd='head 100' omode=checksum out=output.txt loccol=SRC106 uloccol=UID106",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 4 VOTABLE tables, applying input command `addcol SNR 'FLUX/ERR'`, then applying output command `uniq`, and outputting in count mode.",
+        "response": "stilts tcat ifmt=votable in='input1.votable input2.votable input3.votable input4.votable' icmd='addcol SNR 'FLUX/ERR'' ocmd='uniq' omode=count out=output.txt",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 2 ASCII tables, with row counting enabled, and outputting in count mode.",
+        "response": "stilts tcat ifmt=ascii in='input1.ascii input2.ascii' omode=count out=output.txt countrows=true",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 2 ASCII tables, applying input command `keepcols \"RA DEC FLUX\"`, then applying output command `shuffle`, including all tables from each file, adding a sequence column, and outputting in tosql mode.",
+        "response": "stilts tcat ifmt=ascii in='input1.ascii input2.ascii' icmd='keepcols \"RA DEC FLUX\"' ocmd='shuffle' omode=tosql out=output.txt multi=true seqcol=SEQ109",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"input1.ascii\"\n"
+    },
+    {
+        "prompt": "Concatenate 4 FITS tables, applying input command `addcol SNR 'FLUX/ERR'`, then applying output command `shuffle`, using lazy evaluation, and outputting in meta mode.",
+        "response": "stilts tcat ifmt=fits in='input1.fits input2.fits input3.fits input4.fits' icmd='addcol SNR 'FLUX/ERR'' ocmd='shuffle' omode=meta out=output.txt lazy=true",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 2 VOTABLE tables, applying input command `addcol SNR 'FLUX/ERR'`, then applying output command `shuffle`, and outputting in discard mode.",
+        "response": "stilts tcat ifmt=votable in='input1.votable input2.votable' icmd='addcol SNR 'FLUX/ERR'' ocmd='shuffle' omode=discard out=output.txt",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 3 CSV tables, applying input command `progress`, then applying output command `sort FLUX`, including all tables from each file, and outputting in tosql mode.",
+        "response": "stilts tcat ifmt=csv in='input1.csv input2.csv input3.csv' icmd='progress' ocmd='sort FLUX' omode=tosql out=output.txt multi=true",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"input1.csv\"\n"
+    },
+    {
+        "prompt": "Concatenate 3 VOTABLE tables, applying input command `addcol SNR 'FLUX/ERR'`, then applying output command `sort FLUX`, including all tables from each file, using lazy evaluation, and outputting in gui mode.",
+        "response": "stilts tcat ifmt=votable in='input1.votable input2.votable input3.votable' icmd='addcol SNR 'FLUX/ERR'' ocmd='sort FLUX' omode=gui out=output.txt multi=true lazy=true",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"input1.votable\"\n"
+    },
+    {
+        "prompt": "Concatenate 4 VOTABLE tables, applying input command `keepcols \"RA DEC FLUX\"`, then applying output command `sort FLUX`, and outputting in discard mode.",
+        "response": "stilts tcat ifmt=votable in='input1.votable input2.votable input3.votable input4.votable' icmd='keepcols \"RA DEC FLUX\"' ocmd='sort FLUX' omode=discard out=output.txt",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 2 CSV tables, applying input command `keepcols \"RA DEC FLUX\"`, then applying output command `uniq`, adding a sequence column, adding a unique location column, and outputting in gui mode.",
+        "response": "stilts tcat ifmt=csv in='input1.csv input2.csv' icmd='keepcols \"RA DEC FLUX\"' ocmd='uniq' omode=gui out=output.txt seqcol=SEQ115 uloccol=UID115",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 3 VOTABLE tables, applying input command `sorthead 10 FLUX`, then applying output command `head 100`, and outputting in gui mode.",
+        "response": "stilts tcat ifmt=votable in='input1.votable input2.votable input3.votable' icmd='sorthead 10 FLUX' ocmd='head 100' omode=gui out=output.txt",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 3 CSV tables, applying input command `sorthead 10 FLUX`, including all tables from each file, and writing to an output file.",
+        "response": "stilts tcat ifmt=csv in='input1.csv input2.csv input3.csv' icmd='sorthead 10 FLUX' out=output.csv multi=true",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"input1.csv\"\n"
+    },
+    {
+        "prompt": "Concatenate 2 VOTABLE tables, applying input command `keepcols \"RA DEC FLUX\"`, then applying output command `head 100`, and writing to an output file.",
+        "response": "stilts tcat ifmt=votable in='input1.votable input2.votable' icmd='keepcols \"RA DEC FLUX\"' ocmd='head 100' out=output.votable",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Concatenate 4 FITS tables, applying input command `keepcols \"RA DEC FLUX\"`, then applying output command `shuffle`, using lazy evaluation, adding a location column, and outputting in tosql mode.",
+        "response": "stilts tcat ifmt=fits in='input1.fits input2.fits input3.fits input4.fits' icmd='keepcols \"RA DEC FLUX\"' ocmd='shuffle' omode=tosql out=output.txt lazy=true loccol=SRC119",
+        "chat.jar": "failed",
+        "error": "Error: Bad value for parameter protocol: null value not allowed\nUsage: protocol=<jdbc-protocol>\n\n"
+    },
+    {
+        "prompt": "Concatenate 3 VOTABLE tables, applying input command `progress`, then applying output command `uniq`, with row counting enabled, reading as a stream, and outputting in count mode.",
+        "response": "stilts tcat ifmt=votable in='input1.votable input2.votable input3.votable' icmd='progress' ocmd='uniq' omode=count out=output.txt countrows=true istream=true",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 2 VOTABLE tables, then applying output command `uniq`, using lazy evaluation, adding a location column, and writing to an output file.",
+        "response": "stilts tcat ifmt=votable in='input1.votable input2.votable' ocmd='uniq' out=output.votable lazy=true loccol=SRC121",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Concatenate 2 ASCII tables, applying input command `addcol SNR 'FLUX/ERR'`, then applying output command `shuffle`, reading as a stream, and outputting in discard mode.",
+        "response": "stilts tcat ifmt=ascii in='input1.ascii input2.ascii' icmd='addcol SNR 'FLUX/ERR'' ocmd='shuffle' omode=discard out=output.txt istream=true",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 4 VOTABLE tables, then applying output command `head 100`, with row counting enabled, reading as a stream, adding a sequence column, adding a unique location column, and outputting in count mode.",
+        "response": "stilts tcat ifmt=votable in='input1.votable input2.votable input3.votable input4.votable' ocmd='head 100' omode=count out=output.txt countrows=true istream=true seqcol=SEQ123 uloccol=UID123",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 3 FITS tables, applying input command `addcol SNR 'FLUX/ERR'`, and outputting in gui mode.",
+        "response": "stilts tcat ifmt=fits in='input1.fits input2.fits input3.fits' icmd='addcol SNR 'FLUX/ERR'' omode=gui out=output.txt",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 2 ASCII tables, applying input command `keepcols \"RA DEC FLUX\"`, then applying output command `head 100`, using lazy evaluation, reading as a stream, and writing to an output file.",
+        "response": "stilts tcat ifmt=ascii in='input1.ascii input2.ascii' icmd='keepcols \"RA DEC FLUX\"' ocmd='head 100' out=output.ascii lazy=true istream=true",
+        "chat.jar": "failed",
+        "error": "Error: Can't guess output format for output.ascii\n    (No handler specified for writing table.\nKnown formats: jdbc, fits, colfits, votable, fits-healpix, ECSV, parquet, text, ascii, CSV, IPAC, HTML, LaTeX, TST, feather, mirage)\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 4 ASCII tables, applying input command `progress`, then applying output command `head 100`, reading as a stream, adding a sequence column, and outputting in gui mode.",
+        "response": "stilts tcat ifmt=ascii in='input1.ascii input2.ascii input3.ascii input4.ascii' icmd='progress' ocmd='head 100' omode=gui out=output.txt istream=true seqcol=SEQ126",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 4 ASCII tables, applying input command `progress`, including all tables from each file, using lazy evaluation, adding a sequence column, and outputting in count mode.",
+        "response": "stilts tcat ifmt=ascii in='input1.ascii input2.ascii input3.ascii input4.ascii' icmd='progress' omode=count out=output.txt multi=true lazy=true seqcol=SEQ127",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"input1.ascii\"\n"
+    },
+    {
+        "prompt": "Concatenate 3 CSV tables, applying input command `progress`, then applying output command `head 100`, including all tables from each file, adding a sequence column, and outputting in meta mode.",
+        "response": "stilts tcat ifmt=csv in='input1.csv input2.csv input3.csv' icmd='progress' ocmd='head 100' omode=meta out=output.txt multi=true seqcol=SEQ128",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"input1.csv\"\n"
+    },
+    {
+        "prompt": "Concatenate 2 ASCII tables, then applying output command `sort FLUX`, reading as a stream, and outputting in discard mode.",
+        "response": "stilts tcat ifmt=ascii in='input1.ascii input2.ascii' ocmd='sort FLUX' omode=discard out=output.txt istream=true",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 2 VOTABLE tables, then applying output command `head 100`, including all tables from each file, and outputting in checksum mode.",
+        "response": "stilts tcat ifmt=votable in='input1.votable input2.votable' ocmd='head 100' omode=checksum out=output.txt multi=true",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"input1.votable\"\n"
+    },
+    {
+        "prompt": "Concatenate 3 FITS tables, applying input command `keepcols \"RA DEC FLUX\"`, then applying output command `sort FLUX`, reading as a stream, adding a location column, and outputting in stats mode.",
+        "response": "stilts tcat ifmt=fits in='input1.fits input2.fits input3.fits' icmd='keepcols \"RA DEC FLUX\"' ocmd='sort FLUX' omode=stats out=output.txt istream=true loccol=SRC131",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 4 FITS tables, then applying output command `head 100`, adding a sequence column, adding a unique location column, and outputting in count mode.",
+        "response": "stilts tcat ifmt=fits in='input1.fits input2.fits input3.fits input4.fits' ocmd='head 100' omode=count out=output.txt seqcol=SEQ132 uloccol=UID132",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 4 CSV tables, applying input command `progress`, then applying output command `head 100`, and outputting in discard mode.",
+        "response": "stilts tcat ifmt=csv in='input1.csv input2.csv input3.csv input4.csv' icmd='progress' ocmd='head 100' omode=discard out=output.txt",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 4 CSV tables, then applying output command `sort FLUX`, including all tables from each file, with row counting enabled, adding a location column, and outputting in topcat mode.",
+        "response": "stilts tcat ifmt=csv in='input1.csv input2.csv input3.csv input4.csv' ocmd='sort FLUX' omode=topcat out=output.txt multi=true countrows=true loccol=SRC134",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"input1.csv\"\n"
+    },
+    {
+        "prompt": "Concatenate 3 ASCII tables, applying input command `sorthead 10 FLUX`, including all tables from each file, adding a sequence column, and writing to an output file.",
+        "response": "stilts tcat ifmt=ascii in='input1.ascii input2.ascii input3.ascii' icmd='sorthead 10 FLUX' out=output.ascii multi=true seqcol=SEQ135",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"input1.ascii\"\n"
+    },
+    {
+        "prompt": "Concatenate 2 FITS tables, applying input command `progress`, then applying output command `sort FLUX`, adding a location column, and outputting in discard mode.",
+        "response": "stilts tcat ifmt=fits in='input1.fits input2.fits' icmd='progress' ocmd='sort FLUX' omode=discard out=output.txt loccol=SRC136",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 3 FITS tables, applying input command `sorthead 10 FLUX`, then applying output command `sort FLUX`, adding a sequence column, adding a location column, and outputting in topcat mode.",
+        "response": "stilts tcat ifmt=fits in='input1.fits input2.fits input3.fits' icmd='sorthead 10 FLUX' ocmd='sort FLUX' omode=topcat out=output.txt seqcol=SEQ137 loccol=SRC137",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 2 VOTABLE tables, applying input command `addcol SNR 'FLUX/ERR'`, then applying output command `head 100`, including all tables from each file, and writing to an output file.",
+        "response": "stilts tcat ifmt=votable in='input1.votable input2.votable' icmd='addcol SNR 'FLUX/ERR'' ocmd='head 100' out=output.votable multi=true",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"input1.votable\"\n"
+    },
+    {
+        "prompt": "Concatenate 4 ASCII tables, applying input command `progress`, then applying output command `head 100`, and outputting in tosql mode.",
+        "response": "stilts tcat ifmt=ascii in='input1.ascii input2.ascii input3.ascii input4.ascii' icmd='progress' ocmd='head 100' omode=tosql out=output.txt",
+        "chat.jar": "failed",
+        "error": "Error: Bad value for parameter protocol: null value not allowed\nUsage: protocol=<jdbc-protocol>\n\n"
+    },
+    {
+        "prompt": "Concatenate 4 FITS tables, then applying output command `uniq`, including all tables from each file, using lazy evaluation, and outputting in tosql mode.",
+        "response": "stilts tcat ifmt=fits in='input1.fits input2.fits input3.fits input4.fits' ocmd='uniq' omode=tosql out=output.txt multi=true lazy=true",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"input1.fits\"\n"
+    },
+    {
+        "prompt": "Concatenate 4 FITS tables, applying input command `progress`, including all tables from each file, using lazy evaluation, and writing to an output file.",
+        "response": "stilts tcat ifmt=fits in='input1.fits input2.fits input3.fits input4.fits' icmd='progress' out=output.fits multi=true lazy=true",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"input1.fits\"\n"
+    },
+    {
+        "prompt": "Concatenate 2 FITS tables, applying input command `sorthead 10 FLUX`, then applying output command `head 100`, including all tables from each file, reading as a stream, and writing to an output file.",
+        "response": "stilts tcat ifmt=fits in='input1.fits input2.fits' icmd='sorthead 10 FLUX' ocmd='head 100' out=output.fits multi=true istream=true",
+        "chat.jar": "failed",
+        "error": "WARNING: Can't currently stream multiple tables (would need MultiTableBuilder.streamTables method)\nError: No file, URL or command \"input1.fits\"\n"
+    },
+    {
+        "prompt": "Concatenate 3 VOTABLE tables, applying input command `addcol SNR 'FLUX/ERR'`, then applying output command `head 100`, reading as a stream, adding a unique location column, and outputting in checksum mode.",
+        "response": "stilts tcat ifmt=votable in='input1.votable input2.votable input3.votable' icmd='addcol SNR 'FLUX/ERR'' ocmd='head 100' omode=checksum out=output.txt istream=true uloccol=UID143",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 2 ASCII tables, applying input command `progress`, then applying output command `head 100`, and outputting in meta mode.",
+        "response": "stilts tcat ifmt=ascii in='input1.ascii input2.ascii' icmd='progress' ocmd='head 100' omode=meta out=output.txt",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 4 CSV tables, applying input command `keepcols \"RA DEC FLUX\"`, including all tables from each file, and outputting in discard mode.",
+        "response": "stilts tcat ifmt=csv in='input1.csv input2.csv input3.csv input4.csv' icmd='keepcols \"RA DEC FLUX\"' omode=discard out=output.txt multi=true",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"input1.csv\"\n"
+    },
+    {
+        "prompt": "Concatenate 3 CSV tables, applying input command `sorthead 10 FLUX`, then applying output command `head 100`, adding a unique location column, and outputting in tosql mode.",
+        "response": "stilts tcat ifmt=csv in='input1.csv input2.csv input3.csv' icmd='sorthead 10 FLUX' ocmd='head 100' omode=tosql out=output.txt uloccol=UID146",
+        "chat.jar": "failed",
+        "error": "Error: Bad value for parameter protocol: null value not allowed\nUsage: protocol=<jdbc-protocol>\n\n"
+    },
+    {
+        "prompt": "Concatenate 2 ASCII tables, applying input command `addcol SNR 'FLUX/ERR'`, with row counting enabled, and outputting in count mode.",
+        "response": "stilts tcat ifmt=ascii in='input1.ascii input2.ascii' icmd='addcol SNR 'FLUX/ERR'' omode=count out=output.txt countrows=true",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 4 VOTABLE tables, then applying output command `sort FLUX`, and writing to an output file.",
+        "response": "stilts tcat ifmt=votable in='input1.votable input2.votable input3.votable input4.votable' ocmd='sort FLUX' out=output.votable",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Concatenate 3 CSV tables, applying input command `addcol SNR 'FLUX/ERR'`, then applying output command `shuffle`, reading as a stream, adding a unique location column, and outputting in gui mode.",
+        "response": "stilts tcat ifmt=csv in='input1.csv input2.csv input3.csv' icmd='addcol SNR 'FLUX/ERR'' ocmd='shuffle' omode=gui out=output.txt istream=true uloccol=UID149",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 3 FITS tables, applying input command `progress`, then applying output command `shuffle`, with row counting enabled, and outputting in discard mode.",
+        "response": "stilts tcat ifmt=fits in='input1.fits input2.fits input3.fits' icmd='progress' ocmd='shuffle' omode=discard out=output.txt countrows=true",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 4 VOTABLE tables, applying input command `addcol SNR 'FLUX/ERR'`, then applying output command `head 100`, with row counting enabled, adding a location column, and outputting in tosql mode.",
+        "response": "stilts tcat ifmt=votable in='input1.votable input2.votable input3.votable input4.votable' icmd='addcol SNR 'FLUX/ERR'' ocmd='head 100' omode=tosql out=output.txt countrows=true loccol=SRC151",
+        "chat.jar": "failed",
+        "error": "Error: Bad value for parameter protocol: null value not allowed\nUsage: protocol=<jdbc-protocol>\n\n"
+    },
+    {
+        "prompt": "Concatenate 3 CSV tables, applying input command `addcol SNR 'FLUX/ERR'`, then applying output command `uniq`, and outputting in tosql mode.",
+        "response": "stilts tcat ifmt=csv in='input1.csv input2.csv input3.csv' icmd='addcol SNR 'FLUX/ERR'' ocmd='uniq' omode=tosql out=output.txt",
+        "chat.jar": "failed",
+        "error": "Error: Bad value for parameter protocol: null value not allowed\nUsage: protocol=<jdbc-protocol>\n\n"
+    },
+    {
+        "prompt": "Concatenate 2 VOTABLE tables, applying input command `sorthead 10 FLUX`, then applying output command `uniq`, adding a sequence column, and outputting in gui mode.",
+        "response": "stilts tcat ifmt=votable in='input1.votable input2.votable' icmd='sorthead 10 FLUX' ocmd='uniq' omode=gui out=output.txt seqcol=SEQ153",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 3 FITS tables, applying input command `keepcols \"RA DEC FLUX\"`, then applying output command `shuffle`, using lazy evaluation, and outputting in meta mode.",
+        "response": "stilts tcat ifmt=fits in='input1.fits input2.fits input3.fits' icmd='keepcols \"RA DEC FLUX\"' ocmd='shuffle' omode=meta out=output.txt lazy=true",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 3 VOTABLE tables, applying input command `keepcols \"RA DEC FLUX\"`, then applying output command `shuffle`, adding a unique location column, and writing to an output file.",
+        "response": "stilts tcat ifmt=votable in='input1.votable input2.votable input3.votable' icmd='keepcols \"RA DEC FLUX\"' ocmd='shuffle' out=output.votable uloccol=UID155",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Concatenate 3 CSV tables, then applying output command `sort FLUX`, reading as a stream, adding a sequence column, adding a location column, and outputting in topcat mode.",
+        "response": "stilts tcat ifmt=csv in='input1.csv input2.csv input3.csv' ocmd='sort FLUX' omode=topcat out=output.txt istream=true seqcol=SEQ156 loccol=SRC156",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 2 ASCII tables, applying input command `keepcols \"RA DEC FLUX\"`, then applying output command `uniq`, adding a sequence column, and outputting in meta mode.",
+        "response": "stilts tcat ifmt=ascii in='input1.ascii input2.ascii' icmd='keepcols \"RA DEC FLUX\"' ocmd='uniq' omode=meta out=output.txt seqcol=SEQ157",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 3 ASCII tables, applying input command `progress`, then applying output command `head 100`, including all tables from each file, with row counting enabled, and outputting in count mode.",
+        "response": "stilts tcat ifmt=ascii in='input1.ascii input2.ascii input3.ascii' icmd='progress' ocmd='head 100' omode=count out=output.txt multi=true countrows=true",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"input1.ascii\"\n"
+    },
+    {
+        "prompt": "Concatenate 3 ASCII tables, applying input command `keepcols \"RA DEC FLUX\"`, using lazy evaluation, adding a unique location column, and outputting in gui mode.",
+        "response": "stilts tcat ifmt=ascii in='input1.ascii input2.ascii input3.ascii' icmd='keepcols \"RA DEC FLUX\"' omode=gui out=output.txt lazy=true uloccol=UID159",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 4 CSV tables, applying input command `sorthead 10 FLUX`, then applying output command `shuffle`, including all tables from each file, adding a unique location column, and outputting in checksum mode.",
+        "response": "stilts tcat ifmt=csv in='input1.csv input2.csv input3.csv input4.csv' icmd='sorthead 10 FLUX' ocmd='shuffle' omode=checksum out=output.txt multi=true uloccol=UID160",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"input1.csv\"\n"
+    },
+    {
+        "prompt": "Concatenate 4 CSV tables, applying input command `keepcols \"RA DEC FLUX\"`, then applying output command `shuffle`, including all tables from each file, using lazy evaluation, adding a sequence column, and writing to an output file.",
+        "response": "stilts tcat ifmt=csv in='input1.csv input2.csv input3.csv input4.csv' icmd='keepcols \"RA DEC FLUX\"' ocmd='shuffle' out=output.csv multi=true lazy=true seqcol=SEQ161",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"input1.csv\"\n"
+    },
+    {
+        "prompt": "Concatenate 3 ASCII tables, applying input command `sorthead 10 FLUX`, then applying output command `sort FLUX`, using lazy evaluation, reading as a stream, and outputting in count mode.",
+        "response": "stilts tcat ifmt=ascii in='input1.ascii input2.ascii input3.ascii' icmd='sorthead 10 FLUX' ocmd='sort FLUX' omode=count out=output.txt lazy=true istream=true",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 3 ASCII tables, applying input command `addcol SNR 'FLUX/ERR'`, then applying output command `head 100`, and outputting in discard mode.",
+        "response": "stilts tcat ifmt=ascii in='input1.ascii input2.ascii input3.ascii' icmd='addcol SNR 'FLUX/ERR'' ocmd='head 100' omode=discard out=output.txt",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 2 CSV tables, applying input command `progress`, including all tables from each file, reading as a stream, and outputting in gui mode.",
+        "response": "stilts tcat ifmt=csv in='input1.csv input2.csv' icmd='progress' omode=gui out=output.txt multi=true istream=true",
+        "chat.jar": "failed",
+        "error": "WARNING: Can't currently stream multiple tables (would need MultiTableBuilder.streamTables method)\nError: No file, URL or command \"input1.csv\"\n"
+    },
+    {
+        "prompt": "Concatenate 3 FITS tables, applying input command `keepcols \"RA DEC FLUX\"`, then applying output command `head 100`, and outputting in stats mode.",
+        "response": "stilts tcat ifmt=fits in='input1.fits input2.fits input3.fits' icmd='keepcols \"RA DEC FLUX\"' ocmd='head 100' omode=stats out=output.txt",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 3 VOTABLE tables, applying input command `sorthead 10 FLUX`, then applying output command `shuffle`, adding a unique location column, and outputting in discard mode.",
+        "response": "stilts tcat ifmt=votable in='input1.votable input2.votable input3.votable' icmd='sorthead 10 FLUX' ocmd='shuffle' omode=discard out=output.txt uloccol=UID166",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 2 ASCII tables, applying input command `addcol SNR 'FLUX/ERR'`, then applying output command `sort FLUX`, adding a unique location column, and outputting in count mode.",
+        "response": "stilts tcat ifmt=ascii in='input1.ascii input2.ascii' icmd='addcol SNR 'FLUX/ERR'' ocmd='sort FLUX' omode=count out=output.txt uloccol=UID167",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 4 FITS tables, then applying output command `uniq`, including all tables from each file, with row counting enabled, and outputting in discard mode.",
+        "response": "stilts tcat ifmt=fits in='input1.fits input2.fits input3.fits input4.fits' ocmd='uniq' omode=discard out=output.txt multi=true countrows=true",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"input1.fits\"\n"
+    },
+    {
+        "prompt": "Concatenate 3 FITS tables, applying input command `keepcols \"RA DEC FLUX\"`, then applying output command `shuffle`, including all tables from each file, using lazy evaluation, and outputting in stats mode.",
+        "response": "stilts tcat ifmt=fits in='input1.fits input2.fits input3.fits' icmd='keepcols \"RA DEC FLUX\"' ocmd='shuffle' omode=stats out=output.txt multi=true lazy=true",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"input1.fits\"\n"
+    },
+    {
+        "prompt": "Concatenate 3 CSV tables, then applying output command `sort FLUX`, using lazy evaluation, and outputting in topcat mode.",
+        "response": "stilts tcat ifmt=csv in='input1.csv input2.csv input3.csv' ocmd='sort FLUX' omode=topcat out=output.txt lazy=true",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 2 FITS tables, then applying output command `head 100`, adding a sequence column, and outputting in discard mode.",
+        "response": "stilts tcat ifmt=fits in='input1.fits input2.fits' ocmd='head 100' omode=discard out=output.txt seqcol=SEQ171",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 3 VOTABLE tables, and outputting in topcat mode.",
+        "response": "stilts tcat ifmt=votable in='input1.votable input2.votable input3.votable' omode=topcat out=output.txt",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 3 FITS tables, applying input command `addcol SNR 'FLUX/ERR'`, then applying output command `head 100`, including all tables from each file, with row counting enabled, reading as a stream, and outputting in stats mode.",
+        "response": "stilts tcat ifmt=fits in='input1.fits input2.fits input3.fits' icmd='addcol SNR 'FLUX/ERR'' ocmd='head 100' omode=stats out=output.txt multi=true countrows=true istream=true",
+        "chat.jar": "failed",
+        "error": "WARNING: Can't currently stream multiple tables (would need MultiTableBuilder.streamTables method)\nError: No file, URL or command \"input1.fits\"\n"
+    },
+    {
+        "prompt": "Concatenate 2 FITS tables, then applying output command `head 100`, including all tables from each file, and outputting in gui mode.",
+        "response": "stilts tcat ifmt=fits in='input1.fits input2.fits' ocmd='head 100' omode=gui out=output.txt multi=true",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"input1.fits\"\n"
+    },
+    {
+        "prompt": "Concatenate 2 VOTABLE tables, and outputting in checksum mode.",
+        "response": "stilts tcat ifmt=votable in='input1.votable input2.votable' omode=checksum out=output.txt",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 2 VOTABLE tables, applying input command `keepcols \"RA DEC FLUX\"`, then applying output command `head 100`, and outputting in tosql mode.",
+        "response": "stilts tcat ifmt=votable in='input1.votable input2.votable' icmd='keepcols \"RA DEC FLUX\"' ocmd='head 100' omode=tosql out=output.txt",
+        "chat.jar": "failed",
+        "error": "Error: Bad value for parameter protocol: null value not allowed\nUsage: protocol=<jdbc-protocol>\n\n"
+    },
+    {
+        "prompt": "Concatenate 2 FITS tables, applying input command `progress`, reading as a stream, adding a sequence column, adding a unique location column, and outputting in meta mode.",
+        "response": "stilts tcat ifmt=fits in='input1.fits input2.fits' icmd='progress' omode=meta out=output.txt istream=true seqcol=SEQ177 uloccol=UID177",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 4 VOTABLE tables, applying input command `keepcols \"RA DEC FLUX\"`, including all tables from each file, using lazy evaluation, adding a unique location column, and outputting in discard mode.",
+        "response": "stilts tcat ifmt=votable in='input1.votable input2.votable input3.votable input4.votable' icmd='keepcols \"RA DEC FLUX\"' omode=discard out=output.txt multi=true lazy=true uloccol=UID178",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"input1.votable\"\n"
+    },
+    {
+        "prompt": "Concatenate 4 FITS tables, applying input command `keepcols \"RA DEC FLUX\"`, then applying output command `shuffle`, including all tables from each file, and outputting in gui mode.",
+        "response": "stilts tcat ifmt=fits in='input1.fits input2.fits input3.fits input4.fits' icmd='keepcols \"RA DEC FLUX\"' ocmd='shuffle' omode=gui out=output.txt multi=true",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"input1.fits\"\n"
+    },
+    {
+        "prompt": "Concatenate 3 CSV tables, applying input command `addcol SNR 'FLUX/ERR'`, then applying output command `shuffle`, including all tables from each file, with row counting enabled, adding a unique location column, and outputting in topcat mode.",
+        "response": "stilts tcat ifmt=csv in='input1.csv input2.csv input3.csv' icmd='addcol SNR 'FLUX/ERR'' ocmd='shuffle' omode=topcat out=output.txt multi=true countrows=true uloccol=UID180",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"input1.csv\"\n"
+    },
+    {
+        "prompt": "Concatenate 3 CSV tables, applying input command `addcol SNR 'FLUX/ERR'`, then applying output command `shuffle`, including all tables from each file, and outputting in gui mode.",
+        "response": "stilts tcat ifmt=csv in='input1.csv input2.csv input3.csv' icmd='addcol SNR 'FLUX/ERR'' ocmd='shuffle' omode=gui out=output.txt multi=true",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"input1.csv\"\n"
+    },
+    {
+        "prompt": "Concatenate 4 CSV tables, applying input command `sorthead 10 FLUX`, then applying output command `shuffle`, using lazy evaluation, with row counting enabled, reading as a stream, adding a sequence column, and outputting in discard mode.",
+        "response": "stilts tcat ifmt=csv in='input1.csv input2.csv input3.csv input4.csv' icmd='sorthead 10 FLUX' ocmd='shuffle' omode=discard out=output.txt lazy=true countrows=true istream=true seqcol=SEQ182",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 4 ASCII tables, then applying output command `uniq`, adding a unique location column, and outputting in discard mode.",
+        "response": "stilts tcat ifmt=ascii in='input1.ascii input2.ascii input3.ascii input4.ascii' ocmd='uniq' omode=discard out=output.txt uloccol=UID183",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 3 FITS tables, then applying output command `uniq`, reading as a stream, adding a unique location column, and outputting in tosql mode.",
+        "response": "stilts tcat ifmt=fits in='input1.fits input2.fits input3.fits' ocmd='uniq' omode=tosql out=output.txt istream=true uloccol=UID184",
+        "chat.jar": "failed",
+        "error": "Error: Bad value for parameter protocol: null value not allowed\nUsage: protocol=<jdbc-protocol>\n\n"
+    },
+    {
+        "prompt": "Concatenate 4 FITS tables, applying input command `keepcols \"RA DEC FLUX\"`, then applying output command `sort FLUX`, including all tables from each file, and writing to an output file.",
+        "response": "stilts tcat ifmt=fits in='input1.fits input2.fits input3.fits input4.fits' icmd='keepcols \"RA DEC FLUX\"' ocmd='sort FLUX' out=output.fits multi=true",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"input1.fits\"\n"
+    },
+    {
+        "prompt": "Concatenate 4 FITS tables, then applying output command `shuffle`, and outputting in meta mode.",
+        "response": "stilts tcat ifmt=fits in='input1.fits input2.fits input3.fits input4.fits' ocmd='shuffle' omode=meta out=output.txt",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 4 ASCII tables, applying input command `progress`, then applying output command `sort FLUX`, and outputting in topcat mode.",
+        "response": "stilts tcat ifmt=ascii in='input1.ascii input2.ascii input3.ascii input4.ascii' icmd='progress' ocmd='sort FLUX' omode=topcat out=output.txt",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 4 VOTABLE tables, applying input command `addcol SNR 'FLUX/ERR'`, then applying output command `shuffle`, reading as a stream, and outputting in count mode.",
+        "response": "stilts tcat ifmt=votable in='input1.votable input2.votable input3.votable input4.votable' icmd='addcol SNR 'FLUX/ERR'' ocmd='shuffle' omode=count out=output.txt istream=true",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 2 CSV tables, then applying output command `shuffle`, with row counting enabled, adding a location column, and outputting in discard mode.",
+        "response": "stilts tcat ifmt=csv in='input1.csv input2.csv' ocmd='shuffle' omode=discard out=output.txt countrows=true loccol=SRC189",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 4 ASCII tables, applying input command `sorthead 10 FLUX`, then applying output command `sort FLUX`, with row counting enabled, adding a unique location column, and outputting in tosql mode.",
+        "response": "stilts tcat ifmt=ascii in='input1.ascii input2.ascii input3.ascii input4.ascii' icmd='sorthead 10 FLUX' ocmd='sort FLUX' omode=tosql out=output.txt countrows=true uloccol=UID190",
+        "chat.jar": "failed",
+        "error": "Error: Bad value for parameter protocol: null value not allowed\nUsage: protocol=<jdbc-protocol>\n\n"
+    },
+    {
+        "prompt": "Concatenate 4 FITS tables, applying input command `sorthead 10 FLUX`, adding a sequence column, and outputting in gui mode.",
+        "response": "stilts tcat ifmt=fits in='input1.fits input2.fits input3.fits input4.fits' icmd='sorthead 10 FLUX' omode=gui out=output.txt seqcol=SEQ191",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 2 FITS tables, applying input command `addcol SNR 'FLUX/ERR'`, then applying output command `shuffle`, and outputting in count mode.",
+        "response": "stilts tcat ifmt=fits in='input1.fits input2.fits' icmd='addcol SNR 'FLUX/ERR'' ocmd='shuffle' omode=count out=output.txt",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 2 FITS tables, applying input command `keepcols \"RA DEC FLUX\"`, then applying output command `shuffle`, including all tables from each file, with row counting enabled, and outputting in count mode.",
+        "response": "stilts tcat ifmt=fits in='input1.fits input2.fits' icmd='keepcols \"RA DEC FLUX\"' ocmd='shuffle' omode=count out=output.txt multi=true countrows=true",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"input1.fits\"\n"
+    },
+    {
+        "prompt": "Concatenate 2 CSV tables, applying input command `progress`, then applying output command `head 100`, adding a sequence column, adding a unique location column, and writing to an output file.",
+        "response": "stilts tcat ifmt=csv in='input1.csv input2.csv' icmd='progress' ocmd='head 100' out=output.csv seqcol=SEQ194 uloccol=UID194",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Concatenate 2 FITS tables, applying input command `progress`, then applying output command `shuffle`, and outputting in count mode.",
+        "response": "stilts tcat ifmt=fits in='input1.fits input2.fits' icmd='progress' ocmd='shuffle' omode=count out=output.txt",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 4 VOTABLE tables, applying input command `addcol SNR 'FLUX/ERR'`, then applying output command `sort FLUX`, including all tables from each file, with row counting enabled, adding a location column, and outputting in count mode.",
+        "response": "stilts tcat ifmt=votable in='input1.votable input2.votable input3.votable input4.votable' icmd='addcol SNR 'FLUX/ERR'' ocmd='sort FLUX' omode=count out=output.txt multi=true countrows=true loccol=SRC196",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"input1.votable\"\n"
+    },
+    {
+        "prompt": "Concatenate 2 VOTABLE tables, applying input command `progress`, then applying output command `uniq`, adding a location column, and outputting in discard mode.",
+        "response": "stilts tcat ifmt=votable in='input1.votable input2.votable' icmd='progress' ocmd='uniq' omode=discard out=output.txt loccol=SRC197",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 2 VOTABLE tables, applying input command `addcol SNR 'FLUX/ERR'`, then applying output command `sort FLUX`, using lazy evaluation, with row counting enabled, and outputting in count mode.",
+        "response": "stilts tcat ifmt=votable in='input1.votable input2.votable' icmd='addcol SNR 'FLUX/ERR'' ocmd='sort FLUX' omode=count out=output.txt lazy=true countrows=true",
+        "chat.jar": "failed",
+        "error": "Error: out=output.txt: out and ofmt parameters can only be used when omode=out\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Concatenate 2 FITS tables, applying input command `progress`, then applying output command `sort FLUX`, and writing to an output file.",
+        "response": "stilts tcat ifmt=fits in='input1.fits input2.fits' icmd='progress' ocmd='sort FLUX' out=output.fits",
+        "chat.jar": "executed successfully"
+    }
+]

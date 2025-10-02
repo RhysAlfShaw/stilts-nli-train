@@ -1,0 +1,159 @@
+[
+    {
+        "prompt": "Concatenate three ASCII tables input1.txt, input2.txt, and input3.txt into a single output file output.txt",
+        "response": "stilts tcat ifmt=ascii in=input1.txt in=input2.txt in=input3.txt out=output.txt",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Combine multiple FITS files listed in a file called input.list into a single output file output.fits, using lazy loading",
+        "response": "stilts tcat in=@input.list out=output.fits lazy=true",
+        "chat.jar": "failed",
+        "error": "Error: input.list (No such file or directory)\n"
+    },
+    {
+        "prompt": "Concatenate CSV files input1.csv, input2.csv, input3.csv and add a sequence column called 'TableID' to track which table each row came from",
+        "response": "stilts tcat ifmt=csv in='input1.csv input2.csv input3.csv' seqcol=TableID out=output.csv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Merge all tables from a multi-extension FITS file input.fits into a single table output.fits",
+        "response": "stilts tcat in=input.fits multi=true out=output.fits",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"input.fits\"\n"
+    },
+    {
+        "prompt": "Concatenate VOTable files and add a column showing the original file location for each row",
+        "response": "stilts tcat ifmt=votable in='input1.xml input2.xml input3.xml' loccol=SourceFile out=output.xml",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Combine three ASCII tables, keep only columns RA, DEC, and FLUX from each, and sort the final output by FLUX",
+        "response": "stilts tcat ifmt=ascii in='input1.txt input2.txt input3.txt' icmd='keepcols \"RA DEC FLUX\"' ocmd='sort FLUX' out=output.txt",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Concatenate FITS files, enable row counting for better performance, and use lazy loading",
+        "response": "stilts tcat in=@input.list countrows=true lazy=true out=output.fits",
+        "chat.jar": "failed",
+        "error": "Error: input.list (No such file or directory)\n"
+    },
+    {
+        "prompt": "Merge CSV files, filter each input table to keep only rows where MAGNITUDE < 15, then concatenate",
+        "response": "stilts tcat ifmt=csv in='input1.csv input2.csv input3.csv' icmd='select \"MAGNITUDE<15\"' out=output.csv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Concatenate tables and add both sequence number and unique location identifier columns",
+        "response": "stilts tcat in='input1.fits input2.fits input3.fits' seqcol=TableNum uloccol=FileID out=output.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Combine multiple VOTable files, keeping all tables from each file, with progress reporting",
+        "response": "stilts tcat ifmt=votable in='input1.xml input2.xml' multi=true icmd=progress out=output.xml",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"input1.xml\"\n"
+    },
+    {
+        "prompt": "Concatenate ASCII tables and output only metadata information instead of the actual table",
+        "response": "stilts tcat ifmt=ascii in='input1.txt input2.txt input3.txt' omode=meta",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Merge FITS files, apply column selection to each input, and add final sorting",
+        "response": "stilts tcat in='input1.fits input2.fits' icmd='keepcols \"ID RA DEC\"' ocmd='sort ID' out=output.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Concatenate tables from standard input in CSV format",
+        "response": "stilts tcat ifmt=csv in=- out=output.csv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Combine tables and output row count only",
+        "response": "stilts tcat in='input1.fits input2.fits input3.fits' omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Concatenate CSV files, rename a column in each input table, then combine",
+        "response": "stilts tcat ifmt=csv in='input1.csv input2.csv' icmd='colmeta -name NewName OldName' out=output.csv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Merge tables with streaming input enabled for better memory usage",
+        "response": "stilts tcat ifmt=fits in='input1.fits input2.fits' istream=true out=output.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Concatenate tables and calculate statistics on the result",
+        "response": "stilts tcat in='input1.fits input2.fits input3.fits' omode=stats",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Combine ASCII tables, select top 10 rows by FLUX from each, then sort final result",
+        "response": "stilts tcat ifmt=ascii in='input1.txt input2.txt' icmd='sorthead 10 FLUX' ocmd='sort FLUX' out=output.txt",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Concatenate FITS tables and output to TOPCAT for interactive viewing",
+        "response": "stilts tcat in='input1.fits input2.fits input3.fits' omode=topcat",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Merge CSV files with custom output format specification",
+        "response": "stilts tcat ifmt=csv in='input1.csv input2.csv' ofmt=fits out=output.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Concatenate tables and discard the output (for testing purposes)",
+        "response": "stilts tcat in='input1.fits input2.fits' omode=discard",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Combine multiple tables with preprocessing commands from an external file",
+        "response": "stilts tcat in='input1.fits input2.fits' icmd=@input.commands out=output.fits",
+        "chat.jar": "failed",
+        "error": "Error: input.commands (No such file or directory)\n"
+    },
+    {
+        "prompt": "Concatenate VOTable files and compute checksum of the result",
+        "response": "stilts tcat ifmt=votable in='input1.xml input2.xml' omode=checksum",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Merge tables with both input preprocessing and output postprocessing",
+        "response": "stilts tcat in='input1.fits input2.fits' icmd='select \"MAG<20\"' ocmd='addcol -after MAG COLOR \"B_MAG-V_MAG\"' out=output.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Concatenate ASCII tables using automatic format detection",
+        "response": "stilts tcat in='input1.dat input2.dat input3.dat' out=output.dat",
+        "chat.jar": "failed",
+        "error": "Error: Can't guess output format for output.dat\n    (No handler specified for writing table.\nKnown formats: jdbc, fits, colfits, votable, fits-healpix, ECSV, parquet, text, ascii, CSV, IPAC, HTML, LaTeX, TST, feather, mirage)\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Combine tables from system command output",
+        "response": "stilts tcat ifmt=csv in='<cat input*.csv' out=output.csv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Concatenate FITS files and export to SQL database",
+        "response": "stilts tcat in='input1.fits input2.fits' omode=tosql out=jdbc:postgresql://localhost/mydb#mytable",
+        "chat.jar": "failed",
+        "error": "Error: Bad value for parameter protocol: null value not allowed\nUsage: protocol=<jdbc-protocol>\n\n"
+    },
+    {
+        "prompt": "Merge tables with multiple preprocessing steps",
+        "response": "stilts tcat in='input1.fits input2.fits' icmd='select \"RA>0\"' icmd='colmeta -units degrees RA' out=output.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Concatenate tables and show progress for each input file",
+        "response": "stilts tcat in='input1.fits input2.fits input3.fits' icmd=progress seqcol=TableIndex out=output.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Combine VOTable files keeping only specific columns based on UCD",
+        "response": "stilts tcat ifmt=votable in='input1.xml input2.xml' icmd='keepcols \"ucd$POS_EQ_RA_MAIN ucd$POS_EQ_DEC_MAIN\"' out=output.xml",
+        "chat.jar": "executed successfully"
+    }
+]

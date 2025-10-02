@@ -1,0 +1,12 @@
+[
+    {
+        "category": "tpipe - Complex Workflows",
+        "prompt": "Using my file 'raw_detections.fits' remove sources that that a snr less than 5. Then create columns MAG_u-i (MAG_u - MAG_i) , MAG_g-r (MAG_g-MAG_r) and MAG_u-r (MAG_u -MAG_r). After this then set any null value to -99 and save as processed_sources.fits",
+        "expected": "stilts tpipe in=raw_detections.fits cmd='select \"snr < 5\"' cmd='addcol MAG_u_i \"MAG_u - MAG_i\"' cmd='addcol MAG_g_r \"MAG_g - MAG_r\"' cmd='addcol MAG_u_r \"MAG_u - MAG_r\"' cmd='replaceval null -99 MAG_*' out=processed_sources.fits"
+    },
+    {
+        "category": "tpipe - Complex Workflows",
+        "prompt":"I have a catalogue `DDSS889.fits` please select only sources with FLAG=0. Keep only RA DEC and MAG columns and sort by MAG. Save file as DSS_cleaned.csv",
+        "expected":"stilts tpipe in=DDSS889.fits cmd='select \"FLAG==0\"' cmd='keepcols \"RA DEC MAG\"' cmd='sort MAG' out=DSS_cleaned.csv"
+    }
+]

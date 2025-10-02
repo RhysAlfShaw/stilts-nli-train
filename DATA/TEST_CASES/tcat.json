@@ -1,0 +1,121 @@
+[
+    {
+        "category":"tcat",
+        "prompt": "Concatenate two CSV files, `sources_a.csv` and `sources_b.csv`, into a single file named `merged_sources.csv`.",
+        "expected": "stilts tcat in=\"sources_a.csv sources_b.csv\" ifmt=csv out=merged_sources.csv ofmt=csv"
+    },
+    {
+        "category":"tcat",
+
+        "prompt": "Combine three FITS tables (`tile_1.fits`, `tile_2.fits`, `tile_3.fits`) into a new FITS table called `mosaic_catalog.fits`.",
+        "expected": "stilts tcat in=tile_1.fits in=tile_2.fits in=tile_3.fits out=mosaic_catalog.fits"
+    },
+    {
+        "category":"tcat",
+
+        "prompt": "I have a file named `file_list.txt` that contains a list of FITS files. Concatenate all of them into a single file `concatenated_data.fits`.",
+        "expected": "stilts tcat in=@file_list.txt out=concatenated_data.fits"
+    },
+    {
+        "category":"tcat",
+
+        "prompt": "For two VOTables, `vizier_query1.vot` and `vizier_query2.vot`, select only the 'RA' and 'DEC' columns from each before combining them into `ra_dec_list.csv`.",
+        "expected": "stilts tcat in=\"vizier_query1.vot vizier_query2.vot\" icmd='keepcols \"RA DEC\"' out=ra_dec_list.csv ofmt=csv"
+    },
+    {
+        "category":"tcat",
+
+        "prompt": "Concatenate `photometry_run1.dat` and `photometry_run2.dat`, which are ascii files, and then sort the final combined table by the 'MAG' column. The output should be `final_photometry.dat`.",
+        "expected": "stilts tcat in=\"photometry_run1.dat photometry_run2.dat\" ifmt=ascii ocmd='sort MAG' out=final_photometry.dat ofmt=ascii"
+    },
+    {
+        "category":"tcat",
+
+        "prompt": "Merge `catalog_part1.csv` and `catalog_part2.csv`, and add a new column named 'SourceID' that contains a number indicating which file each row came from.",
+        "expected": "stilts tcat in=\"catalog_part1.csv catalog_part2.csv\" ifmt=csv seqcol=SourceID out=combined_catalog_with_id.csv ofmt=csv"
+    },
+    {
+        "category":"tcat",
+
+        "prompt": "Combine `archive/obs_2024.fits` and `archive/obs_2025.fits` and add a column called 'OriginFile' that stores the full input filename for each row. Save the result as `full_obs_log.fits`",
+        "expected": "stilts tcat in=\"archive/obs_2024.fits archive/obs_2025.fits\" loccol=OriginFile out=full_obs_log.fits"
+    },
+    {
+        "category":"tcat",
+
+        "prompt": "Take a single multi-extension FITS file, `multispec.fits`, and concatenate all of its table extensions into a single output file, `all_spectra_table.fits`.",
+        "expected": "stilts tcat in=multispec.fits multi=true out=all_spectra_table.fits"
+    },
+    {
+        "category":"tcat",
+
+        "prompt": "I have a very large number of FITS files listed in `fits_file_index.lis`. Concatenate them lazily into `deep_survey_combined.fits` to avoid using too many resources.",
+        "expected": "stilts tcat in=@fits_file_index.lis lazy=true out=deep_survey_combined.fits"
+    },
+    {
+        "category":"tcat",
+
+        "prompt": "Join `galaxy_field_1.fits` and `galaxy_field_2.fits` into a new FITS file named `combined_field.fits`. Please pre-count the rows to potentially speed up the writing process.",
+        "expected": "stilts tcat in=\"galaxy_field_1.fits galaxy_field_2.fits\" countrows=true out=combined_field.fits"
+    },
+    {
+        "category":"tcat",
+
+        "prompt": "Can you combine `sector1_targets.csv` and `sector2_targets.csv` and just tell me the total number of rows without creating an output file?",
+        "expected": "stilts tcat in=\"sector1_targets.csv sector2_targets.csv\" ifmt=csv omode=count"
+    },
+    {
+        "category":"tcat",
+
+        "prompt": "Combine `run_alpha.dat` and `run_beta.dat` and then calculate and display basic statistics for the resulting table.",
+        "expected": "java -jar stilts.jar tcat in=\"run_alpha.dat run_beta.dat\" ifmt=ascii omode=stats"
+    },
+    {
+        "category":"tcat",
+
+        "prompt": "Join `sky_survey/patch_N45.fits` and `sky_survey/patch_S12.fits`. I want a new column `PatchID` that contains just the unique part of the filename ('N45' and 'S12'). The output should be `survey_combined.fits`.",
+        "expected": "stilts tcat in=\"sky_survey/patch_N45.fits sky_survey/patch_S12.fits\" uloccol=PatchID out=survey_combined.fits"
+    },
+    {
+        "category":"tcat",
+
+        "prompt": "From `detection_1.csv`, `detection_2.csv`, and `detection_3.csv`, filter each table to keep only rows where the 'QUALITY' column is greater than 3, and then combine the filtered tables into `high_quality_detections.csv`.",
+        "expected": "stilts tcat in=\"detection_1.csv detection_2.csv detection_3.csv\" ifmt=csv icmd='select \"QUALITY > 3\"' out=high_quality_detections.csv ofmt=csv"
+    },
+    {
+        "category":"tcat",
+
+        "prompt": "I have a script `fetch_alerts.sh` that outputs a CSV table to standard output. Concatenate its output with a local file `historical_data.fits` and save as `full_alert_log.fits`.",
+        "expected": "stilts tcat in=\"fetch_alerts.sh|\" in=historical_data.fits ifmt=csv out=full_alert_log.fits"
+    },
+    {
+        "category":"tcat",
+
+        "prompt": "Read a CSV table from standard input, concatenate it with `local_entries.csv`, and write the result to standard output as a FITS file.",
+        "expected": "stilts tcat in=- in=local_entries.csv ifmt=csv out=- ofmt=fits"
+    },
+    {
+        "category":"tcat",
+
+        "prompt": "For `field_A_raw.fits` and `field_B_raw.fits`, process each one by first selecting columns 'X', 'Y', and 'Z', and then taking the top 100 rows sorted by 'Z'. Concatenate these results into `top_sources_combined.fits`.",
+        "expected": "stilts tcat in=\"field_A_raw.fits field_B_raw.fits\" icmd='keepcols \"X Y Z\"; sorthead 100 Z' out=top_sources_combined.fits"
+    },
+    {
+        "category":"tcat",
+
+        "prompt": "I want to concatenate two very large VOTable files, `large_query_1.vot` and `large_query_2.vot`. Please make sure they are read as streams to conserve memory. Save the result as `streamed_output.vot`.",
+        "expected": "stilts tcat in=\"large_query_1.vot large_query_2.vot\" ifmt=votable istream=true out=streamed_output.vot"
+    },
+    {
+        "category":"tcat",
+
+        "prompt": "Join all tables from the multi-extension FITS file `multi_epoch_data.fits`. Add a sequence column 'Epoch_ID'. For each input table, also filter out rows where 'FLAG' is not 0. Finally, save the result as `clean_timeseries.csv`.",
+        "expected": "stilts tcat in=multi_epoch_data.fits multi=true icmd='select \"FLAG == 0\"' seqcol=Epoch_ID out=clean_timeseries.csv ofmt=csv"
+    },
+    {
+        "category":"tcat",
+
+        "prompt": "Can you just put these two ascii tables, `log_2025_01.txt` and `log_2025_02.txt`, together one after the other and save it as `full_log.txt`?",
+        "expected": "java -jar stilts.jar tcat ifmt=ascii in=\"log_2025_01.txt log_2025_02.txt\" out=full_log.txt"
+    }
+]

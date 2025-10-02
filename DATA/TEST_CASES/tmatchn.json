@@ -1,0 +1,120 @@
+[
+    {
+        "category":"tmatchn",
+        "prompt": "Crossmatch three astronomical catalogs: a master catalog `master_cat.fits` and two others, `cat_B.fits` and `cat_C.fits`. Use a 'pairs' mode with the first table as the reference, matching on sky position within a 2 arcsecond radius. Output the result to a FITS file named `paired_matches.fits`.",
+        "expected": "stilts tmatchn nin=3 multimode=pairs matcher=sky params=2 in1=master_cat.fits values1=\"RA DEC\" in2=cat_B.fits values2=\"RA_B DEC_B\" in3=cat_C.fits values3=\"RA_C DEC_C\" out=paired_matches.fits ofmt=fits"
+    },
+    {
+        "category":"tmatchn",
+
+        "prompt": "I have four catalogs: `ukidss.fits`, `vhs.fits`, `vista.fits`, and `wise.fits`. Find groups of objects that are mutually linked within 3 arcseconds, considering a per-object error from the `ERR_RAD` column in each table. Instead of a full output table, just give me a count of the matched groups.",
+        "expected": "stilts tmatchn nin=4 multimode=group matcher=skyerr params=3 in1=ukidss.fits values1=\"RA DEC ERR_RAD\" in2=vhs.fits values2=\"RA DEC ERR_RAD\" in3=vista.fits values3=\"RA DEC ERR_RAD\" in4=wise.fits values4=\"RA DEC ERR_RAD\" omode=count"
+    },
+    {
+        "category":"tmatchn",
+
+        "prompt": "Match a primary catalog `primary.csv` against `secondary_1.vot` and `secondary_2.vot` with a 1.5 arcsecond radius. Rename all columns by appending suffixes `_p`, `_s1`, and `_s2` respectively. Ensure every row from the primary catalog appears in the output `full_match.csv`, even if it has no matches.",
+        "expected": "stilts tmatchn nin=3 multimode=pairs matcher=sky params=1.5 in1=primary.csv ifmt1=csv values1=\"ra dec\" suffix1=\"_p\" in2=secondary_1.vot values2=\"ra dec\" suffix2=\"_s1\" in3=secondary_2.vot values3=\"ra dec\" suffix3=\"_s2\" fixcols=all join1=always out=full_match.csv ofmt=csv"
+    },
+    {
+        "category":"tmatchn",
+
+        "prompt": "Perform a 4-way crossmatch in pairs mode between `ref.fits` and three other catalogs: `catA.fits`, `catB.fits`, and `catC.fits`, using a 5 arcsecond match radius. In the output table, `id_matches.fits`, only keep the ID columns from each catalog, which are named `ID_REF`, `ID_A`, `ID_B`, and `ID_C`.",
+        "expected": "stilts tmatchn nin=4 multimode=pairs matcher=sky params=5 in1=ref.fits values1=\"RA DEC\" in2=catA.fits values2=\"RA DEC\" in3=catB.fits values3=\"RA DEC\" in4=catC.fits values4=\"RA DEC\" ocmd='keepcols \"ID_REF ID_A ID_B ID_C\"' out=id_matches.fits"
+    },
+    {
+        "category":"tmatchn",
+
+        "prompt": "I want to group rows from three tables (`data1.csv`, `data2.csv`, `data3.csv`) that share the exact same `SourceID` string. Output the results to a VOTable named `grouped_by_id.xml`.",
+        "expected": "stilts tmatchn nin=3 multimode=group matcher=exact in1=data1.csv ifmt1=csv values1=\"SourceID\" in2=data2.csv ifmt2=csv values2=\"SourceID\" in3=data3.csv ifmt3=csv values3=\"SourceID\" out=grouped_by_id.xml ofmt=votable"
+    },
+    {
+        "category":"tmatchn",
+
+        "prompt": "Crossmatch three tables, but pre-filter each one. For `table1.fits`, use rows where `MAG_G < 20`. For `table2.fits`, where `FLAG == 0`. For `table3.fits`, where `SNR > 5`. Use group mode with a 2.5 arcsec radius and send the output directly to TOPCAT.",
+        "expected": "stilts tmatchn nin=3 multimode=group matcher=sky params=2.5 in1=table1.fits icmd1=\"select 'MAG_G < 20'\" values1=\"RA DEC\" in2=table2.fits icmd2=\"select 'FLAG == 0'\" values2=\"RA DEC\" in3=table3.fits icmd3=\"select 'SNR > 5'\" values3=\"RA DEC\" omode=topcat"
+    },
+    {
+        "category":"tmatchn",
+
+        "prompt": "Perform a pairs match between `cat1.fits`, `cat2.fits`, and `cat3.fits`. However, use `cat2.fits` as the reference table instead of the default first one. Use a 1 arcsecond radius and write to `ref2_matches.fits`.",
+        "expected": "stilts tmatchn nin=3 multimode=pairs iref=2 matcher=sky params=1 in1=cat1.fits values1=\"RA DEC\" in2=cat2.fits values2=\"RA DEC\" in3=cat3.fits values3=\"RA DEC\" out=ref2_matches.fits"
+    },
+    {
+        "category":"tmatchn",
+
+        "prompt": "I have a very large crossmatch for 5 catalogs (`bigcat_1.fits` to `bigcat_5.fits`) on a 16-core machine. Use group mode with a 4 arcsec radius. Configure it to use 16 parallel threads for processing and turn off the progress logging.",
+        "expected": "stilts tmatchn nin=5 multimode=group matcher=sky params=4 in1=bigcat_1.fits values1=\"RA DEC\" in2=bigcat_2.fits values2=\"RA DEC\" in3=bigcat_3.fits values3=\"RA DEC\" in4=bigcat_4.fits values4=\"RA DEC\" in5=bigcat_5.fits values5=\"RA DEC\" runner=parallel16 progress=none out=big_group_match.fits"
+    },
+    {
+        "category":"tmatchn",
+
+        "prompt": "Find groups of objects across three ASCII observation files (`obs1.dat`, `obs2.dat`, `obs3.dat`). The coordinate columns are `RA_DEG` and `DEC_DEG`. The positional error for matching is twice the value in the `SEEING_ARCSEC` column. Use a maximum separation of 10 arcseconds.",
+        "expected": "stilts tmatchn nin=3 multimode=group matcher=skyerr params=10 in1=obs1.dat ifmt1=ascii values1=\"RA_DEG DEC_DEG SEEING_ARCSEC*2\" in2=obs2.dat ifmt2=ascii values2=\"RA_DEG DEC_DEG SEEING_ARCSEC*2\" in3=obs3.dat ifmt3=ascii values3=\"RA_DEG DEC_DEG SEEING_ARCSEC*2\" out=seeing_match.csv"
+    },
+    {
+        "category":"tmatchn",
+
+        "prompt": "Perform a 3-way pairs match between `reference.fits`, `surveyA.fits`, and `surveyB.fits` with a 2 arcsecond tolerance. Instead of generating the matched table, just output the summary statistics.",
+        "expected": "stilts tmatchn nin=3 multimode=pairs matcher=sky params=2 in1=reference.fits values1=\"RA DEC\" in2=surveyA.fits values2=\"RA DEC\" in3=surveyB.fits values3=\"RA DEC\" omode=stats"
+    },
+    {
+        "category":"tmatchn",
+
+        "prompt": "Match a FITS table `gaia.fits`, a VOTable `sdss.xml`, and a CSV file `panstarrs.csv` in group mode. The matching radius is 0.8 arcseconds. Write the output to a simple text file `grouped_sources.txt`.",
+        "expected": "stilts tmatchn nin=3 multimode=group matcher=sky params=0.8 in1=gaia.fits values1=\"ra dec\" in2=sdss.xml values2=\"ra dec\" in3=panstarrs.csv ifmt3=csv values3=\"ra dec\" out=grouped_sources.txt ofmt=ascii"
+    },
+    {
+        "category":"tmatchn",
+
+        "prompt": "Find all objects in a reference catalog `ref_cat.fits` that have no counterpart within 2 arcseconds in `cat2.fits`, `cat3.fits`, or `cat4.fits`. The output should only contain the rows from `ref_cat.fits` that meet this condition.",
+        "expected": "stilts tmatchn nin=4 multimode=pairs matcher=sky params=2 in1=ref_cat.fits values1=\"RA DEC\" suffix1=\"_1\" in2=cat2.fits values2=\"RA DEC\" suffix2=\"_2\" in3=cat3.fits values3=\"RA DEC\" suffix3=\"_3\" in4=cat4.fits values4=\"RA DEC\" suffix4=\"_4\" join1=always fixcols=dups ocmd='select isNull(RA_2) && isNull(RA_3) && isNull(RA_4); keepcols \"*_1\"' out=unmatched_ref.fits"
+    },
+    {
+        "category":"tmatchn",
+
+        "prompt": "Match three lists of 3D coordinates (`xyz1.csv`, `xyz2.txt`, `xyz3.csv`) using a 3D Cartesian matcher with a tolerance of 5.0 units. The coordinate columns are 'X', 'Y', and 'Z'. Use group mode.",
+        "expected": "stilts tmatchn nin=3 multimode=group matcher=3d params=5.0 in1=xyz1.csv ifmt1=csv values1=\"X Y Z\" in2=xyz2.txt ifmt2=ascii values2=\"X Y Z\" in3=xyz3.csv ifmt3=csv values3=\"X Y Z\" out=3d_groups.fits"
+    },
+    {
+        "category":"tmatchn",
+
+        "prompt": "I have a system command `generate_catalog_cmd` that generates a catalog to standard output in CSV format. I want to crossmatch this stream with two on-disk FITS files, `archive1.fits` and `archive2.fits`. Use the stream as the reference in a pairs match with a 1 arcsec radius.",
+        "expected": "stilts tmatchn nin=3 multimode=pairs matcher=sky params=1 in1=\"<generate_catalog_cmd\" ifmt1=csv values1=\"RA DEC\" in2=archive1.fits values2=\"RA DEC\" in3=archive2.fits values3=\"RA DEC\" out=stream_match.fits"
+    },
+    {   
+        "category":"tmatchn",        
+        "prompt": "Run a performance test of a 4-way group match on `test1.fits`, `test2.fits`, `test3.fits`, `test4.fits` with a 10 arcsecond radius. I don't need the output file. Just show detailed timing information during the run.",
+        "expected": "stilts tmatchn nin=4 multimode=group matcher=sky params=10 in1=test1.fits values1=\"RA DEC\" in2=test2.fits values2=\"RA DEC\" in3=test3.fits values3=\"RA DEC\" in4=test4.fits values4=\"RA DEC\" omode=discard progress=time"
+    },
+    {
+        "category":"tmatchn",
+
+        "prompt": "Match three catalogs based on two properties, `PROP1` and `PROP2`. The matching criteria is anisotropic: the difference in `PROP1` must be less than 0.1, and the difference in `PROP2` must be less than 5.0. Group the matches and save to `anisotropic_match.csv`.",
+        "expected": "stilts tmatchn nin=3 multimode=group matcher=2d_anisotropic params=\"0.1 5.0\" in1=cat1.fits values1=\"PROP1 PROP2\" in2=cat2.fits values2=\"PROP1 PROP2\" in3=cat3.fits values3=\"PROP1 PROP2\" out=anisotropic_match.csv ofmt=csv"
+    },
+    {
+        "category":"tmatchn",
+
+        "prompt": "Perform a `pairs` match with `ref.fits` as the reference against `comp1.fits` and `comp2.fits` (2 arcsec radius). Rename all columns with suffixes `_ref`, `_c1`, `_c2`. The final table `clean_table.fits` should contain all columns from the reference table, plus only the `FLUX` and `FLUX_ERR` columns from the other two.",
+        "expected": "stilts tmatchn nin=3 multimode=pairs matcher=sky params=2 in1=ref.fits values1=\"RA DEC\" suffix1=\"_ref\" in2=comp1.fits values2=\"RA DEC\" suffix2=\"_c1\" in3=comp2.fits values3=\"RA DEC\" suffix3=\"_c2\" fixcols=all ocmd='keepcols \"*_ref FLUX_c1 FLUX_ERR_c1 FLUX_c2 FLUX_ERR_c2\"' out=clean_table.fits"
+    },
+    {
+        "category":"tmatchn",
+
+        "prompt": "Perform a group match on three catalogs (`cat_a.fits`, `cat_b.fits`, `cat_c.fits`), where each source has positional uncertainty described by an ellipse. The columns are `RA`, `DEC`, `MAJOR_AXIS`, `MINOR_AXIS`, and `POS_ANGLE`. The match criteria should be a maximum separation of 3 sigma.",
+        "expected": "stilts tmatchn nin=3 multimode=group matcher=skyellipse params=3 in1=cat_a.fits values1=\"RA DEC MAJOR_AXIS MINOR_AXIS POS_ANGLE\" in2=cat_b.fits values2=\"RA DEC MAJOR_AXIS MINOR_AXIS POS_ANGLE\" in3=cat_c.fits values3=\"RA DEC MAJOR_AXIS MINOR_AXIS POS_ANGLE\" out=ellipse_groups.fits"
+    },
+    {
+        "category":"tmatchn",
+
+        "prompt": "Cross-identify sources from four observation tables: `obs_1.fits` to `obs_4.fits`. First, for each table, select only sources with `QUALITY_FLAG == 0`. Then, perform a group match based on RA and Dec with a 1.5 arcsecond radius. Use sequential processing and write the output as a VOTable to standard output.",
+        "expected": "stilts tmatchn nin=4 multimode=group matcher=sky params=1.5 runner=sequential in1=obs_1.fits icmd1=\"select QUALITY_FLAG==0\" values1=\"RA DEC\" in2=obs_2.fits icmd2=\"select QUALITY_FLAG==0\" values2=\"RA DEC\" in3=obs_3.fits icmd3=\"select QUALITY_FLAG==0\" values3=\"RA DEC\" in4=obs_4.fits icmd4=\"select QUALITY_FLAG==0\" values4=\"RA DEC\" out=- ofmt=votable"
+    },
+    {
+        "category":"tmatchn",
+
+        "prompt": "Match `ref.fits` against `catX.fits` and `catY.fits` in pairs mode with a 1 arcsec radius. I want the output to include only rows that represent a three-way match, meaning a row from `ref.fits` must have a match in *both* `catX.fits` and `catY.fits`.",
+        "expected": "stilts tmatchn nin=3 multimode=pairs matcher=sky params=1 in1=ref.fits values1=\"RA_REF DEC_REF\" in2=catX.fits values2=\"RA_X DEC_X\" in3=catY.fits values3=\"RA_Y DEC_Y\" join2=match join3=match out=three_way_matches.fits"
+    }
+]

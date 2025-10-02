@@ -1,0 +1,513 @@
+[
+    {
+        "prompt": "Concatenate two FITS files, `survey_part1.fits` and `survey_part2.fits`, into a single FITS file.",
+        "response": "stilts tcatn nin=2 in1=survey_part1.fits in2=survey_part2.fits out=survey_full.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "How do I combine a CSV file and a VOTable into a new FITS file?",
+        "response": "stilts tcatn nin=2 in1=data.csv ifmt1=csv in2=more_data.vot out=combined.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I have three tables, `t1.fits`, `t2.fits`, `t3.fits`. Combine them and add a column named 'SourceTable' indicating which file each row came from.",
+        "response": "stilts tcatn nin=3 in1=t1.fits in2=t2.fits in3=t3.fits seqcol=SourceTable out=combined_with_source.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "My first table has columns 'RA', 'DEC', but the second has 'ALPHA', 'DELTA'. How can I concatenate them?",
+        "response": "stilts tcatn nin=2 in1=table1.fits in2=table2.fits icmd2='colmeta -name RA ALPHA; colmeta -name DEC DELTA' ocmd='keepcols \"RA DEC MAG\"' out=aligned.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Combine `cat_a.fits` and `cat_b.fits`, but only keep the 'ID', 'RA', and 'DEC' columns from both before joining.",
+        "response": "stilts tcatn nin=2 in1=cat_a.fits icmd1='keepcols \"ID RA DEC\"' in2=cat_b.fits icmd2='keepcols \"ID RA DEC\"' out=common_cols.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Concatenate `bright_stars.vot` and `faint_stars.fits`, then sort the final combined table by magnitude.",
+        "response": "stilts tcatn nin=2 in1=bright_stars.vot in2=faint_stars.fits ocmd='sort V_MAG' out=sorted_stars.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Just count the total number of rows from combining `file1.csv`, `file2.csv`, and `file3.csv`.",
+        "response": "stilts tcatn nin=3 ifmt1=csv in1=file1.csv ifmt2=csv in2=file2.csv ifmt3=csv in3=file3.csv omode=count",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Combine tables from a pipe and a file, and write the result to standard output as text.",
+        "response": "cat stream.csv | stilts tcatn nin=2 in1=disk_data.fits in2=- ifmt2=csv ofmt=text out=-",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: tcatn: not found\n\nNo such task: cat\n\nUsage:\n   stilts [-help] [-version] [-verbose] [-allowunused] [-prompt] [-bench]\n          [-debug] [-batch] [-memory] [-disk] [-memgui]\n          [-checkversion <vers>] [-stdout <file>] [-stderr <file>]\n          <task-name> <task-args>\n\n   stilts <task-name> help[=<param-name>|*]\n\n   Known tasks:\n      arrayjoin\n      calc\n      cdsskymatch\n      cone\n      coneskymatch\n      datalinklint\n      funcs\n      mocshape\n      parqlint\n      parqlook\n      pixfoot\n      pixsample\n      plot2d\n      plot3d\n      plothist\n      regquery\n      server\n      sqlclient\n      sqlskymatch\n      sqlupdate\n      taplint\n      tapquery\n      tapresume\n      tapskymatch\n      tcat\n      tcatn\n      tcopy\n      tcube\n      tgridmap\n      tgroup\n      tjoin\n      tloop\n      tmatch1\n      tmatch2\n      tmatchn\n      tmulti\n      tmultin\n      tpipe\n      tskymap\n      tskymatch2\n      votcopy\n      votlint\n      xsdvalidate\n      plot2plane\n      plot2sky\n      plot2cube\n      plot2sphere\n      plot2corner\n      plot2time\n\n"
+    },
+    {
+        "prompt": "I need to combine two tables, but the second table is missing the 'FLUX_ERR' column. How can I add it with null values?",
+        "response": "stilts tcatn nin=2 in1=table1.fits in2=table2.fits icmd2='addcol FLUX_ERR null' ocmd='keepcols \"ID FLUX FLUX_ERR\"' out=complete.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Concatenate two tables and add a column with the original filename for each row.",
+        "response": "stilts tcatn nin=2 in1=source_a.vot in2=source_b.vot loccol=OriginFile out=combined_loc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Combine only the sources with magnitude brighter than 15 from `deep_survey.fits` with all sources from `shallow_survey.fits`.",
+        "response": "stilts tcatn nin=2 in1=deep_survey.fits icmd1='select MAG < 15' in2=shallow_survey.fits out=mixed_depth.fits",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '<' '15'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: select MAG < 15\n\nUsage: select <expr>\n    (Unused arguments: '<' '15'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "I have two tables with different column orders. How do I concatenate them with columns in the order: NAME, RA_DEG, DEC_DEG?",
+        "response": "stilts tcatn nin=2 in1=t1.fits icmd1='keepcols \"NAME RA_DEG DEC_DEG\"' in2=t2.fits icmd2='keepcols \"NAME RA_DEG DEC_DEG\"' out=ordered.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Combine `data.ecsv` and `data.parquet` and send the result directly to TOPCAT.",
+        "response": "stilts tcatn nin=2 in1=data.ecsv ifmt1=ecsv in2=data.parquet omode=topcat",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "My second table has coordinates in radians. Convert them to degrees before concatenating with the first table.",
+        "response": "stilts tcatn nin=2 in1=t1_deg.fits in2=t2_rad.fits icmd2='replacecol RA_DEG radiansToDegrees(RA_RAD); replacecol DEC_DEG radiansToDegrees(DEC_RAD)' ocmd='keepcols \"RA_DEG DEC_DEG\"' out=degrees.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Combine `table1.fits` and `table2.fits`, but only keep the first 100 rows from each.",
+        "response": "stilts tcatn nin=2 in1=table1.fits icmd1='head 100' in2=table2.fits icmd2='head 100' out=sample.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "After concatenating two tables, I want to remove any duplicate rows based on the 'ID' column.",
+        "response": "stilts tcatn nin=2 in1=cat1.fits in2=cat2.fits ocmd='sort ID' ocmd='uniq ID' out=unique_sources.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Combine an IPAC table and a FITS table into an ECSV file.",
+        "response": "stilts tcatn nin=2 in1=data.tbl ifmt1=ipac in2=data.fits out=combined.ecsv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Concatenate four different CSV files into one.",
+        "response": "stilts tcatn nin=4 ifmt1=csv in1=q1.csv ifmt2=csv in2=q2.csv ifmt3=csv in3=q3.csv ifmt4=csv in4=q4.csv out=full_year.csv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need to combine two tables and add a 'SURVEY' column saying 'SDSS' for the first and '2MASS' for the second.",
+        "response": "stilts tcatn nin=2 in1=sdss.fits icmd1='addcol SURVEY \"SDSS\"' in2=2mass.fits icmd2='addcol SURVEY \"2MASS\"' out=surveys.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "How do I combine a FITS file with a simulated sky catalog of 1000 stars?",
+        "response": "stilts tcatn nin=2 in1=my_real_data.fits in2=:skysim:1000 out=real_plus_sim.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "My tables have a 'DATE' column as a string. I want to add a new 'MJD' column to both before joining.",
+        "response": "stilts tcatn nin=2 in1=obs1.fits icmd1='addcol MJD isoToMjd(DATE)' in2=obs2.fits icmd2='addcol MJD isoToMjd(DATE)' out=obs_with_mjd.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Combine two tables, but rename the 'MAG' column to 'V_MAG' in the first table before doing so.",
+        "response": "stilts tcatn nin=2 in1=t1.fits icmd1='colmeta -name V_MAG MAG' in2=t2.fits out=renamed.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Concatenate two tables and then calculate the mean and standard deviation of the final result.",
+        "response": "stilts tcatn nin=2 in1=part1.fits in2=part2.fits omode=stats",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I have two tables, one with magnitudes and one with fluxes. Convert the fluxes to magnitudes in the second table before concatenating.",
+        "response": "stilts tcatn nin=2 in1=mags.fits in2=fluxes.fits icmd2='replacecol MAG janskyToAb(FLUX_JY)' ocmd='keepcols \"ID MAG\"' out=all_mags.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Combine two tables, but drop all columns except for 'RA', 'DEC', and 'Z' from both.",
+        "response": "stilts tcatn nin=2 in1=qso1.fits icmd1='keepcols \"RA DEC Z\"' in2=qso2.fits icmd2='keepcols \"RA DEC Z\"' out=qso_xyz.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Take `list1.txt` and `list2.txt` (ASCII format) and combine them into a single FITS file, adding a column to show which list they came from.",
+        "response": "stilts tcatn nin=2 ifmt1=ascii in1=list1.txt ifmt2=ascii in2=list2.txt seqcol=ListID out=combined_list.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Combine `catA.fits` and `catB.fits`. `catB.fits` has FK4 coordinates that need to be converted to FK5.",
+        "response": "stilts tcatn nin=2 in1=catA.fits in2=catB.fits icmd2='addskycoords fk4 fk5 RA_B1950 DEC_B1950 RA_J2000 DEC_J2000' ocmd='keepcols \"RA_J2000 DEC_J2000 MAG\"' out=fk5_combined.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need to combine three tables, but the second one is gzipped.",
+        "response": "stilts tcatn nin=3 in1=t1.fits in2=t2.fits.gz in3=t3.fits out=t_all.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Combine two Parquet files and output as a single Parquet file.",
+        "response": "stilts tcatn nin=2 in1=data1.parquet in2=data2.parquet out=combined.parquet",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Concatenate two tables and just show the first 10 rows of the result on the terminal.",
+        "response": "stilts tcatn nin=2 in1=t1.fits in2=t2.fits ocmd='head 10' ofmt=text out=-",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "How to combine three tables where the second one has a different magnitude column name?",
+        "response": "stilts tcatn nin=3 in1=t1.fits in2=t2.fits icmd2='colmeta -name Vmag V_band' in3=t3.fits ocmd='keepcols Vmag' out=combined_vmag.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Combine two tables, but only if the 'QUALITY' flag is 'A' in the first table.",
+        "response": "stilts tcatn nin=2 in1=t1.fits icmd1='select QUALITY==\"A\"' in2=t2.fits out=filtered.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need to join `file1.fits` with the second extension of `file2.fits`.",
+        "response": "stilts tcatn nin=2 in1=file1.fits in2=file2.fits#2 out=joined_hdu.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Concatenate two tables and replace the value -999 with null in the 'FLUX' column of the final table.",
+        "response": "stilts tcatn nin=2 in1=d1.fits in2=d2.fits ocmd='badval -999 FLUX' out=cleaned.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Can I combine a local FITS file with a VOTable from a URL?",
+        "response": "stilts tcatn nin=2 in1=local.fits in2=http://example.com/remote.vot out=combined.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Combine three tables, then add a new column which is the ratio of 'FLUX_A' and 'FLUX_B'.",
+        "response": "stilts tcatn nin=3 in1=t1.fits in2=t2.fits in3=t3.fits ocmd='addcol FLUX_RATIO FLUX_A/FLUX_B' out=with_ratio.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "My two tables have some duplicate column names. How can I join them, keeping all columns but renaming duplicates?",
+        "response": "stilts tcatn nin=2 in1=t1.fits in2=t2.fits fixcols=dups suffix1=_t1 suffix2=_t2 out=renamed_dups.fits",
+        "chat.jar": "failed",
+        "error": "\nUnused arguments: fixcols=dups suffix1=_t1 suffix2=_t2\n\nUsage: tcatn nin=<count> ifmtN=<in-format> inN=<tableN> icmdN=<cmds>\n             ocmd=<cmds>\n             omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n             out=<out-table> ofmt=<out-format> seqcol=<colname>\n             loccol=<colname> uloccol=<colname> countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Combine a table of galaxies and a table of stars, adding a 'TYPE' column to each before joining.",
+        "response": "stilts tcatn nin=2 in1=gals.fits icmd1='addcol TYPE \"GALAXY\"' in2=stars.fits icmd2='addcol TYPE \"STAR\"' out=classified.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Concatenate a table with itself to double its length.",
+        "response": "stilts tcatn nin=2 in1=my_table.fits in2=my_table.fits out=doubled.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Join the last 500 rows of table A with the first 500 rows of table B.",
+        "response": "stilts tcatn nin=2 in1=table_A.fits icmd1='tail 500' in2=table_B.fits icmd2='head 500' out=splice.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Combine two tables, but replace the 'RA_STRING' column in the second table with a numeric degree value.",
+        "response": "stilts tcatn nin=2 in1=t1.fits in2=t2.fits icmd2='replacecol RA hmsToDegrees(RA_STRING)' ocmd='keepcols \"RA DEC\"' out=numeric_ra.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I have a FITS file, an ECSV file, and a Parquet file. Combine them into a single FITS file.",
+        "response": "stilts tcatn nin=3 in1=d1.fits in2=d2.ecsv ifmt2=ecsv in3=d3.parquet out=multi_format.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Combine tables, and add a column that shows the unique part of each input filename.",
+        "response": "stilts tcatn nin=2 in1=data_field_A.fits in2=data_field_B.fits uloccol=FieldID out=combined_uloc.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "How to join two tables where one has an extra column that I want to discard?",
+        "response": "stilts tcatn nin=2 in1=t1.fits icmd1='keepcols \"ID RA DEC MAG\"' in2=t2.fits icmd2='keepcols \"ID RA DEC MAG\"' out=aligned_cols.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Concatenate two tables, then show the final metadata in the terminal.",
+        "response": "stilts tcatn nin=2 in1=t1.fits in2=t2.fits omode=meta",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Combine `field_1.fits` with the results of a TAP query.",
+        "response": "stilts tcatn nin=2 in1=field_1.fits in2='<stilts tapquery tapurl=... adql=... ofmt=fits' ifmt2=fits out=combined_with_tap.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "My two tables have matching columns, but one has 'ra', 'dec' and the other has 'RA', 'DEC'. Will `tcatn` handle this?",
+        "response": "Yes, STILTS column name matching is case-insensitive, so they should concatenate without any preprocessing. `stilts tcatn nin=2 in1=lower.fits in2=upper.fits out=case_insensitive.fits`",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: tcatn: not found\n\nNo such task: Yes,\n\nUsage:\n   stilts [-help] [-version] [-verbose] [-allowunused] [-prompt] [-bench]\n          [-debug] [-batch] [-memory] [-disk] [-memgui]\n          [-checkversion <vers>] [-stdout <file>] [-stderr <file>]\n          <task-name> <task-args>\n\n   stilts <task-name> help[=<param-name>|*]\n\n   Known tasks:\n      arrayjoin\n      calc\n      cdsskymatch\n      cone\n      coneskymatch\n      datalinklint\n      funcs\n      mocshape\n      parqlint\n      parqlook\n      pixfoot\n      pixsample\n      plot2d\n      plot3d\n      plothist\n      regquery\n      server\n      sqlclient\n      sqlskymatch\n      sqlupdate\n      taplint\n      tapquery\n      tapresume\n      tapskymatch\n      tcat\n      tcatn\n      tcopy\n      tcube\n      tgridmap\n      tgroup\n      tjoin\n      tloop\n      tmatch1\n      tmatch2\n      tmatchn\n      tmulti\n      tmultin\n      tpipe\n      tskymap\n      tskymatch2\n      votcopy\n      votlint\n      xsdvalidate\n      plot2plane\n      plot2sky\n      plot2cube\n      plot2sphere\n      plot2corner\n      plot2time\n\n"
+    },
+    {
+        "prompt": "Concatenate `events_1.fits` and `events_2.fits`, then run `pixfoot` on the result.",
+        "response": "stilts tcatn nin=2 in1=events_1.fits in2=events_2.fits | stilts pixfoot in=- out=combined_footprint.moc.fits",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: pixfoot: not found\n"
+    },
+    {
+        "prompt": "Join an MRT file with a TST file into a VOTable.",
+        "response": "stilts tcatn nin=2 in1=data.mrt in2=data.tst out=combined.vot",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Combine three tables, keeping only the 'ID', 'X', and 'Y' columns from all of them.",
+        "response": "stilts tcatn nin=3 in1=t1.fits icmd1='keepcols \"ID X Y\"' in2=t2.fits icmd2='keepcols \"ID X Y\"' in3=t3.fits icmd3='keepcols \"ID X Y\"' out=minimal.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I want to join `table1.fits` with every 100th row of `table2.fits`.",
+        "response": "stilts tcatn nin=2 in1=table1.fits in2=table2.fits icmd2='every 100' out=sparse_join.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "After concatenating, I want a new column which is the logarithm of the 'FLUX' column.",
+        "response": "stilts tcatn nin=2 in1=f1.fits in2=f2.fits ocmd='addcol LOG_FLUX log10(FLUX)' out=with_log.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Combine three tables, one of which is at a URL.",
+        "response": "stilts tcatn nin=3 in1=local1.fits in2=http://example.com/remote.fits in3=local2.fits out=combined_remote.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Can I combine two tables, but filter out rows where `FLAG` is set in the second table?",
+        "response": "stilts tcatn nin=2 in1=t1.fits in2=t2.fits icmd2='select FLAG==0' out=filtered_join.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Combine two ASCII tables, then display the result in the GUI.",
+        "response": "stilts tcatn nin=2 ifmt1=ascii in1=a.txt ifmt2=ascii in2=b.txt omode=gui",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "My second table has flux in erg/s/cm2/A and I need it in Jy before combining.",
+        "response": "stilts tcatn nin=2 in1=t1_jy.fits in2=t2_erg.fits icmd2='addcol FLUX_JY ergscmaToJansky(FLUX_ERG, WAVE_ANGSTROM)' ocmd='keepcols \"FLUX_JY\"' out=all_jy.fits",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: 'WAVE_ANGSTROM)'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: addcol FLUX_JY ergscmaToJansky(FLUX_ERG, WAVE_ANGSTROM)\n\nUsage: addcol [-after <col-id> | -before <col-id>]\n              [-units <units>] [-ucd <ucd>] [-utype <utype>] [-xtype <xtype>]\n              [-desc <descrip>] [-shape <n>[,<n>...][,*]] [-elsize <n>]\n              <col-name> <expr>\n    (Unused arguments: 'WAVE_ANGSTROM)'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "How to concatenate two tables where one has a column 'magnitude' and the other 'mag'?",
+        "response": "stilts tcatn nin=2 in1=t1.fits in2=t2.fits icmd2='colmeta -name magnitude mag' ocmd='keepcols magnitude' out=consistent_mag.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Combine two datasets and only keep rows where the final magnitude is between 18 and 19.",
+        "response": "stilts tcatn nin=2 in1=d1.fits in2=d2.fits ocmd='select MAG>18 && MAG<19' out=mag_slice.fits",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '&&' 'MAG<19'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: select MAG>18 && MAG<19\n\nUsage: select <expr>\n    (Unused arguments: '&&' 'MAG<19'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "Combine `data_g_band.fits` and `data_r_band.fits`, adding a 'FILTER' column to each first.",
+        "response": "stilts tcatn nin=2 in1=data_g_band.fits icmd1='addcol FILTER \"g\"' in2=data_r_band.fits icmd2='addcol FILTER \"r\"' out=multi_band.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Concatenate the first table of `multi1.fits` with the second table of `multi2.fits`.",
+        "response": "stilts tcatn nin=2 in1=multi1.fits in2=multi2.fits#2 out=selected_hdus.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "How do I use `tcatn` to create a table with a header from one file and data from another?",
+        "response": "This is not what `tcatn` is for. You might be able to achieve this with system commands piped into `tpipe`, for instance: `cat header.txt data.txt | stilts tpipe in=- ifmt=ascii out=table.fits`",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: tcatn: not found\n/bin/sh: 1: tpipe: not found\n/bin/sh: 1: tpipe: not found\ncat: header.txt: No such file or directory\ncat: data.txt: No such file or directory\n\nNo such task: This\n\nUsage:\n   stilts [-help] [-version] [-verbose] [-allowunused] [-prompt] [-bench]\n          [-debug] [-batch] [-memory] [-disk] [-memgui]\n          [-checkversion <vers>] [-stdout <file>] [-stderr <file>]\n          <task-name> <task-args>\n\n   stilts <task-name> help[=<param-name>|*]\n\n   Known tasks:\n      arrayjoin\n      calc\n      cdsskymatch\n      cone\n      coneskymatch\n      datalinklint\n      funcs\n      mocshape\n      parqlint\n      parqlook\n      pixfoot\n      pixsample\n      plot2d\n      plot3d\n      plothist\n      regquery\n      server\n      sqlclient\n      sqlskymatch\n      sqlupdate\n      taplint\n      tapquery\n      tapresume\n      tapskymatch\n      tcat\n      tcatn\n      tcopy\n      tcube\n      tgridmap\n      tgroup\n      tjoin\n      tloop\n      tmatch1\n      tmatch2\n      tmatchn\n      tmulti\n      tmultin\n      tpipe\n      tskymap\n      tskymatch2\n      votcopy\n      votlint\n      xsdvalidate\n      plot2plane\n      plot2sky\n      plot2cube\n      plot2sphere\n      plot2corner\n      plot2time\n\n"
+    },
+    {
+        "prompt": "Combine two tables, and then shuffle the rows of the final table.",
+        "response": "stilts tcatn nin=2 in1=t1.fits in2=t2.fits ocmd=shuffle out=shuffled.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Can you combine a PDS4 file with a CDF file?",
+        "response": "stilts tcatn nin=2 in1=data.xml ifmt1=pds4 in2=data.cdf ifmt2=cdf ocmd='keepcols \"TIME VALUE\"' out=combined_space.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Join the first 10 rows of table A with the last 10 rows of table B.",
+        "response": "stilts tcatn nin=2 in1=table_A.fits icmd1='head 10' in2=table_B.fits icmd2='tail 10' out=head_tail.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "After combining tables, I want to see the result as a LaTeX table.",
+        "response": "stilts tcatn nin=2 in1=t1.fits in2=t2.fits ofmt=latex out=table.tex",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Combine two tables where the second one needs its 'RA_HMS' column converted to decimal degrees.",
+        "response": "stilts tcatn nin=2 in1=t1.fits in2=t2.fits icmd2='replacecol RA hmsToDegrees(RA_HMS)' ocmd='keepcols \"RA DEC\"' out=degrees_out.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Join five different regions of a survey together.",
+        "response": "stilts tcatn nin=5 in1=r1.fits in2=r2.fits in3=r3.fits in4=r4.fits in5=r5.fits out=full_survey.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Combine three tables, but ensure the final table name is 'CombinedCatalog'.",
+        "response": "stilts tcatn nin=3 in1=t1.fits in2=t2.fits in3=t3.fits ocmd='tablename CombinedCatalog' out=named_catalog.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need to join table `a.fits` with the output of `tloop`.",
+        "response": "stilts tcatn nin=2 in1=a.fits in2=:loop:100 icmd1='keepcols i' icmd2='addcol x i*2' out=joined_loop.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Concatenate two tables, but use a pipe `|` to separate values in the final CSV output.",
+        "response": "stilts tcatn nin=2 in1=t1.fits in2=t2.fits ofmt='csv(delimiter=|)' out=pipe.csv",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Join three tables, all of which are gzipped FITS files.",
+        "response": "stilts tcatn nin=3 in1=t1.fits.gz in2=t2.fits.gz in3=t3.fits.gz out=all.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Combine table1 and table2, but make sure all columns from table2 have a `_t2` suffix.",
+        "response": "stilts tcatn nin=2 in1=table1.fits in2=table2.fits fixcols=dups suffix2=_t2 out=suffixed.fits",
+        "chat.jar": "failed",
+        "error": "\nUnused arguments: fixcols=dups suffix2=_t2\n\nUsage: tcatn nin=<count> ifmtN=<in-format> inN=<tableN> icmdN=<cmds>\n             ocmd=<cmds>\n             omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n             out=<out-table> ofmt=<out-format> seqcol=<colname>\n             loccol=<colname> uloccol=<colname> countrows=true|false\n\n"
+    },
+    {
+        "prompt": "How to append a single row to a table using `tcatn`?",
+        "response": "You can create a single-row table with `tpipe` and `head 1`, then `tcatn`. E.g., `stilts tpipe in=single_row_source.fits cmd='head 1' out=single_row.fits`, then `stilts tcatn nin=2 in1=main_table.fits in2=single_row.fits out=appended.fits`.",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: tpipe: not found\nhead: cannot open '1' for reading: No such file or directory\n/bin/sh: 1: tcatn: not found\n/bin/sh: 1: tpipe: not found\n/bin/sh: 1: tcatn: not found\n\nNo such task: You\n\nUsage:\n   stilts [-help] [-version] [-verbose] [-allowunused] [-prompt] [-bench]\n          [-debug] [-batch] [-memory] [-disk] [-memgui]\n          [-checkversion <vers>] [-stdout <file>] [-stderr <file>]\n          <task-name> <task-args>\n\n   stilts <task-name> help[=<param-name>|*]\n\n   Known tasks:\n      arrayjoin\n      calc\n      cdsskymatch\n      cone\n      coneskymatch\n      datalinklint\n      funcs\n      mocshape\n      parqlint\n      parqlook\n      pixfoot\n      pixsample\n      plot2d\n      plot3d\n      plothist\n      regquery\n      server\n      sqlclient\n      sqlskymatch\n      sqlupdate\n      taplint\n      tapquery\n      tapresume\n      tapskymatch\n      tcat\n      tcatn\n      tcopy\n      tcube\n      tgridmap\n      tgroup\n      tjoin\n      tloop\n      tmatch1\n      tmatch2\n      tmatchn\n      tmulti\n      tmultin\n      tpipe\n      tskymap\n      tskymatch2\n      votcopy\n      votlint\n      xsdvalidate\n      plot2plane\n      plot2sky\n      plot2cube\n      plot2sphere\n      plot2corner\n      plot2time\n\n"
+    },
+    {
+        "prompt": "Join a Feather file with a FITS file.",
+        "response": "stilts tcatn nin=2 in1=data.feather in2=data.fits out=combined.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Combine three tables, and show the result in HTML format.",
+        "response": "stilts tcatn nin=3 in1=t1.fits in2=t2.fits in3=t3.fits ofmt=html out=table.html",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "My two tables have an 'ID' column as integer in one and string in another. How can I join them?",
+        "response": "stilts tcatn nin=2 in1=t1_int.fits icmd1='replacecol ID toString(ID)' in2=t2_str.fits out=strings.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Concatenate three tables and add a column showing which file each row came from.",
+        "response": "stilts tcatn nin=3 in1=f1.fits in2=f2.fits in3=f3.fits loccol=SourceFile out=with_files.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I need to combine an ASCII table (headerless) with a FITS table.",
+        "response": "stilts tcatn nin=2 in1=data.txt ifmt1=ascii icmd1='colmeta -name C1 $1; colmeta -name C2 $2' in2=data.fits ocmd='keepcols \"C1 C2\"' out=combined_ascii.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Join table A with a random sample of 100 rows from table B.",
+        "response": "stilts tcatn nin=2 in1=table_A.fits in2=table_B.fits icmd2='random 100' out=random_sample_join.fits",
+        "chat.jar": "failed",
+        "error": "Error: Unused arguments: '100'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: random 100\n\nUsage: random\n    (Unused arguments: '100'\n(Hint: arguments containing spaces must be quoted))\n"
+    },
+    {
+        "prompt": "After combining tables, I need to assert that all 'MAG' values are positive.",
+        "response": "stilts tcatn nin=2 in1=t1.fits in2=t2.fits ocmd='assert MAG>0' out=asserted.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Combine a local CSV file with a CSV file from a URL.",
+        "response": "stilts tcatn nin=2 ifmt1=csv in1=local.csv ifmt2=csv in2=http://example.com/remote.csv out=combined_csv.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Join three tables, but only if they have more than 1000 rows each.",
+        "response": "This requires pre-checking row counts. You would typically do this in a script rather than a single `tcatn` command.",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: tcatn: not found\n\nNo such task: This\n\nUsage:\n   stilts [-help] [-version] [-verbose] [-allowunused] [-prompt] [-bench]\n          [-debug] [-batch] [-memory] [-disk] [-memgui]\n          [-checkversion <vers>] [-stdout <file>] [-stderr <file>]\n          <task-name> <task-args>\n\n   stilts <task-name> help[=<param-name>|*]\n\n   Known tasks:\n      arrayjoin\n      calc\n      cdsskymatch\n      cone\n      coneskymatch\n      datalinklint\n      funcs\n      mocshape\n      parqlint\n      parqlook\n      pixfoot\n      pixsample\n      plot2d\n      plot3d\n      plothist\n      regquery\n      server\n      sqlclient\n      sqlskymatch\n      sqlupdate\n      taplint\n      tapquery\n      tapresume\n      tapskymatch\n      tcat\n      tcatn\n      tcopy\n      tcube\n      tgridmap\n      tgroup\n      tjoin\n      tloop\n      tmatch1\n      tmatch2\n      tmatchn\n      tmulti\n      tmultin\n      tpipe\n      tskymap\n      tskymatch2\n      votcopy\n      votlint\n      xsdvalidate\n      plot2plane\n      plot2sky\n      plot2cube\n      plot2sphere\n      plot2corner\n      plot2time\n\n"
+    },
+    {
+        "prompt": "My second table's columns are all uppercase. Can I convert them to lowercase before concatenating?",
+        "response": "stilts tcatn nin=2 in1=t1.fits in2=t2.fits icmd2=fixcolnames out=lower_case.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Join table A with every other row of table B.",
+        "response": "stilts tcatn nin=2 in1=table_A.fits in2=table_B.fits icmd2='every 2' out=every_other.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I want to combine two tables, but the second one uses 'T'/'F' for booleans. I need true/false.",
+        "response": "stilts tcatn nin=2 in1=t1.fits in2=t2.fits icmd2='replacecol FLAG \"FLAG == \\'T\\'\"' out=booleans.fits",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: Syntax error: Unterminated quoted string\n"
+    },
+    {
+        "prompt": "How do I combine the results from two different `tpipe` commands?",
+        "response": "stilts tcatn nin=2 in1='<stilts tpipe ... ofmt=fits' ifmt1=fits in2='<stilts tpipe ... ofmt=fits' ifmt2=fits out=combined_pipes.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Combine `cat1.fits`, `cat2.fits`, `cat3.fits`, and `cat4.fits`, and add a sequence number column.",
+        "response": "stilts tcatn nin=4 in1=cat1.fits in2=cat2.fits in3=cat3.fits in4=cat4.fits seqcol=CAT_ID out=all_cats.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Join a HAPI stream file with a FITS file.",
+        "response": "stilts tcatn nin=2 in1=data.hapi in2=data.fits out=combined.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "After concatenating, I want to see the result as a Mirage file.",
+        "response": "stilts tcatn nin=2 in1=t1.fits in2=t2.fits ofmt=mirage out=out.mirage",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "How to join two tables where one has columns `RA_H`, `RA_M`, `RA_S` that need to be combined into a single `RA` column?",
+        "response": "stilts tcatn nin=2 in1=t1.fits in2=t2.fits icmd2='addcol RA hmsToDegrees(RA_H,RA_M,RA_S)' ocmd='keepcols \"RA DEC\"' out=combined_ra.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Combine two tables, and then get a checksum of the final result.",
+        "response": "stilts tcatn nin=2 in1=t1.fits in2=t2.fits omode=checksum",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Join table A with table B, but only keeping rows from table B where 'SNR' > 10.",
+        "response": "stilts tcatn nin=2 in1=table_A.fits in2=table_B.fits icmd2='select SNR>10' out=high_snr.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "I have two tables from different instruments. They have different column names for flux. How do I combine them?",
+        "response": "stilts tcatn nin=2 in1=inst1.fits icmd1='colmeta -name FLUX FLUX_INST1' in2=inst2.fits icmd2='colmeta -name FLUX FLUX_INST2' ocmd='keepcols FLUX' out=unified_flux.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "Join table1.fits with a random view of table2.fits.",
+        "response": "stilts tcatn nin=2 in1=table1.fits in2=table2.fits icmd2=randomview out=random_view.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "What's the difference between `tcat` and `tcatn`?",
+        "response": "`tcat` is for concatenating multiple similar tables, applying the same input format and processing to all of them. `tcatn` is more flexible and is used for heterogeneous tables, allowing you to specify different formats and preprocessing commands for each input table individually [2, B.31, B.32].",
+        "chat.jar": "failed",
+        "error": "/bin/sh: 1: tcat: not found\n/bin/sh: 1: tcatn: not found\n\nNo such task: is\n\nUsage:\n   stilts [-help] [-version] [-verbose] [-allowunused] [-prompt] [-bench]\n          [-debug] [-batch] [-memory] [-disk] [-memgui]\n          [-checkversion <vers>] [-stdout <file>] [-stderr <file>]\n          <task-name> <task-args>\n\n   stilts <task-name> help[=<param-name>|*]\n\n   Known tasks:\n      arrayjoin\n      calc\n      cdsskymatch\n      cone\n      coneskymatch\n      datalinklint\n      funcs\n      mocshape\n      parqlint\n      parqlook\n      pixfoot\n      pixsample\n      plot2d\n      plot3d\n      plothist\n      regquery\n      server\n      sqlclient\n      sqlskymatch\n      sqlupdate\n      taplint\n      tapquery\n      tapresume\n      tapskymatch\n      tcat\n      tcatn\n      tcopy\n      tcube\n      tgridmap\n      tgroup\n      tjoin\n      tloop\n      tmatch1\n      tmatch2\n      tmatchn\n      tmulti\n      tmultin\n      tpipe\n      tskymap\n      tskymatch2\n      votcopy\n      votlint\n      xsdvalidate\n      plot2plane\n      plot2sky\n      plot2cube\n      plot2sphere\n      plot2corner\n      plot2time\n\n"
+    },
+    {
+        "prompt": "Can you concatenate three tables and output to a gzipped FITS file?",
+        "response": "stilts tcatn nin=3 in1=t1.fits in2=t2.fits in3=t3.fits out=all.fits.gz",
+        "chat.jar": "failed",
+        "error": "Error: Can't guess output format for all.fits.gz\n    (No handler specified for writing table.\nKnown formats: jdbc, fits, colfits, votable, fits-healpix, ECSV, parquet, text, ascii, CSV, IPAC, HTML, LaTeX, TST, feather, mirage)\nUsage: tcatn nin=<count> ifmtN=<in-format> inN=<tableN> icmdN=<cmds>\n             ocmd=<cmds>\n             omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n             out=<out-table> ofmt=<out-format> seqcol=<colname>\n             loccol=<colname> uloccol=<colname> countrows=true|false\n\n"
+    },
+    {
+        "prompt": "Combine three tables, but ensure that any duplicated column names across them are suffixed with `_1`, `_2`, `_3`.",
+        "response": "stilts tcatn nin=3 in1=t1.fits in2=t2.fits in3=t3.fits fixcols=all suffix1=_1 suffix2=_2 suffix3=_3 out=all_suffixed.fits",
+        "chat.jar": "failed",
+        "error": "\nUnused arguments: fixcols=all suffix1=_1 suffix2=_2 suffix3=_3\n\nUsage: tcatn nin=<count> ifmtN=<in-format> inN=<tableN> icmdN=<cmds>\n             ocmd=<cmds>\n             omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n             out=<out-table> ofmt=<out-format> seqcol=<colname>\n             loccol=<colname> uloccol=<colname> countrows=true|false\n\n"
+    },
+    {
+        "prompt": "I need to join a WDC format file and a CSV file.",
+        "response": "stilts tcatn nin=2 in1=data.wdc ifmt1=wdc in2=data.csv ifmt2=csv ocmd='keepcols \"TIME VALUE\"' out=combined.fits",
+        "chat.jar": "executed successfully"
+    },
+    {
+        "prompt": "After combining my tables, I want to replace any occurrence of the string 'N/A' with a null value in the 'NOTES' column.",
+        "response": "stilts tcatn nin=2 in1=t1.fits in2=t2.fits ocmd='replaceval \"N/A\" null NOTES' out=clean_notes.fits",
+        "chat.jar": "executed successfully"
+    }
+]

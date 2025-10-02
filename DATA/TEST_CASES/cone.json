@@ -1,0 +1,52 @@
+[
+    {
+        "category": "cone",
+        "prompt": "Find Gaia DR2 sources near RA 280, Dec 65 with a 0.5 degree radius, but only show me sources brighter than a G magnitude of 10. Then, just give me the source ID and parallax, renaming the parallax column to 'plx'.",
+        "expected": "stilts cone serviceurl=http://vizier.u-strasbg.fr/viz-bin/conesearch/I/345/gaia2 lon=280 lat=65 radius=0.5 ocmd='select \"phot_g_mean_mag < 10\"; keepcols \"source_id parallax\"; colmeta -name parallax plx'"
+    },
+    {
+        "category": "cone",
+        "prompt": "Search for 2MASS objects around the coordinates 14h 29m 42.9s, -62d 40' 46''. The radius should be 0.2 degrees. Save it to a file called 'circinus.csv'.",
+        "expected": "stilts cone serviceurl=http://vizier.u-strasbg.fr/viz-bin/conesearch/II/246/out lon=217.42875 lat=-62.6794 radius=0.2 out=circinus.csv ofmt=csv"
+    },
+    {
+        "category": "cone",
+        "prompt": "I need to find all FITS images from the DES DR1 archive via SIA within a 1.5 degree box around the south galactic pole.",
+        "expected": "stilts cone servicetype=sia serviceurl=https://datalab.noirlab.edu/sia/des_dr1 lon=0 lat=-90 radius=1.5 skysys=galactic dataformat=image/fits"
+    },
+    {
+        "category": "cone",
+        "prompt": "Query the SDSS DR12 catalog at RA 220, Dec 5, radius 0.8 degrees. I want to load the results into my PostgreSQL database 'astrodb', into a table named 'sdss_qso'.",
+        "expected": "stilts cone serviceurl=http://vizier.u-strasbg.fr/viz-bin/conesearch/V/147/sdss12 lon=220 lat=5 radius=0.8 omode=tosql protocol=postgresql db=astrodb dbtable=sdss_qso"
+    },
+    {
+        "category": "cone",
+        "prompt": "Find all spectra (SSA) from the 6dF Galaxy Survey within 2 degrees of RA 180, Dec 0, and keep only the ones with a redshift 'z' between 0.05 and 0.1.",
+        "expected": "stilts cone servicetype=ssa serviceurl=http://vizier.u-strasbg.fr/viz-bin/conesearch/VII/259/6dfgs lon=180 lat=0 radius=2 ocmd='select \"z > 0.05 && z < 0.1\"'"
+    },
+    {
+        "category": "cone",
+        "prompt": "Search for Pan-STARRS DR1 objects within 0.25 degrees of the galactic anti-center and broadcast the table to other VO applications using SAMP.",
+        "expected": "stilts cone serviceurl=http://vizier.u-strasbg.fr/viz-bin/conesearch/II/349/ps1 lon=180 lat=0 radius=0.25 skysys=galactic omode=samp"
+    },
+    {
+        "category": "cone",
+        "prompt": "Using the stilts JAR file, query the WISE catalog at ecliptic coordinates 30, -15 with a 1 degree radius. Output the result to an ASCII file named 'wise_ecliptic.txt'.",
+        "expected": "java -jar stilts.jar cone serviceurl=http://vizier.u-strasbg.fr/viz-bin/conesearch/II/328/allwise lon=30 lat=-15 radius=1 skysys=ecliptic out=wise_ecliptic.txt ofmt=ascii"
+    },
+    {
+        "category": "cone",
+        "prompt": "Find the 25 reddest objects from the SDSS DR9 catalog within 0.1 degrees of RA 150, Dec 30. Assume redder objects have a larger 'g-r' color.",
+        "expected": "stilts cone serviceurl=http://vizier.u-strasbg.fr/viz-bin/conesearch/V/139/sdss9 lon=150 lat=30 radius=0.1 ocmd='addcol g_r \"gmag-rmag\"; sort -down g_r; head 25'"
+    },
+    {
+        "category": "cone",
+        "prompt": "Show me the metadata for a query to the Chandra Source Catalog for a 0.5 degree radius around the North Ecliptic Pole.",
+        "expected": "stilts cone serviceurl=http://cda.cfa.harvard.edu/csc2cone/conesearch lon=270 lat=90 radius=0.5 skysys=ecliptic omode=meta"
+    },
+    {
+        "category": "cone",
+        "prompt": "How do I do a cone search and then add a column that calculates the distance in parsecs, using the formula 1000/parallax?",
+        "expected": "stilts cone serviceurl=http://gaia.ari.uni-heidelberg.de/cone/search lon=0 lat=0 radius=0.1 ocmd='addcol distance_pc \"1000/parallax\"'"
+    }
+]

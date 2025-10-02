@@ -55,7 +55,12 @@ def check_docker_command_in_responses(data):
 def main():
 
     # do not re-run some files have been edited since so that will overwrite it.
-    data_files = ["training_data-tpipe10.json"]
+    data_files = [
+        # "model_gen_eval/eval_tcat_claude.json",
+        # "model_gen_eval/eval_tcat_gpt5.json",
+        # "model_gen_eval/eval_tcatn_notebooklm.json",
+        "model_gen_eval/eval_tcat_gemini.json",
+    ]
     print(data_files)
     # iterate over each file and check the commands
     for data_file in data_files:
