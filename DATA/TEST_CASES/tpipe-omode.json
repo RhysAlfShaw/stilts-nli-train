@@ -11,7 +11,62 @@
     },
     {
         "category": "tpipe - Basic I/O",
+        "prompt": "Count the number of rows in large_gia_fulldr4.fits.",
+        "expected": "stilts tpipe in=large_gia_fulldr4.fits omode=count"
+    },
+    {
+        "category": "tpipe - Basic I/O",
+        "prompt": "Give me some statistics on my catalogue 'large_gaia_fulldr4.fits",
+        "expected": "stilts tpipe in=large_gaia_fulldr4.fits omode=count"
+    },
+    {
+        "category": "tpipe - Basic I/O",
+        "prompt": "I want statistics on my catalogue 'large_gaia_fulldr4.parquet",
+        "expected": "stilts tpipe in=large_gaia_fulldr4.parquet omode=count"
+    },
+    {
+        "category": "tpipe - Basic I/O",
+        "prompt": "My catalogue is 'large_gaia_fulldr4.parquet' can I have its checksum please.",
+        "expected": "stilts tpipe in=large_gaia_fulldr4.parquet omode=checksome"
+    },
+    {
+        "category": "tpipe - Basic I/O",
         "prompt": "Display the metadata and column information for sdss_data.vot.",
         "expected": "stilts tpipe in=sdss_data.vot omode=meta"
+    },
+    {
+        "category": "tpipe - Basic I/O",
+        "prompt": "Display the metadata and column information for sdss_data.fits.",
+        "expected": "stilts tpipe in=sdss_data.fits omode=meta"
+    },
+    {
+        "category": "tpipe - Basic I/O",
+        "prompt": "Display the metadata and column information for large_sdss_data.parquet.",
+        "expected": "stilts tpipe in=large_sdss_data.parquet omode=meta"
+    },
+    {
+        "category":"tpipe - Basic I/O",
+        "prompt": "Calculate the summary statistics for all columns in 'survey_data.vot'.",
+        "expected": "stilts tpipe in=survey_data.vot omode=stats"
+    },
+    {
+        "category":"tpipe - Basic I/O",
+        "prompt": "Count the total number of rows in the table located at 'http://archive.org/data/some_table.vot'.",
+        "expected": "stilts tpipe in=http://archive.org/data/some_table.vot omode=count"
+    },
+    {
+        "category":"tpipe - Basic I/O",
+        "prompt": "Show me just the metadata (column names, UCDs, etc.) for the table 'remote_data.fits.gz'.",
+        "expected": "stilts tpipe in=remote_data.fits.gz omode=meta"
+    },
+    {
+        "category":"tpipe - Basic I/O",
+        "prompt": "Show me just the metadata (column names, UCDs, etc.) for the table 'remote_data.fits.gz'.",
+        "expected": "stilts tpipe in=remote_data.fits.gz omode=meta"
+    },
+    {
+        "category":"tpipe - Basic I/O",
+        "prompt": "Convert my CSV file named 'input_data.csv' into a FITS file called 'output_data.fits'.",
+        "expected": "stilts tpipe in=input_data.csv ifmt=csv out=output_data.fits ofmt=fits"
     }
 ]

@@ -31,8 +31,8 @@
     },
     {
         "category": "cone",
-        "prompt": "Using the stilts JAR file, query the WISE catalog at ecliptic coordinates 30, -15 with a 1 degree radius. Output the result to an ASCII file named 'wise_ecliptic.txt'.",
-        "expected": "java -jar stilts.jar cone serviceurl=http://vizier.u-strasbg.fr/viz-bin/conesearch/II/328/allwise lon=30 lat=-15 radius=1 skysys=ecliptic out=wise_ecliptic.txt ofmt=ascii"
+        "prompt": "query the WISE catalog at ecliptic coordinates 30, -15 with a 1 degree radius. Output the result to an ASCII file named 'wise_ecliptic.txt'.",
+        "expected": "stilts cone serviceurl=http://vizier.u-strasbg.fr/viz-bin/conesearch/II/328/allwise lon=30 lat=-15 radius=1 skysys=ecliptic out=wise_ecliptic.txt ofmt=ascii"
     },
     {
         "category": "cone",

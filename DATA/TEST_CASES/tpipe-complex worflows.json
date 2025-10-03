@@ -1,12 +1,32 @@
 [
     {
         "category": "tpipe - Complex Workflows",
-        "prompt": "Using my file 'raw_detections.fits' remove sources that that a snr less than 5. Then create columns MAG_u-i (MAG_u - MAG_i) , MAG_g-r (MAG_g-MAG_r) and MAG_u-r (MAG_u -MAG_r). After this then set any null value to -99 and save as processed_sources.fits",
-        "expected": "stilts tpipe in=raw_detections.fits cmd='select \"snr < 5\"' cmd='addcol MAG_u_i \"MAG_u - MAG_i\"' cmd='addcol MAG_g_r \"MAG_g - MAG_r\"' cmd='addcol MAG_u_r \"MAG_u - MAG_r\"' cmd='replaceval null -99 MAG_*' out=processed_sources.fits"
+        "prompt": "Using my file 'raw_detections.fits' remove sources that have a signal-to-noise ratio (snr) less than 5. Then create columns MAG_u_i (MAG_u - MAG_i) , MAG_g_r (MAG_g - MAG_r) and MAG_u_r (MAG_u - MAG_r). After this, set any null value in the new magnitude columns to -99 and save as processed_sources.fits",
+        "expected": "stilts tpipe in=raw_detections.fits cmd='select \"snr >= 5\"' cmd='addcol MAG_u_i \"MAG_u - MAG_i\"' cmd='addcol MAG_g_r \"MAG_g - MAG_r\"' cmd='addcol MAG_u_r \"MAG_u - MAG_r\"' cmd='replaceval null -99 MAG_*' out=processed_sources.fits"
     },
     {
         "category": "tpipe - Complex Workflows",
-        "prompt":"I have a catalogue `DDSS889.fits` please select only sources with FLAG=0. Keep only RA DEC and MAG columns and sort by MAG. Save file as DSS_cleaned.csv",
+        "prompt":"I have a catalogue `DDSS889.fits`. Please select only sources with FLAG=0. Keep only the RA, DEC, and MAG columns, and then sort the table by MAG in ascending order. Save the final file as DSS_cleaned.csv",
         "expected":"stilts tpipe in=DDSS889.fits cmd='select \"FLAG==0\"' cmd='keepcols \"RA DEC MAG\"' cmd='sort MAG' out=DSS_cleaned.csv"
+    },
+    {
+        "category": "tpipe - Complex Workflows",
+        "prompt": "Take the file `galaxy_zoo.fits`. I want to classify galaxies based on their color `g-r`. Create a new column named `GALAXY_TYPE`. If `g-r` is less than 0.7, it should be 'blue'; otherwise, it should be 'red'. Then, rename the columns `RA_J2000` and `DEC_J2000` to `RA` and `DEC`, respectively. Save the output to `galaxy_classified.fits`.",
+        "expected": "stilts tpipe in=galaxy_zoo.fits cmd='addcol GALAXY_TYPE \"g_r < 0.7 ? \\'blue\\' : \\'red\\'\"' cmd='colmeta -name RA RA_J2000' cmd='colmeta -name DEC DEC_J2000' out=galaxy_classified.fits"
+    },
+    {
+        "category": "tpipe - Complex Workflows",
+        "prompt": "From my `source_list.fits`, calculate the average magnitude (`MAG_AVG`) for sources grouped by their `TILE_ID`. After that, filter the results to only include tiles where the average magnitude is brighter than (less than) 20. Finally, sort the resulting tiles by their average magnitude, from brightest to faintest. Save as `tile_stats.fits`.",
+        "expected": "stilts tpipe in=source_list.fits cmd='group TILE_ID' cmd='addcol MAG_AVG \"mean(MAG)\"' cmd='uniq TILE_ID' cmd='select \"MAG_AVG < 20\"' cmd='sort MAG_AVG' out=tile_stats.fits"
+    },
+    {
+        "category": "tpipe - Complex Workflows",
+        "prompt": "Using `fluxes.csv`, which has a column `FLUX_JY` in Janskys, create a new column `FLUX_ERG` by converting from Janskys to erg/s/cm²/Hz (multiply by 1.0e-23). Then, add a UCD and description to the new column, 'phot.flux.density' and 'Flux in CGS units', respectively. Finally, remove the original `FLUX_JY` column and save the result as `fluxes_cgs.fits`.",
+        "expected": "stilts tpipe in=fluxes.csv cmd='addcol FLUX_ERG \"FLUX_JY * 1.0e-23\"' cmd='colmeta -ucd phot.flux.density -name \"Flux in CGS units\" FLUX_ERG' cmd='delcols FLUX_JY' out=fluxes_cgs.fits"
+    },
+    {
+        "category": "tpipe - Complex Workflows",
+        "prompt": "I have a table `observations.fits`. Select only rows where the `FILTER` is 'r' and the `EXPTIME` is greater than 500 seconds. Then add a new column `AIRMASS_CORR` that is equal to `AIRMASS` squared. Afterwards, keep only the object ID, RA, DEC, and the new `AIRMASS_CORR` column. Save this as `filtered_obs.csv`.",
+        "expected": "stilts tpipe in=observations.fits cmd='select \"FILTER==\\'r\\' && EXPTIME > 500\"' cmd='addcol AIRMASS_CORR \"AIRMASS*AIRMASS\"' cmd='keepcols \"ID RA DEC AIRMASS_CORR\"' out=filtered_obs.csv"
     }
 ]

@@ -1,7 +1,17 @@
 [
     {
-        "category": "tpipe mocs",
-        "prompt": "Take my catalog raw_detections.fits, filter out any sources with snr < 5, then crossmatch the result with the Gaia DR3 catalog within 1 arcsecond, keeping only the matched sources, and save the final table as clean_matched.fits.",
-        "expected": "stilts tpipe in=raw_detections.fits cmd='select \"snr >= 5\"' | stilts tmatch2 in1=- in2=vizier:I/355/gaiadr3 find=best matcher=sky params=1 values1='RA DEC' values2='RA_ICRS DE_ICRS' ocat=clean_matched.fits"
+        "category":"tpipe moc",
+        "prompt":"Using my catalogue 'cleaned_sdss_source.fits' please filter it to only include sources inside my MOC file 'reduced_sdss_moc.fits'.",
+        "expected":"stilts tpipe in=cleaned_sdss_source.fits cmd='select \"inMoc(\"reduced_sdss_moc.fits\", RA, DEC)\"' out=sdss_inside_moc.fits"
+    },
+    {
+        "category":"tpipe moc",
+        "prompt":"I want to know if my sources are within or within 0.1 degrees of my MOC `my_moc.fits`. My catalogue is called 'input.fits'.",
+        "expected":"stilts tpipe in=input.fits cmd='select nearMoc(\"my_moc.fits\", RA, DEC, 0.1)' out=output.fits"
+    },
+    {
+        "category":"tpipe moc",
+        "prompt":"Using my catalogue 'input.fits' please filter it to only include sources inside my MOC file 'my_moc.fits'.",
+        "expected":"stilts tpipe in=input.fits cmd='select \"inMoc(\"my_moc.fits\", RA, DEC)\"' out=output.fits"
     }
 ]
