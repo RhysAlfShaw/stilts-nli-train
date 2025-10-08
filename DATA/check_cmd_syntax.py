@@ -3,7 +3,7 @@ import os
 import subprocess
 
 data_dir = "DATA/"
-docker_cmd = "docker run stilts-chat-stilts-dev-env java -jar chat.jar"
+docker_cmd = "docker exec confident_babbage java -jar chat.jar"
 GREEN = "\033[92m"
 RESET = "\033[0m"
 RED = "\033[91m"
@@ -22,6 +22,14 @@ def check_docker_command_in_responses(data):
         responce = item["response"]
         print("Item:", item)
         print("\n\n")
+
+        # is the first str 'stilts'?
+        if not responce.startswith("stilts"):
+            print(f"Response does not start with 'stilts', skipping: {responce}")
+            item["chat.jar"] = "skipped - no 'stilts' prefix"
+            print("\n\n-----------------------------------\n\n")
+            continue
+
         # remove stilts from the response
         # remove java -jar stilts or stilts from the response
         responce = (
@@ -56,10 +64,18 @@ def main():
 
     # do not re-run some files have been edited since so that will overwrite it.
     data_files = [
-        # "model_gen_eval/eval_tcat_claude.json",
-        # "model_gen_eval/eval_tcat_gpt5.json",
-        # "model_gen_eval/eval_tcatn_notebooklm.json",
-        "model_gen_eval/eval_tcat_gemini.json",
+        # "NOTEBOOKLM/cone-examples.json",
+        # "NOTEBOOKLM/mocshape.json",
+        # "NOTEBOOKLM/pixfoot.json",
+        # "NOTEBOOKLM/plot2plane.json",
+        # "NOTEBOOKLM/plot2sky.json",
+        # "NOTEBOOKLM/tapquery.json",
+        # "NOTEBOOKLM/tcat.json",
+        # "NOTEBOOKLM/tcatn.json",
+        "NOTEBOOKLM/tcopy.json",
+        "NOTEBOOKLM/tmatch2.json",
+        "NOTEBOOKLM/tmatchn.json",
+        "NOTEBOOKLM/tpipe.json",
     ]
     print(data_files)
     # iterate over each file and check the commands
@@ -71,7 +87,6 @@ def main():
         # save the modified data back to the file
         with open(data_path, "w") as file:
             json.dump(data, file, indent=4)
-
         print("Data saved back to the file.")
 
 
