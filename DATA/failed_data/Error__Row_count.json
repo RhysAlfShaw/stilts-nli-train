@@ -1,0 +1,93 @@
+[
+    {
+        "prompt": "Query the ESO TAP_OBS service for all VIRCAM raw observations, and locally remove the row with the longest exposure time.",
+        "response": "stilts tapquery tapurl=https://archive.eso.org/tap_obs adql='SELECT * FROM raw.vircam' ocmd='sort -down t_exptime; tail -1' out=vircam_no_longest.fits",
+        "chat.jar": "failed",
+        "error": "Error: Row count -1 not numeric\n\nCommand was:  tail -1\n\nUsage: tail <nrows>\n    (Row count -1 not numeric)\n",
+        "source_cmd_file": "tapquery.json"
+    },
+    {
+        "prompt": "Remove the last 50 rows from the table, sort the remainder by magnitude, and keep only the top 10 brightest sources.",
+        "response": "stilts tpipe in=catalog.fits cmd='tail -$nrow-50' cmd='sorthead 10 MAG' out=top_bright_sample.fits",
+        "chat.jar": "failed",
+        "error": "Error: Row count -$nrow-50 not numeric\n\nCommand was: tail -$nrow-50\n\nUsage: tail <nrows>\n    (Row count -$nrow-50 not numeric)\n",
+        "source_cmd_file": "tpipe.json"
+    },
+    {
+        "prompt": "Remove the first 10 rows and the last 10 rows from the table.",
+        "response": "stilts tpipe in=data.fits cmd='head -$nrow-10' cmd='tail -$nrow-10' out=trimmed.fits",
+        "chat.jar": "failed",
+        "error": "Error: Row count -$nrow-10 not numeric\n\nCommand was: head -$nrow-10\n\nUsage: head <nrows>\n    (Row count -$nrow-10 not numeric)\n",
+        "source_cmd_file": "tpipe.json"
+    },
+    {
+        "prompt": "Filter the table to keep only the bottom 10% of the data using the 'tail' and '$nrow' mechanism.",
+        "response": "stilts tpipe in=big_table.fits cmd='tail -$nrow / 10' out=bottom_10_percent.fits",
+        "chat.jar": "failed",
+        "error": "Error: Row count -$nrow not numeric\n\nCommand was: tail -$nrow / 10\n\nUsage: tail <nrows>\n    (Row count -$nrow not numeric)\n",
+        "source_cmd_file": "tpipe.json"
+    },
+    {
+        "prompt": "Filter the table to keep only objects in the first half of the catalogue (based on row index).",
+        "response": "stilts tpipe in=data.fits cmd='head $nrow / 2' out=first_half.fits",
+        "chat.jar": "failed",
+        "error": "Error: Row count $nrow not numeric\n\nCommand was: head $nrow / 2\n\nUsage: head <nrows>\n    (Row count $nrow not numeric)\n",
+        "source_cmd_file": "tpipe.json"
+    },
+    {
+        "prompt": "Filter the table by removing the last row.",
+        "response": "stilts tpipe in=data.fits cmd='head -$nrow-1' out=no_last_row.fits",
+        "chat.jar": "failed",
+        "error": "Error: Row count -$nrow-1 not numeric\n\nCommand was: head -$nrow-1\n\nUsage: head <nrows>\n    (Row count -$nrow-1 not numeric)\n",
+        "source_cmd_file": "tpipe.json"
+    },
+    {
+        "prompt": "Filter out the bottom 100 rows of an input table before generating a point MOC.",
+        "response": "stilts mocshape in=full_cat.fits icmd='tail -100' shape=point coords='array(RA, DEC)' out=top_n_moc.fits",
+        "chat.jar": "failed",
+        "error": "Error: Row count -100 not numeric\n\nCommand was: tail -100\n\nUsage: tail <nrows>\n    (Row count -100 not numeric)\n",
+        "source_cmd_file": "mocshape.json"
+    },
+    {
+        "prompt": "Filter an input table to exclude the last 10 rows before generating a JSON MOC (order 7).",
+        "response": "stilts mocshape in=full_table.fits icmd='head -10' shape=point coords='array(RA, DEC)' order=7 mocfmt=json out=trimmed_o7.json",
+        "chat.jar": "failed",
+        "error": "Error: Row count -10 not numeric\n\nCommand was: head -10\n\nUsage: head <nrows>\n    (Row count -10 not numeric)\n",
+        "source_cmd_file": "mocshape.json"
+    },
+    {
+        "prompt": "Create a MOC for the positions in `my_data.fits`, excluding the first 100 rows.",
+        "response": "stilts pixfoot in=my_data.fits icmd='tail ($nrow-100)' out=exclude_first_100.moc.fits",
+        "chat.jar": "failed",
+        "error": "Error: Row count ($nrow-100) not numeric\n\nCommand was: tail ($nrow-100)\n\nUsage: tail <nrows>\n    (Row count ($nrow-100) not numeric)\n",
+        "source_cmd_file": "pixfoot.json"
+    },
+    {
+        "prompt": "Filter the input table to remove the last 100 rows before generating a MOC.",
+        "response": "stilts pixfoot in=data.fits icmd='head -$0-100' ra=RA dec=DEC out=no_tail.fits",
+        "chat.jar": "failed",
+        "error": "Error: Row count -$0-100 not numeric\n\nCommand was: head -$0-100\n\nUsage: head <nrows>\n    (Row count -$0-100 not numeric)\n",
+        "source_cmd_file": "pixfoot.json"
+    },
+    {
+        "prompt": "Animate a line getting longer, controlled by `:loop:10,100,10`.",
+        "response": "stilts plot2plane in=data.fits layer=line x=X y=Y animate=:loop:10,100,10 acmd='head $1' out=growing_line.gif",
+        "chat.jar": "failed",
+        "error": "Error: Row count $1 not numeric\n\nCommand was: head $1\n\nUsage: head <nrows>\n    (Row count $1 not numeric)\n",
+        "source_cmd_file": "plot2plane.json"
+    },
+    {
+        "prompt": "Combine table1.fits and table2.fits, but omit the final row from table2.",
+        "response": "stilts tcatn nin=2 in1=table1.fits in2=table2.fits icmd2='tail $nrow - 1' out=trimmed_concat.fits",
+        "chat.jar": "failed",
+        "error": "Error: Row count $nrow not numeric\n\nCommand was: tail $nrow - 1\n\nUsage: tail <nrows>\n    (Row count $nrow not numeric)\n",
+        "source_cmd_file": "tcatn.json"
+    },
+    {
+        "prompt": "Combine table 1 and table 2. For table 2, skip the final 10 rows before concatenating.",
+        "response": "stilts tcatn nin=2 in1=t1.fits in2=t2.fits icmd2='tail $nrow - 10' out=t2_minus_10.fits",
+        "chat.jar": "failed",
+        "error": "Error: Row count $nrow not numeric\n\nCommand was: tail $nrow - 10\n\nUsage: tail <nrows>\n    (Row count $nrow not numeric)\n",
+        "source_cmd_file": "tcatn.json"
+    }
+]

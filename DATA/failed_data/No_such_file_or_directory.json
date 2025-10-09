@@ -1,0 +1,114 @@
+[
+    {
+        "prompt": "Perform a sequence of operations from a script file named `processing_steps.txt` on the table `input_data.fits`.",
+        "response": "stilts tpipe in=input_data.fits cmd=@processing_steps.txt out=processed_data.fits",
+        "chat.jar": "failed",
+        "error": "Error: processing_steps.txt (No such file or directory)\n",
+        "source_cmd_file": "tpipe.json"
+    },
+    {
+        "prompt": "Calculate statistics on `data.fits` after applying a filter from the file `my_selection.stilts`.",
+        "response": "stilts tpipe in=data.fits cmd=@my_selection.stilts omode=stats",
+        "chat.jar": "failed",
+        "error": "Error: my_selection. (No such file or directory)\n",
+        "source_cmd_file": "tpipe.json"
+    },
+    {
+        "prompt": "I have a list of FITS files in a text file called `file_list.txt`. How do I use this list with `tcat` to create `master_catalog.fits`?",
+        "response": "stilts tcat in=@file_list.txt out=master_catalog.fits",
+        "chat.jar": "failed",
+        "error": "Error: file_list.txt (No such file or directory)\n",
+        "source_cmd_file": "tcat.json"
+    },
+    {
+        "prompt": "I'm concatenating thousands of small FITS files listed in `all_patches.txt`. To avoid running out of file handles, how can I make stilts process them lazily?",
+        "response": "stilts tcat in=@all_patches.txt lazy=true out=full_sky_mosaic.fits",
+        "chat.jar": "failed",
+        "error": "Error: all_patches.txt (No such file or directory)\n",
+        "source_cmd_file": "tcat.json"
+    },
+    {
+        "prompt": "I need to stream a large number of CSV files listed in `stream_sources.txt` and concatenate them. How can I do this efficiently?",
+        "response": "stilts tcat ifmt=csv in=@stream_sources.txt istream=true out=streamed_output.csv",
+        "chat.jar": "failed",
+        "error": "Error: stream_sources.txt (No such file or directory)\n",
+        "source_cmd_file": "tcat.json"
+    },
+    {
+        "prompt": "I need to concatenate a huge number of files from a list `huge_list.txt`. Can I enable lazy reading and also ask it to pre-count rows for FITS output?",
+        "response": "stilts tcat in=@huge_list.txt lazy=true countrows=true out=mega_catalog.fits",
+        "chat.jar": "failed",
+        "error": "Error: huge_list.txt (No such file or directory)\n",
+        "source_cmd_file": "tcat.json"
+    },
+    {
+        "prompt": "Join the tables in `all_files.lis`. For each one, select only rows where the object `CLASS` is 'GALAXY'.",
+        "response": "stilts tcat in=@all_files.lis icmd='select CLASS==\"GALAXY\"' out=all_galaxies.fits",
+        "chat.jar": "failed",
+        "error": "Error: all_files.lis (No such file or directory)\n",
+        "source_cmd_file": "tcat.json"
+    },
+    {
+        "prompt": "Combine all tables listed in `my_tables.list` and after combining, add a column `is_faint` that is true if `magnitude` > 22.",
+        "response": "stilts tcat in=@my_tables.list ocmd='addcol is_faint magnitude>22' out=faint_objects.fits",
+        "chat.jar": "failed",
+        "error": "Error: my_tables.list (No such file or directory)\n",
+        "source_cmd_file": "tcat.json"
+    },
+    {
+        "prompt": "I have a list of ASCII files in `sources.list`. How do I concatenate them all into a single FITS file, using lazy evaluation?",
+        "response": "stilts tcat ifmt=ascii in=@sources.list ofmt=fits lazy=true out=sources.fits",
+        "chat.jar": "failed",
+        "error": "Error: sources.list (No such file or directory)\n",
+        "source_cmd_file": "tcat.json"
+    },
+    {
+        "prompt": "I need to combine all observation logs listed in the file 'log_files.txt'. Use lazy reading to conserve resources.",
+        "response": "stilts tcat in=@log_files.txt lazy=true out=master_log.fits",
+        "chat.jar": "failed",
+        "error": "Error: log_files.txt (No such file or directory)\n",
+        "source_cmd_file": "tcat.json"
+    },
+    {
+        "prompt": "Merge all tables from an external URL listing input files in ASCII format.",
+        "response": "stilts tcat in=@http://example.com/filelist.txt out=remote_list_merge.fits",
+        "chat.jar": "failed",
+        "error": "Error: http:/example.com/filelist.txt (No such file or directory)\n",
+        "source_cmd_file": "tcat.json"
+    },
+    {
+        "prompt": "Concatenate files listed in `huge_list.txt`, enabling lazy reading and tracking the sequential order of input tables.",
+        "response": "stilts tcat in=@huge_list.txt lazy=true seqcol=FileIndex out=lazy_indexed.fits",
+        "chat.jar": "failed",
+        "error": "Error: huge_list.txt (No such file or directory)\n",
+        "source_cmd_file": "tcat.json"
+    },
+    {
+        "prompt": "Combine FITS tables from a URL list (`remote_files.url`) and output the result as a compressed VOTable.",
+        "response": "stilts tcat in=@remote_files.url ofmt=votable out=remote_merge.vot.gz",
+        "chat.jar": "failed",
+        "error": "Error: remote_files.url (No such file or directory)\n",
+        "source_cmd_file": "tcat.json"
+    },
+    {
+        "prompt": "Concatenate multiple tables, ensuring lazy reading is enabled for input files listed in 'big_list.txt'.",
+        "response": "stilts tcat in=@big_list.txt lazy=true out=lazy_list_merge.fits",
+        "chat.jar": "failed",
+        "error": "Error: big_list.txt (No such file or directory)\n",
+        "source_cmd_file": "tcat.json"
+    },
+    {
+        "prompt": "Combine tables from a list provided in a file named `inputs.txt`, enabling lazy reading to conserve file handles.",
+        "response": "stilts tcat in=@inputs.txt lazy=true out=lazy_combined_data.fits",
+        "chat.jar": "failed",
+        "error": "Error: inputs.txt (No such file or directory)\n",
+        "source_cmd_file": "tcat.json"
+    },
+    {
+        "prompt": "Use a script file (filter.txt) to define the filtering commands before creating a polygon MOC (order 12).",
+        "response": "stilts mocshape in=input.fits icmd=@filter.txt shape=polygon coords=VERTICES out=scripted_poly.fits",
+        "chat.jar": "failed",
+        "error": "Error: filter.txt (No such file or directory)\n",
+        "source_cmd_file": "mocshape.json"
+    }
+]

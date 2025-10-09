@@ -1,0 +1,16 @@
+[
+    {
+        "prompt": "Filter rows keeping only the first 500 rows, starting from the last 1000 rows (i.e., rows 501 to 1000 from the end).",
+        "response": "stilts tpipe in=big_table.fits cmd='rowrange $nrow-999 $nrow-500' out=middle_tail_chunk.fits",
+        "chat.jar": "failed",
+        "error": "Error: Row index $nrow-999 must be integer >0\n\nCommand was: rowrange $nrow-999 $nrow-500\n\nUsage: rowrange <first> <last>|+<count>\n    (Row index $nrow-999 must be integer >0)\n",
+        "source_cmd_file": "tpipe.json"
+    },
+    {
+        "prompt": "Generate a JSON MOC for the objects in the middle 2000 rows of my catalog.",
+        "response": "stilts pixfoot in=my_catalog.fits icmd='rowrange ($nrow/2 - 1000) +2000' mocfmt=json out=middle_2k.moc.json",
+        "chat.jar": "failed",
+        "error": "Error: Row index ($nrow/2 must be integer >0\n\nCommand was: rowrange ($nrow/2 - 1000) +2000\n\nUsage: rowrange <first> <last>|+<count>\n    (Row index ($nrow/2 must be integer >0)\n",
+        "source_cmd_file": "pixfoot.json"
+    }
+]

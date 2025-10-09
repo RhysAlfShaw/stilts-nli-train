@@ -1,0 +1,16 @@
+[
+    {
+        "prompt": "Read data from standard input (VOTable format) and output it as an ECSV file.",
+        "response": "stilts tcopy in=- ifmt=votable ofmt=ecsv out=stream_output.ecsv",
+        "chat.jar": "failed",
+        "error": "Error: uk.ac.starlink.table.TableFormatException\n    (Premature end of file.)\n",
+        "source_cmd_file": "tcopy.json"
+    },
+    {
+        "prompt": "Read data from standard input (assuming VOTable format) and display it on the terminal using the simple text format.",
+        "response": "stilts tcopy in=- ifmt=votable ofmt=text out=-",
+        "chat.jar": "failed",
+        "error": "Error: uk.ac.starlink.table.TableFormatException\n    (Premature end of file.)\n",
+        "source_cmd_file": "tcopy.json"
+    }
+]

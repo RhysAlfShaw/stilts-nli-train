@@ -1,0 +1,345 @@
+[
+    {
+        "prompt": "Force the output table to stream to standard output in FITS format, even if random access is available upstream.",
+        "response": "stilts tpipe in=data.fits ofmt=fits out=- istream=true",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"data.fits\"\n",
+        "source_cmd_file": "tpipe.json"
+    },
+    {
+        "prompt": "Retrieve the last 50 rows of a large file and output the table structure, ensuring the input is treated as a stream.",
+        "response": "stilts tpipe in=huge.vot istream=true cmd='tail 50' omode=meta",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"huge.vot\"\n",
+        "source_cmd_file": "tpipe.json"
+    },
+    {
+        "prompt": "Filter an ECSV table to include only rows where 'SNR' is greater than 100, running the process in streaming mode if possible.",
+        "response": "stilts tpipe in=spectrum.ecsv ifmt=ecsv istream=true cmd='select SNR > 100' out=high_snr_stream.fits",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"spectrum.ecsv\"\n",
+        "source_cmd_file": "tpipe.json"
+    },
+    {
+        "prompt": "What's the command to concatenate all the table extensions in my multi-extension FITS file `observations.fits` into `all_obs.fits`?",
+        "response": "stilts tcat in=observations.fits multi=true out=all_obs.fits",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"observations.fits\"\n",
+        "source_cmd_file": "tcat.json"
+    },
+    {
+        "prompt": "How do I take all the tables from `multi_source.vot` and append them together, but for each one, only keep the 'ID', 'RA', and 'DEC' columns?",
+        "response": "stilts tcat in=multi_source.vot multi=true icmd='keepcols \"ID RA DEC\"' out=condensed_source_list.vot",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"multi_source.vot\"\n",
+        "source_cmd_file": "tcat.json"
+    },
+    {
+        "prompt": "Concatenate all tables from `data.fits`. Beforehand, add a new column 'LOG_FLUX' calculated as `log10(FLUX)`. Then, add a column `SourceHDU` showing which extension each row came from.",
+        "response": "stilts tcat in=data.fits multi=true icmd='addcol LOG_FLUX log10(FLUX)' seqcol=SourceHDU out=processed_data.fits",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"data.fits\"\n",
+        "source_cmd_file": "tcat.json"
+    },
+    {
+        "prompt": "How do I concatenate all tables from `archive_data.vot` and `new_data.vot` into a single file `full_archive.fits`?",
+        "response": "stilts tcat in=archive_data.vot in=new_data.vot multi=true ofmt=fits out=full_archive.fits",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"archive_data.vot\"\n",
+        "source_cmd_file": "tcat.json"
+    },
+    {
+        "prompt": "Concatenate all tables from `multi_obs.fits`. After combining, add a column `IS_BRIGHT` which is true if `MAG` < 15.",
+        "response": "stilts tcat in=multi_obs.fits multi=true ocmd='addcol IS_BRIGHT MAG<15' out=bright_sources.fits",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"multi_obs.fits\"\n",
+        "source_cmd_file": "tcat.json"
+    },
+    {
+        "prompt": "How can I combine all the tables in `multidata.fits` and also add a column `OrigHDU` with the sequence number of the HDU?",
+        "response": "stilts tcat in=multidata.fits multi=true seqcol=OrigHDU out=combined_hdu.fits",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"multidata.fits\"\n",
+        "source_cmd_file": "tcat.json"
+    },
+    {
+        "prompt": "Join all tables in `archive.fits`. Then, get the statistics for the combined table.",
+        "response": "stilts tcat in=archive.fits multi=true omode=stats",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"archive.fits\"\n",
+        "source_cmd_file": "tcat.json"
+    },
+    {
+        "prompt": "How can I combine all the tables within `deep_field.fits` and `wide_field.fits` into a single file `survey_complete.vot`?",
+        "response": "stilts tcat in=deep_field.fits in=wide_field.fits multi=true ofmt=votable out=survey_complete.vot",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"deep_field.fits\"\n",
+        "source_cmd_file": "tcat.json"
+    },
+    {
+        "prompt": "I need to see the metadata for a concatenation of all tables inside `multi_table.fits`.",
+        "response": "stilts tcat in=multi_table.fits multi=true omode=meta",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"multi_table.fits\"\n",
+        "source_cmd_file": "tcat.json"
+    },
+    {
+        "prompt": "What is the command to combine all table extensions from `archive1.fits` and `archive2.fits`?",
+        "response": "stilts tcat in=archive1.fits in=archive2.fits multi=true out=full_archive.fits",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"archive1.fits\"\n",
+        "source_cmd_file": "tcat.json"
+    },
+    {
+        "prompt": "Combine all tables in `multicat.vot`, and after combining, keep only rows where the `MAG` column is not null.",
+        "response": "stilts tcat in=multicat.vot multi=true ocmd='select !NULL_MAG' out=valid_mag_sources.vot",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"multicat.vot\"\n",
+        "source_cmd_file": "tcat.json"
+    },
+    {
+        "prompt": "Concatenate all tables from `multi.fits` and `multi2.fits` together.",
+        "response": "stilts tcat in=multi.fits in=multi2.fits multi=true out=combined_multi.fits",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"multi.fits\"\n",
+        "source_cmd_file": "tcat.json"
+    },
+    {
+        "prompt": "Take all table extensions from `archive.fits`, add a column `SourceHDU` with the extension number, and then write the result as a multi-TABLE VOTable file.",
+        "response": "stilts tcat in=archive.fits multi=true seqcol=SourceHDU ofmt=votable out=archive_tables.xml",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"archive.fits\"\n",
+        "source_cmd_file": "tcat.json"
+    },
+    {
+        "prompt": "Concatenate all tables from the file `multi_data.vot` and show me the total number of rows and columns.",
+        "response": "stilts tcat in=multi_data.vot multi=true omode=count",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"multi_data.vot\"\n",
+        "source_cmd_file": "tcat.json"
+    },
+    {
+        "prompt": "Concatenate all the tables inside `archive.vot`. The output should be a single VOTable with BINARY2 serialization.",
+        "response": "stilts tcat in=archive.vot multi=true ofmt='votable(format=BINARY2)' out=archive_binary2.vot",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"archive.vot\"\n",
+        "source_cmd_file": "tcat.json"
+    },
+    {
+        "prompt": "Merge all tables within the VOTable `multi.xml` and then sort the final result by the `ID` column.",
+        "response": "stilts tcat in=multi.xml multi=true ocmd='sort ID' out=sorted_multi.xml",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"multi.xml\"\n",
+        "source_cmd_file": "tcat.json"
+    },
+    {
+        "prompt": "Combine all table extensions found within two multi-extension FITS files, archive1.fits and archive2.fits.",
+        "response": "stilts tcat in=archive1.fits in=archive2.fits multi=true out=full_archive.fits",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"archive1.fits\"\n",
+        "source_cmd_file": "tcat.json"
+    },
+    {
+        "prompt": "Merge data that spans a multi-extension FITS file, extracting all HDUs, but first rename the column 'FLUX' to 'TOTAL_FLUX' in every HDU.",
+        "response": "stilts tcat in=multi.fits multi=true icmd='colmeta -name TOTAL_FLUX FLUX' out=renamed_multi.fits",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"multi.fits\"\n",
+        "source_cmd_file": "tcat.json"
+    },
+    {
+        "prompt": "Concatenate the first table of multitable.fits with all tables in multitable2.vot.",
+        "response": "stilts tcat in=multitable.fits#1 in=multitable2.vot multi=true out=mixed_multi.fits",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"multitable.fits\"\n",
+        "source_cmd_file": "tcat.json"
+    },
+    {
+        "prompt": "Concatenate all tables from a multi-table VOTable document and write the output as an HTML table.",
+        "response": "stilts tcat in=multi.vot multi=true ofmt=html out=combined_html.html",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"multi.vot\"\n",
+        "source_cmd_file": "tcat.json"
+    },
+    {
+        "prompt": "Combine all tables found within two multi-extension FITS files (multi1.fits, multi2.fits), then display the combined metadata.",
+        "response": "stilts tcat in='multi1.fits multi2.fits' multi=true omode=meta",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"multi1.fits\"\n",
+        "source_cmd_file": "tcat.json"
+    },
+    {
+        "prompt": "Merge all table extensions within a single FITS file (`archive.fits`) and then sort the result by the 'TIME' column.",
+        "response": "stilts tcat in=archive.fits multi=true ocmd='sort TIME' out=sorted_archive.fits",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"archive.fits\"\n",
+        "source_cmd_file": "tcat.json"
+    },
+    {
+        "prompt": "Concatenate a multi-extension FITS file with a multi-TABLE VOTable, keeping all tables from both inputs.",
+        "response": "stilts tcat in=fits_multi.fits in2=vot_multi.vot multi=true out=full_multi_combine.fits",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"fits_multi.fits\"\n",
+        "source_cmd_file": "tcat.json"
+    },
+    {
+        "prompt": "Merge table extensions from a FITS file and output the final table to the terminal in text format, showing only the metadata.",
+        "response": "stilts tcat in=multi.fits multi=true omode=meta out=-",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"multi.fits\"\n",
+        "source_cmd_file": "tcat.json"
+    },
+    {
+        "prompt": "Combine all table extensions found within three separate FITS archive files, then view the resulting table in a GUI window.",
+        "response": "stilts tcat in='arch1.fits arch2.fits arch3.fits' multi=true omode=gui",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"arch1.fits\"\n",
+        "source_cmd_file": "tcat.json"
+    },
+    {
+        "prompt": "Combine all tables found within a multi-extension FITS file, `archive_multi.fits`, and write the output as a single FITS file.",
+        "response": "stilts tcat in=archive_multi.fits multi=true out=flattened_archive.fits",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"archive_multi.fits\"\n",
+        "source_cmd_file": "tcat.json"
+    },
+    {
+        "prompt": "Concatenate a FITS file with a multi-table VOTable document, extracting all tables from the latter.",
+        "response": "stilts tcat in=single.fits in2=multi.vot multi=true out=mixed_container_merge.fits",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"single.fits\"\n",
+        "source_cmd_file": "tcat.json"
+    },
+    {
+        "prompt": "Merge files, and if multiple tables are present in the inputs, add a column 'TableHDU' containing the sequential index of the HDU/TABLE element.",
+        "response": "stilts tcat in='a.fits b.fits' multi=true seqcol=TableHDU out=hdu_indexed_merge.fits",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"a.fits\"\n",
+        "source_cmd_file": "tcat.json"
+    },
+    {
+        "prompt": "Concatenate FITS tables where multiple extensions exist. Include all extensions from all input files.",
+        "response": "stilts tcat in='multi1.fits multi2.fits' multi=true out=all_extensions_merged.fits",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"multi1.fits\"\n",
+        "source_cmd_file": "tcat.json"
+    },
+    {
+        "prompt": "Group match four tables, T1-T4. T4 is a VOTable which needs to be read in streaming mode due to size, but the rest are FITS.",
+        "response": "stilts tmatchn nin=4 multimode=group matcher=exact values1=ID values2=ID values3=ID values4=ID in1=T1.fits in2=T2.fits in3=T3.fits in4=T4.vot ifmt4=votable istream4=true out=mixed_stream_group.fits",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"T4.vot\"\n",
+        "source_cmd_file": "tmatchn.json"
+    },
+    {
+        "prompt": "Crossmatch T1, T2, T3. T1 is reference. T2 requires streaming input due to its size.",
+        "response": "stilts tmatchn nin=3 multimode=pairs matcher=sky params=2 in1=T1.fits in2=T2.fits istream2=true in3=T3.fits values1='RA DEC' values2='RA DEC' values3='RA DEC' out=streamed_input_match.fits",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"T2.fits\"\n",
+        "source_cmd_file": "tmatchn.json"
+    },
+    {
+        "prompt": "Convert a large FITS file to a VOTable, ensuring **streamed reading** of the input.",
+        "response": "stilts tcopy in=huge.fits istream=true out=huge_streamed.vot",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"huge.fits\"\n",
+        "source_cmd_file": "tcopy.json"
+    },
+    {
+        "prompt": "Copy 'positions.vot' and output it as a FITS file, ensuring the data is read in **streaming mode**.",
+        "response": "stilts tcopy in=positions.vot istream=true out=streamed.fits",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"positions.vot\"\n",
+        "source_cmd_file": "tcopy.json"
+    },
+    {
+        "prompt": "Read a VOTable document but force streaming mode reading, to reduce memory usage for large files.",
+        "response": "stilts tcopy in=huge.vot istream=true out=huge_stream.fits",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"huge.vot\"\n",
+        "source_cmd_file": "tcopy.json"
+    },
+    {
+        "prompt": "Read a VOTable document, ensuring the data is processed with streaming enabled (`istream=true`).",
+        "response": "stilts tcopy in=streamable.vot istream=true out=stream_copy.fits",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"streamable.vot\"\n",
+        "source_cmd_file": "tcopy.json"
+    },
+    {
+        "prompt": "Copy a table, enforcing streaming mode on input (`istream=true`) to reduce memory load for large files, and convert it to VOTable.",
+        "response": "stilts tcopy in=huge_file.fits istream=true out=huge_file.vot",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"huge_file.fits\"\n",
+        "source_cmd_file": "tcopy.json"
+    },
+    {
+        "prompt": "Convert a local FITS table to a VOTable, reading the FITS file in **streaming mode** to reduce memory consumption.",
+        "response": "stilts tcopy in=huge_data.fits istream=true out=huge_streamed.vot",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"huge_data.fits\"\n",
+        "source_cmd_file": "tcopy.json"
+    },
+    {
+        "prompt": "Generate a raw binary MOC stream (order 12) for all rows in the input table, reading the input as a stream.",
+        "response": "stilts mocshape in=stream_in.fits istream=true shape=point coords='array(RA, DEC)' order=12 mocfmt=raw out=streamed_moc_raw.bin",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"stream_in.fits\"\n",
+        "source_cmd_file": "mocshape.json"
+    },
+    {
+        "prompt": "Generate a raw binary MOC stream (order 9) from sources derived from an input table that is itself streamed.",
+        "response": "stilts mocshape in=input.fits istream=true shape=point coords='array(RA, DEC)' order=9 mocfmt=raw out=stream_input_raw.bin",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"input.fits\"\n",
+        "source_cmd_file": "mocshape.json"
+    },
+    {
+        "prompt": "Generate a FITS MOC from `catalog.dat`, reading it as a stream to save memory.",
+        "response": "stilts pixfoot in=catalog.dat ifmt=ascii istream=true out=streamed_footprint.moc.fits",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"catalog.dat\"\n",
+        "source_cmd_file": "pixfoot.json"
+    },
+    {
+        "prompt": "Generate a MOC from a large FITS file, specifying streaming input for lower memory usage.",
+        "response": "stilts pixfoot in=huge_data.fits istream=true ra=RA dec=DEC out=streamed_moc.fits",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"huge_data.fits\"\n",
+        "source_cmd_file": "pixfoot.json"
+    },
+    {
+        "prompt": "Find the coverage for all sources, limiting the input stream, and using $0.001$ degrees radius.",
+        "response": "stilts pixfoot in=input.fits istream=true ra=RA dec=DEC radius=0.001 out=streamed_001.fits",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"input.fits\"\n",
+        "source_cmd_file": "pixfoot.json"
+    },
+    {
+        "prompt": "Plot points from a table where the input format is FITS, but forcing streaming input.",
+        "response": "stilts plot2plane in=large.fits ifmt=fits istream=true layer=mark x=X y=Y out=streamed_fits_plot.png",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"large.fits\"\n",
+        "source_cmd_file": "plot2plane.json"
+    },
+    {
+        "prompt": "Merge three tables (S1, S2, S3). S3 is large, so enforce sequential processing on S3 to limit memory usage.",
+        "response": "stilts tcatn nin=3 in1=S1.fits in2=S2.fits in3=S3.fits istream3=true out=seq_streamed_merge.fits",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"S3.fits\"\n",
+        "source_cmd_file": "tcatn.json"
+    },
+    {
+        "prompt": "Merge two tables, A.fits and B.fits. A is a huge catalog; enforce sequential streaming for A and cache the final result before outputting.",
+        "response": "stilts tcatn nin=2 in1=A.fits istream1=true in2=B.fits ocmd='cache' out=streamed_cached.fits",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"A.fits\"\n",
+        "source_cmd_file": "tcatn.json"
+    },
+    {
+        "prompt": "Combine three tables. T2 requires streaming input to handle its size.",
+        "response": "stilts tcatn nin=3 in1=T1.fits in2=T2.fits istream2=true in3=T3.fits out=stream_concat.fits",
+        "chat.jar": "failed",
+        "error": "Error: No file, URL or command \"T2.fits\"\n",
+        "source_cmd_file": "tcatn.json"
+    }
+]

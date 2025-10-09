@@ -1,0 +1,233 @@
+[
+    {
+        "prompt": "Retrieve the top 5 resource identifiers from the MAST STScI Registry and output the result in JSON format.",
+        "response": "stilts tapquery tapurl=https://mast.stsci.edu/vo-tap/api/v0.1/registry adql='SELECT TOP 5 ivoid FROM reg.resource' ofmt=json out=mast_registry_list.json",
+        "chat.jar": "failed",
+        "error": "Error: No handler for output format json\n    (No handler for table format \"json\")\nUsage: tapquery nupload=<count> ufmtN=<in-format> uploadN=<tableN>\n                ucmdN=<cmds> ocmd=<cmds>\n                omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n                out=<out-table> ofmt=<out-format> upnameN=<adql-identifier>\n                tapurl=<url-value> interface=tap1.0|tap1.1|cap auth=true|false\n                adql=<query-text> parse=true|false sync=true|false\n                maxrec=<nrow> destruction=<iso8601>\n                executionduration=<seconds> compress=true|false\n                upvotformat=TABLEDATA|BINARY|BINARY2 language=<lang-name>\n                poll=<millisec> progress=true|false\n                delete=finished|never|always|now\n\n",
+        "source_cmd_file": "tapquery.json"
+    },
+    {
+        "prompt": "Retrieve 10 PanSTARRS 1 DR2 source positions and save the output in JSON format.",
+        "response": "stilts tapquery tapurl=https://mast.stsci.edu/vo-tap/api/v0.1/ps1dr2 adql='SELECT TOP 10 ra, dec FROM dbo.detection_object' ofmt=json out=ps1dr2_sample.json",
+        "chat.jar": "failed",
+        "error": "Error: No handler for output format json\n    (No handler for table format \"json\")\nUsage: tapquery nupload=<count> ufmtN=<in-format> uploadN=<tableN>\n                ucmdN=<cmds> ocmd=<cmds>\n                omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n                out=<out-table> ofmt=<out-format> upnameN=<adql-identifier>\n                tapurl=<url-value> interface=tap1.0|tap1.1|cap auth=true|false\n                adql=<query-text> parse=true|false sync=true|false\n                maxrec=<nrow> destruction=<iso8601>\n                executionduration=<seconds> compress=true|false\n                upvotformat=TABLEDATA|BINARY|BINARY2 language=<lang-name>\n                poll=<millisec> progress=true|false\n                delete=finished|never|always|now\n\n",
+        "source_cmd_file": "tapquery.json"
+    },
+    {
+        "prompt": "Retrieve 10 VizieR (CDSARC) catalogue entries and output the result in JSON format.",
+        "response": "stilts tapquery tapurl=http://cdsarc.cds.unistra.fr/saadavizier.tap/tap adql='SELECT TOP 10 * FROM \"II/246/out\"' ofmt=json out=vizier_sample.json",
+        "chat.jar": "failed",
+        "error": "Error: No handler for output format json\n    (No handler for table format \"json\")\nUsage: tapquery nupload=<count> ufmtN=<in-format> uploadN=<tableN>\n                ucmdN=<cmds> ocmd=<cmds>\n                omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n                out=<out-table> ofmt=<out-format> upnameN=<adql-identifier>\n                tapurl=<url-value> interface=tap1.0|tap1.1|cap auth=true|false\n                adql=<query-text> parse=true|false sync=true|false\n                maxrec=<nrow> destruction=<iso8601>\n                executionduration=<seconds> compress=true|false\n                upvotformat=TABLEDATA|BINARY|BINARY2 language=<lang-name>\n                poll=<millisec> progress=true|false\n                delete=finished|never|always|now\n\n",
+        "source_cmd_file": "tapquery.json"
+    },
+    {
+        "prompt": "Find 5 records from the MAST 3D-HST HLSP service and save the output in JSON format.",
+        "response": "stilts tapquery tapurl=https://mast.stsci.edu/vo-tap/api/v0.1/3dhst/ adql='SELECT TOP 5 * FROM 3dhst.photometry' ofmt=json out=3dhst_sample.json",
+        "chat.jar": "failed",
+        "error": "Error: No handler for output format json\n    (No handler for table format \"json\")\nUsage: tapquery nupload=<count> ufmtN=<in-format> uploadN=<tableN>\n                ucmdN=<cmds> ocmd=<cmds>\n                omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n                out=<out-table> ofmt=<out-format> upnameN=<adql-identifier>\n                tapurl=<url-value> interface=tap1.0|tap1.1|cap auth=true|false\n                adql=<query-text> parse=true|false sync=true|false\n                maxrec=<nrow> destruction=<iso8601>\n                executionduration=<seconds> compress=true|false\n                upvotformat=TABLEDATA|BINARY|BINARY2 language=<lang-name>\n                poll=<millisec> progress=true|false\n                delete=finished|never|always|now\n\n",
+        "source_cmd_file": "tapquery.json"
+    },
+    {
+        "prompt": "Query the MAST STScI Registry for resources published by 'STScI' and output the list in JSON format.",
+        "response": "stilts tapquery tapurl=https://mast.stsci.edu/vo-tap/api/v0.1/registry adql='SELECT * FROM reg.resource WHERE publisher LIKE ''%STScI%''' ofmt=json out=mast_registry_stsci.json",
+        "chat.jar": "failed",
+        "error": "Error: No handler for output format json\n    (No handler for table format \"json\")\nUsage: tapquery nupload=<count> ufmtN=<in-format> uploadN=<tableN>\n                ucmdN=<cmds> ocmd=<cmds>\n                omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n                out=<out-table> ofmt=<out-format> upnameN=<adql-identifier>\n                tapurl=<url-value> interface=tap1.0|tap1.1|cap auth=true|false\n                adql=<query-text> parse=true|false sync=true|false\n                maxrec=<nrow> destruction=<iso8601>\n                executionduration=<seconds> compress=true|false\n                upvotformat=TABLEDATA|BINARY|BINARY2 language=<lang-name>\n                poll=<millisec> progress=true|false\n                delete=finished|never|always|now\n\n",
+        "source_cmd_file": "tapquery.json"
+    },
+    {
+        "prompt": "Retrieve all tables from the PADC TAP RR service and output them in JSON format.",
+        "response": "stilts tapquery tapurl=http://voparis-rr.obspm.fr/tap adql='SELECT * FROM TAP_SCHEMA.tables' ofmt=json out=padc_rr_tables.json",
+        "chat.jar": "failed",
+        "error": "Error: No handler for output format json\n    (No handler for table format \"json\")\nUsage: tapquery nupload=<count> ufmtN=<in-format> uploadN=<tableN>\n                ucmdN=<cmds> ocmd=<cmds>\n                omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n                out=<out-table> ofmt=<out-format> upnameN=<adql-identifier>\n                tapurl=<url-value> interface=tap1.0|tap1.1|cap auth=true|false\n                adql=<query-text> parse=true|false sync=true|false\n                maxrec=<nrow> destruction=<iso8601>\n                executionduration=<seconds> compress=true|false\n                upvotformat=TABLEDATA|BINARY|BINARY2 language=<lang-name>\n                poll=<millisec> progress=true|false\n                delete=finished|never|always|now\n\n",
+        "source_cmd_file": "tapquery.json"
+    },
+    {
+        "prompt": "Query the European HST Archive TAP service for 5 ObsCore entries and output the result in JSON format.",
+        "response": "stilts tapquery tapurl=https://hst.esac.esa.int/tap-server/tap adql='SELECT TOP 5 * FROM ivoa.ObsCore' ofmt=json out=hst_sample.json",
+        "chat.jar": "failed",
+        "error": "Error: No handler for output format json\n    (No handler for table format \"json\")\nUsage: tapquery nupload=<count> ufmtN=<in-format> uploadN=<tableN>\n                ucmdN=<cmds> ocmd=<cmds>\n                omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n                out=<out-table> ofmt=<out-format> upnameN=<adql-identifier>\n                tapurl=<url-value> interface=tap1.0|tap1.1|cap auth=true|false\n                adql=<query-text> parse=true|false sync=true|false\n                maxrec=<nrow> destruction=<iso8601>\n                executionduration=<seconds> compress=true|false\n                upvotformat=TABLEDATA|BINARY|BINARY2 language=<lang-name>\n                poll=<millisec> progress=true|false\n                delete=finished|never|always|now\n\n",
+        "source_cmd_file": "tapquery.json"
+    },
+    {
+        "prompt": "Convert the input FITS file to ECSV format, forcing the ECSV output delimiter to a semicolon.",
+        "response": "stilts tpipe in=input.fits ofmt='ecsv(delimiter=;)' out=output_semicolon.ecsv",
+        "chat.jar": "failed",
+        "error": "Error: No handler for output format ecsv(delimiter=;)\n    (Handler configuration failed: uk.ac.starlink.util.LoadException: Failed setting \"delimiter=;\" - Options are delimiter=comma|space\n        (Failed setting \"delimiter=;\" - Options are delimiter=comma|space\n            (java.lang.reflect.InvocationTargetException\n                (Illegal delimiter \";\"))))\nUsage: tpipe ifmt=<in-format> istream=true|false cmd=<cmds>\n             omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n             out=<out-table> ofmt=<out-format>\n             [in=]<table>\n\n",
+        "source_cmd_file": "tpipe.json"
+    },
+    {
+        "prompt": "Generate a 100-row table using the loop scheme, calculate Y=X^2, and output the results as a JSON table.",
+        "response": "stilts tpipe in=:loop:100 cmd='addcol X i+1' cmd='addcol Y X*X' cmd='delcols i' ofmt=json out=squares.json",
+        "chat.jar": "failed",
+        "error": "Error: No handler for output format json\n    (No handler for table format \"json\")\nUsage: tpipe ifmt=<in-format> istream=true|false cmd=<cmds>\n             omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n             out=<out-table> ofmt=<out-format>\n             [in=]<table>\n\n",
+        "source_cmd_file": "tpipe.json"
+    },
+    {
+        "prompt": "Combine tables, writing the output in the specialized MRT (Machine-Readable Table) format.",
+        "response": "stilts tcat in='mrt1.fits mrt2.fits' ofmt=mrt out=combined.mrt",
+        "chat.jar": "failed",
+        "error": "Error: No handler for output format mrt\n    (No handler for table format \"mrt\")\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n",
+        "source_cmd_file": "tcat.json"
+    },
+    {
+        "prompt": "Combine tables, writing the result in the TST (Tab-Separated Table) format, including table parameters.",
+        "response": "stilts tcat in='d1.fits d2.fits' ofmt='tst(params=true)' out=tst_with_params.tst",
+        "chat.jar": "failed",
+        "error": "Error: No handler for output format tst(params=true)\n    (Handler configuration failed: uk.ac.starlink.util.LoadException: Failed setting \"params=true\" - No config options available\n        (Failed setting \"params=true\" - No config options available\n            (No method setParams in uk.ac.starlink.table.formats.TstTableWriter)))\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n",
+        "source_cmd_file": "tcat.json"
+    },
+    {
+        "prompt": "Convert my table into a tab-delimited file.",
+        "response": "stilts tcopy in=data.fits ofmt='csv(delimiter=\\t)' out=data.tsv",
+        "chat.jar": "failed",
+        "error": "Error: No handler for output format csv(delimiter=\\t)\n    (Handler configuration failed: uk.ac.starlink.util.LoadException: Failed setting \"delimiter=\\t\" - Usage is delimiter=<char>|0xNN\n        (Failed setting \"delimiter=\\t\" - Usage is delimiter=<char>|0xNN\n            (character to be escaped is missing)))\nUsage: tcopy ifmt=<in-format> ofmt=<out-format>\n             [in=]<table> [out=]<out-table>\n\n",
+        "source_cmd_file": "tcopy.json"
+    },
+    {
+        "prompt": "Convert 'big_data.fits' to VOTable, specifying binary serialization and writing the binary data to an external file rather than inline.",
+        "response": "stilts tcopy in=big_data.fits ofmt='votable(format=BINARY,href=true)' out=big_data.vot",
+        "chat.jar": "failed",
+        "error": "Error: No handler for output format votable(format=BINARY,href=true)\n    (Handler configuration failed: uk.ac.starlink.util.LoadException: Failed setting \"href=true\" - Options are encoding=UTF-8|UTF-16|..., date=true|false, format=TABLEDATA|BINARY|BINARY2|FITS, inline=true|false, xMLDeclaration=<String>, version=V10|V11|V12|V13|V14|V15, compact=true|false|null, resourceType=results|meta, writeSchemaLocation=true|false, stringElementSizer=NOCALC|READ|SAMPLE|FIXED2|ERROR_IF_USED|ASSERT_UNUSED\n        (Failed setting \"href=true\" - Options are encoding=UTF-8|UTF-16|..., date=true|false, format=TABLEDATA|BINARY|BINARY2|FITS, inline=true|false, xMLDeclaration=<String>, version=V10|V11|V12|V13|V14|V15, compact=true|false|null, resourceType=results|meta, writeSchemaLocation=true|false, stringElementSizer=NOCALC|READ|SAMPLE|FIXED2|ERROR_IF_USED|ASSERT_UNUSED\n            (No method setHref in uk.ac.starlink.votable.VOTableWriter)))\nUsage: tcopy ifmt=<in-format> ofmt=<out-format>\n             [in=]<table> [out=]<out-table>\n\n",
+        "source_cmd_file": "tcopy.json"
+    },
+    {
+        "prompt": "Convert a CSV file to ECSV, providing an external YAML header file for metadata definition.",
+        "response": "stilts tcopy in=data.csv ifmt=csv out=data.ecsv ofmt='ecsv(header=metadata.yaml)'",
+        "chat.jar": "failed",
+        "error": "Error: No handler for output format ecsv(header=metadata.yaml)\n    (Handler configuration failed: uk.ac.starlink.util.LoadException: Failed setting \"header=metadata.yaml\" - Options are delimiter=comma|space\n        (Failed setting \"header=metadata.yaml\" - Options are delimiter=comma|space\n            (No method setHeader in uk.ac.starlink.ecsv.EcsvTableWriter)))\nUsage: tcopy ifmt=<in-format> ofmt=<out-format>\n             [in=]<table> [out=]<out-table>\n\n",
+        "source_cmd_file": "tcopy.json"
+    },
+    {
+        "prompt": "Convert a CSV file to ECSV, specifying that **no header line** should be present in the ECSV output body.",
+        "response": "stilts tcopy in=input.csv ifmt=csv ofmt='ecsv(header=false)' out=no_header.ecsv",
+        "chat.jar": "failed",
+        "error": "Error: No handler for output format ecsv(header=false)\n    (Handler configuration failed: uk.ac.starlink.util.LoadException: Failed setting \"header=false\" - Options are delimiter=comma|space\n        (Failed setting \"header=false\" - Options are delimiter=comma|space\n            (No method setHeader in uk.ac.starlink.ecsv.EcsvTableWriter)))\nUsage: tcopy ifmt=<in-format> ofmt=<out-format>\n             [in=]<table> [out=]<out-table>\n\n",
+        "source_cmd_file": "tcopy.json"
+    },
+    {
+        "prompt": "Convert a table from a loop scheme to a VOTable, forcing the binary data to be written as **external files**.",
+        "response": "stilts tcopy in=:loop:5000 ofmt='votable(format=BINARY,href=true)' out=loop_ext.vot",
+        "chat.jar": "failed",
+        "error": "Error: No handler for output format votable(format=BINARY,href=true)\n    (Handler configuration failed: uk.ac.starlink.util.LoadException: Failed setting \"href=true\" - Options are encoding=UTF-8|UTF-16|..., date=true|false, format=TABLEDATA|BINARY|BINARY2|FITS, inline=true|false, xMLDeclaration=<String>, version=V10|V11|V12|V13|V14|V15, compact=true|false|null, resourceType=results|meta, writeSchemaLocation=true|false, stringElementSizer=NOCALC|READ|SAMPLE|FIXED2|ERROR_IF_USED|ASSERT_UNUSED\n        (Failed setting \"href=true\" - Options are encoding=UTF-8|UTF-16|..., date=true|false, format=TABLEDATA|BINARY|BINARY2|FITS, inline=true|false, xMLDeclaration=<String>, version=V10|V11|V12|V13|V14|V15, compact=true|false|null, resourceType=results|meta, writeSchemaLocation=true|false, stringElementSizer=NOCALC|READ|SAMPLE|FIXED2|ERROR_IF_USED|ASSERT_UNUSED\n            (No method setHref in uk.ac.starlink.votable.VOTableWriter)))\nUsage: tcopy ifmt=<in-format> ofmt=<out-format>\n             [in=]<table> [out=]<out-table>\n\n",
+        "source_cmd_file": "tcopy.json"
+    },
+    {
+        "prompt": "Convert a VOTable to LaTeX, specifying the output line thickness for table ruling as 3 pixels.",
+        "response": "stilts tcopy in=data.vot ofmt='latex(thick=3)' out=thick.tex",
+        "chat.jar": "failed",
+        "error": "Error: No handler for output format latex(thick=3)\n    (Handler configuration failed: uk.ac.starlink.util.LoadException: Failed setting \"thick=3\" - Options are standalone=true|false\n        (Failed setting \"thick=3\" - Options are standalone=true|false\n            (No method setThick in uk.ac.starlink.table.formats.LatexTableWriter)))\nUsage: tcopy ifmt=<in-format> ofmt=<out-format>\n             [in=]<table> [out=]<out-table>\n\n",
+        "source_cmd_file": "tcopy.json"
+    },
+    {
+        "prompt": "Convert a VOTable to LaTeX, ensuring the output uses a **serif font style** for annotations (LaTeX config option).",
+        "response": "stilts tcopy in=report.vot ofmt='latex(fontstyle=serif)' out=serif.tex",
+        "chat.jar": "failed",
+        "error": "Error: No handler for output format latex(fontstyle=serif)\n    (Handler configuration failed: uk.ac.starlink.util.LoadException: Failed setting \"fontstyle=serif\" - Options are standalone=true|false\n        (Failed setting \"fontstyle=serif\" - Options are standalone=true|false\n            (No method setFontstyle in uk.ac.starlink.table.formats.LatexTableWriter)))\nUsage: tcopy ifmt=<in-format> ofmt=<out-format>\n             [in=]<table> [out=]<out-table>\n\n",
+        "source_cmd_file": "tcopy.json"
+    },
+    {
+        "prompt": "Copy a VOTable to a FITS file, using a large (300-pixel) marker size in the FITS output (plot annotation config).",
+        "response": "stilts tcopy in=input.vot ofmt='fits(maxsize=300)' out=large_marker_fits.fits",
+        "chat.jar": "failed",
+        "error": "Error: No handler for output format fits(maxsize=300)\n    (Handler configuration failed: uk.ac.starlink.util.LoadException: Failed setting \"maxsize=300\" - Options are primary=basic|votable[n.n]|none, var=FALSE|TRUE|P|Q, col=true|false, storagePolicy=PREFER_MEMORY|PREFER_DISK|SIDEWAYS|DISCARD|ADAPTIVE, formatName=<String>, allowSignedByte=true|false, wide=<WideFits>, date=true|false, allowZeroLengthString=true|false, padCharacter=<byte>\n        (Failed setting \"maxsize=300\" - Options are primary=basic|votable[n.n]|none, var=FALSE|TRUE|P|Q, col=true|false, storagePolicy=PREFER_MEMORY|PREFER_DISK|SIDEWAYS|DISCARD|ADAPTIVE, formatName=<String>, allowSignedByte=true|false, wide=<WideFits>, date=true|false, allowZeroLengthString=true|false, padCharacter=<byte>\n            (No method setMaxsize in uk.ac.starlink.votable.UnifiedFitsTableWriter)))\nUsage: tcopy ifmt=<in-format> ofmt=<out-format>\n             [in=]<table> [out=]<out-table>\n\n",
+        "source_cmd_file": "tcopy.json"
+    },
+    {
+        "prompt": "Convert a CSV file to ECSV, using an external YAML header file for metadata definition.",
+        "response": "stilts tcopy in=data.csv ifmt=csv ofmt='ecsv(header=meta.yaml)' out=ecsv_meta.fits",
+        "chat.jar": "failed",
+        "error": "Error: No handler for output format ecsv(header=meta.yaml)\n    (Handler configuration failed: uk.ac.starlink.util.LoadException: Failed setting \"header=meta.yaml\" - Options are delimiter=comma|space\n        (Failed setting \"header=meta.yaml\" - Options are delimiter=comma|space\n            (No method setHeader in uk.ac.starlink.ecsv.EcsvTableWriter)))\nUsage: tcopy ifmt=<in-format> ofmt=<out-format>\n             [in=]<table> [out=]<out-table>\n\n",
+        "source_cmd_file": "tcopy.json"
+    },
+    {
+        "prompt": "Convert a FITS file to LaTeX, specifying the font size in the output to 16pt.",
+        "response": "stilts tcopy in=pub.fits ofmt='latex(fontsize=16)' out=pub.tex",
+        "chat.jar": "failed",
+        "error": "Error: No handler for output format latex(fontsize=16)\n    (Handler configuration failed: uk.ac.starlink.util.LoadException: Failed setting \"fontsize=16\" - Options are standalone=true|false\n        (Failed setting \"fontsize=16\" - Options are standalone=true|false\n            (No method setFontsize in uk.ac.starlink.table.formats.LatexTableWriter)))\nUsage: tcopy ifmt=<in-format> ofmt=<out-format>\n             [in=]<table> [out=]<out-table>\n\n",
+        "source_cmd_file": "tcopy.json"
+    },
+    {
+        "prompt": "Convert a FITS file to a VOTable, ensuring the output uses external binary data references (`href=true`).",
+        "response": "stilts tcopy in=data.fits ofmt='votable(format=BINARY,href=true)' out=external_binary.vot",
+        "chat.jar": "failed",
+        "error": "Error: No handler for output format votable(format=BINARY,href=true)\n    (Handler configuration failed: uk.ac.starlink.util.LoadException: Failed setting \"href=true\" - Options are encoding=UTF-8|UTF-16|..., date=true|false, format=TABLEDATA|BINARY|BINARY2|FITS, inline=true|false, xMLDeclaration=<String>, version=V10|V11|V12|V13|V14|V15, compact=true|false|null, resourceType=results|meta, writeSchemaLocation=true|false, stringElementSizer=NOCALC|READ|SAMPLE|FIXED2|ERROR_IF_USED|ASSERT_UNUSED\n        (Failed setting \"href=true\" - Options are encoding=UTF-8|UTF-16|..., date=true|false, format=TABLEDATA|BINARY|BINARY2|FITS, inline=true|false, xMLDeclaration=<String>, version=V10|V11|V12|V13|V14|V15, compact=true|false|null, resourceType=results|meta, writeSchemaLocation=true|false, stringElementSizer=NOCALC|READ|SAMPLE|FIXED2|ERROR_IF_USED|ASSERT_UNUSED\n            (No method setHref in uk.ac.starlink.votable.VOTableWriter)))\nUsage: tcopy ifmt=<in-format> ofmt=<out-format>\n             [in=]<table> [out=]<out-table>\n\n",
+        "source_cmd_file": "tcopy.json"
+    },
+    {
+        "prompt": "Copy a table to a GZIP compressed FITS file, explicitly using the GZIP compression option in the output format definition.",
+        "response": "stilts tcopy in=input.fits ofmt='fits(compress=gzip)' out=manual_gzip.fits",
+        "chat.jar": "failed",
+        "error": "Error: No handler for output format fits(compress=gzip)\n    (Handler configuration failed: uk.ac.starlink.util.LoadException: Failed setting \"compress=gzip\" - Options are primary=basic|votable[n.n]|none, var=FALSE|TRUE|P|Q, col=true|false, storagePolicy=PREFER_MEMORY|PREFER_DISK|SIDEWAYS|DISCARD|ADAPTIVE, formatName=<String>, allowSignedByte=true|false, wide=<WideFits>, date=true|false, allowZeroLengthString=true|false, padCharacter=<byte>\n        (Failed setting \"compress=gzip\" - Options are primary=basic|votable[n.n]|none, var=FALSE|TRUE|P|Q, col=true|false, storagePolicy=PREFER_MEMORY|PREFER_DISK|SIDEWAYS|DISCARD|ADAPTIVE, formatName=<String>, allowSignedByte=true|false, wide=<WideFits>, date=true|false, allowZeroLengthString=true|false, padCharacter=<byte>\n            (No method setCompress in uk.ac.starlink.votable.UnifiedFitsTableWriter)))\nUsage: tcopy ifmt=<in-format> ofmt=<out-format>\n             [in=]<table> [out=]<out-table>\n\n",
+        "source_cmd_file": "tcopy.json"
+    },
+    {
+        "prompt": "Convert a FITS file to a VOTable, ensuring the output uses external FITS data reference (`href=true`).",
+        "response": "stilts tcopy in=data.fits ofmt='votable(format=FITS,href=true)' out=ext_fits_vot.vot",
+        "chat.jar": "failed",
+        "error": "Error: No handler for output format votable(format=FITS,href=true)\n    (Handler configuration failed: uk.ac.starlink.util.LoadException: Failed setting \"href=true\" - Options are encoding=UTF-8|UTF-16|..., date=true|false, format=TABLEDATA|BINARY|BINARY2|FITS, inline=true|false, xMLDeclaration=<String>, version=V10|V11|V12|V13|V14|V15, compact=true|false|null, resourceType=results|meta, writeSchemaLocation=true|false, stringElementSizer=NOCALC|READ|SAMPLE|FIXED2|ERROR_IF_USED|ASSERT_UNUSED\n        (Failed setting \"href=true\" - Options are encoding=UTF-8|UTF-16|..., date=true|false, format=TABLEDATA|BINARY|BINARY2|FITS, inline=true|false, xMLDeclaration=<String>, version=V10|V11|V12|V13|V14|V15, compact=true|false|null, resourceType=results|meta, writeSchemaLocation=true|false, stringElementSizer=NOCALC|READ|SAMPLE|FIXED2|ERROR_IF_USED|ASSERT_UNUSED\n            (No method setHref in uk.ac.starlink.votable.VOTableWriter)))\nUsage: tcopy ifmt=<in-format> ofmt=<out-format>\n             [in=]<table> [out=]<out-table>\n\n",
+        "source_cmd_file": "tcopy.json"
+    },
+    {
+        "prompt": "Convert a FITS file to a VOTable, specifying the BINARY serialization format and **external data reference** (`href=true`).",
+        "response": "stilts tcopy in=data.fits ofmt='votable(format=BINARY,href=true)' out=external_binary.vot",
+        "chat.jar": "failed",
+        "error": "Error: No handler for output format votable(format=BINARY,href=true)\n    (Handler configuration failed: uk.ac.starlink.util.LoadException: Failed setting \"href=true\" - Options are encoding=UTF-8|UTF-16|..., date=true|false, format=TABLEDATA|BINARY|BINARY2|FITS, inline=true|false, xMLDeclaration=<String>, version=V10|V11|V12|V13|V14|V15, compact=true|false|null, resourceType=results|meta, writeSchemaLocation=true|false, stringElementSizer=NOCALC|READ|SAMPLE|FIXED2|ERROR_IF_USED|ASSERT_UNUSED\n        (Failed setting \"href=true\" - Options are encoding=UTF-8|UTF-16|..., date=true|false, format=TABLEDATA|BINARY|BINARY2|FITS, inline=true|false, xMLDeclaration=<String>, version=V10|V11|V12|V13|V14|V15, compact=true|false|null, resourceType=results|meta, writeSchemaLocation=true|false, stringElementSizer=NOCALC|READ|SAMPLE|FIXED2|ERROR_IF_USED|ASSERT_UNUSED\n            (No method setHref in uk.ac.starlink.votable.VOTableWriter)))\nUsage: tcopy ifmt=<in-format> ofmt=<out-format>\n             [in=]<table> [out=]<out-table>\n\n",
+        "source_cmd_file": "tcopy.json"
+    },
+    {
+        "prompt": "Convert a VOTable to LaTeX, ensuring the output text uses a **serif font style**.",
+        "response": "stilts tcopy in=document.vot ofmt='latex(fontstyle=serif)' out=serif_table.tex",
+        "chat.jar": "failed",
+        "error": "Error: No handler for output format latex(fontstyle=serif)\n    (Handler configuration failed: uk.ac.starlink.util.LoadException: Failed setting \"fontstyle=serif\" - Options are standalone=true|false\n        (Failed setting \"fontstyle=serif\" - Options are standalone=true|false\n            (No method setFontstyle in uk.ac.starlink.table.formats.LatexTableWriter)))\nUsage: tcopy ifmt=<in-format> ofmt=<out-format>\n             [in=]<table> [out=]<out-table>\n\n",
+        "source_cmd_file": "tcopy.json"
+    },
+    {
+        "prompt": "Convert a Parquet file to FITS, explicitly setting **GZIP** compression for the final FITS file.",
+        "response": "stilts tcopy in=input.parquet out=output.fits.gz ofmt='fits(compress=gzip)'",
+        "chat.jar": "failed",
+        "error": "Error: No handler for output format fits(compress=gzip)\n    (Handler configuration failed: uk.ac.starlink.util.LoadException: Failed setting \"compress=gzip\" - Options are primary=basic|votable[n.n]|none, var=FALSE|TRUE|P|Q, col=true|false, storagePolicy=PREFER_MEMORY|PREFER_DISK|SIDEWAYS|DISCARD|ADAPTIVE, formatName=<String>, allowSignedByte=true|false, wide=<WideFits>, date=true|false, allowZeroLengthString=true|false, padCharacter=<byte>\n        (Failed setting \"compress=gzip\" - Options are primary=basic|votable[n.n]|none, var=FALSE|TRUE|P|Q, col=true|false, storagePolicy=PREFER_MEMORY|PREFER_DISK|SIDEWAYS|DISCARD|ADAPTIVE, formatName=<String>, allowSignedByte=true|false, wide=<WideFits>, date=true|false, allowZeroLengthString=true|false, padCharacter=<byte>\n            (No method setCompress in uk.ac.starlink.votable.UnifiedFitsTableWriter)))\nUsage: tcopy ifmt=<in-format> ofmt=<out-format>\n             [in=]<table> [out=]<out-table>\n\n",
+        "source_cmd_file": "tcopy.json"
+    },
+    {
+        "prompt": "Convert a FITS file to VOTable, using the binary format but storing the binary data in an **external file** (href=true).",
+        "response": "stilts tcopy in=input.fits ofmt='votable(format=BINARY,href=true)' out=external_data.vot",
+        "chat.jar": "failed",
+        "error": "Error: No handler for output format votable(format=BINARY,href=true)\n    (Handler configuration failed: uk.ac.starlink.util.LoadException: Failed setting \"href=true\" - Options are encoding=UTF-8|UTF-16|..., date=true|false, format=TABLEDATA|BINARY|BINARY2|FITS, inline=true|false, xMLDeclaration=<String>, version=V10|V11|V12|V13|V14|V15, compact=true|false|null, resourceType=results|meta, writeSchemaLocation=true|false, stringElementSizer=NOCALC|READ|SAMPLE|FIXED2|ERROR_IF_USED|ASSERT_UNUSED\n        (Failed setting \"href=true\" - Options are encoding=UTF-8|UTF-16|..., date=true|false, format=TABLEDATA|BINARY|BINARY2|FITS, inline=true|false, xMLDeclaration=<String>, version=V10|V11|V12|V13|V14|V15, compact=true|false|null, resourceType=results|meta, writeSchemaLocation=true|false, stringElementSizer=NOCALC|READ|SAMPLE|FIXED2|ERROR_IF_USED|ASSERT_UNUSED\n            (No method setHref in uk.ac.starlink.votable.VOTableWriter)))\nUsage: tcopy ifmt=<in-format> ofmt=<out-format>\n             [in=]<table> [out=]<out-table>\n\n",
+        "source_cmd_file": "tcopy.json"
+    },
+    {
+        "prompt": "Convert a FITS table to ECSV, specifying that the ECSV file should use a **tab delimiter**.",
+        "response": "stilts tcopy in=input.fits ofmt='ecsv(delimiter=tab)' out=tab_delimited.ecsv",
+        "chat.jar": "failed",
+        "error": "Error: No handler for output format ecsv(delimiter=tab)\n    (Handler configuration failed: uk.ac.starlink.util.LoadException: Failed setting \"delimiter=tab\" - Options are delimiter=comma|space\n        (Failed setting \"delimiter=tab\" - Options are delimiter=comma|space\n            (java.lang.reflect.InvocationTargetException\n                (Illegal delimiter \"tab\"))))\nUsage: tcopy ifmt=<in-format> ofmt=<out-format>\n             [in=]<table> [out=]<out-table>\n\n",
+        "source_cmd_file": "tcopy.json"
+    },
+    {
+        "prompt": "Convert a FITS file to LaTeX output, ensuring the output uses a **serif font** for rendering text.",
+        "response": "stilts tcopy in=input.fits ofmt='latex(fontstyle=serif)' out=serif_output.tex",
+        "chat.jar": "failed",
+        "error": "Error: No handler for output format latex(fontstyle=serif)\n    (Handler configuration failed: uk.ac.starlink.util.LoadException: Failed setting \"fontstyle=serif\" - Options are standalone=true|false\n        (Failed setting \"fontstyle=serif\" - Options are standalone=true|false\n            (No method setFontstyle in uk.ac.starlink.table.formats.LatexTableWriter)))\nUsage: tcopy ifmt=<in-format> ofmt=<out-format>\n             [in=]<table> [out=]<out-table>\n\n",
+        "source_cmd_file": "tcopy.json"
+    },
+    {
+        "prompt": "Copy a VOTable and output it as a LaTeX table, specifying that the font weight should be **bold**.",
+        "response": "stilts tcopy in=input.vot ofmt='latex(fontweight=bold)' out=bold_report.tex",
+        "chat.jar": "failed",
+        "error": "Error: No handler for output format latex(fontweight=bold)\n    (Handler configuration failed: uk.ac.starlink.util.LoadException: Failed setting \"fontweight=bold\" - Options are standalone=true|false\n        (Failed setting \"fontweight=bold\" - Options are standalone=true|false\n            (No method setFontweight in uk.ac.starlink.table.formats.LatexTableWriter)))\nUsage: tcopy ifmt=<in-format> ofmt=<out-format>\n             [in=]<table> [out=]<out-table>\n\n",
+        "source_cmd_file": "tcopy.json"
+    },
+    {
+        "prompt": "Copy a table and output it as a FITS file, ensuring **LZ4_RAW** compression is used.",
+        "response": "stilts tcopy in=input.fits out=output.fits.lz4 ofmt='fits(compress=lz4)'",
+        "chat.jar": "failed",
+        "error": "Error: No handler for output format fits(compress=lz4)\n    (Handler configuration failed: uk.ac.starlink.util.LoadException: Failed setting \"compress=lz4\" - Options are primary=basic|votable[n.n]|none, var=FALSE|TRUE|P|Q, col=true|false, storagePolicy=PREFER_MEMORY|PREFER_DISK|SIDEWAYS|DISCARD|ADAPTIVE, formatName=<String>, allowSignedByte=true|false, wide=<WideFits>, date=true|false, allowZeroLengthString=true|false, padCharacter=<byte>\n        (Failed setting \"compress=lz4\" - Options are primary=basic|votable[n.n]|none, var=FALSE|TRUE|P|Q, col=true|false, storagePolicy=PREFER_MEMORY|PREFER_DISK|SIDEWAYS|DISCARD|ADAPTIVE, formatName=<String>, allowSignedByte=true|false, wide=<WideFits>, date=true|false, allowZeroLengthString=true|false, padCharacter=<byte>\n            (No method setCompress in uk.ac.starlink.votable.UnifiedFitsTableWriter)))\nUsage: tcopy ifmt=<in-format> ofmt=<out-format>\n             [in=]<table> [out=]<out-table>\n\n",
+        "source_cmd_file": "tcopy.json"
+    },
+    {
+        "prompt": "Combine files, ensuring the result is stored in the compressed FITS format that retains full VOTable metadata in the primary HDU.",
+        "response": "stilts tcatn nin=2 in1=d1.fits in2=d2.fits ofmt='fits-plus(compress=gzip)' out=metadata_rich.fits.gz",
+        "chat.jar": "failed",
+        "error": "Error: No handler for output format fits-plus(compress=gzip)\n    (Handler configuration failed: uk.ac.starlink.util.LoadException: Failed setting \"compress=gzip\" - Options are primary=basic|votable[n.n]|none, var=FALSE|TRUE|P|Q, col=true|false, storagePolicy=PREFER_MEMORY|PREFER_DISK|SIDEWAYS|DISCARD|ADAPTIVE, formatName=<String>, allowSignedByte=true|false, wide=<WideFits>, date=true|false, allowZeroLengthString=true|false, padCharacter=<byte>\n        (Failed setting \"compress=gzip\" - Options are primary=basic|votable[n.n]|none, var=FALSE|TRUE|P|Q, col=true|false, storagePolicy=PREFER_MEMORY|PREFER_DISK|SIDEWAYS|DISCARD|ADAPTIVE, formatName=<String>, allowSignedByte=true|false, wide=<WideFits>, date=true|false, allowZeroLengthString=true|false, padCharacter=<byte>\n            (No method setCompress in uk.ac.starlink.votable.UnifiedFitsTableWriter)))\nUsage: tcatn nin=<count> ifmtN=<in-format> inN=<tableN> icmdN=<cmds>\n             ocmd=<cmds>\n             omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n             out=<out-table> ofmt=<out-format> seqcol=<colname>\n             loccol=<colname> uloccol=<colname> countrows=true|false\n\n",
+        "source_cmd_file": "tcatn.json"
+    }
+]

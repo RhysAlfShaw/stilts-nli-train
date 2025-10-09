@@ -1,0 +1,149 @@
+[
+    {
+        "prompt": "Get 1000 stars from Gaia and save the result as a gzipped FITS file.",
+        "response": "stilts tapquery tapurl=https://gea.esac.esa.int/tap-server/tap adql='SELECT TOP 1000 * FROM gaiadr3.gaia_source' out=gaia_1k.fits.gz",
+        "chat.jar": "failed",
+        "error": "Error: Can't guess output format for gaia_1k.fits.gz\n    (No handler specified for writing table.\nKnown formats: jdbc, fits, colfits, votable, fits-healpix, ECSV, parquet, text, ascii, CSV, IPAC, HTML, LaTeX, TST, feather, mirage)\nUsage: tapquery nupload=<count> ufmtN=<in-format> uploadN=<tableN>\n                ucmdN=<cmds> ocmd=<cmds>\n                omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n                out=<out-table> ofmt=<out-format> upnameN=<adql-identifier>\n                tapurl=<url-value> interface=tap1.0|tap1.1|cap auth=true|false\n                adql=<query-text> parse=true|false sync=true|false\n                maxrec=<nrow> destruction=<iso8601>\n                executionduration=<seconds> compress=true|false\n                upvotformat=TABLEDATA|BINARY|BINARY2 language=<lang-name>\n                poll=<millisec> progress=true|false\n                delete=finished|never|always|now\n\n",
+        "source_cmd_file": "tapquery.json"
+    },
+    {
+        "prompt": "Retrieve 500 PanSTARRS 1 DR1 sources and save the output as a gzipped FITS file, enabling HTTP compression.",
+        "response": "stilts tapquery tapurl=https://mast.stsci.edu/vo-tap/api/v0.1/ps1dr1 adql='SELECT TOP 500 * FROM dbo.detection_object' compress=true out=ps1_sample.fits.gz",
+        "chat.jar": "failed",
+        "error": "Error: Can't guess output format for ps1_sample.fits.gz\n    (No handler specified for writing table.\nKnown formats: jdbc, fits, colfits, votable, fits-healpix, ECSV, parquet, text, ascii, CSV, IPAC, HTML, LaTeX, TST, feather, mirage)\nUsage: tapquery nupload=<count> ufmtN=<in-format> uploadN=<tableN>\n                ucmdN=<cmds> ocmd=<cmds>\n                omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n                out=<out-table> ofmt=<out-format> upnameN=<adql-identifier>\n                tapurl=<url-value> interface=tap1.0|tap1.1|cap auth=true|false\n                adql=<query-text> parse=true|false sync=true|false\n                maxrec=<nrow> destruction=<iso8601>\n                executionduration=<seconds> compress=true|false\n                upvotformat=TABLEDATA|BINARY|BINARY2 language=<lang-name>\n                poll=<millisec> progress=true|false\n                delete=finished|never|always|now\n\n",
+        "source_cmd_file": "tapquery.json"
+    },
+    {
+        "prompt": "Ensure random access to the table data using disk storage cache, and save the result as a compressed FITS file.",
+        "response": "stilts tpipe in=stream.fits cmd=cache storage=disk compress=true out=cached_disk.fits.gz",
+        "chat.jar": "failed",
+        "error": "Error: Can't guess output format for cached_disk.fits.gz\n    (No handler specified for writing table.\nKnown formats: jdbc, fits, colfits, votable, fits-healpix, ECSV, parquet, text, ascii, CSV, IPAC, HTML, LaTeX, TST, feather, mirage)\nUsage: tpipe ifmt=<in-format> istream=true|false cmd=<cmds>\n             omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n             out=<out-table> ofmt=<out-format>\n             [in=]<table>\n\n",
+        "source_cmd_file": "tpipe.json"
+    },
+    {
+        "prompt": "I have `file_x.dat` and `file_y.dat` in ASCII format. Join them, and then add a column named 'ROW_NUM' which is the row index of the final table.",
+        "response": "stilts tcat ifmt=ascii in=file_x.dat in=file_y.dat ocmd='addcol ROW_NUM $0' out=files_with_index.dat",
+        "chat.jar": "failed",
+        "error": "Error: Can't guess output format for files_with_index.dat\n    (No handler specified for writing table.\nKnown formats: jdbc, fits, colfits, votable, fits-healpix, ECSV, parquet, text, ascii, CSV, IPAC, HTML, LaTeX, TST, feather, mirage)\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n",
+        "source_cmd_file": "tcat.json"
+    },
+    {
+        "prompt": "Join `stars.dat` and `galaxies.dat` (ASCII format). Add a column 'ORIGIN' that contains the unique part of the filename (e.g., 'stars' and 'galaxies').",
+        "response": "stilts tcat ifmt=ascii in=stars.dat in=galaxies.dat uloccol=ORIGIN out=combined_objects.dat",
+        "chat.jar": "failed",
+        "error": "Error: Can't guess output format for combined_objects.dat\n    (No handler specified for writing table.\nKnown formats: jdbc, fits, colfits, votable, fits-healpix, ECSV, parquet, text, ascii, CSV, IPAC, HTML, LaTeX, TST, feather, mirage)\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n",
+        "source_cmd_file": "tcat.json"
+    },
+    {
+        "prompt": "Concatenate data from a remote FTP link and a local FITS file, writing the output to a compressed FITS file.",
+        "response": "stilts tcat in='ftp://archive.org/data/remote.fits local.fits' out=final_data.fits.gz",
+        "chat.jar": "failed",
+        "error": "Error: Can't guess output format for final_data.fits.gz\n    (No handler specified for writing table.\nKnown formats: jdbc, fits, colfits, votable, fits-healpix, ECSV, parquet, text, ascii, CSV, IPAC, HTML, LaTeX, TST, feather, mirage)\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n",
+        "source_cmd_file": "tcat.json"
+    },
+    {
+        "prompt": "Concatenate tables, ensuring the output is written as a compressed FITS file (.fits.gz).",
+        "response": "stilts tcat in='d1.fits d2.fits' out=compressed_merge.fits.gz",
+        "chat.jar": "failed",
+        "error": "Error: Can't guess output format for compressed_merge.fits.gz\n    (No handler specified for writing table.\nKnown formats: jdbc, fits, colfits, votable, fits-healpix, ECSV, parquet, text, ascii, CSV, IPAC, HTML, LaTeX, TST, feather, mirage)\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n",
+        "source_cmd_file": "tcat.json"
+    },
+    {
+        "prompt": "Concatenate tables, ensuring the output is written as a compressed FITS file and the exact row count is calculated beforehand.",
+        "response": "stilts tcat in='c1.fits c2.fits' out=compressed_counted.fits.gz countrows=true",
+        "chat.jar": "failed",
+        "error": "Error: Can't guess output format for compressed_counted.fits.gz\n    (No handler specified for writing table.\nKnown formats: jdbc, fits, colfits, votable, fits-healpix, ECSV, parquet, text, ascii, CSV, IPAC, HTML, LaTeX, TST, feather, mirage)\nUsage: tcat in=<table> [<table> ...] ifmt=<in-format> multi=true|false\n            istream=true|false icmd=<cmds> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format> seqcol=<colname>\n            loccol=<colname> uloccol=<colname> lazy=true|false\n            countrows=true|false\n\n",
+        "source_cmd_file": "tcat.json"
+    },
+    {
+        "prompt": "Perform a match in a 3D parameter space (`PARAM1`, `PARAM2`, `PARAM3`) with an error of 10 units.",
+        "response": "stilts tmatch2 in1=model_a.dat in2=model_b.dat ifmt=ascii matcher=3d params=10 values1='PARAM1 PARAM2 PARAM3' values2='PARAM1 PARAM2 PARAM3' out=param_space_match.dat",
+        "chat.jar": "failed",
+        "error": "Error: Can't guess output format for param_space_match.dat\n    (No handler specified for writing table.\nKnown formats: jdbc, fits, colfits, votable, fits-healpix, ECSV, parquet, text, ascii, CSV, IPAC, HTML, LaTeX, TST, feather, mirage)\nUsage: tmatch2 ifmt1=<in-format> ifmt2=<in-format> icmd1=<cmds> icmd2=<cmds>\n               ocmd=<cmds>\n               omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n               out=<out-table> ofmt=<out-format> matcher=<matcher-name>\n               values1=<expr-list> values2=<expr-list> params=<match-params>\n               tuning=<tuning-params>\n               join=1and2|1or2|all1|all2|1not2|2not1|1xor2\n               find=all|best|best1|best2 fixcols=none|dups|all suffix1=<label>\n               suffix2=<label> scorecol=<col-name>\n               progress=none|log|time|profile\n               runner=parallel|parallel<n>|parallel-all|sequential|classic|partest\n               [in1=]<table1> [in2=]<table2>\n\n",
+        "source_cmd_file": "tmatch2.json"
+    },
+    {
+        "prompt": "Find the best match (best1) for each row in cat1.fits from cat2.fits (1 arcsec sky radius). Output to a compressed FITS file.",
+        "response": "stilts tmatch2 in1=cat1.fits in2=cat2.fits matcher=sky params=1 values1='RA DEC' values2='RA DEC' find=best1 out=best1_compressed.fits.gz",
+        "chat.jar": "failed",
+        "error": "Error: Can't guess output format for best1_compressed.fits.gz\n    (No handler specified for writing table.\nKnown formats: jdbc, fits, colfits, votable, fits-healpix, ECSV, parquet, text, ascii, CSV, IPAC, HTML, LaTeX, TST, feather, mirage)\nUsage: tmatch2 ifmt1=<in-format> ifmt2=<in-format> icmd1=<cmds> icmd2=<cmds>\n               ocmd=<cmds>\n               omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n               out=<out-table> ofmt=<out-format> matcher=<matcher-name>\n               values1=<expr-list> values2=<expr-list> params=<match-params>\n               tuning=<tuning-params>\n               join=1and2|1or2|all1|all2|1not2|2not1|1xor2\n               find=all|best|best1|best2 fixcols=none|dups|all suffix1=<label>\n               suffix2=<label> scorecol=<col-name>\n               progress=none|log|time|profile\n               runner=parallel|parallel<n>|parallel-all|sequential|classic|partest\n               [in1=]<table1> [in2=]<table2>\n\n",
+        "source_cmd_file": "tmatch2.json"
+    },
+    {
+        "prompt": "Create a test table and save it to a gzipped FITS file.",
+        "response": "stilts tcopy in=:test:200 out=test.fits.gz",
+        "chat.jar": "failed",
+        "error": "Error: Can't guess output format for test.fits.gz\n    (No handler specified for writing table.\nKnown formats: jdbc, fits, colfits, votable, fits-healpix, ECSV, parquet, text, ascii, CSV, IPAC, HTML, LaTeX, TST, feather, mirage)\nUsage: tcopy ifmt=<in-format> ofmt=<out-format>\n             [in=]<table> [out=]<out-table>\n\n",
+        "source_cmd_file": "tcopy.json"
+    },
+    {
+        "prompt": "Copy 'positions.fits' to 'positions.fits.gz', utilizing automatic compression based on extension.",
+        "response": "stilts tcopy in=positions.fits out=positions.fits.gz",
+        "chat.jar": "failed",
+        "error": "Error: Can't guess output format for positions.fits.gz\n    (No handler specified for writing table.\nKnown formats: jdbc, fits, colfits, votable, fits-healpix, ECSV, parquet, text, ascii, CSV, IPAC, HTML, LaTeX, TST, feather, mirage)\nUsage: tcopy ifmt=<in-format> ofmt=<out-format>\n             [in=]<table> [out=]<out-table>\n\n",
+        "source_cmd_file": "tcopy.json"
+    },
+    {
+        "prompt": "Convert a large FITS file to a compressed FITS file with a `.fits.gz` extension, relying on auto-detection for compression.",
+        "response": "stilts tcopy in=big_file.fits out=big_file.fits.gz",
+        "chat.jar": "failed",
+        "error": "Error: Can't guess output format for big_file.fits.gz\n    (No handler specified for writing table.\nKnown formats: jdbc, fits, colfits, votable, fits-healpix, ECSV, parquet, text, ascii, CSV, IPAC, HTML, LaTeX, TST, feather, mirage)\nUsage: tcopy ifmt=<in-format> ofmt=<out-format>\n             [in=]<table> [out=]<out-table>\n\n",
+        "source_cmd_file": "tcopy.json"
+    },
+    {
+        "prompt": "Convert 'large_survey.fits' to a GZIP-compressed FITS file.",
+        "response": "stilts tcopy in=large_survey.fits out=large_survey.fits.gz",
+        "chat.jar": "failed",
+        "error": "Error: Can't guess output format for large_survey.fits.gz\n    (No handler specified for writing table.\nKnown formats: jdbc, fits, colfits, votable, fits-healpix, ECSV, parquet, text, ascii, CSV, IPAC, HTML, LaTeX, TST, feather, mirage)\nUsage: tcopy ifmt=<in-format> ofmt=<out-format>\n             [in=]<table> [out=]<out-table>\n\n",
+        "source_cmd_file": "tcopy.json"
+    },
+    {
+        "prompt": "Copy a local FITS table to a compressed VOTable file (`.vot.gz`), relying on the extension for compression.",
+        "response": "stilts tcopy in=local_data.fits out=local_data.vot.gz",
+        "chat.jar": "failed",
+        "error": "Error: Can't guess output format for local_data.vot.gz\n    (No handler specified for writing table.\nKnown formats: jdbc, fits, colfits, votable, fits-healpix, ECSV, parquet, text, ascii, CSV, IPAC, HTML, LaTeX, TST, feather, mirage)\nUsage: tcopy ifmt=<in-format> ofmt=<out-format>\n             [in=]<table> [out=]<out-table>\n\n",
+        "source_cmd_file": "tcopy.json"
+    },
+    {
+        "prompt": "Convert a FITS file to FITS, but force the output to be compressed using **Unix compress** format (not GZIP).",
+        "response": "stilts tcopy in=input.fits out=output.fits.Z",
+        "chat.jar": "failed",
+        "error": "Error: Can't guess output format for output.fits.Z\n    (No handler specified for writing table.\nKnown formats: jdbc, fits, colfits, votable, fits-healpix, ECSV, parquet, text, ascii, CSV, IPAC, HTML, LaTeX, TST, feather, mirage)\nUsage: tcopy ifmt=<in-format> ofmt=<out-format>\n             [in=]<table> [out=]<out-table>\n\n",
+        "source_cmd_file": "tcopy.json"
+    },
+    {
+        "prompt": "Copy a table and output it as a FITS file, ensuring the output uses **BZIP2** compression.",
+        "response": "stilts tcopy in=input.fits out=output.fits.bz2",
+        "chat.jar": "failed",
+        "error": "Error: Can't guess output format for output.fits.bz2\n    (No handler specified for writing table.\nKnown formats: jdbc, fits, colfits, votable, fits-healpix, ECSV, parquet, text, ascii, CSV, IPAC, HTML, LaTeX, TST, feather, mirage)\nUsage: tcopy ifmt=<in-format> ofmt=<out-format>\n             [in=]<table> [out=]<out-table>\n\n",
+        "source_cmd_file": "tcopy.json"
+    },
+    {
+        "prompt": "Find spectra (SSA) around RA 25.5, Dec 1.5, using a radius equal to 5 degrees, and output the result as a compressed FITS file.",
+        "response": "stilts cone serviceurl=https://archive.eso.org/tap_obs lon=25.5 lat=1.5 radius=5.0 servicetype=ssa compress=true out=ssa_5deg.fits.gz",
+        "chat.jar": "failed",
+        "error": "Error: Can't guess output format for ssa_5deg.fits.gz\n    (No handler specified for writing table.\nKnown formats: jdbc, fits, colfits, votable, fits-healpix, ECSV, parquet, text, ascii, CSV, IPAC, HTML, LaTeX, TST, feather, mirage)\nUsage: cone serviceurl=<url-value> lon=<degrees> lat=<degrees>\n            radius=<degrees>\n            skysys=icrs|fk5|fk4|galactic|supergalactic|ecliptic\n            servicetype=cone|ssa|sia1|sia2|sia verb=1|2|3 compress=true|false\n            dataformat=<value> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format>\n\n",
+        "source_cmd_file": "cone-examples.json"
+    },
+    {
+        "prompt": "Query the ESO TAP_OBS service (SSA) around RA 100, Dec 40, using a radius of 0.0005 degrees, saving the output as compressed FITS.",
+        "response": "stilts cone serviceurl=https://archive.eso.org/tap_obs lon=100.0 lat=40.0 radius=0.0005 servicetype=ssa compress=true out=ssa_comp_fits.fits.gz",
+        "chat.jar": "failed",
+        "error": "Error: Can't guess output format for ssa_comp_fits.fits.gz\n    (No handler specified for writing table.\nKnown formats: jdbc, fits, colfits, votable, fits-healpix, ECSV, parquet, text, ascii, CSV, IPAC, HTML, LaTeX, TST, feather, mirage)\nUsage: cone serviceurl=<url-value> lon=<degrees> lat=<degrees>\n            radius=<degrees>\n            skysys=icrs|fk5|fk4|galactic|supergalactic|ecliptic\n            servicetype=cone|ssa|sia1|sia2|sia verb=1|2|3 compress=true|false\n            dataformat=<value> ocmd=<cmds>\n            omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n            out=<out-table> ofmt=<out-format>\n\n",
+        "source_cmd_file": "cone-examples.json"
+    },
+    {
+        "prompt": "Can you concatenate three tables and output to a gzipped FITS file?",
+        "response": "stilts tcatn nin=3 in1=t1.fits in2=t2.fits in3=t3.fits out=all.fits.gz",
+        "chat.jar": "failed",
+        "error": "Error: Can't guess output format for all.fits.gz\n    (No handler specified for writing table.\nKnown formats: jdbc, fits, colfits, votable, fits-healpix, ECSV, parquet, text, ascii, CSV, IPAC, HTML, LaTeX, TST, feather, mirage)\nUsage: tcatn nin=<count> ifmtN=<in-format> inN=<tableN> icmdN=<cmds>\n             ocmd=<cmds>\n             omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n             out=<out-table> ofmt=<out-format> seqcol=<colname>\n             loccol=<colname> uloccol=<colname> countrows=true|false\n\n",
+        "source_cmd_file": "tcatn.json"
+    },
+    {
+        "prompt": "Combine tables, forcing the output to a compressed FITS format with the original filenames.",
+        "response": "stilts tcatn nin=2 in1=archive/full/dataA.fits in2=archive/full/dataB.fits loccol=OriginalName out=combined.fits.gz",
+        "chat.jar": "failed",
+        "error": "Error: Can't guess output format for combined.fits.gz\n    (No handler specified for writing table.\nKnown formats: jdbc, fits, colfits, votable, fits-healpix, ECSV, parquet, text, ascii, CSV, IPAC, HTML, LaTeX, TST, feather, mirage)\nUsage: tcatn nin=<count> ifmtN=<in-format> inN=<tableN> icmdN=<cmds>\n             ocmd=<cmds>\n             omode=out|meta|stats|count|checksum|cgi|discard|topcat|samp|plastic|tosql|gui\n             out=<out-table> ofmt=<out-format> seqcol=<colname>\n             loccol=<colname> uloccol=<colname> countrows=true|false\n\n",
+        "source_cmd_file": "tcatn.json"
+    }
+]
