@@ -11,7 +11,6 @@ from transformers import (
 )
 import argparse
 
-
 argparser = argparse.ArgumentParser()
 argparser.add_argument(
     "--model_path",
@@ -22,7 +21,7 @@ argparser.add_argument(
 argparser.add_argument(
     "--output_dir",
     type=str,
-    default="/scratch/Rhys/stilts_models/gemma-2b-finetuned",
+    default="/scratch/Rhys/stilts_models/gemma-2b-finetuned-new",
 )
 
 argparser.add_argument(
@@ -65,7 +64,8 @@ TRAIN_FILE = f"{TRAINING_DATA_DIR}/training_data.json"
 # all the training data files are in DATA but in only certain directories.
 
 TRAIN_FILE_CMDS_DIR = [
-    # "cone",
+    "cone",
+    "NOTEBOOKLM",
     "descriptions",
     "mocshape",
     "other",
@@ -81,16 +81,16 @@ TRAIN_FILE_CMDS_DIR = [
 
 # open all of the dirs and get the locations of the files inside them.
 
-ADDITIONAL_TRAIN_FILES = []
-for directory in TRAIN_FILE_CMDS_DIR:
-    dir_path = os.path.join(TRAINING_DATA_DIR, directory)
-    if os.path.isdir(dir_path):
-        for filename in os.listdir(dir_path):
-            if filename.endswith(".json"):
-                ADDITIONAL_TRAIN_FILES.append(os.path.join(directory, filename))
+# ADDITIONAL_TRAIN_FILES = []
+# for directory in TRAIN_FILE_CMDS_DIR:
+#     dir_path = os.path.join(TRAINING_DATA_DIR, directory)
+#     if os.path.isdir(dir_path):
+#         for filename in os.listdir(dir_path):
+#             if filename.endswith(".json"):
+#                 ADDITIONAL_TRAIN_FILES.append(os.path.join(directory, filename))
 
-print(ADDITIONAL_TRAIN_FILES)
-EVAL_TEST_SPLIT = 0.1
+# print(ADDITIONAL_TRAIN_FILES)
+# EVAL_TEST_SPLIT = 0.1
 BATCH_SIZE = argparser.parse_args().batch_size
 LEARNING_RATE = 5e-5  # 5e-5 is a common learning rate for fine-tuning large models
 NUM_EPOCHS = 5  # 1 epoch is often sufficient for pre-trained models on specific tasks.
@@ -123,25 +123,33 @@ model = AutoModelForCausalLM.from_pretrained(
 )
 
 print("Preparing dataset...")
-with open(TRAIN_FILE, "r") as f:
-    data = json.load(f)
+# with open(TRAIN_FILE, "r") as f:
+#     data = json.load(f)
 
 # # Load additional training data if specified
-if ADDITIONAL_TRAIN_FILES:
-    for additional_file in ADDITIONAL_TRAIN_FILES:
-        print(additional_file)
-        with open(f"{TRAINING_DATA_DIR}/{additional_file}", "r") as f:
-            additional_data = json.load(f)
-            data.extend(additional_data)
+# if ADDITIONAL_TRAIN_FILES:
+#     for additional_file in ADDITIONAL_TRAIN_FILES:
+#         print(additional_file)
+#         with open(f"{TRAINING_DATA_DIR}/{additional_file}", "r") as f:
+#             additional_data = json.load(f)
+#             data.extend(additional_data)
 
-if any("chat.jar" in item for item in data):
-    print(f"Total training examples before removing chat.jar fails: {len(data)}")
-    data = [item for item in data if item.get("chat.jar") != "failed"]
-    print(f"Total training examples after removing chat.jar fails: {len(data)}")
+with open(f"{TRAINING_DATA_DIR}/final_data_training/train.json", "r") as f:
+    training_data = json.load(f)
+
+
+with open(f"{TRAINING_DATA_DIR}/final_data_training/test.json", "r") as f:
+    testing_data = json.load(f)
+
+# should not have any chat.jar fails in the training data now.
+# if any("chat.jar" in item for item in training_data):
+#     print(f"Total training examples before removing chat.jar fails: {len(data)}")
+#     data = [item for item in data if item.get("chat.jar") != "failed"]
+#     print(f"Total training examples after removing chat.jar fails: {len(data)}")
 # set chat template for tokenizer as gemma
 
-formatted_data = []
-
+formatted_training_data = []
+formatted_testing_data = []
 gemma_template = (
     "{% if messages[0]['role'] == 'system' %}"
     "{{ raise_exception('System messages are not supported by this template.') }}"
@@ -156,24 +164,36 @@ gemma_template = (
 )
 
 tokenizer.chat_template = gemma_template
-for item in data:
-    print(item)
+for item in training_data:
+    # print(item)
     chat = [
         {"role": "user", "content": item["prompt"]},
         {"role": "assistant", "content": item["response"]},
     ]
-    formatted_data.append({"text": tokenizer.apply_chat_template(chat, tokenize=False)})
+    formatted_training_data.append(
+        {"text": tokenizer.apply_chat_template(chat, tokenize=False)}
+    )
+for item in testing_data:
+    # print(item)
+    chat = [
+        {"role": "user", "content": item["prompt"]},
+        {"role": "assistant", "content": item["response"]},
+    ]
+    formatted_testing_data.append(
+        {"text": tokenizer.apply_chat_template(chat, tokenize=False)}
+    )
 
 # formatted_data = tokenizer.apply_chat_template(data, tokenize=False)
-dataset = Dataset.from_list(formatted_data)
+training_dataset = Dataset.from_list(formatted_training_data)
+testing_dataset = Dataset.from_list(formatted_testing_data)
 
 # check a few examples
 print("\nSample formatted data:")
-for i in range(min(2, len(formatted_data))):  # Show first 2 examples
+for i in range(min(2, len(formatted_training_data))):  # Show first 2 examples
     print(f"\nExample {i+1}:")
     print(
-        formatted_data[i]["text"][:500]
-        + ("..." if len(formatted_data[i]["text"]) > 500 else "")
+        formatted_training_data[i]["text"][:500]
+        + ("..." if len(formatted_training_data[i]["text"]) > 500 else "")
     )
 
 
@@ -184,21 +204,21 @@ def tokenize_function(examples):
     )
 
 
-tokenized_dataset = dataset.map(
+tokenized_training_dataset = training_dataset.map(
     tokenize_function, batched=True, remove_columns=["text"]
 )
-# split tokenized_dataset into train and validation sets
-tokenized_dataset = tokenized_dataset.train_test_split(
-    test_size=EVAL_TEST_SPLIT, seed=42, shuffle=True
+tokenized_testing_dataset = testing_dataset.map(
+    tokenize_function, batched=True, remove_columns=["text"]
 )
 
-test_dataset = tokenized_dataset["test"]
-tokenized_dataset = tokenized_dataset["train"]
+
+test_dataset = tokenized_testing_dataset
+tokenized_dataset = tokenized_training_dataset.shuffle(seed=42)
 
 print(f"\nTokenized dataset size: {len(tokenized_dataset)}")
 print(f"Test dataset size: {len(test_dataset)}")
 
-exit()
+# exit()
 training_args = TrainingArguments(
     output_dir=OUTPUT_DIR,
     num_train_epochs=NUM_EPOCHS,
@@ -288,7 +308,7 @@ if trainer.state.log_history:
     plt.yscale("log")
     plt.legend()
     plt.grid(True, which="both", linestyle="--", linewidth=0.5)
-    plt.savefig(f"{PLOT_OUTPUT_DIR}/loss_curve.png")
+    plt.savefig(f"{PLOT_OUTPUT_DIR}/loss_curve-all.png")
 else:
     print("No log history found to plot loss curve.")
 # Save the plot
