@@ -3,7 +3,7 @@ import os
 import subprocess
 
 data_dir = "DATA/"
-docker_cmd = "docker exec confident_babbage java -jar chat.jar"
+docker_cmd = "docker run stilts-chat-stilts-dev-env java -jar chat.jar"
 GREEN = "\033[92m"
 RESET = "\033[0m"
 RED = "\033[91m"
@@ -72,10 +72,11 @@ def main():
         # "NOTEBOOKLM/tapquery.json",
         # "NOTEBOOKLM/tcat.json",
         # "NOTEBOOKLM/tcatn.json",
-        "NOTEBOOKLM/tcopy.json",
-        "NOTEBOOKLM/tmatch2.json",
-        "NOTEBOOKLM/tmatchn.json",
-        "NOTEBOOKLM/tpipe.json",
+        # "NOTEBOOKLM/tcopy.json",
+        # "NOTEBOOKLM/tmatch2.json",
+        # "NOTEBOOKLM/tmatchn.json",
+        # "NOTEBOOKLM/tpipe.json",
+        "failed_data/Error__Unknown_processing_comm.json"
     ]
     print(data_files)
     # iterate over each file and check the commands

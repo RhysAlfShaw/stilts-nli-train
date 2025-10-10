@@ -8,7 +8,7 @@
     },
     {
         "prompt": "Read data from standard input (assuming VOTable format) and display it on the terminal using the simple text format.",
-        "response": "stilts tcopy in=- ifmt=votable ofmt=text out=-",
+        "response": "A command might look like: stilts tcopy in=.. ifmt=votable ofmt=text out=..",
         "chat.jar": "failed",
         "error": "Error: uk.ac.starlink.table.TableFormatException\n    (Premature end of file.)\n",
         "source_cmd_file": "tcopy.json"
