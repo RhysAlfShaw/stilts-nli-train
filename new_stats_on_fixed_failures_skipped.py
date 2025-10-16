@@ -144,6 +144,7 @@ def analyze_notebooklm_stats(base_dir="DATA/NOTEBOOKLM"):
     total_usable_data = 0
     total_fixed_data = 0
     total_removed = 0
+    total_failed = 0
     for cmd in all_cmds:
         success = cmd_success_counts[cmd]
         failure = cmd_initial_failure_counts[cmd]
@@ -153,11 +154,17 @@ def analyze_notebooklm_stats(base_dir="DATA/NOTEBOOKLM"):
         total_all_data += success + failure
         total_usable_data += success + fixed
         total_fixed_data += fixed
+        total_failed += failure
+    overall_success_rate = (
+        (total_usable_data / total_all_data * 100) if total_all_data > 0 else 0
+    )
 
     print(f"Total generated data: {total_all_data}")
     print(f"Total training data: {total_usable_data}")
     print(f"Total removed data: {total_removed}")
     print(f"Total fixed data: {total_fixed_data}")
+    print(f"Total failed data: {total_failed}")
+    print(f"Overall success rate: {overall_success_rate:.2f}%")
     print(f"all Unique chat.jar values")
     unique_chatjar_values = set(tuple(x) for x in list_of_all_chatjar_values)
     for value in unique_chatjar_values:

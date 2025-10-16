@@ -195,3 +195,12 @@ sun256.txt
 test
 TESTING_CATALOGS
 upload_to_hf.py
+*.pdf 
+eval_loss*
+*.fits
+results_2b.json
+results_27b.json
+train_loss*
+create_test_fits.py
+job_script.sh   
+gemma-2b-eval.txt

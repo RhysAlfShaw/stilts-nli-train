@@ -21,7 +21,7 @@ argparser.add_argument(
 argparser.add_argument(
     "--output_dir",
     type=str,
-    default="/scratch/Rhys/stilts_models/gemma-2b-finetuned-new",
+    default="/scratch/Rhys/stilts_models/gemma-2b-finetuned-new-new",
 )
 
 argparser.add_argument(
@@ -45,7 +45,7 @@ argparser.add_argument(
 argparser.add_argument(
     "--batch_size",
     type=int,
-    default=4,
+    default=2,
 )
 
 argparser.add_argument(
@@ -61,7 +61,6 @@ PLOT_OUTPUT_DIR = argparser.parse_args().plot_output_dir
 limit_mem = argparser.parse_args().mem_red
 
 TRAIN_FILE = f"{TRAINING_DATA_DIR}/training_data.json"
-# all the training data files are in DATA but in only certain directories.
 
 TRAIN_FILE_CMDS_DIR = [
     "cone",
@@ -93,10 +92,9 @@ TRAIN_FILE_CMDS_DIR = [
 # EVAL_TEST_SPLIT = 0.1
 BATCH_SIZE = argparser.parse_args().batch_size
 LEARNING_RATE = 5e-5  # 5e-5 is a common learning rate for fine-tuning large models
-NUM_EPOCHS = 5  # 1 epoch is often sufficient for pre-trained models on specific tasks.
+NUM_EPOCHS = 20  # 1 epoch is often sufficient for pre-trained models on specific tasks.
 GRADIENT_ACCUMULATION_STEPS = 2
-DTYPE = torch.bfloat16  # important to keep memory usage low for large models.
-
+DTYPE = torch.bfloat16
 print(f"Using model: {MODEL_NAME}")
 print(f"Using output directory: {OUTPUT_DIR}")
 # Load access token
@@ -108,10 +106,10 @@ os.environ["HF_TOKEN"] = access_token
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"Using device: {device}")
 
-# set a max usage of GPU memory
+# set a max usage of GPU memory for other processes
 if limit_mem:
     if device.type == "cuda":
-        # set to 80% of total memory
+        # set to 60% of total memory
         torch.cuda.set_per_process_memory_fraction(0.60)
 
 
@@ -165,7 +163,6 @@ gemma_template = (
 
 tokenizer.chat_template = gemma_template
 for item in training_data:
-    # print(item)
     chat = [
         {"role": "user", "content": item["prompt"]},
         {"role": "assistant", "content": item["response"]},
@@ -174,7 +171,6 @@ for item in training_data:
         {"text": tokenizer.apply_chat_template(chat, tokenize=False)}
     )
 for item in testing_data:
-    # print(item)
     chat = [
         {"role": "user", "content": item["prompt"]},
         {"role": "assistant", "content": item["response"]},
@@ -183,11 +179,9 @@ for item in testing_data:
         {"text": tokenizer.apply_chat_template(chat, tokenize=False)}
     )
 
-# formatted_data = tokenizer.apply_chat_template(data, tokenize=False)
 training_dataset = Dataset.from_list(formatted_training_data)
 testing_dataset = Dataset.from_list(formatted_testing_data)
 
-# check a few examples
 print("\nSample formatted data:")
 for i in range(min(2, len(formatted_training_data))):  # Show first 2 examples
     print(f"\nExample {i+1}:")
@@ -197,7 +191,6 @@ for i in range(min(2, len(formatted_training_data))):  # Show first 2 examples
     )
 
 
-# Tokenize the dataset
 def tokenize_function(examples):
     return tokenizer(
         examples["text"],
@@ -279,12 +272,12 @@ if trainer.state.log_history:
     train_df = pd.DataFrame(
         {"step": train_steps, "loss": train_loss}, columns=["step", "loss"]
     )
-    train_df.to_csv(f"{PLOT_OUTPUT_DIR}/train_loss.csv", index=False)
+    train_df.to_csv(f"{PLOT_OUTPUT_DIR}/train_loss-new.csv", index=False)
 
     eval_df = pd.DataFrame(
         {"step": eval_steps, "loss": eval_loss}, columns=["step", "loss"]
     )
-    eval_df.to_csv(f"{PLOT_OUTPUT_DIR}/eval_loss.csv", index=False)
+    eval_df.to_csv(f"{PLOT_OUTPUT_DIR}/eval_loss-new.csv", index=False)
 
     plt.figure(figsize=(12, 7))
     plt.plot(train_steps, train_loss, label="Training Loss", color="blue", alpha=0.7)
@@ -308,12 +301,10 @@ if trainer.state.log_history:
     plt.yscale("log")
     plt.legend()
     plt.grid(True, which="both", linestyle="--", linewidth=0.5)
-    plt.savefig(f"{PLOT_OUTPUT_DIR}/loss_curve-all.png")
+    plt.savefig(f"{PLOT_OUTPUT_DIR}/loss_curve-all-new.png")
 else:
     print("No log history found to plot loss curve.")
-# Save the plot
 
-# now run the hf_to_gguf.py script to convert the model to GGUF format
 print("\nConverting model to GGUF format...")
 import subprocess
 

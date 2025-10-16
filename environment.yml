@@ -10,12 +10,12 @@ dependencies:
   - matplotlib
   - pip:
       - torch
-      - torchvision
-      - torchaudio
+      # - torchvision
+      # - torchaudio
       - accelerate
       - evaluate
       - sentencepiece
-      - bitsandbytes
+      # - bitsandbytes
       - huggingface_hub
       - transformers
       - datasets

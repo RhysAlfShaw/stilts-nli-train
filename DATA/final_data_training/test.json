@@ -3,7 +3,6 @@
         "prompt": "Map coverage from ASCII MOC strings contained in a single column ($1), outputting to a raw binary stream.",
         "response": "stilts mocshape in=moc_list.txt ifmt=ascii shape=moc-ascii coords='$1' mocfmt=raw out=ascii_moc_raw.bin",
         "chat.jar": "executed successfully",
-        "error": "Error response from daemon: No such container: stilts-chat-stilts-dev-env\n",
         "cmd": "mocshape"
     },
     {
@@ -16,7 +15,6 @@
         "prompt": "Generate an all-sky density map (skydensity, level 5) combining the median of 'MAG' values per pixel.",
         "response": "stilts plot2sky in=data.fits layer=skydensity lon=RA lat=DEC level=5 weight=MAG combine=median out=median_mag_hpx5.png",
         "chat.jar": "skipped-plot",
-        "error": "Error: Bad Expression \"RA\"\n    (The name \"RA\" is unknown.)\n",
         "cmd": "plot2sky"
     },
     {
@@ -29,7 +27,6 @@
         "prompt": "Find sources in Gaia TAP near Galactic L=90, B=0, with a radius defined by $\frac{1}{60}$ degrees.",
         "response": "stilts cone serviceurl=https://gea.esac.esa.int/tap-server/tap lon=90.0 lat=0.0 radius='1.0 / 60.0' skysys=galactic out=gaia_one_arcmin.fits",
         "chat.jar": "skipped-operaton in param",
-        "error": "Error: Bad value for parameter radius: For input string: \"1.0 / 60.0\"\nUsage: radius=<degrees>\n\n",
         "cmd": "cone-examples"
     },
     {
@@ -42,7 +39,6 @@
         "prompt": "Generate an MOC (order 11) for sources where the radius is calculated as the reciprocal of the redshift column Z, assuming the result is in degrees and Z >= 1.",
         "response": "stilts pixfoot in=z_data.fits icmd='select \"Z >= 1.0\"' ra=RA dec=DEC radius='1.0 / Z' order=11 out=reciprocal_z.fits",
         "chat.jar": "executed successfully",
-        "error": "Error: Unused arguments: '>=' '1.0'\n(Hint: arguments containing spaces must be quoted)\n\nCommand was: select Z >= 1.0\n\nUsage: select <expr>\n    (Unused arguments: '>=' '1.0'\n(Hint: arguments containing spaces must be quoted))\n",
         "cmd": "pixfoot"
     },
     {

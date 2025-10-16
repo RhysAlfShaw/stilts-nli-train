@@ -9,6 +9,7 @@ import re
 from sentence_transformers import SentenceTransformer, util
 import os
 import numpy as np
+from tqdm import tqdm
 
 
 print("Loading sentence-transformer model...")
@@ -17,22 +18,13 @@ print("Model loaded successfully.")
 
 device = "cuda"
 
-TEST_CASE_DIR = "DATA/TEST_CASES/"
-# get path for all .json in test_case_dir
-test_data_files = [
-    f"{TEST_CASE_DIR}{file}"
-    for file in os.listdir(TEST_CASE_DIR)
-    if file.endswith(".json")
-]
+# TEST PATH
+test_path = "DATA/final_data_training/test.json"
 
-TEST_CASES = []
-for file in test_data_files:
-    with open(file, "r") as f:
-        data = json.load(f)
-        TEST_CASES.extend(data)
+with open(test_path, "r") as f:
+    TEST_CASES = json.load(f)
 
-
-model_path = "/scratch/Rhys/stilts_models/gemma-2b-finetuned/final_model"
+model_path = "/scratch/Rhys/stilts_models/gemma-2b-finetuned-new/final_model"
 model = AutoModelForCausalLM.from_pretrained(
     model_path,
     torch_dtype=torch.float16,
@@ -106,14 +98,13 @@ def main():
         "\nStarting STILTS Command Generation Test Suite (Embedding Similarity Mode)..."
     )
     results = []
-    from tqdm import tqdm
 
     for i, case in tqdm(
         enumerate(TEST_CASES), total=len(TEST_CASES), desc="Running tests"
     ):
 
         generated_command = get_llm_response(case["prompt"])
-        score = evaluate_command_similarity(generated_command, case["expected"])
+        score = evaluate_command_similarity(generated_command, case["response"])
         results.append({**case, "generated": generated_command, "score": score})
 
     print("\n" + "=" * 80)
@@ -125,9 +116,9 @@ def main():
         print("\n CASES WITH SIMILARITY SCORE < 95%:\n")
         for res in sorted(low_scoring, key=lambda x: x["score"]):
             print(f"  Score:     {res['score']:.2f}")
-            print(f"  Category:  {res['category']}")
+            print(f"  Category:  {res['cmd']}")
             print(f"  Prompt:    {res['prompt']}")
-            print(f"  Expected:  `{res['expected']}`")
+            print(f"  Expected:  `{res['response']}`")
             print(f"  Generated: `{res['generated']}`\n")
         print("-" * 80)
     else:
@@ -136,12 +127,12 @@ def main():
     # save results to results.json
     import json
 
-    with open("results.json", "w") as f:
+    with open("results_2b.json", "w") as f:
         json.dump(results, f, indent=4)
 
     category_scores = {}
     for res in results:
-        cat = res["category"]
+        cat = res["cmd"]
         if cat not in category_scores:
             category_scores[cat] = {"scores": [], "total": 0}
         category_scores[cat]["scores"].append(res["score"])
